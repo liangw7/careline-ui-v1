@@ -1,0 +1,138 @@
+
+<div class="overlay" *ngIf="loading">
+    <div class="spinner-wrapper" >
+     
+      <spinner></spinner>
+    </div>
+  </div>
+  <div *ngIf="isFlowsheet"   style='margin-bottom:0px;'  >
+    <div class='table table-responsive'  style='margin-bottom:0px;'  >
+      <table class="table table-striped" style='margin-bottom:0px;' >
+      
+      <tbody *ngFor="let dataItem of obSet.dataSet|orderBy: 'index'" >
+        <tr *ngIf='dataItem.data.length>0' >
+
+          <td width='20%'  style="font-weight: 600; background-color: white;" class='label'>
+             <span>{{dataItem.label}}</span>
+          </td>
+          <td *ngFor='let valueItem of dataItem.data.slice(0,limit)' 
+          style="font-weight: 600; background-color: white;"
+          class='value'
+           [ngClass]= "{'levelOne': findLevel(obSet.dataSet.indexOf(dataItem),dataItem.data.indexOf(valueItem))==1, 
+                       'levelTwo':findLevel(obSet.dataSet.indexOf(dataItem),dataItem.data.indexOf(valueItem))==2}">
+                    <span >{{valueItem}}</span>  
+                    <span *ngFor='let value of getValue(valueItem,dataItem)'>
+                      <span *ngIf='value.text'>
+                        {{value.text }} 
+                      </span>
+                      <span *ngIf='!value.text'>
+                        {{value }} 
+                      </span>
+                    </span>
+            </td>
+        </tr>
+        <tr *ngIf='dataItem.data.length==0' >
+          <td width='20%' style="font-weight: 600; background-color: white;">
+             {{dataItem.label}}
+          </td>
+          <td *ngFor='let valueItem of dataItem.datas.slice(0,limit)' 
+              style="font-weight: 600; background-color: white;"
+           [ngClass]= "{'levelOne': findLevel(obSet.dataSet.indexOf(dataItem),dataItem.datas.indexOf(valueItem))==1, 
+                       'levelTwo':findLevel(obSet.dataSet.indexOf(dataItem),dataItem.datas.indexOf(valueItem))==2}">
+                  
+                    <span *ngFor='let value of valueItem'>
+                      <span *ngIf='value.text'>
+                        {{value.text }} 
+                      </span>
+                      <span *ngIf='!value.text'>
+                        {{value }} 
+                      </span>
+                    </span>
+            </td>
+        </tr>
+      
+       </tbody>
+      </table>
+      </div>
+  </div>  
+  <div *ngIf="!isFlowsheet&&dataViewerType=='table'" style='margin-bottom:0px;'>
+    <div class='table table-responsive' style='margin-bottom:0px;'>
+      <table class="table table-striped" style='margin-bottom:0px;'>
+        <thead *ngIf='obSet.timeList'>
+          <tr>
+            <th></th>
+          <th *ngFor='let time of obSet.timeList.slice(0,limit)' 
+          style='background:white;'>{{time|date:"MM/dd "}} </th>
+        </tr>
+      </thead>
+      <tbody *ngFor="let dataItem of obSet.dataSet|orderBy: 'index'" >
+        <tr *ngIf='dataItem.data.length>0' >
+
+          <td width='30%'  style="font-weight: 600; background-color: white;" class='label'>
+             <span>{{dataItem.label}}</span>
+          </td>
+          <td *ngFor='let valueItem of dataItem.data.slice(0,limit)' class='value'
+          style='font-weight: 600;background:white;'
+           [ngClass]= "{'levelOne': findLevel(obSet.dataSet.indexOf(dataItem),dataItem.data.indexOf(valueItem))==1, 
+                       'levelTwo':findLevel(obSet.dataSet.indexOf(dataItem),dataItem.data.indexOf(valueItem))==2}">
+                    <span >{{valueItem}}</span>  
+                    <span *ngFor='let value of getValue(valueItem,dataItem)'>
+                      <span *ngIf='value.text'>
+                        {{value.text }} 
+                      </span>
+                      <span *ngIf='!value.text'>
+                        {{value }} 
+                      </span>
+                    </span>
+            </td>
+        </tr>
+        <tr *ngIf='dataItem.data.length==0' >
+          <td width='30%' style='font-weight: 600;background:white;'>
+             {{dataItem.label}}
+          </td>
+          <td *ngFor='let valueItem of dataItem.datas.slice(0,limit)' 
+          style="font-weight: 600;background-color: white;"
+           [ngClass]= "{'levelOne': findLevel(obSet.dataSet.indexOf(dataItem),dataItem.datas.indexOf(valueItem))==1, 
+                       'levelTwo':findLevel(obSet.dataSet.indexOf(dataItem),dataItem.datas.indexOf(valueItem))==2}">
+                  
+                    <span *ngFor='let value of valueItem'>
+                      <span *ngIf='value.text'>
+                        {{value.text }} 
+                      </span>
+                      <span *ngIf='!value.text'>
+                        {{value }} 
+                      </span>
+                    </span>
+            </td>
+        </tr>
+      
+       </tbody>
+      </table>
+      </div>
+  </div>
+  <div [hidden]="dataViewerType!='line chart'">
+    <div Class='line-graph-holder-cell' >
+  
+      <canvas #lineCanvas ></canvas>
+    
+    </div>
+  </div>
+  <div [hidden]="dataViewerType!='bar chart'">
+    <div Class='line-graph-holder-cell'>
+  
+      <canvas #barCanvas ></canvas>
+     
+      
+          </div>
+     
+  </div>
+  <div [hidden]="dataViewerType!='pie chart'"> 
+      <div Class='line-graph-holder-cell'>
+  
+          <canvas #pieCanvas ></canvas>
+        
+      </div>
+  </div>
+   
+      
+     

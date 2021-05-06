@@ -1,0 +1,61 @@
+
+<div class="overlay" *ngIf="loading">
+    <div class="spinner-wrapper" >
+     
+      <spinner></spinner>
+    </div>
+  </div>
+   
+  <div *ngIf="dataViewerType=='table'" >
+    <div class='table table-responsive'>
+      <table class="table table-striped" style='background-color: white'>
+        <thead *ngIf='obSet.timeList'>
+          <tr>
+            <th></th>
+          <th *ngFor='let time of obSet.timeList.slice(0,limit)'>{{time|date:"MM/dd"}} </th>
+        </tr>
+      </thead>
+      <tbody >
+        <tr *ngFor="let data of obSet.dataSet|orderBy: 'index'" style='padding: 0px;' >
+          <td width='30%'>
+             {{data.label}}
+          </td>
+          <td *ngFor='let valueItem of data.data.slice(0,limit)' style="font-weight: 600"
+           [ngClass]= "{'levelOne': findLevel(obSet.dataSet.indexOf(data),data.data.indexOf(valueItem))==1, 
+                       'levelTwo':findLevel(obSet.dataSet.indexOf(data),data.data.indexOf(valueItem))==2}">
+                     {{valueItem}} {{data.datas[data.data.indexOf(valueItem)]}} 
+            </td>
+        </tr>
+      
+       </tbody>
+      </table>
+      </div>
+  </div>
+ 
+
+  <div [hidden]="dataViewerType!='line chart'">
+    <div Class='line-graph-holder-cell' >
+  
+      <canvas #lineCanvas ></canvas>
+    
+    </div>
+  </div>
+  <div [hidden]="dataViewerType!='bar chart'">
+    <div Class='line-graph-holder-cell'>
+  
+      <canvas #barCanvas ></canvas>
+     
+      
+          </div>
+     
+  </div>
+  <div [hidden]="dataViewerType!='pie chart'"> 
+      <div Class='line-graph-holder-cell'>
+  
+          <canvas #pieCanvas ></canvas>
+        
+      </div>
+  </div>
+   
+      
+     

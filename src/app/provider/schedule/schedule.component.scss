@@ -1,0 +1,66 @@
+@import 'src/assets/scss/base.scss';
+.wapper {
+    margin: 0;
+    border-radius: 20px;
+    overflow: hidden;
+    
+   
+    .checkdate {
+        padding: 0px;
+        margin-top:-5px;
+        font-size: $fontSize16;
+        color: $darkfontColor;
+    }
+    .calendar{
+        height: calc(100vh - 390px);
+        overflow-y: auto;
+    
+    .appoint {
+        margin: 0;
+        text-align: center;
+        li {
+            display: inline-block;
+            width: 130px;
+            padding: 0 5px;
+            list-style: none;
+            font-size: $fontSize12;
+            font-family: PingFangSC, PingFangSC-Regular;
+            font-weight: 400;
+            text-align: center;
+            color: $lightBlue;
+            line-height: 46px;
+            background: $darkGray;
+            border-radius: 23px;
+            box-shadow: 0px 26px 20px -20px $darkGray; 
+            margin: 7px;
+            cursor: pointer;
+            span {
+                display: inline-block;
+                margin: 0 5px;
+                i {
+                    vertical-align: sub;
+                }
+            }
+            &.all {
+                display: block;
+                width: 120px;
+                height: 46px;
+                background: $darkGray;
+                border-radius: 23px;
+                box-shadow: 0px 26px 20px -20px #d6e2f6; 
+                font-size: $fontSize18;
+                font-family: PingFangSC, PingFangSC-Regular;
+                font-weight: 400;
+                text-align: center;
+                color: $lightBlue;
+                line-height: 46px;
+                margin: 10px auto;
+            }
+            &.active {
+                color: #fff;
+                background: $lightBlue;
+            }
+        }
+    }
+ }
+}

@@ -1,0 +1,311 @@
+<div class="wrapper">
+    <div class="overlay" *ngIf="loading">
+        <div class="spinner-wrapper">
+            <spinner></spinner>
+        </div>
+    </div>
+    <div class='main'>
+        <button *ngIf="bigScreen==0" class='btn' style='width:100%; background-color: white;color:black'
+            (click)='gotoProviderFolder()'>返回</button>
+        <div  *ngIf='hasProvider &&bigScreen==1'>
+            <div class='row'>
+                <div class='col-sm-9'>
+                    <div class='row'>
+                <div class="col-sm-6">
+                    <div class="card chart-layout" style='margin-top:20px;'>
+                        <p></p>
+                        <div class="card-header">
+                            <h5 >
+                                <span style='font-weight: 500' *ngIf="language=='Chinese'"> 每月病人注册</span>
+                                <span style='font-weight: 500' *ngIf="language=='English'">Monthly registration</span>
+                            </h5>
+                            
+                        </div>
+                        <p></p>
+                            <div class="ct-chart" id="patientByProvider"></div>
+                            <p></p>
+                            <p></p>
+                            <p></p>
+                      
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="card chart-layout" style='margin-top:20px;'>
+                        <p></p>
+                        <div class="card-header">
+                            <h5>
+                                <span style='font-weight: 500' *ngIf="language=='Chinese'">每月门诊量</span>
+                                <span style='font-weight: 500' *ngIf="language=='English'">Monthly Outpatients</span>
+                            </h5>
+                           
+                        </div>
+                        <p></p>
+                            <div class="ct-chart" id="visitByProvider"></div>
+                            <p></p>
+                            <p></p>
+                            <p></p>
+                      
+                    </div>
+                </div>
+                <div class="col-sm-6 " style='margin-top:0px;'>
+                    <p></p>
+                    <div class="card chart-layout">
+                        <div class='card-header'>
+                           
+                            <h5 style='font-weight: 500' *ngIf="language=='Chinese'">病人项目分布</h5>
+                            <h5 style='font-weight: 500' *ngIf="language=='English'">patient locations</h5>
+                            
+                           
+                        </div>
+                        <p></p>
+                        <div class="ct-chart" id="TasksChartByProvider"></div>
+                        <p></p>
+                        <p></p>
+                        <p></p>
+                    </div>
+                   
+                </div>
+                <div class="col-sm-6 " style='margin-top:10px;'>
+                    <div class="card chart-layout">
+                      
+                        <div style='height:275px;overflow-y: auto; padding:-10px;'>
+                        <patient-consult-list [hideHeader]=true ></patient-consult-list>
+                        </div>
+                        
+                      
+                    </div>
+                   
+                </div>
+               
+                </div>
+              </div>
+                <div class="col-sm-3 " style='margin-top:20px;'>
+                    <div class="card " 
+                    style='margin-bottom:0px;margin-top:-20px;padding-bottom:0px;'>
+                      
+                       <div style='height:700px; overflow-y: hiden;'>
+                        <schedule-provider [hideHeader]=true [user]='user'></schedule-provider>
+                    </div>
+                      
+                    </div>
+               
+                
+    
+                </div>
+                
+               
+            </div>
+        </div>
+        <div *ngIf='hasProvider &&bigScreen==0'>
+            <div class='row'>
+                <div class="col-sm-7 col-md-3 col-lg-3">
+                    <div class="card card-stats">
+                        <div class="card-header  card-header-icon" [ngClass]="{'card-header-rose':color=='purple',
+                    'card-header-success':color=='green',
+                    'card-header-primary':color!='green'
+                    &&color!='purple'}">
+                            <div class="card-icon">
+                                <i class="material-icons">person</i>
+                            </div>
+                            <p class="card-category">
+                                <span style='font-weight: 800' *ngIf="language=='Chinese'">病人总数</span>
+                                <span style='font-weight: 800' *ngIf="language=='English'">Total atients</span>
+                            </p>
+                            <h3 class="card-title"><span style='font-weight: 800'>{{totalProviderPatients}}</span>
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-7 col-md-5 col-lg-5">
+                    <div class="card card-chart">
+                        <div class="card-header " [ngClass]="{'card-header-rose':color=='purple',
+                        'card-header-success':color=='green',
+                        'card-header-primary':color!='green'
+                        &&color!='purple'}">
+                            <div class="ct-chart" id="patientByProvider"></div>
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-title">
+                                <span style='font-weight: 800' *ngIf="language=='Chinese'"> 每月病人注册</span>
+                                <span style='font-weight: 800' *ngIf="language=='English'">Monthly registration</span>
+                            </h4>
+                            <p class="card-category"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-7 col-md-5 col-lg-5">
+                    <div class="card card-chart">
+                        <div class="card-header card-header-warning">
+                            <div class="ct-chart" id="visitByProvider"></div>
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-title">
+                                <span style='font-weight: 800' *ngIf="language=='Chinese'">每月门诊量</span>
+                                <span style='font-weight: 800' *ngIf="language=='English'">Monthly Outpatients</span>
+                            </h4>
+                            <p class="card-category"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-7 col-md-5 col-lg-5">
+                    <div class="card card-chart">
+                        <div class="card-header" [ngClass]="{'card-header-rose-1':color=='purple',
+                        'card-header-success-1':color=='green',
+                        'card-header-primary-1':color!='green'
+                        &&color!='purple'}">
+                            <div class="ct-chart" id="TasksChartByProvider"></div>
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-title">
+                                <span style='font-weight: 800' *ngIf="language=='Chinese'">病人项目分布</span>
+                                <span style='font-weight: 800' *ngIf="language=='English'">patient locations</span>
+                            </h4>
+                            <p class="card-category"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div  *ngIf='service'>
+            <div class='row'>
+                <div class="col-sm-7 col-md-3 col-lg-3">
+                    <div class="card card-stats">
+                        <div class="card-header  card-header-icon" [ngClass]="{'card-header-rose':color=='purple',
+                    'card-header-success':color=='green',
+                    'card-header-primary':color!='green'
+                    &&color!='purple'}">
+                            <div class="card-icon">
+                                <i class="material-icons">person</i>
+                            </div>
+                            <p class="card-category">
+                                <span style='font-weight: 800' *ngIf="language=='Chinese'">病人总数</span>
+                                <span style='font-weight: 800' *ngIf="language=='English'">Total atients</span>
+                            </p>
+                            <h3 class="card-title"><span style='font-weight: 800'>{{totalServicePatients}}</span>
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-7 col-md-3 col-lg-3" *ngFor='let profile of service.profiles'>
+                    <div class="card card-stats">
+                        <div class="card-header  card-header-icon" [ngClass]="{'card-header-rose-2':color=='purple',
+                  'card-header-success-2':color=='green',
+                  'card-header-primary-2':color!='green'
+                  &&color!='purple'}">
+                            <div class="card-icon">
+                                <i class="material-icons">person</i>
+                            </div>
+                            <p class="card-category">
+                                <span style='font-weight: 800'
+                                    *ngIf="language=='Chinese'&&profile.label">{{profile.label.ch}}</span>
+                                <span style='font-weight: 800'
+                                    *ngIf="language=='English'&&profile.label">{{profile.label.en}}</span>
+                            </p>
+                            <h3 class="card-title"><span style='font-weight: 800'>{{profile.totalPatients}}</span>
+                            </h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-7 col-md-5 col-lg-5">
+                    <div class="card card-chart">
+                        <div class="card-header " [ngClass]="{'card-header-rose':color=='purple',
+                        'card-header-success':color=='green',
+                        'card-header-primary':color!='green'
+                        &&color!='purple'}">
+                            <div class="ct-chart" id="patient"></div>
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-title">
+                                <span style='font-weight: 800' *ngIf="language=='Chinese'"> 每月病人注册</span>
+                                <span style='font-weight: 800' *ngIf="language=='English'">Monthly registration</span>
+                            </h4>
+                            <p class="card-category"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-7 col-md-5 col-lg-5">
+                    <div class="card card-chart">
+                        <div class="card-header card-header-warning">
+                            <div class="ct-chart" id="visit"></div>
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-title">
+                                <span style='font-weight: 800' *ngIf="language=='Chinese'">每月门诊量</span>
+                                <span style='font-weight: 800' *ngIf="language=='English'">Monthly Outpatients</span>
+                            </h4>
+                            <p class="card-category"></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-7 col-md-5 col-lg-5">
+                    <div class="card card-chart">
+                        <div class="card-header" [ngClass]="{'card-header-rose-1':color=='purple',
+                        'card-header-success-1':color=='green',
+                        'card-header-primary-1':color!='green'
+                        &&color!='purple'}">
+                            <div class="ct-chart" id="TasksChart"></div>
+                        </div>
+                        <div class="card-body">
+                            <h4 class="card-title">
+                                <span style='font-weight: 800' *ngIf="language=='Chinese'">病人项目分布</span>
+                                <span style='font-weight: 800' *ngIf="language=='English'">patient locations</span>
+                            </h4>
+                            <p class="card-category"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <!-- <quality-control [serviceID]='serviceID'></quality-control>-->
+            </div>
+        </div>
+        <div  *ngIf='service'>
+            <div *ngIf="user.role=='provider'">
+                <div class="chart-size-2">
+                    <div style='height:400px;overflow: auto'>
+                        <div style='margin-top: -70px;overflow-y: auto;'>
+                        </div>
+                    </div>
+                </div>
+                <!--<div class="col-lg-6 col-md-12" style='height: 400px; overflow: auto'>
+                     
+                             <mail></mail>
+                    </div>-->
+            </div>
+            <div>
+                <div class="chart-size-2">
+                    <div class="card">
+                        <div class="card-header card-header-warning">
+                            <h4 class="card-title"> <span *ngIf="language=='Chinese'">团队医生</span>
+                                <span *ngIf="language=='English'">Treatment team</span>
+                            </h4>
+                            <p class="card-category">New employees on 15th September, 2016</p>
+                        </div>
+                        <div class="card-body table-responsive">
+                            <table class="table table-hover">
+                                <thead class="text-warning">
+                                    <th> <span *ngIf="language=='Chinese'">姓名</span>
+                                        <span *ngIf="language=='English'">Name</span>
+                                    </th>
+                                    <th> <span *ngIf="language=='Chinese'">性别</span>
+                                        <span *ngIf="language=='English'">gender</span>
+                                    </th>
+                                    <th> <span *ngIf="language=='Chinese'">电邮</span>
+                                        <span *ngIf="language=='English'">Email</span>
+                                    </th>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor='let provider of providers'>
+
+                                        <td>{{provider.name}}</td>
+                                        <td>{{provider.gender}}</td>
+                                        <td>{{provider.email}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+ </div>

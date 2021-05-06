@@ -1,0 +1,95 @@
+@import 'src/assets/scss/base.scss';
+.closebtn {
+    width: 40px;
+    height: 40px;
+    padding: 8px;
+    border-radius: 50%;
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    z-index: 1;
+    background: $white;
+    box-shadow: 0 0 4px rgba(0,0,0,.2);
+    box-sizing: border-box;
+    cursor: pointer;
+}
+.popping {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,.6);
+    z-index: 998;
+}
+.card {
+    width:95%;
+    margin:15px;
+    &.selected {
+        background: $darkGray;
+    }
+    .card-body {
+        .headerimg {
+            float:left; 
+            width:68px; 
+            height: 68px;
+            border-radius: 34px;
+            overflow: hidden;
+            margin-right:10px;
+            img {
+                width: 100%;
+                vertical-align: top;
+            }
+        }
+        .info {
+            margin-bottom: 5px;
+            .main-info {
+                font-size: $fontSize22;
+                font-family: PingFangSC, PingFangSC-Medium;
+                font-weight: 500;
+                text-align: left;
+                color: $baseBlue;
+                line-height: 38px;
+                span:nth-child(2) {
+                    color: $basefontColor;
+                    font-size: $fontSize14;
+                    margin-left: 10px;
+                }
+            }
+            .specialty {
+                font-size: $fontSize14;
+                font-family: PingFangSC, PingFangSC-Light;
+                font-weight: 300;
+                text-align: left;
+                color: $basefontColor;
+                line-height: 28px;
+                overflow: hidden;
+                text-overflow:ellipsis;
+                white-space: nowrap;
+            }
+        }
+        .desc {
+            font-size: $fontSize14;
+            font-family: PingFangSC, PingFangSC-Regular;
+            font-weight: 400;
+            text-align: left;
+            color:  $basefontColor;
+            line-height: 24px;
+        }
+    }
+}
+.mail-pc {
+    width: 80%;
+    height: 90%;
+    position: fixed;
+    left: 10%;
+    top: 5%;
+    z-index: 999;
+    //overflow: hidden;
+    //padding:2px;
+    background-color: white;
+    border: none;
+    box-shadow: 0 4px 20px 0px #aaabaf, 0 7px 10px -5px rgba(#b5b5b8, 0.4);
+    border-radius: 20px;
+    margin: 0;
+}

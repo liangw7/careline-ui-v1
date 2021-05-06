@@ -1,0 +1,100 @@
+<div class="pc-office-main" *ngIf='bigScreen==1'>
+    <!-- <div class="container">
+      <div class="image-slider">
+        <img *ngFor="let  slider of sliders" [src]="slider">
+      </div>
+      <div class="nav-section">
+        <span *ngFor="let _ of sliders;let idx=index" class="slide-button"
+        [ngClass]="{'slide-button-select': idx==selectedIndex}"></span>
+      </div>
+    </div> -->
+    <div class="pc-office-middle">
+      
+    </div>
+       <div class="pc-office-bottom">
+                <div class="pc-office-bottom-div card" *ngFor='let service of services|filter:search'>
+                    <a  [routerLink]="['../service', service._id]">
+                  
+                        <div class="pc-office-bottom-main-img">
+                            <img [src]="getUrl(service.photo)" alt="">
+                        </div>
+                        <div class="pc-office-bottom-down">
+                            <div class="pc-office-bottom-down-up">
+                                <!-- <img src="assets/images/office/Bitmap.png" alt="" id="pc-office-bottom-headImg"> -->
+                                <div class="pc-office-bottom-down-main">
+                                    <p>{{service.name}}</p>
+                                    <div class="pc-office-bottom-down-main-bottom">
+                                        <img src="assets/images/office/Combined Shape.png" alt="">&nbsp;&nbsp;
+                                        <span id="pc-office-1">{{service.providers.length}}</span>
+                                    </div>
+                                    <div class="pc-office-bottom-down-main-bottom">
+                                        <img src="assets/images/office/svg.png" alt="">&nbsp;&nbsp;
+                                        <span id="pc-office-3">{{service.profiles.length}}</span>
+                                    </div>
+                                    <div class="pc-office-bottom-down-main-bottom">
+                                        <img src="assets/images/office/Combined Shape_1.png" alt="">&nbsp;&nbsp;
+                                        <span id="pc-office-2">{{service.createdAt|date: 'yyyy-MM-dd'}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="pc-office-bottom-down-p">
+                                {{service.desc}}
+                            </p>
+                        </div>
+                    </a>
+                </div>
+           
+            </div>
+        </div>
+   
+    
+
+<div class="phone-office-main" *ngIf='bigScreen==0'>
+    <!-- <div class="container">
+      <div class="image-slider">
+        <img *ngFor="let  slider of sliders" [src]="slider">
+      </div>
+      <div class="nav-section">
+        <span *ngFor="let _ of sliders;let idx=index" class="slide-button"
+        [ngClass]="{'slide-button-select': idx==selectedIndex}"></span>
+      </div>
+    </div> -->
+    <div class="phone-office-middle">
+        <p>慢病管理团队</p>
+        <div style='display:inline; margin:20px;'>
+        <input class='form-control' ><i class="material-icons">search</i>
+       </div>
+    </div>
+    <div class="phone-office-bottom">
+        <div class="phone-office-bottom-div" *ngFor='let service of services|filter:search'>
+            <a class='card' [routerLink]="['../service', service._id]">
+                <div class="phone-office-bottom-main-img">
+                    <img [src]="getUrl(service.photo)" alt="" >
+                </div>
+                <div class="phone-office-bottom-down">
+                    <div class="phone-office-bottom-down-up">
+                        <!-- <img src="assets/images/office/Bitmap.png" alt="" class="phone-office-bottom-headImg"> -->
+                        <div class="phone-office-bottom-down-main">
+                            <p>{{service.name}}</p>
+                           <!--<div class="phone-office-bottom-down-main-bottom">
+                                <img src="assets/images/office/Combined Shape.png" alt="">&nbsp;&nbsp;
+                                <span id="phone-office-1">{{service.providers.length}}</span>
+                            </div>
+                            <div class="phone-office-bottom-down-main-bottom">
+                                <img src="assets/images/office/svg.png" alt="">&nbsp;&nbsp;
+                                <span id="phone-office-3">{{service.profiles.length}}</span>
+                            </div>
+                            <div class="phone-office-bottom-down-main-bottom">
+                                <img src="assets/images/office/Combined Shape_1.png" alt="">&nbsp;&nbsp;
+                                <span id="phone-office-2">{{service.createdAt|date: 'yyyy-MM-dd'}}</span>
+                            </div>-->
+                        </div>
+                    </div>
+                    <p class="phone-office-bottom-down-p">
+                        {{service.desc}}
+                    </p>
+                </div>
+            </a>
+        </div>
+    </div>
+</div>

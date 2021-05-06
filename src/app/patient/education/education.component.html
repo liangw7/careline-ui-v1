@@ -1,0 +1,6 @@
+<div *ngIf='patient'>
+  <div class="card" *ngFor='let education of patient.educations' (click)='selectEducation(education)'>
+    <img [src]='getUrl(education)' class='photo'>
+    <span *ngIf='education.label'>{{education.label.ch}}</span>
+  </div>
+</div>

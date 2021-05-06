@@ -1,0 +1,74 @@
+<div class="wapper" [ngClass]="{'card':!hideHeader}">
+  <calendar [allWeek]='allWeek' 
+    (messageDateEvent)="receiveDateMessage($event)"
+    (messageWeekEvent)="receiveWeekMessage($event)" 
+    (messageMonthEvent)="receiveMonthMessage($event)"
+    (messageShowWeekEvent)="receiveShowWeekMessage($event)" 
+    ></calendar>
+  
+  <div class="checkdate">{{selectedDate|date: "yyyy/MM/dd"}}</div>
+  <div class='calendar'>
+  <div *ngIf='weekView&&currentWeek'>
+    <table class='table' >
+   
+        <tr *ngFor='let time of timeList'>
+          <td *ngFor='let day of currentWeek' (click)='bookTime(currentWeek,day,time)'>
+            <a class='btn btn-round'>
+              <span style='float:left'>{{time.time}}</span>
+             
+              <span *ngIf='currentWeek.scheduleList&&findSchedule(currentWeek,day, time.hours, time.minutes)' 
+              style='float:right'>
+                <div *ngFor='let schedule of findSchedule(currentWeek,day, time.hours, time.minutes)'>
+
+                  <span *ngIf='schedule.providerID==user._id'>
+               
+                    <span *ngIf="schedule.patient">
+                      {{schedule.patient.name}}
+                    </span>
+                    <i class='material-icons' *ngIf="!schedule.patient" style="color:#26ab56;">check_circle</i>
+                    <i class='material-icons' *ngIf="schedule.patient" style="color:red;">check_circle</i>
+                  </span>
+                  <span *ngIf="user.role=='admin'">
+                    {{schedule.provider.name}}
+                    <i class='material-icons' *ngIf="schedule.status=='avail'" style="color:#26ab56;">check_circle</i>
+                    <i class='material-icons' *ngIf="schedule.status=='reserved'" style="color:red">check_circle</i>
+                  </span>
+                </div>
+              </span>
+            </a>
+          </td>
+        </tr>
+     
+    </table>
+  </div>
+  <div *ngIf='dayView&&currentWeek'>
+    <div class="appoint">
+      <ul>
+        <li class="all" *ngIf='!hideHeader' (click)='bookDate(selectedDate.getDate(), currentWeek)'>预订全天</li>
+        <li *ngFor='let time of timeList' (click)='bookTime(currentWeek,selectedDate.getDate(),time)'>
+          <span>{{time.time}}</span>
+          <span>
+            <span *ngIf='currentWeek.scheduleList&&findSchedule(currentWeek,selectedDate.getDate(), time.hours, time.minutes)'>
+        
+              <span *ngFor='let schedule of findSchedule(currentWeek,selectedDate.getDate(), time.hours, time.minutes)'>
+                <span *ngIf='schedule.providerID==user._id'>
+                  <span *ngIf="schedule.patient">
+                    {{schedule.patient.name}}
+                  </span>
+                  <i class='material-icons' *ngIf="!schedule.patient" style="color:#26ab56;">check_circle</i>
+                  <i class='material-icons' *ngIf="schedule.patient" style="color:red;">check_circle</i>
+                </span>
+                <span *ngIf="user.role=='admin'">
+                  {{schedule.provider.name}}
+                  <i class='material-icons' *ngIf="schedule.status=='avail'" style="color:#26ab56;">check_circle</i>
+                  <i class='material-icons' *ngIf="schedule.status=='reserved'" style="color:red">check_circle</i>
+                </span>
+              </span>
+            </span>
+          </span>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+</div>

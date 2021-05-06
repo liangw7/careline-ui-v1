@@ -1,0 +1,35 @@
+@import 'src/assets/scss/base.scss';
+.wapper {
+    width: 100vw;
+    height: 100vh;
+    padding: 20px 15px 10px;
+    position: relative;
+    background: $grey-background;
+    .firsttab {
+        position: relative;
+        z-index: 0;
+    }
+    :host ::ng-deep .firsttab > .mat-tab-body-wrapper {
+        height: calc(100vh - 80px)!important;
+        .mat-tab-body-content {
+            padding: 2px 0;
+        }
+    }
+}
+.closebtnAll {
+    width: 40px;
+    height: 40px;
+    padding: 8px;
+    border-radius: 50%;
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    z-index: 1;
+    background: $white;
+    box-shadow: 0 0 4px rgba(0,0,0,.2);
+    box-sizing: border-box;
+    cursor: pointer;
+}
+:host ::ng-deep .mat-dialog-container {
+    border-radius: 0;
+}

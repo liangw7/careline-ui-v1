@@ -1,0 +1,19 @@
+<div [hidden]='toImage'>
+  
+    <canvas #lineCanvas width="{{width}}" height="{{height}}" id='userCanvas'></canvas>
+ </div>
+ <div [hidden]='!toImage'>
+    <img  #img 
+    [src]='this.url' 
+    alt="untitled" 
+    width="{{width}}" 
+    height="{{height}}">
+  </div>
+ 
+  <div class="overlay" *ngIf="loading">
+    <div class="spinner-wrapper" >
+     
+      <spinner></spinner>
+    </div>
+  </div>
+   

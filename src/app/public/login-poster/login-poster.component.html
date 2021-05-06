@@ -1,0 +1,33 @@
+
+<img src="./assets/img/poster-4.jpg" style="width:100%;height:100%">
+
+<div class='card' [ngClass]="{'alert-pc':bigScreen==1,'alert-cell':bigScreen==0}">
+  <div class='card-header'>
+    <span *ngIf="profileRole&&profileRole=='patient'" style='font-weight: 800;font-size:large;color:blue'>去咨询</span>
+  </div>
+  <div *ngIf='bindUser' class="pc-login-main-input" style='margin-top:0px;'>
+    <mat-form-field class="full-width">
+      <mat-label>
+        <span>手机号</span>
+      </mat-label>
+      <input matInput name="phone" [(ngModel)]="phone" type='tel'>
+    </mat-form-field>
+    <a class="btn btn-round btn-primary btn-block" (click)="verify()">手机验证 </a>
+    <mat-form-field class="full-width" *ngIf='sentVerify'>
+      <mat-label>
+        <span>验证码</span>
+      </mat-label>
+      <input matInput name="verificationCode" [(ngModel)]="verificationCode" type='tel'>
+      <button nz-button [disabled]="countDown" (click)="sendMessage()" class="pc-login-sendMessage">
+        {{showButtonText}}</button>
+    </mat-form-field>
+    <a class="btn btn-round btn-primary btn-block" *ngIf='sentVerify' (click)="bindUserInfo()">确认绑定</a>
+  </div>
+  <div class='card-body'>
+    <span style='font-size:large;font-weight: 800;color:blue'>{{this.loadWords}}</span>
+  </div>
+  <div class="overlay" *ngIf="loading">
+    <div class="spinner-wrapper">
+      <app-spinner></app-spinner>
+    </div>
+  </div>

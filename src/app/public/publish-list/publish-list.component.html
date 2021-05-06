@@ -1,0 +1,70 @@
+
+
+    
+
+  <div [ngClass]="{'publish':bigScreen==1,'cell-publish':bigScreen==0}"
+  [ngStyle]="{'height':scrollSize+'px'}"
+  style='overflow: auto; padding:15px; '>
+  <div class='article-header' >
+    <input class='form-control' ><i class="material-icons">search</i>
+   </div>
+<div class='card'  *ngFor='let publish of publishList' >
+      <a class="nav-link" *ngIf="bigScreen==1"
+       [routerLink]="['../publish', publish._id]">
+       <div class='row'>
+           <div class='col-sm-1'>  <img [src]="getUrl(publish)" class='head-photo'></div>
+           <div class='col-sm-9'>    
+             <span style='font-weight: 700' *ngIf="language=='Chinese'">{{publish.label.ch}}</span>
+             <span style='font-weight: 700' *ngIf="language=='English'">{{publish.label.en}}</span>
+           </div>
+           <div class='col-sm-2' style='text-align:right'>浏览次数:{{publish.counter}}</div>
+       </div>
+       <div class='card-body' style='height:170px; overflow: hidden; text-align:left' *ngIf='publish.desc'>
+         {{publish.desc.patient}}
+       </div>
+       </a>
+   <div  *ngIf="bigScreen==0"  
+   [routerLink]="['../publish', publish._id]"
+   style='text-align:left;' class='card-body' >
+
+    
+        <div   style='padding:10px;display:inline'>
+       
+          <h5 style='float:left'>
+                 <span style='font-weight: 700' *ngIf="language=='Chinese'">{{publish.label.ch}}</span>
+                 <span style='font-weight: 700' *ngIf="language=='English'">{{publish.label.en}}</span>
+                 
+          </h5>
+         
+         
+         
+         
+         </div>
+         
+        <div class='row' 
+           style='height:110px; overflow: hidden;padding:10px;padding-top:0px;'>
+         
+           <div style='width:80%'>{{publish.desc.patient}}</div>
+           <div class='pull-right' style='width:20%;'>
+           <div><img   [src]="getUrl(publish)" 
+             style='float:right;width:60px; height:60px;border-radius:30px;
+                 box-shadow: 0 4px 20px 0px rgba(0, 0, 0, .14),
+                 0 7px 10px -5px rgba(#595b5e  , 0.4)'></div>
+        
+         </div>   
+       </div>
+       <div  style='font-size:small;float:right'>浏览:{{publish.counter}}</div>
+           
+        
+     
+       
+   
+</div>
+</div>
+</div>
+<div class="wrapper">
+   <div class="overlay" *ngIf="loading">
+     <div class="spinner-wrapper" >
+       <spinner></spinner>
+     </div>
+   </div>

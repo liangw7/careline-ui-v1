@@ -1,0 +1,332 @@
+<div class="spinner-wrapper" *ngIf='loading'>
+  <spinner></spinner>
+</div>
+<div *ngIf='!selectedLabSet&&!selectedLabImage' [ngClass]="{'pc-wapper':bigScreen==1,'wap-wapper':bigScreen==0}">
+  <div *ngIf='bigScreen==0&&labSets'>
+    <div class="card card-stats" *ngFor="let labSet of labSets" (click)='showLabSet(labSet)'>
+      <div class="card-header  card-header-icon">
+        <p class="card-title" style='font-weight: 700;'>
+          <span *ngIf="labSet&&language=='Chinese'">{{labSet.label.ch}}</span>
+          <span *ngIf="labSet&&language=='English'">{{labSet.label.en}}</span>
+        </p>
+      </div>
+    </div>
+    <div class="card-stats" (click)='showLabFile()'>
+      <span *ngIf="language=='Chinese'">报告</span>
+      <span *ngIf="language=='English'">Lab Files</span>
+    </div>
+  </div>
+  <mat-tab-group>
+    <mat-tab *ngFor="let labSet of labSets" label='{{labSet.label.ch}}'>
+      <div *ngIf='bigScreen==1'>
+        <div class="table-responsive">
+          <table class="table table-striped">
+            <thead>
+              <tr>
+                <th width=10%> <button class='btn btn-base' *ngIf='labSet.newTimeStamp' (click)='addValue(labSet)' [disabled]='!labSet.newTimeStamp'>
+                    <span *ngIf="language=='Chinese'">添加</span>
+                    <span *ngIf="language=='English'">Add Value</span>
+  
+                  </button></th>
+                <th width=10%>
+                  <input [(ngModel)]="labSet.newTimeStamp" type=date>
+  
+                </th>
+                <th width=10% *ngFor='let timeStamp of labSet.labs[0].timeStamps; let d=index;'
+                  (mouseover)='labSet.deleteBox[d]=true' (mouseleave)='labSet.deleteBox[d]=false'>
+                  {{ timeStamp|date:"yyyy/MM/dd"}}
+                  <i *ngIf='labSet.deleteBox[d]' class="fa fa-remove" aria-hidden="true"
+                    style="font-size:24px; color: red" (click)='delete(labSet, timeStamp)'></i>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor='let lab of labSet.labs' style='padding: 0px;'>
+                <td width=10%>
+                  <span *ngIf="language=='Chinese'">{{lab.label.ch}}</span>
+                  <span *ngIf="language=='English'">{{lab.label.en}}</span>
+                </td>
+                <td width=10%><input [(ngModel)]="lab.newValue" type=number class='form-control'></td>
+                <td width=10% *ngFor='let valueItem of lab.valueSet;let i = index' style="font-weight: 600"
+                  [ngClass]="{'levelOne': lab.valuesSet[lab.valueSet.indexOf(valueItem)]&& lab.valuesSet[lab.valueSet.indexOf(valueItem)].alertLevel==1, 
+                           'levelTwo': lab.valuesSet[lab.valueSet.indexOf(valueItem)]&&lab.valuesSet[lab.valueSet.indexOf(valueItem)].alertLevel==2}" (mouseover)='lab.editBox[i]=true'
+                  (mouseleave)='lab.editBox[i]=false'>
+                  <i *ngIf='lab.editBox[i]' class="fa fa-edit" aria-hidden="true" style="font-size:24px; color: blue"
+                    (click)='lab.edits[i]=true'></i>
+  
+                  {{valueItem}}
+                  <input *ngIf='lab.edits[i]' [(ngModel)]="newValueItem" type=number
+                    (change)='saveEdit(newValueItem, lab, i);lab.edits[i]=false;'>
+                </td>
+  
+              </tr>
+  
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div *ngIf='labSet.show&&bigScreen==0' class='card lab' id="{{labSet._id}}">
+        <div class='card-header'>
+          <span *ngIf="language=='Chinese'">{{labSet.label.ch}}</span>
+          <span *ngIf="language=='English'">{{labSet.label.en}}</span>
+          <i class='material-icons pull-right' (click)='labSet.show=false;'>close</i>
+        </div>
+        <table class="table table-striped table-responsive" style='background-color: white'>
+          <thead>
+
+            <tr>
+              <th width=10%> <button class='btn' style='padding:6px;' *ngIf='labSet.newTimeStamp' [ngClass]="{'card-rose-1':color=='purple',
+                  'card-success-1':color=='green',
+                  'card-primary-1':color!='green'
+                  &&color!='purple'}" (click)='addValue(labSet)' [disabled]='!labSet.newTimeStamp'>
+                  <span *ngIf="language=='Chinese'">添加</span>
+                  <span *ngIf="language=='English'">Add Value</span>
+
+                </button></th>
+              <th width=10%>
+                <input [(ngModel)]="labSet.newTimeStamp" type=date>
+
+              </th>
+              <th width=10% *ngFor='let timeStamp of labSet.labs[0].timeStamps; let d=index;'
+                (mouseover)='labSet.deleteBox[d]=true' (mouseleave)='labSet.deleteBox[d]=false'>
+                {{ timeStamp|date:"yyyy/MM/dd"}}
+                <i *ngIf='labSet.deleteBox[d]' class="fa fa-remove" aria-hidden="true"
+                  style="font-size:24px; color: red" (click)='delete(labSet, timeStamp)'></i>
+              </th>
+
+            </tr>
+
+          </thead>
+          <tbody>
+            <tr *ngFor='let lab of labSet.labs' style='padding: 0px;'>
+              <td width=10%>
+                <span *ngIf="language=='Chinese'">{{lab.label.ch}}</span>
+                <span *ngIf="language=='English'">{{lab.label.en}}</span>
+
+              </td>
+
+              <td width=10%><input [(ngModel)]="lab.newValue" type=number class='form-control'></td>
+              <td width=10% *ngFor='let valueItem of lab.valueSet;let i = index' style="font-weight: 600"
+                [ngClass]="{'levelOne': lab.valuesSet[lab.valueSet.indexOf(valueItem)]&& lab.valuesSet[lab.valueSet.indexOf(valueItem)].alertLevel==1, 
+                         'levelTwo': lab.valuesSet[lab.valueSet.indexOf(valueItem)]&&lab.valuesSet[lab.valueSet.indexOf(valueItem)].alertLevel==2}" (mouseover)='lab.editBox[i]=true'
+                (mouseleave)='lab.editBox[i]=false'>
+                <i *ngIf='lab.editBox[i]' class="fa fa-edit" aria-hidden="true" style="font-size:24px; color: blue"
+                  (click)='lab.edits[i]=true'></i>
+
+                {{valueItem}}
+                <input *ngIf='lab.edits[i]' [(ngModel)]="newValueItem" type=number
+                  (change)='saveEdit(newValueItem, lab, i);lab.edits[i]=false;'>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </mat-tab>
+    <mat-tab label='增加项目' *ngIf='labSets'>
+      <div class="scrollheight">
+      </div>
+    </mat-tab>
+    <mat-tab label='上传报告' *ngIf='labSets'>
+      <div class="active" [ngClass]="{'lab': bigScreen==0,'tab-pane':bigScreen==1}">
+        <div class='card'>
+          <div class='card-header'>
+            <h5> 实验室报告</h5>
+          </div>
+          <table class='table' (click)='openFile(selectedLabImage)'>
+            <tr>
+              <td><img [src]="getUrl(selectedLabImage)" class="thumbnail"></td>
+              <td *ngIf='selectedLabImage'>{{selectedLabImage.createdAt| date: "yyyy/MM/dd HH:mm"}}</td>
+            </tr>
+          </table>
+        </div>
+        <div class='card' *ngIf='bigScreen==1'>
+          <div class='card-body'>
+            <table class='table'>
+              <tr *ngFor="let lab of uploadedLabs" (click)='openFile(lab)'>
+                <td>
+                  <img [src]="getUrl(lab)" class="thumbnail" *ngIf="lab.uploaded"></td>
+                <td>{{lab.createdAt| date: "yyyy/MM/dd HH:mm"}}</td>
+                <td (click)='deleteUploadedLab(lab)'>
+                  <i class="fa fa-remove" aria-hidden="true" style="font-size:24px; color: red"></i></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div class='card lab' *ngIf='bigScreen==0'>
+          <div class='card-header'>
+            <i class='material-icons pull-right' (click)='showFile=false;'>close</i>
+          </div>
+          <div class='card-body'>
+            <table class='table'>
+              <tr *ngFor="let lab of uploadedLabs" (click)='openFile(lab)'>
+                <td>
+                  <img [src]="getUrl(lab)" class="thumbnail" *ngIf="lab.uploaded"></td>
+                <td>{{lab.createdAt| date: "yyyy/MM/dd HH:mm"}}</td>
+                <td (click)='deleteUploadedLab(lab)'>
+                  <i class="fa fa-remove" aria-hidden="true" style="font-size:24px; color: red"></i></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div>
+<input #fileInput type="file" name="file" id="file" class="call__messages___send" ng2FileSelect [uploader]="uploader"
+  [hidden]=true>
+<div class="progress-bar progress-bar-success" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }">
+  {{uploader.progress}}%</div>
+<div class='card' style="padding:0;margin:0" *ngIf='selectedLabSet'>
+  <div class="card-header card-header-tabs ">
+    <h4 *ngIf="language=='Chinese'||!language">{{selectedLabSet.label.ch}}</h4>
+    <h4 *ngIf="language=='English'">{{selectedLabSet.label.en}}</h4>
+
+  </div>
+  <table class="table table-striped table-responsive" style='background-color: white'>
+    <thead>
+
+      <tr>
+        <th width=10%> <button class='btn' style='padding:6px;' *ngIf='selectedLabSet.newTimeStamp' [ngClass]="{'card-rose-1':color=='purple',
+            'card-success-1':color=='green',
+            'card-primary-1':color!='green'
+            &&color!='purple'}" (click)='addValue(selectedLabSet)' [disabled]='!selectedLabSet.newTimeStamp'>
+            <span *ngIf="language=='Chinese'">添加</span>
+            <span *ngIf="language=='English'">Add Value</span>
+
+          </button></th>
+        <th width=10%>
+          <input [(ngModel)]="selectedLabSet.newTimeStamp" type=date>
+
+        </th>
+        <th width=10% *ngFor='let timeStamp of selectedLabSet.timeStamps; let d=index;'
+          (mouseover)='selectedLabSet.deleteBox[d]=true' (mouseleave)='selectedLabSetdeleteBox[d]=false'>
+          {{ timeStamp|date:"MM/dd"}}
+          <i *ngIf='selectedLabSet.deleteBox[d]' class="fa fa-remove" aria-hidden="true"
+            style="font-size:24px; color: red" (click)='delete(selectedLabSet, timeStamp)'></i>
+        </th>
+
+      </tr>
+
+    </thead>
+    <tbody>
+      <tr *ngFor='let lab of selectedLabSet.labs' style='padding: 0px;'>
+        <td width=10%>
+          <span *ngIf="language=='Chinese'">{{lab.label.ch}}</span>
+          <span *ngIf="language=='English'">{{lab.label.en}}</span>
+
+        </td>
+
+        <td width=10%><input [(ngModel)]="lab.newValue" type=number class='form-control'></td>
+        <td width=10% *ngFor='let valueItem of lab.valueSet;let i = index' style="font-weight: 600"
+          [ngClass]="{'levelOne': lab.valuesSet[lab.valueSet.indexOf(valueItem)]&& lab.valuesSet[lab.valueSet.indexOf(valueItem)].alertLevel==1, 
+                   'levelTwo': lab.valuesSet[lab.valueSet.indexOf(valueItem)]&&lab.valuesSet[lab.valueSet.indexOf(valueItem)].alertLevel==2}" (mouseover)='lab.editBox[i]=true'
+          (mouseleave)='lab.editBox[i]=false'>
+          <i *ngIf='lab.editBox[i]' class="fa fa-edit" aria-hidden="true" style="font-size:24px; color: blue"
+            (click)='lab.edits[i]=true'></i>
+
+          {{valueItem}}
+          <input *ngIf='lab.edits[i]' [(ngModel)]="newValueItem" type=number
+            (change)='saveEdit(newValueItem, lab, i);lab.edits[i]=false;'>
+        </td>
+
+      </tr>
+
+    </tbody>
+  </table>
+</div>
+
+
+<!--<mat-tab-group>
+    <mat-tab label='data'>
+    
+    <div class="card" *ngFor='let labSet of labSets'>
+          
+        <div class='row ' 
+        [ngClass]="{'card-rose':color=='purple',
+        'card-success':color=='green',
+        'card-primary':color!='green'
+        &&color!='purple'}" >
+          <div class='col-sm-9' >  <span style='font-weight: 700; color:white'>{{labSet.label.ch}}</span></div>
+          <div class='col-sm-3' >  </div>
+       
+        
+        
+      </div>
+  <table class="table table-striped" style='background-color: white' >
+      <thead >
+            
+          <tr>
+            <th width=10%></th>
+              <th  *ngFor='let timeStamp of labSet.labs[0].timeStamps; let d=index;'
+              (mouseover)='labSet.deleteBox[d]=true'
+              (mouseleave)='labSet.deleteBox[d]=false'>
+               {{ timeStamp|date:"yyyy/MM/dd"}}
+               <i *ngIf='labSet.deleteBox[d]'
+               class="fa fa-remove" 
+               aria-hidden="true" 
+               style="font-size:24px; color: red" 
+              (click)='delete(labSet, timeStamp)'></i>
+            </th>
+            <th >
+                <input  [(ngModel)]="labSet.newTimeStamp" type=date >
+                <button class='btn'         
+            [ngClass]="{'card-rose-1':color=='purple',
+            'card-success-1':color=='green',
+            'card-primary-1':color!='green'
+            &&color!='purple'}" (click)='addValue(labSet)' [disabled]='!labSet.newTimeStamp'>Add Value</button>
+           </th>
+          </tr>
+       
+    </thead>
+    <tbody >
+      <tr *ngFor='let lab of labSet.labs' style='padding: 0px;' >
+        <td width=10% >{{lab.label.ch}}</td>
+        <td  *ngFor='let valueItem of lab.valueSet;let i = index' style="font-weight: 600" 
+      
+         [ngClass]= "{'levelOne': lab.valuesSet[lab.valueSet.indexOf(valueItem)]&& lab.valuesSet[lab.valueSet.indexOf(valueItem)].alertLevel==1, 
+                     'levelTwo': lab.valuesSet[lab.valueSet.indexOf(valueItem)]&&lab.valuesSet[lab.valueSet.indexOf(valueItem)].alertLevel==2}"
+                     (mouseover)='lab.editBox[i]=true'
+                     (mouseleave)='lab.editBox[i]=false'>
+                     <i *ngIf='lab.editBox[i]' class="fa fa-edit" aria-hidden="true" 
+                     style="font-size:24px; color: blue" 
+                     (click)='lab.edits[i]=true'></i>
+                  
+              {{valueItem}}
+              <input *ngIf='lab.edits[i]' [(ngModel)]="valueItem" type=number 
+              (change)='saveEdit(valueItem, lab, i);lab.edits[i]=false;'
+           >
+            </td>
+                  <td><input   [(ngModel)]="lab.newValue" type=number ></td>
+      </tr>
+    
+     </tbody>
+    </table>
+    </div>
+  
+  
+    </mat-tab>
+    <mat-tab label='file'>
+        <div class='card'>
+            <div class='card-header'  [ngClass]="{'card-header-rose':color=='purple',
+            'card-header-success':color=='green',
+            'card-header-primary':color!='green'
+            &&color!='purple'}"
+            > 实验室报告</div>
+            <div class='card-body'>
+            <table class='table'>
+              <tr *ngFor="let lab of uploadedLabs">
+                <td (click)='openFile(lab)'>  <img [src]="lab.url"  class="thumbnail" *ngIf="lab.uploaded" ></td>
+                <td>{{lab.createdAt| date: "yyyy/MM/dd HH:mm"}}</td>
+                <td (click)='deleteUploadedLab(lab)'>
+                  <i 
+                  class="fa fa-remove" 
+                  aria-hidden="true" 
+                  style="font-size:24px; color: red" 
+                 ></i></td>
+              </tr>
+            </table>
+          </div>
+     </div>
+      </mat-tab>
+  </mat-tab-group>
+  -->

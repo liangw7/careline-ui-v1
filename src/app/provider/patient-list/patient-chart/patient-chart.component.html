@@ -1,0 +1,47 @@
+
+<!--<div class='col-sm-8' *ngIf="user.role!='admin'&&user.role!='market'">
+     <button mat-button class='btn '(click)="group='myPatients'" *ngIf="group=='teamPatients'">my patients</button>
+     <button mat-button class='btn '(click)="group='teamPatients'" *ngIf="group=='myPatients'&&user.service">team patients</button> 
+    </div>-->
+   <div class="wapper" *ngIf="bigScreen==1&&selectedProfile">
+        <div class='row'>
+          <div class='col-sm-10' >
+            <profile-patient-list [profileID]='selectedProfile._id' [profile]='selectedProfile' [language]='language'
+              [user]='user' [group]='group' [content]='content'>
+            </profile-patient-list>
+          </div>
+          <div class='col-sm-2' *ngIf='profiles'>
+            <div class="card main-right">
+              <div class='card-header'>
+                <div class='card-title'>Profiles</div>
+                <input class="form-control pull-left" type="text" [(ngModel)]="searchProfile" placeholder="搜索管理包"
+                (input)='loadPatient()'>
+              </div>
+              <div class='card-body table-responsive'>
+                <table class="table">
+                  <tr *ngFor='let profile of profiles' [ngClass]="{'selected-profile':profile.selected}"
+                    (click)='profileSelected(profile)'>
+                    <td *ngIf="language=='Chinese'"> {{profile.label.ch}}</td>
+                    <td *ngIf="language=='English'"> {{profile.label.en}}</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    <!--  <div class="wrapper" *ngIf="bigScreen==1">
+
+        <mat-tab-group *ngIf='profiles'>
+            <mat-tab label='{{profile.label.ch}}' *ngFor='let profile of profiles' >
+                <profile-patient-list [profileID]='profile._id' [profile]='profile' [language]='language'
+                [user]='user' [group]='group' [content]='content'>
+              </profile-patient-list>
+            </mat-tab>
+        </mat-tab-group>
+       </div>-->
+      <div class="overlay" *ngIf="loading">
+        <div class="spinner-wrapper">
+          <spinner></spinner>
+        </div>
+      </div>

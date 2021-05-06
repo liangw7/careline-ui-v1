@@ -1,0 +1,78 @@
+@import 'src/assets/scss/base.scss';
+
+.confirmbox {
+    padding: 20px;
+    .pull-left {
+        font-size: $fontSize24;
+        color: $darkfontColor;
+        text-align: center;
+    }
+    .main {
+        padding: 12px;
+        font-size: $fontSize16;
+        color: $basefontColor;
+        line-height: 28px;
+        height: 130px;
+        overflow-y: auto;
+    }
+    .btns {
+        text-align: center;
+        .btn {
+            min-width: 85px;
+            margin: 0 15px;
+            font-size: $fontSize14;
+        }
+    }
+}
+.messagebox {
+    min-width: 380px;
+    padding: 15px 15px 16px;
+}
+.wap-wapper.messagebox {
+    min-width: 100vw;
+    padding: 15rem/$base 15rem/$base 16rem/$base;
+}
+
+::ng-deep .alertbg {
+    .mat-dialog-container {
+        max-width: 100%;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        border-width: 1px;
+        border-style: solid;
+        border-color: #EBEEF5;
+        background-color: #edf2fc;
+        -webkit-transition: opacity .3s,top .4s,-webkit-transform .4s;
+        transition: opacity .3s,top .4s,-webkit-transform .4s;
+        transition: opacity .3s,transform .4s,top .4s;
+        transition: opacity .3s,transform .4s,top .4s,-webkit-transform .4s;
+        padding: 8px 20px;
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+    }
+    &.success {
+        .mat-dialog-container{
+            background-color: #f0f9eb;
+            border-color: #e1f3d8;
+            color: #67C23A;
+        }
+    }
+    &.error {
+        .mat-dialog-container{
+            background-color: #fef0f0;
+            border-color: #fde2e2;
+            color: #F56C6C;
+        }
+    }
+    &.warn {
+        .mat-dialog-container{
+            background-color: #fdf6ec;
+            border-color: #faecd8;
+            color: #E6A23C;
+        }
+    }
+} 

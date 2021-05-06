@@ -1,0 +1,65 @@
+@import 'src/assets/scss/base.scss';
+.schedule-pc{
+    height:80%;
+    overflow:auto
+}
+.schedule-cell{
+    height:80%;
+  
+    overflow:auto
+}
+.load-file{
+    height:50%;
+    width:50%; 
+    margin-bottom:4%;
+    left:5%; margin-left:5%;
+    margin-top:15px;
+    top:15px;
+    bottom:4%;
+    position:fixed; 
+    z-index:100;
+    overflow:auto
+}
+card-rose{
+    background-color: #9c27b0; 
+    color: white;
+  //  margin:15px;
+  //  border-radius: 5px;
+    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, .14),
+    0 7px 10px -5px rgba(#9c27b0  , 0.4)
+}
+.card-success{
+    
+    background-color: #4caf50 ;
+    color: white;
+  //  border-radius: 5px;
+    //margin: 15px;
+    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, .14),
+    0 7px 10px -5px rgba(#4caf50 , 0.4)
+
+}
+.card-primary{
+    background-color: #3f51b5;
+    
+   // margin:15px;
+  //  border-radius: 5px;
+    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, .14),
+    0 7px 10px -5px rgba(#3f51b5 , 0.4)
+}
+
+//song
+.wapper {
+    margin: 0;
+    padding: 0;
+    position: relative;
+    .closebtn {
+        top: 5px;
+        right: 5px;
+    }
+    .btns {
+        padding: 20rem/$base;
+        .btn:first-child {
+            margin-right: 20px;
+        }
+    }
+}

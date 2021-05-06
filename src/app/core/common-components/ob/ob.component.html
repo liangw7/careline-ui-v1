@@ -1,0 +1,359 @@
+<div class="overlay" *ngIf="loading">
+  <div class="spinner-wrapper">
+
+    <spinner></spinner>
+  </div>
+</div>
+
+<div [@visibilityChanged]="currentState" *ngIf='ob' [ngClass]="{'ob':bigScreen==1&&!emBed, 
+'obMobile':bigScreen==0&&!emBed, 
+'obMobile-embed':bigScreen==0&&emBed, 
+ 
+'obOrder':noTitle==true,
+'back-green':color=='green'&&!emBed,
+'back-purple':color=='purple&&!emBed',
+'back-blue':color!='green'&&color!='purple'&&!emBed}">
+  <div style='width:100%;' *ngIf='!emBed'>
+    <div style='float:left;
+              font-weight:700;
+              font-size:large;
+              margin-top:10px;
+              margin-left:10px;
+              border-bottom:1px black solid;border-width: smaller;'>
+      <span *ngIf='obSet&&obSet.label'>{{obSet.label.ch}}</span>
+    </div>
+    <a class='btn btn-primary btn-round pull-right'
+      *ngIf="['number','formula','mapping lab'].includes(ob.type)&&ob&&!ob.showChart" (click)='ob.showChart=true;'>
+      数据图表</a>
+    <a class='btn btn-primary btn-round pull-right'
+      *ngIf="['number','formula','mapping lab'].includes(ob.type)&&ob&&ob.showChart" (click)='ob.showChart=false;'>
+      关闭图表</a>
+
+
+  </div>
+  <div [ngClass]="{'ob-body':emBed==undefined||emBed==false,'ob-body-emBed':emBed}">
+
+    <div [ngClass]="{'ob-header':emBed==undefined||emBed==false, 'ob-header-emBed':emBed}">
+
+      <div class='row'>
+
+        <span class='label pull-left' *ngIf='!ob.missing'>
+
+          <span *ngIf="ob.label"> {{ob.index+1}}.&nbsp;{{ob.label.ch}}</span>
+        </span>
+        <span class='label-required' *ngIf='ob.missing'>
+
+          <span *ngIf="ob.label">{{ob.index+1}}.&nbsp;{{ob.label.ch}}</span>
+        </span>
+        <span *ngIf="ob.required" class='label-required'>*</span>
+        <span *ngIf="!ob.required" class='label-required'>&nbsp;&nbsp;&nbsp;</span>
+        <span *ngIf="ob.label&&ob.label.en!='age formula'" class='label-value'>{{ob.value}}</span>
+        <span *ngIf="age&&ob.label&&ob.label.en=='age formula'">{{age.number}}{{age.uom}}</span>
+        <div *ngIf="ob.type=='calculation'||ob.type=='number'||ob.type=='mapping lab'">
+
+          <span *ngFor='let value of ob.values;'>
+            <span *ngIf='value' [ngClass]="{'levelOne':value.alertLevel==1,
+        'levelTwo':value.alertLevel==2,
+        'normal':value.alertLevel!=1&&value.alertLevel!=2}">
+              {{value.text}}&nbsp;&nbsp;
+            </span>
+          </span>
+        </div>
+        <a class=' pull-right' href='javascript:void(0);'
+          *ngIf="['number','formula','mapping lab'].includes(ob.type)&&ob&&emBed&&patient" (click)='showObChart();'>
+          数据图表
+        </a>&nbsp;&nbsp;&nbsp;
+        <a class='pull-right' href='javascript:void(0);'
+          *ngIf="ob.desc&&ob.desc.educationObs&&user&&user.role!='patient'&&emBed" (click)='getEducation()'>临床信息</a>
+        <img [src]="getImage()" class='ob-image' *ngIf='ob.image'>
+
+      </div>
+    </div>
+
+    <div ng-hide="myCheck">
+
+      <div *ngIf="ob.type=='instruction'">
+
+
+        <div *ngIf="language!='English'&&ob.education"
+          style='font-weight: 400; font-size: medium; margin-top:10px; text-align:left'>
+          <div *ngFor="let item of breakLines(ob.education.ch)">
+
+            {{item}}
+          </div>
+        </div>
+        <div *ngIf="language=='English'&&ob.education"
+          style='font-weight: 400; font-size: medium; margin-top:10px; text-align:left'>
+          <div *ngFor="let item2 of breakLines(ob.education.en)">
+            {{item2}}
+          </div>
+        </div>
+      </div>
+      <div *ngIf='user||!viewOnly'>
+        <div *ngIf="ob.type=='string'" class='row' style="padding: 0 10px;">
+          <input (keyup)='getChange(ob)' style='padding:20px;' #stringInput [(ngModel)]="ob.value" type="text"
+            class="form-control">
+        </div>
+        <div *ngIf="ob.type=='text'" class='row' style="padding: 0 10px;">
+          <textarea (keyup)='getChange(ob)' style='padding:20px;' #textInput [(ngModel)]="ob.value"
+            class="form-control"></textarea>
+        </div>
+        <div *ngIf="ob.type=='email'" class='row' style="padding: 0 10px;">
+          <input (keyup)='getChange(ob)' style='padding:20px;' #emailInput [(ngModel)]="ob.value" type="email"
+            class="form-control">
+        </div>
+        <div *ngIf="ob.type=='password'" class='row' style="padding: 0 10px;">
+          <input (keyup)='getChange(ob)' style='padding:20px;' #passwordInput [(ngModel)]="ob.value" type="password"
+            class="form-control">
+        </div>
+        <div *ngIf="ob.type=='date'" class='row' style="padding: 0 10px;">
+          <input (change)='getChange(ob)' style='padding:20px;' #dateInput [(ngModel)]="ob.value" type="date"
+            class="form-control">
+        </div>
+        <div *ngIf="ob.type=='hyperlink'&&ob.desc" (click)='getLink()' class='row'>
+          <span>get link</span>
+        </div>
+
+      </div>
+      <div *ngIf="ob&&ob.type=='image'">
+        <img [src]="getImageValue()" class='image' *ngIf='ob.value'>
+      </div>
+
+
+      <!--<div class='row' 
+     *ngIf="ob&&(ob.type=='number'
+     ||ob.type=='mapping lab'
+     ||(ob.type=='mapping ob'&&ob.mappingOb.type=='number'))" >-->
+      <div class='row' *ngIf="ob&&(ob.type=='number')">
+        <input Style='padding:20px;' #numberInput [(ngModel)]="ob.value" type="number" class="form-control"
+          (keyup)='evaluateNumber($event);'>
+      </div>
+
+      <div class='table table-responsive'
+        *ngIf="(ob.type=='mapping lab'||ob.type=='formula'||ob.type=='mapping ob'||ob.type=='number'||ob.type=='calculation')&&!emBed&&ob.value">
+        <table class='table' *ngIf='ob.options'>
+          <tr *ngFor='let option of ob.options' [ngClass]="{'button-green':color=='green'&&checkValue(option,ob),
+            'button-purple':color=='purple'&&checkValue(option,ob),
+            'button-blue':color!='green'&&color!='purple'&&checkValue(option,ob)}">
+            <td style='text-align:left; padding-left:30px;'>
+
+              <i class='material-icons' style='font-size:24px;color:blue' *ngIf='checkValue(option,ob)'>check_box</i>
+              <i class='material-icons' style='font-size:24px;color:blue'
+                *ngIf='!checkValue(option,ob)'>check_box_outline_blank</i>
+
+              <span [ngClass]="{'normal':option.alertLevel==0&&checkValue(option,ob),
+            'levelOne':option.alertLevel==1&&checkValue(option,ob),
+            'levelTwo':option.alertLevel==2&&checkValue(option,ob)}" style='font-weight: 600'>
+                <span>{{option.text}}</span>
+                <span *ngIf="checkValue(option,ob)">{{option.comments}}</span>
+              </span>
+
+            </td>
+          </tr>
+        </table>
+
+      </div>
+
+      <div *ngIf="ob.type=='list'&&!emBed&&bigScreen==0" class='table table-responsive'
+        style='position:absolute;bottom:0px;margin-bottom:10px;margin-right:0px;'>
+
+        <div *ngIf='ob.options.length>6'>
+          <div (click)='getValue(option, ob)' *ngFor='let option of ob.options' class='btn btn-round'
+            style='padding-top:8px;padding-bottom:8px;margin:10px;background-color: transparent;' [ngClass]="{'button-green':color=='green'&&checkValue(option,ob),
+             'button-purple':color=='purple'&&checkValue(option,ob),
+             'button-blue':color!='green'&&color!='purple'&&checkValue(option,ob)}">
+            <i class='material-icons' style='font-size:24px;color:blue' *ngIf='checkValue(option,ob)'>check_box</i>
+            <i class='material-icons' style='font-size:24px;color:blue'
+              *ngIf='!checkValue(option,ob)'>check_box_outline_blank</i>
+            <span [ngClass]="{'normal':option.alertLevel==0&&checkValue(option,ob),
+            'levelOne':option.alertLevel==1&&checkValue(option,ob),
+            'levelTwo':option.alertLevel==2&&checkValue(option,ob)}" style='font-weight: 600'>
+              {{option.text}}
+            </span>
+          </div>
+        </div>
+
+        <table class='table' *ngIf='ob.options.length<=6'>
+          <tr *ngFor='let option of ob.options'>
+            <td (click)='getValue(option, ob)' style='text-align:right;padding-left:30px;padding:0px;'>
+              <a class='btn btn-round' style='background-color: transparent;width:98%' [ngClass]="{'button-green':color=='green'&&checkValue(option,ob),
+        'button-purple':color=='purple'&&checkValue(option,ob),
+        'button-blue':color!='green'&&color!='purple'&&checkValue(option,ob)}">
+                <i class='material-icons' style='font-size:24px;color:blue' *ngIf='checkValue(option,ob)'>check_box</i>
+                <i class='material-icons' style='font-size:24px;color:blue'
+                  *ngIf='!checkValue(option,ob)'>check_box_outline_blank</i>
+
+                <span [ngClass]="{'normal':option.alertLevel==0&&checkValue(option,ob),
+            'levelOne':option.alertLevel==1&&checkValue(option,ob),
+            'levelTwo':option.alertLevel==2&&checkValue(option,ob)}" style='font-weight: 500;'>
+                  <span>{{option.text}}</span>
+                  <span *ngIf="checkValue(option,ob)">{{option.comments}}</span>
+                </span>
+              </a>
+            </td>
+          </tr>
+        </table>
+
+
+
+      </div>
+      <div *ngIf="ob.type=='list'&&!emBed&&bigScreen==1">
+        <div *ngIf='ob.options.length>6'>
+          <a (click)='getValue(option, ob)' *ngFor='let option of ob.options' class='btn btn-round'
+            style='padding-top:8px;padding-bottom:8px;margin:10px;background-color: transparent;' [ngClass]="{'button-green':color=='green'&&checkValue(option,ob),
+            'button-purple':color=='purple'&&checkValue(option,ob),
+            'button-blue':color!='green'&&color!='purple'&&checkValue(option,ob)}">
+            <i class='material-icons' style='font-size:24px;color:blue' *ngIf='checkValue(option,ob)'>check_box</i>
+            <i class='material-icons' style='font-size:24px;color:blue'
+              *ngIf='!checkValue(option,ob)'>check_box_outline_blank</i>
+            <span [ngClass]="{'normal':option.alertLevel==0&&checkValue(option,ob),
+           'levelOne':option.alertLevel==1&&checkValue(option,ob),
+           'levelTwo':option.alertLevel==2&&checkValue(option,ob)}" style='font-weight: 600'>
+              {{option.text}}
+            </span>
+          </a>
+        </div>
+        <table class='table' *ngIf='ob.options.length<=6'>
+          <tr *ngFor='let option of ob.options' [ngClass]="{'button-green':color=='green'&&checkValue(option,ob),
+        'button-purple':color=='purple'&&checkValue(option,ob),
+        'button-blue':color!='green'&&color!='purple'&&checkValue(option,ob)}">
+            <td (click)='getValue(option, ob)' style='text-align:left;padding-left:30px;'>
+
+              <i class='material-icons' style='font-size:24px;color:blue' *ngIf='checkValue(option,ob)'>check_box</i>
+              <i class='material-icons' style='font-size:24px;color:blue'
+                *ngIf='!checkValue(option,ob)'>check_box_outline_blank</i>
+
+              <span [ngClass]="{'normal':option.alertLevel==0&&checkValue(option,ob),
+            'levelOne':option.alertLevel==1&&checkValue(option,ob),
+            'levelTwo':option.alertLevel==2&&checkValue(option,ob)}" style='font-weight: 600'>
+                <span>{{option.text}}</span>
+                <span *ngIf="checkValue(option,ob)">{{option.comments}}</span>
+              </span>
+
+            </td>
+          </tr>
+        </table>
+
+      </div>
+
+      <div *ngIf="(ob.options&&emBed&&bigScreen==1)" class='row'>
+
+        <div style='padding:5px;margin:5px;width:30%;border-bottom:1px #ccc solid;border-width: small;'
+          *ngFor='let option of ob.options' (click)='getValue(option, ob)'>
+
+          <span *ngIf='ob.singleSelection=="true"'>
+            <i class='material-icons' style='font-size:24px;color:blue'
+              *ngIf='checkValue(option,ob)'>radio_button_checked</i>
+            <i class='material-icons' style='font-size:24px;color:blue'
+              *ngIf='!checkValue(option,ob)'>radio_button_unchecked</i>
+
+            <span [ngClass]="{'normal':option.alertLevel==0&&checkValue(option,ob),
+             'levelOne':option.alertLevel==1&&checkValue(option,ob),
+             'levelTwo':option.alertLevel==2&&checkValue(option,ob)}"> &nbsp;&nbsp;{{option.text}}</span>
+          </span>
+          <span *ngIf='ob.singleSelection=="false"||!ob.singleSelection'>
+            <i class='material-icons' style='font-size:24px;color:blue' *ngIf='checkValue(option,ob)'>check_box</i>
+            <i class='material-icons' style='font-size:24px;color:blue'
+              *ngIf='!checkValue(option,ob)'>check_box_outline_blank</i>
+
+            <span [ngClass]="{'normal':option.alertLevel==0&&checkValue(option,ob),
+         'levelOne':option.alertLevel==1&&checkValue(option,ob),
+         'levelTwo':option.alertLevel==2&&checkValue(option,ob)}"> &nbsp;&nbsp;{{option.text}}</span>
+          </span>
+        </div>
+
+      </div>
+      <div *ngIf="ob.options&&emBed&&bigScreen==0" class='table table-responsive'>
+        <table class='table table-striped'>
+          <tr *ngFor='let option of ob.options' (click)='getValue(option, ob)'>
+            <td>
+              <span *ngIf='ob.singleSelection=="true"'>
+                <i class='material-icons' style='font-size:24px;color:blue'
+                  *ngIf='checkValue(option,ob)'>radio_button_checked</i>
+                <i class='material-icons' style='font-size:24px;color:blue'
+                  *ngIf='!checkValue(option,ob)'>radio_button_unchecked</i>
+
+                <span [ngClass]="{'normal':option.alertLevel==0&&checkValue(option,ob),
+             'levelOne':option.alertLevel==1&&checkValue(option,ob),
+             'levelTwo':option.alertLevel==2&&checkValue(option,ob)}"> &nbsp;&nbsp;{{option.text}}</span>
+              </span>
+              <span *ngIf='ob.singleSelection=="false"||!ob.singleSelection'>
+                <i class='material-icons' style='font-size:24px;color:blue' *ngIf='checkValue(option,ob)'>check_box</i>
+                <i class='material-icons' style='font-size:24px;color:blue'
+                  *ngIf='!checkValue(option,ob)'>check_box_outline_blank</i>
+
+                <span [ngClass]="{'normal':option.alertLevel==0&&checkValue(option,ob),
+         'levelOne':option.alertLevel==1&&checkValue(option,ob),
+         'levelTwo':option.alertLevel==2&&checkValue(option,ob)}"> &nbsp;&nbsp;{{option.text}}</span>
+              </span>
+            </td>
+          </tr>
+        </table>
+
+
+      </div>
+
+    </div>
+    <div *ngIf="!emBed&&ob&&ob.showChart">
+
+      <growth-chart [ob]='ob' [patient]='patient' [width]=600 [height]=350></growth-chart>
+
+    </div>
+    <div style='width:100%' *ngIf="ob.type=='calculation'">
+
+      <!-- <div *ngIf="form.formType=='profile registry'&&ob.values&&ob.values.length>0&&ob.values[0].alertLevel==2" >
+    <h4 style='color:red'> *您的得分显示应该立即就医:</h4>
+     <a class='btn btn-round btn-primary' (click)='selectExpert()'>选择医生</a> 
+ 
+ <div *ngIf='hasForm()'>
+    <p>疾病信息 </p>
+    <div *ngFor='let value of ob.values'>
+    <div  *ngIf=value&&value.forms>
+        <form [forms]='value.forms'
+        [language]='language'
+        [profile]='profile'
+        (messageEvent)="receiveMessage($event)"></form>
+      </div>
+  </div>
+</div>
+</div>-->
+    </div>
+
+
+
+
+
+
+  </div>
+
+</div>
+<div style='margin-top:5px;display:block' *ngIf="ob.type!='image'&&!emBed">
+
+
+  <!--<button *ngIf="(user||!viewOnly)&&ob.type!=='instruction'&&(ob.changed||ob.type=='calculation')"
+  class="btn btn-round btn-primary " style='float:right;padding-left:15px;padding-right:15px;'  
+  (click)="submit(ob, obSet,form) ">提交/下一题</button>
+  <button *ngIf="(user||!viewOnly)&&ob.type!=='instruction'&&(ob.changed||ob.type=='calculation')"
+  class="btn btn-round btn-primary"
+  style='float:right;padding-left:15px;padding-right:15px;'  
+  (click)="saveAfterClose(ob, obSet,form);close();">确定</button>-->
+  <button class="btn btn-round " style='float:right;margin-top:0px;padding-left:15px;padding-right:15px'
+    (click)="cancelNext() ">
+    下一个</button>
+  <button class="btn btn-round" style='float:right;margin-top:0px;padding-left:15px;padding-right:15px'
+    (click)="cancel(); ">取消</button>
+
+</div>
+<div *ngIf="ob.type=='image'">
+
+
+  <button class="btn btn-round btn-primary pull-right" (click)="uploadImage();" *ngIf="ob.type=='image'">上传文件</button>
+  <button class="btn btn-round btn-primary pull-right" (click)="ob.value=null" *ngIf="ob.type=='image'">删除文件</button>
+
+  <input #fileInput [hidden]=true type="file" name="photo" (change)="getChange(ob);reNameFile()" ng2FileSelect
+    [uploader]="uploader" />
+
+  <div class="progress-bar progress-bar-success" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"
+    *ngIf="uploader.progress>0">
+    {{uploader.progress}}%</div>
+</div>

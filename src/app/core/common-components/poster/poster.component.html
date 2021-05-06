@@ -1,0 +1,58 @@
+
+<div >
+    <div class='card-body'>
+        <a [hidden]='href'>
+        <canvas  width="{{width}}" height="{{height}}" class='canvas' id='canvas' ></canvas>
+       
+        </a>
+        <a  [href]="href" download *ngIf='href' >
+            <img [src]='href' width="350" height="450" class='canvas'>
+        </a>
+        
+        <ngx-qrcode
+            [elementType]="elementType"
+            [errorCorrectionLevel]="correctionLevel"
+            [value]="profile.QRCode"
+            cssClass="bshadow">
+        </ngx-qrcode>
+              
+    <img [hidden]='href' [src]="getUrl(profile.image)"  (load)='downloadImage();' class='photo' >
+                
+        
+    </div>
+    <div class='card-footer'>
+        <span>长按分享</span>
+        <a  *ngIf="user&&user.role=='provider'" 
+            (click)="getLink(['/public-platform/registry/', profile._id, user._id,user.color, user.imageOrigin, undefined])"
+                >
+            <h4> 前往项目</h4>
+        </a>
+        <button class='btn bton-round' (click)='close();'>close</button>
+    </div>
+    </div>
+    <!--<div *ngIf='visit&&patient'>
+        <div class='card-body'>
+            <a [hidden]='href'>
+            <canvas  width="400" height="250" class='canvas' id='canvas'></canvas>
+            </a>
+            <a  [href]="href" download *ngIf='href' >
+                <img [src]='href' width="400" height="250" class='canvas'>
+            </a>
+            <ngx-qrcode [hidden]='href' qrc-element-type="url" [qrc-value]="profile.QRCode">
+            </ngx-qrcode>
+                  
+        <img [hidden]='href' [src]="getUrl(profile.image)"  (load)=' downloadVisitImage();' class='photo' >
+                    
+            
+        </div>
+        <div class='card-footer'>
+            <span>长按分享</span>
+            <a  *ngIf="user&&user.role=='provider'" 
+              (click)='close()'
+                [routerLink]="['/homepage/patient-visit', profile._id, user._id,user.color, user.imageOrigin, undefined]"
+                    >
+                <h4> 前往项目</h4>
+            </a>
+            <button class='btn bton-round' (click)='close();'>close</button>
+        </div>
+        </div>-->

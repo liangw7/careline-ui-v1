@@ -1,0 +1,77 @@
+@import 'src/assets/scss/base.scss';
+
+
+
+
+
+
+.wapper {
+    padding: 20px 20px;
+    margin: 0;
+    width: 100%;
+    height: calc(100vh - 150px);
+    border-radius: 20px;
+    background: $white;
+    box-sizing: border-box;
+    // overflow-y: auto;
+    .titlebox {
+      padding: 0;
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 15px;
+      .header-left {
+        span:nth-child(1) {
+          font-size:$fontSize20;
+          color: $baseBluefontColor;
+          font-weight: 600;
+          line-height: 36px;
+        }
+        span:nth-child(2) {
+          font-size:$fontSize16;
+          color: $darkfontColor;
+          line-height: 36px;
+          margin-left: 20px;
+        }
+      }
+      .header-right {
+        float:right;
+        .btn {
+          margin: 0 8px;
+          padding: 7px 18px 8px;
+          font-size:$fontSize14;
+          color: $darkfontColor!important;
+          background-color: $darkGray;
+          border-color: #eee;
+          &.active {
+            color: $whitefontColor!important;
+            background-color: $lightBlue;
+            border-color: $lightBlue;
+          }
+        }
+      }
+    }
+    .tab-pane {
+      ::ng-deep .mat-tab-label {
+          height: 42px;
+          opacity: 1;
+          font-size: $fontSize16;
+          color: $basefontColor;
+          font-weight: normal;
+          &.mat-tab-label-active {
+            color: $baseBluefontColor!important;
+            font-weight: 600;
+        }
+      }
+    }
+    .profile{
+        height: calc(100vh - 300px)!important;
+    }
+    .selected-profile {
+        background-color: $lightBlue;
+        color:white;
+        font-weight:600;
+       }
+  }
+
+
+

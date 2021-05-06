@@ -1,0 +1,100 @@
+<div class="pc-heathy-main" *ngIf='bigScreen==1' >
+    <!-- <div class="container">
+      <div class="image-slider">
+        <img *ngFor="let  slider of sliders" [src]="slider">
+      </div>
+      <div class="nav-section">
+        <span *ngFor="let _ of sliders;let idx=index" class="slide-button"
+        [ngClass]="{'slide-button-select': idx==selectedIndex}"></span>
+      </div>
+    </div> -->
+    <div class="pc-heathy-middle">
+        <!-- <div>最新</div>
+        <div>参与度</div>
+        <div>浏览量</div>
+        <div>互动</div> -->
+    </div>
+    <div class="card white-color" >
+      <div class='row' >
+        <div class='col-sm-4'  style='padding:10px;' 
+        *ngFor='let profile of profiles|filter:search'
+        [routerLink]="['../profile', profile._id,undefined,undefined, profile.image]" >
+              <div class=' pc-healthy card '>
+              <div class="card-header card-header-infor">
+                  <img [src]="getUrl(profile.image)" class='photo'>
+              </div>
+              <div class="card-body" 
+                          style='height: 143px; overflow:hidden; font-weight:600;
+                          font-style: inherit;
+                          font-feature-settings: "blwf";
+                          font-size-adjust: inherit;
+                          border-color: blue'
+          >
+              <div class='row'>
+              <div class='col-sm-12'>
+                  <h4 style='color:steelblue;font-weight: 700;'>
+                        
+                          <span *ngIf='profile.label'>{{profile.label.ch}}</span> 
+                  </h4>
+                  <p *ngIf="profile.desc"style='color:steelblue;font-weight: 700;'>
+                          {{profile.desc.patient}}
+                  </p>
+                
+                  </div>
+              </div>
+      </div></div>
+  
+        </div>
+      </div>
+       <!-- <div class="pc-heathy-bottom-div" 
+        *ngFor='let profile of profiles|filter:search'>
+            <a href=""
+                [routerLink]="['/public-platform/homepage/registry/', profile._id,undefined,undefined, profile.image]">
+                <img [src]="getUrl(profile.image)" alt="" class="pc-heathy-bottom-main-img">
+                <p class="pc-heathy-bottom-title" *ngIf='!profile.label'>{{profile.name}}</p>
+                <p class="pc-heathy-bottom-title" *ngIf='profile.label'>{{profile.label.ch}}</p>
+                <p class="pc-heathy-bottom-describe">{{profile.desc.patient}}</p>
+                 <div class="pc-heathy-bottom-down">
+                    <img src="assets/images/heathy/Ellipse.png" alt="">
+                    <p>张美丽 2021-02-15</p>
+                </div> 
+            </a>
+        </div>-->
+    </div>
+</div>
+
+<div class="phone-heathy-main" *ngIf='bigScreen==0'>
+    <!-- <div class="container">
+      <div class="image-slider">
+        <img *ngFor="let  slider of sliders" [src]="slider">
+      </div>
+      <div class="nav-section">
+        <span *ngFor="let _ of sliders;let idx=index" class="slide-button"
+        [ngClass]="{'slide-button-select': idx==selectedIndex}"></span>
+      </div>
+    </div> -->
+    <div class="phone-heathy-middle">
+       <p>慢病管理项目</p>
+       <div style='display:inline; margin:20px;'>
+       <input class='form-control' ><i class="material-icons">search</i>
+      </div>
+    </div>
+    <div class="phone-heathy-bottom">
+        <div class="phone-heathy-bottom-div " *ngFor='let profile of profiles|filter:search'>
+            <a
+                [routerLink]="['../profile', profile._id,undefined,undefined, profile.image]">
+                <img [src]="getUrl(profile.image)" alt="" class="phone-heathy-bottom-main-img">
+                
+                <div class='phone-heathy-bottom-main-content'>
+                <p class="phone-heathy-bottom-title" *ngIf='!profile.label'>{{profile.name}}</p>
+                <p class="phone-heathy-bottom-title" *ngIf='profile.label'>{{profile.label.ch}}</p>
+                <p class="phone-heathy-bottom-describe">{{profile.desc.patient}}</p>
+              </div>
+                <!-- <div class="phone-heathy-bottom-down">
+                <img src="assets/images/heathy/Ellipse.png" alt="">
+                <p>张美丽 2021-02-15</p>
+            </div> -->
+            </a>
+        </div>
+    </div>
+</div>

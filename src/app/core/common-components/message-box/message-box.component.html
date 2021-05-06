@@ -1,0 +1,399 @@
+<div class="samecard">
+    <div class="closebtn" (click)='close()'>
+      <i class='material-icons pull-right'>close</i>
+    </div>
+    <div class='maincard card print' *ngIf='visitRecord'>
+      <div id='print'>
+        <div class='card-header'>
+          <div class="header-left">
+            <h2>{{message}}</h2>
+            <span>{{patient.name}},</span>
+            <span>{{patient.birthday|date:'yyyy/MM/dd'}},</span>
+            <span>{{patient.gender}}</span>
+            <span class='pull-right'>{{visit.visitDate|date:'yyyy/MM/dd'}}</span>
+          </div>
+          <div class='header-right'>
+            <!-- <button style='float:right;margin-top:20px;' class='btn btn-primary btn-round' [useExistingCss]="true" -->
+            <button class='btn btn-base btn-round' printSectionId="print" ngxPrint>打印</button>
+          </div>
+        </div>
+        <!--<textarea font='weight:600' rows="100"  [(ngModel)]="visitRecord"></textarea>-->
+        <div class='row'>
+          <div *ngFor="let ob of growthChartObs|orderBy:'index'" class='card'>
+            <div class='card-header'>{{ob.label.ch}}</div>
+            <!-- <div class='card-body'>
+              <growth-chart [ob]='ob' [patient]='patient' [width]=800 [height]=590 [toImage]=true></growth-chart>
+            </div> -->
+            <p></p>
+            <p></p>
+          </div>
+        </div>
+        <div *ngFor="let form of forms|orderBy 'index'">
+          <app-form [forms]='[form]' [visit]='visit' [visitDate]='visit.visitDate' [language]='language' [style]='style'
+            [patient]='patient' [visitRecord]='visitRecord' [showInstruction]=true style='padding:0;margin:0'>
+          </app-form>
+        </div>
+  
+        <div class='incard card'>
+          <div class='card-header'>
+            <div class="title-left">
+              <div class="txt"><span></span><span>病史</span></div>
+            </div>
+          </div>
+          <div class='card-body'>
+            <span>内科病史:</span>
+            <div class='table tabel-responsive table-striped'>
+              <table style='width:100%'>
+                <tr *ngFor='let problem of medicalProblems'>
+                  <td style='text-align:left'>{{problem.label.ch}}</td>
+                  <td style='text-align:left' *ngFor="let ob of problem.obs|orderBy 'index'">
+  
+                    <span *ngIf="language=='Chinese'">{{ob.label.ch}}:&nbsp;&nbsp;</span>
+                    <span *ngIf="language=='English'">{{ob.label.en}}:&nbsp;&nbsp;</span>
+                    <span>{{ob.value}}</span>
+                    <span *ngFor='let value of ob.values'>
+                      {{value.text}}&nbsp;
+                    </span>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+          <div class='card-body'>
+            <span>外科病史:</span>
+            <div class='table tabel-responsive table-striped'>
+              <table style='width:100%'>
+                <tr *ngFor='let problem of surgicalProblems'>
+                  <td style='text-align:left'>{{problem.label.ch}}</td>
+                  <td style='text-align:left' *ngFor="let ob of problem.obs|orderBy 'index'">
+  
+                    <span *ngIf="language=='Chinese'">{{ob.label.ch}}:&nbsp;&nbsp;</span>
+                    <span *ngIf="language=='English'">{{ob.label.en}}:&nbsp;&nbsp;</span>
+                    <span>{{ob.value}}</span>
+                    <span *ngFor='let value of ob.values'>
+                      {{value.text}}&nbsp;
+                    </span>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+          <div class='card-body'>
+            <span>社会史:</span>
+            <div class='table tabel-responsive table-striped'>
+              <table style='width:100%'>
+                <tr *ngFor='let problem of socialProblems'>
+                  <td style='text-align:left'>{{problem.label.ch}}</td>
+                  <td style='text-align:left' *ngFor="let ob of problem.obs|orderBy 'index'">
+  
+                    <span *ngIf="language=='Chinese'">{{ob.label.ch}}:&nbsp;&nbsp;</span>
+                    <span *ngIf="language=='English'">{{ob.label.en}}:&nbsp;&nbsp;</span>
+                    <span>{{ob.value}}</span>
+                    <span *ngFor='let value of ob.values'>
+                      {{value.text}}&nbsp;
+                    </span>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+          <div class='card-body'>
+            <span>家庭史:</span>
+            <div class='table tabel-responsive table-striped'>
+              <table style='width:100%'>
+                <tr *ngFor='let problem of familyProblems'>
+                  <td style='text-align:left'>{{problem.label.ch}}</td>
+                  <td style='text-align:left' *ngFor="let member of problem.familyMembers">
+  
+                    <span *ngIf="language=='Chinese'">{{member.ch}}</span>
+                    <span *ngIf="language=='English'">{{member.en}}</span>
+  
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+  
+        <div class='incard card'>
+          <div class='card-header'>
+            <div class="title-left">
+              <div class="txt"><span></span><span>用药史</span></div>
+            </div>
+          </div>
+          <div class='card-body'>
+            <div class='table table-reponsive table-striped'>
+              <table style='width:100%'>
+                <tr *ngFor='let medication of medications'>
+                  <td>{{medication.label.ch}}</td>
+                  <td *ngFor='let ob of medication.obs'>
+                    <span *ngIf="language=='Chinese'">{{ob.label.ch}}:&nbsp;&nbsp;</span>
+                    <span *ngIf="language=='English'">{{ob.label.en}}:&nbsp;&nbsp;</span>
+                    <span>{{ob.value}}</span>
+                    <span *ngFor='let value of ob.values'>
+                      {{value.text}}&nbsp;
+                    </span>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class='incard card'>
+          <div class='card-header'>
+            <div class="title-left">
+              <div class="txt"><span></span><span>实验结果</span></div>
+            </div>
+          </div>
+          <div class='card-body' *ngIf="labs">
+            <div class='table table-reponsive table-striped'>
+              <table style='width:100%'>
+                <tr *ngFor='let lab of labs'>
+                  <td *ngIf="lab">{{lab.label.ch}}</td>
+                  <td *ngIf="lab">{{lab.valueSet[0]}}</td>
+                  <td *ngIf="lab">
+                    {{lab.timeStamps[0]|date: 'yyyy/MM/dd'}}
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div class='incard card'>
+          <div class='card-header'>
+            <div class="title-left">
+              <div class="txt"><span></span><span>医嘱</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="profileitems" *ngIf='profileItems'>
+      <div class='profileitem' *ngFor='let profile of profileItems' [ngClass]="{'selected':find(profile, profiles)}"
+        (click)='select(profile)'>
+        {{profile.label.ch}}
+      </div>
+    </div>
+    <div *ngIf='missing' class='card'>
+      <div class='card-header' style='padding:0px;' [ngClass]="{'card-header-rose':color=='purple',
+              'card-header-success':color=='green',
+              'card-header-primary':color!='green'
+              &&color!='purple'}">
+        <span>{{message}}</span>
+  
+      </div>
+      <div class='card-body'>
+        <ul>
+          <li *ngFor='let item of missing'>
+            <span style='color:red'>{{item}}</span>
+          </li>
+        </ul>
+        <button class="btn" [ngClass]="{'btn-rose':color=='purple',
+  'btn-success':color=='green',
+  'btn-primary':color!='green'
+  &&color!='purple'}" (click)=" close();">close</button>
+      </div>
+    </div>
+    <div *ngIf='users'>
+      <div class='card'>
+        <div class='card-header' [ngClass]="{'card-header-rose':color=='purple',
+                                  'card-header-success':color=='green',
+                                  'card-header-primary':color!='green'
+                                  &&color!='purple'}">
+  
+          <label *ngIf="language=='English'" style='font-weight: 700;color:white'>
+            You have {{numberOfAccount}} account, please select one you need to login:</label>
+          <label *ngIf="language=='Chinese'" style='font-weight: 700;color:white'>
+            您有{{numberOfAccount}}个帐号请选择您需要的登录: </label>
+          <i class='fa fa-remove pull-right' (click)='close()'></i>
+        </div>
+        <div class='card-body'>
+          <table class='table'>
+            <tr *ngFor='let user of users' (click)='getValue(user)'>
+              <td><img [src]='getPhoto(user)' style='height:50px;width:50px;border-radius:25px;'></td>
+              <td>
+                {{user.name}}, {{user.gender}},{{user.birthday}} {{user.title}},
+              </td>
+            </tr>
+  
+          </table>
+  
+          <div *ngIf="message=='新病人帐号成功创建'">
+            <div class='row'>
+              <div class='col-sm-4'><button class="btn" [ngClass]="{'btn-rose':color=='purple',
+          'btn-success':color=='green',
+          'btn-primary':color!='green'
+          &&color!='purple'}" (click)="close();router.navigate(['/home/patient-list']); ">病人列表</button></div>
+              <div class='col-sm-4'><button class="btn" [ngClass]="{'btn-rose':color=='purple',
+          'btn-success':color=='green',
+          'btn-primary':color!='green'
+          &&color!='purple'}" (click)="getPatient();">病人病历</button></div>
+              <div class='col-sm-4'> <button class="btn" [ngClass]="{'btn-rose':color=='purple',
+          'btn-success':color=='green',
+          'btn-primary':color!='green'
+          &&color!='purple'}" (click)=" close();">创建新病人帐号</button></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div *ngIf='link' class='card'>
+      <div class='card-header'>
+        {{message}}
+        <button class="btn pull-right" [ngClass]="{'btn-rose':color=='purple',
+    'btn-success':color=='green',
+    'btn-primary':color!='green'
+    &&color!='purple'}" (click)=" close();">close</button>
+      </div>
+      <iframe src="{{getLink(link)}}" title="W3Schools Free Online Web Tutorials"></iframe>
+    </div>
+    <div *ngIf='educationObs'>
+      <div class='card-header'>
+        <button class="btn pull-right" [ngClass]="{'btn-rose':color=='purple',
+  'btn-success':color=='green',
+  'btn-primary':color!='green'
+  &&color!='purple'}" (click)=" close();">close</button>
+      </div>
+      <div *ngFor="let ob of educationObs">
+        <div class='card-header'>
+          <span style='font-size: medium;font-weight: 600;'>{{ob.label.ch}}</span>
+        </div>
+        <div class='card-body'>
+          <div class=row *ngIf='ob.image' style='width:98%'>
+  
+            <div class='col-sm-4'>
+              <img [src]="getImage(ob)" *ngIf='ob.image' class='ob-image'>
+            </div>
+  
+            <div class='col-sm-8'>
+              <div>
+                <div *ngIf="language=='Chinese'&&ob.education"
+                  style='font-weight: 400; font-size: medium; margin-top:10px;'>
+                  <div *ngFor="let item of breakLines(ob.education.ch)">
+                    {{item}}
+                  </div>
+                </div>
+                <div *ngIf="language=='English'&&ob.education">
+                  <div *ngFor="let item2 of breakLines(ob.education.en)">
+                    {{item2}}
+                  </div>
+                </div>
+              </div>
+            </div>
+  
+          </div>
+          <div *ngIf='!ob.image'>
+            <div>
+              <div *ngIf="language=='Chinese'&&ob.education"
+                style='font-weight: 400; font-size: medium; margin-top:10px;'>
+                <div *ngFor="let item of breakLines(ob.education.ch)">
+                  {{item}}
+                </div>
+              </div>
+              <div *ngIf="language=='English'&&ob.education">
+                <div *ngFor="let item2 of breakLines(ob.education.en)">
+                  {{item2}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <div *ngIf="ob&&show=='growth-chart'">
+    <growth-chart [ob]='ob' [patient]='patient' [width]=700 [height]=450></growth-chart>
+  </div> -->
+    <div *ngIf='reportFromChat'>
+      <div class='row' style="justify-content: center;">
+        <button class='btn btn-round  btn-default' (click)='close()' style="margin: 10px;">关闭</button>
+        <button class='btn btn-round btn-base' (click)='submit()' style="margin: 10px;">提交</button>
+      </div>
+      <div *ngFor="let form of forms">
+  
+        <app-form [forms]='[form]' [visit]='visit' [visitDate]='visit.visitDate' [language]='language' [patient]='patient'
+          [showInstruction]=true style='padding:0;margin:0'>
+        </app-form>
+  
+      </div>
+  
+    </div>
+    <div *ngIf='patientList'>
+      <div class='card'>
+        <div class='card-header'>
+          <button class='btn btn-round  pull-right' (click)='close()'>关闭</button>
+        </div>
+        <div class='card-body'>
+          <table class='table'>
+            <tr>
+              <button (click)="userRegistry=true;goToRegistry()" class='btn btn-round btn-primary btn-block '
+                style='background-color:transparent;color:blue;'>新帐号</button>
+            </tr>
+            <tr *ngFor='let user of patientList' (click)='getValue(user)'>
+              <td>
+                <button (click)="userRegistry=true;" class='btn btn-round btn-block'
+                  style='background-color:transparent;color:blue'>
+                  <img [src]='getPhoto(user)' style='height:50px;width:50px;border-radius:25px;float:left'>
+  
+                  {{user.name}}, {{user.gender}},{{user.birthday}} {{user.title}}
+                </button>
+              </td>
+            </tr>
+  
+          </table>
+  
+          <div *ngIf="message=='新病人帐号成功创建'">
+            <div class='row'>
+              <div class='col-sm-4'><button class="btn" [ngClass]="{'btn-rose':color=='purple',
+          'btn-success':color=='green',
+          'btn-primary':color!='green'
+          &&color!='purple'}" (click)="close();router.navigate(['/home/patient-list']); ">病人列表</button></div>
+              <div class='col-sm-4'><button class="btn" [ngClass]="{'btn-rose':color=='purple',
+          'btn-success':color=='green',
+          'btn-primary':color!='green'
+          &&color!='purple'}" (click)="getPatient();">病人病历</button></div>
+              <div class='col-sm-4'> <button class="btn" [ngClass]="{'btn-rose':color=='purple',
+          'btn-success':color=='green',
+          'btn-primary':color!='green'
+          &&color!='purple'}" (click)=" close();">创建新病人帐号</button></div>
+            </div>
+          </div>
+        </div>
+  
+      </div>
+  
+    </div>
+    <div *ngIf='registryForms&&userRegistry' class='registry' id='registry'>
+  
+      <div class='card'>
+        <div *ngFor="let form of registryForms|orderBy 'index'">
+  
+          <app-form [forms]='[form]' [showInstruction]=true [emBedSet]=true style='padding:0;margin:0'>
+          </app-form>
+          <button class='btn btn-round btn-primary btn-block' (click)='submit()'>提交</button>
+          <button class='btn btn-round btn-block' (click)='userRegistry=false'>取消</button>
+        </div>
+  
+      </div>
+  
+    </div>
+    <div class="providerbox" *ngIf='provider'>
+        <!--<button class='btn btn-round  btn-primary pull-right' (click)='consult()' *ngIf='!selected'>
+      咨询
+    </button>-->
+      <div class='card-body'>
+        <div class="docinfo">
+          <div class='photo'><img [src]='getPhoto(provider)' /></div>
+          <div class="docname">
+            <span>{{provider.name}}</span>
+            <span>
+              {{provider.title}} &nbsp;{{provider.specialty}}
+            </span>
+          </div>
+        </div>
+        <div class="desc" *ngFor="let item of breakLines(provider.desc)">
+          {{item}}
+        </div>
+      </div>
+    </div>
+  </div>
+  

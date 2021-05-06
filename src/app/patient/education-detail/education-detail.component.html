@@ -1,0 +1,3 @@
+<button mat-button class='btn pull-right' (click)="close()">close</button>
+<h2 mat-dialog-title *ngIf='education&&education.label'>{{education.label.ch}}</h2>
+<app-form [forms]='[education]' [language]='language'></app-form>

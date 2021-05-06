@@ -1,0 +1,62 @@
+<div class="wapper">
+  <div class="closebtn" (click)='close()'>
+    <i class='material-icons pull-right'>close</i>
+  </div>
+  <div class='category' *ngIf='edit'>
+    <button class="btn btn-round btn-base" style="margin-bottom: 10px;" (click)="save()">Save</button>
+    <div class="maincontent">
+      <div class='form-inline'>
+        <input class='form-control' [(ngModel)]="formTitle" placeholder="article title">
+        <a *ngIf="obs&&obs.length==0" class='btn btn-round btn-base' (click)='addOb()'>add section</a>
+      </div>
+      <div class="article-items">
+        <div class="article-item" *ngFor="let obItem of obs|orderBy: 'index'">
+          <div class="row">
+            <div class='col-sm-6'><input *ngIf='obItem'  class='form-control' type='number' [(ngModel)]="obItem.index" placeholder='index'></div>
+            <div class='col-sm-6'><input *ngIf='obItem' class='form-control' [(ngModel)]="obItem.label.ch" placeholder="subtitle"></div>
+          </div>
+          <div class='row' *ngIf='obItem'>
+            <div class='col-sm-2' (click)=addImage(obItem)>
+              <div *ngIf="!obItem.image" class='image'>
+                <span>click to add image</span>
+              </div>
+              <div class="image" *ngIf='obItem.image'>
+                <img [src]='getImage(obItem)' />
+              </div>
+            </div>
+            <div class='col-sm-10' *ngIf='obItem.education'>
+              <textarea *ngIf='bigScreen==1' rows='15' [(ngModel)]="obItem.education.ch"></textarea>
+              <textarea *ngIf='bigScreen==0' rows='30' [(ngModel)]="obItem.education.ch"></textarea>
+            </div>
+          </div>
+          <div class="btns">
+            <a class='btn btn-round btn-default' (click)='delete(obItem)'>delete</a>
+            <a *ngIf="obs&&obs.length==obItem.index+1" class='btn btn-round btn-base' (click)='addOb()'>add section</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class='category' *ngIf='view'>
+    <div class='row viewtitle' *ngIf='origiArticle&&article'>
+      <div class='col-sm-7 left'>
+        <h3>{{article.label.ch}}</h3>
+        <div>author: {{origiArticle.createdBy.name}}</div>
+        <div>time: {{origiArticle.createdAt|date: 'yyyy/MM/dd hh:mm'}}</div>
+      </div>
+      <div class='col-sm-5 right'>
+        <a class='btn btn-round btn-base' (click)='publish()'>publish</a>
+        <a class='btn btn-round btn-default' (click)='withdraw()'>take back</a>
+      </div>
+    </div>
+    <div *ngIf='article'>
+      <app-form [forms]='[article]' [language]='language'>
+      </app-form>
+    </div>
+  </div>
+</div>
+<div class="overlay" *ngIf="loading">
+  <div class="spinner-wrapper">
+    <spinner></spinner>
+  </div>
+</div>

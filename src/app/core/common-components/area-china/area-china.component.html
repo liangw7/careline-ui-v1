@@ -1,0 +1,30 @@
+<p>area-china works!</p>
+<div>
+  <mat-form-field appearance="fill">
+    <mat-label>选择省</mat-label>
+    <mat-select [(ngModel)]="selectedValue" name="food">
+    <mat-option *ngFor="let food of foods" [value]="food.value">
+    {{food.viewValue}}
+    </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <p> Selected food: {{selectedValue}} </p>
+  <mat-form-field appearance="fill">
+    <mat-label>选择市</mat-label>
+    <mat-select [(ngModel)]="selectedValue" name="food">
+    <mat-option *ngFor="let food of foods" [value]="food.value">
+    {{food.viewValue}}
+    </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <p> Selected food: {{selectedValue}} </p>
+  <mat-form-field appearance="fill">
+    <mat-label>选择区</mat-label>
+    <mat-select [(ngModel)]="selectedValue" name="food">
+    <mat-option *ngFor="let food of foods" [value]="food.value">
+    {{food.viewValue}}
+    </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <p> Selected food: {{selectedValue}} </p>
+</div>

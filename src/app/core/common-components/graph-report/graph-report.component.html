@@ -1,0 +1,73 @@
+<div class="overlay" *ngIf="loading">
+  <div class="spinner-wrapper">
+
+    <spinner></spinner>
+  </div>
+</div>
+
+
+
+
+<mat-form-field class='pull-left'>
+  <mat-label>二维数据</mat-label>
+  <mat-select class='form-control' (selectionChange)="onChangeY($event)" [(ngModel)]="searchObName">
+    <mat-option *ngFor="let obItem of obs" value="{{obItem.name}}">
+      {{obItem.name}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+
+<div *ngIf="dataViewerType!='table'&&ob">
+  <span *ngFor='let item of ob.labelList|orderBy item' Style='width:20%'>
+    {{item}}
+  </span>
+</div>
+<div [hidden]="dataViewerType!='line chart'">
+  <div [ngClass]="{'line-graph-holder':bigScreen==1,
+                      'line-graph-holder-cell':bigScreen==0}">
+
+    <canvas #lineCanvas></canvas>
+
+  </div>
+</div>
+<div [hidden]="dataViewerType!='bar chart'">
+  <div [ngClass]="{'line-graph-holder':bigScreen==1,
+    'line-graph-holder-cell':bigScreen==0}">
+
+    <canvas #barCanvas></canvas>
+
+
+  </div>
+
+</div>
+<div [hidden]="dataViewerType!='pie chart'">
+  <div [ngClass]="{'line-graph-holder':bigScreen==1,
+      'line-graph-holder-cell':bigScreen==0}">
+
+    <canvas #pieCanvas></canvas>
+
+  </div>
+</div>
+
+<div class='display:inline'>
+  <button class='btn btn-round btn-base' style='float:right' (click)='refreshGraph()'>刷新 </button>
+
+  <button class='btn btn-round btn-default' style='float:right' (click)='showForm=!showForm'>表格</button>
+</div>
+<div class='table-responsive group' *ngIf='showForm'>
+  <table class="table" style='background-color: white; font-weight:600'>
+    <thead class=" text-primary">
+      <tr>
+        <th></th>
+        <th *ngFor='let time of ob.timeList' style='background-color: white;  font-weight:600'>{{time}} </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor='let data of ob.dataSet' style='padding: 0px;'>
+        <td>{{data.label}}</td>
+        <td *ngFor='let valueItem of data.data'>{{valueItem}} </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

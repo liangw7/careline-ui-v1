@@ -1,0 +1,47 @@
+<div class="wapper">
+  <div class="closebtn" (click)='close()'>
+    <i class='material-icons'>close</i>
+  </div>
+  <div class='card-header'>
+    <h2 class='pull-left'>
+      <span *ngIf="language=='Chinese'">添加访问</span>
+      <span *ngIf="language=='English'">Add Visits</span>
+    </h2>
+    <button [disabled]='selectedProfiles.length==0' class='btn btn-round btn-base pull-right' (click)='submit()'>
+      <span *ngIf="language=='Chinese'">提交</span>
+      <span *ngIf="language=='English'">submit</span>
+    </button>
+  </div>
+  <div class="category">
+    <div class='title'>
+      <span *ngIf="language=='Chinese'">选择项目:</span>
+      <span *ngIf="language=='English'">select profile:</span>
+    </div>
+    <div class='table responsive-table'>
+      <table class='table'>
+        <tr (click)="selectProfiles(profile)" *ngFor="let profile of profiles"
+          [ngClass]="{'selected':findItem(profile, selectedProfiles)>-1}">
+          <td> <span *ngIf="language=='Chinese'">{{profile.label.ch}}</span>
+            <span *ngIf="language=='English'">{{profile.label.en}}</span>
+          </td>
+        </tr>
+      </table>
+    </div>
+    <!--<div class="card-body" *ngIf='selectedProfile&&selectedProfile._id==profile._id'>
+              
+                    <label >治疗/手术时间:</label>
+                    
+                    <mat-form-field>
+                        <input #dateInput matInput [matDatepicker]="picker" [(ngModel)]="selectedProfile.procedureDate"  placeholder="Choose a date" class="form-control">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker startView="year" [startAt]="startDate"></mat-datepicker>
+                        </mat-form-field>
+                  </div>
+                
+                  <div class="card-body" *ngFor="let subProfile of profile.subProfiles" 
+                  (click)="selectSubProfile(subProfile)">
+                    {{subProfile.visitType}}
+                
+                  </div>-->
+  </div>
+</div>

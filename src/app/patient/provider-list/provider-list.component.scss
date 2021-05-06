@@ -1,0 +1,821 @@
+@import 'src/assets/scss/base.scss';
+
+// .photo {
+//     width: 70px;
+//     height: 70px;
+// }
+// .selected {
+//     background-color: white;
+//     color: blue;
+// }
+// // .title {
+// //     font-size: medium;
+// //     font-weight: 600;
+// //     padding: 10px;
+// //     color: black;
+// // }
+// .consult-img {
+//     float: right;
+//     width: 70px;
+//     border-radius: 35px;
+//     margin-bottom: 40px;
+//     margin-right: 0px;
+// }
+// .title-img {
+//     float: right;
+//     width: 70px;
+//     border-radius: 35px;
+//     margin-bottom: 10px;
+// }
+// .selected-btn {
+//     color: #19498d;
+//     background: linear-gradient(to bottom, #d6e3f7 0%, #86b3e0 50%);
+// }
+// .de-selected-btn {
+//     background-color: #19498d;
+//     color: white;
+// }
+// .provider {
+//     // margin-top:80px;
+
+//     // background-color:rgb(64, 100, 219)
+//     background: transparent;
+//     box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(#19498d, 0.4);
+// }
+// .consult {
+//     background: linear-gradient(to bottom, #d6e3f7 0%, #edf2f7 50%);
+//     margin: 0px;
+//     min-height: 120px;
+//     width: 98%;
+//     border-radius: 15px;
+// }
+// .selected {
+//     background: linear-gradient(to bottom, #d6e3f7 0%, #edf2f7 50%);
+// }
+// .provider-2 {
+//     margin-top: 50px;
+//     min-height: 800px;
+//     // background-color:rgb(64, 100, 219)
+//     background: linear-gradient(to bottom, #d6e3f7 0%, #edf2f7 50%);
+//     box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(#19498d, 0.4);
+// }
+// .consult-2 {
+//     color: white;
+//     background: linear-gradient(to bottom, #34598b 0%, #698cb9 50%);
+
+//     margin: 20px;
+//     height: 100px;
+//     width: 90%;
+//     border-radius: 15px;
+// }
+// .mail-cell {
+//     height: 100%;
+//     width: 100%;
+//     left: 0;
+//     margin-left: 0px;
+//     margin-right: 0px;
+//     right: 0;
+//     top: 0;
+//     margin-top: 0px;
+//     margin-bottom: 0px;
+//     bottom: 0;
+//     position: fixed;
+//     z-index: 100;
+//     overflow: auto;
+//     //padding:2px;
+//     background-color: white;
+//     box-shadow: 0 4px 20px 0px #aaabaf, 0 7px 10px -5px rgba(#b5b5b8, 0.4);
+// }
+// .nav {
+//     color: rgb(86, 86, 167);
+
+//     background-color: white;
+//     //height: 50px;
+
+//     font-weight: 900;
+//     font-style: inherit;
+//     font-feature-settings: "blwf";
+//     font-size-adjust: inherit;
+// }
+// .active {
+//     color: red;
+// }
+
+//song-pc style
+.pc-wapper {
+    .nav-tabs-wrapper {
+        padding-left: 10px;
+    }
+    .nav-tabs {
+        background: transparent;
+        border-bottom: none;
+        .nav-item {
+            min-width: 207px;
+            height: 42px;
+            background: $darkGray;
+            border-radius: 0 14px 0 0;
+            box-shadow: 0px 0px 4px 0px rgba(121,161,161,0.50);
+            position: relative;
+            z-index: 1;
+            margin-left: -10px;
+            .nav-link {
+                display: block;
+                padding: 0;
+                font-size: $fontSize16;
+                font-family: PingFangSC, PingFangSC-Regular;
+                font-weight: 400;
+                text-align: center;
+                color: $basefontColor!important;
+                line-height: 42px;
+            }
+            &.active {
+                background: $white;
+            }
+        }
+    }
+    .tab-content {
+        width: 100%;
+        padding: 20px;
+        height: calc(100vh - 172px);
+        background: $white;
+        border-radius: 0 20px 20px 20px;
+        box-shadow: 0px 0px 4px 0px rgba(121,161,161,0.50); 
+        box-sizing: border-box;
+        overflow-y: auto;
+    }
+    .tabcard {
+        width: 100%;
+        
+        .checkstatus {
+            margin-bottom: 20px;
+            .label {
+                font-size: $fontSize16;
+                font-family: PingFangSC, PingFangSC-Regular;
+                font-weight: 400;
+                text-align: left;
+                color: $basefontColor
+            }
+            .selbox {
+                width: 200px;
+                padding: 10px 20px;
+                text-align: center;
+                margin-left: 15px;
+                border: 1px solid #eee;
+                border-radius: 6px;
+            }
+            
+        }
+        .tabitem {
+            margin-bottom: 20px;
+            &:last-child {
+                margin-bottom: 0;
+            }
+            .title {
+                width: 100%;
+                height: 66px;
+                padding: 10px 25px 10px 20px;
+                background: $darkGray;
+                box-sizing: border-box;
+                display: flex;
+                justify-content: space-between;
+                position: relative;
+                box-sizing: border-box;
+                .title-left {
+                    .txt {
+                        // margin-bottom: 9px;
+                        span:nth-child(1) {
+                            display: inline-block;
+                            width: 18px;
+                            height: 36px;
+                            vertical-align: top;
+                            background: $lightBlue;
+                            border-radius: 103px 0;
+                            margin-right: 12px;
+                        }
+                        span:nth-child(2) {
+                            font-size: $fontSize22;
+                            font-family: PingFangSC, PingFangSC-Medium;
+                            text-align: left;
+                            color: $baseBlue;
+                            line-height: 36px;
+                        }
+                    }
+                    .date {
+                        font-size: $fontSize16;
+                        font-family: PingFangSC, PingFangSC-Light;
+                        font-weight: 300;
+                        text-align: left;
+                        color: $lightfontColor;
+                        line-height: 33px;
+                        letter-spacing: 1px;
+                    }
+                }
+                .title-right {
+                    width: 0;
+                    height: 0;
+                    border-width: 16px;
+                    border-color: #B0BED4 transparent transparent transparent;
+                    border-style: solid;
+                    border-radius: 5px;
+                    margin-top: 12px;
+                    cursor: pointer;
+                    &.up {
+                        transform: rotate(180deg);
+                        margin-top: -6px;
+                    }
+                }
+            }
+            .tablebox {
+                max-height: 405px;
+                overflow-y: scroll;
+                margin-right: -17px;
+                transition: height .3s;
+                .table {
+                    margin-bottom: 0;
+                }
+                tr {
+                    cursor: pointer;
+                    .headerimg {
+                        display: inline-block;
+                        width: 50px;
+                        height: 50px;
+                        border-radius: 25px;
+                        overflow: hidden;
+                        vertical-align: top;
+                        img {
+                            width: 100%;
+                            vertical-align: top;
+                        }
+                    }
+                    td {
+                        padding: 5px 0;
+                        font-size: $fontSize16;
+                        font-family: PingFangSC, PingFangSC-Regular;
+                        font-weight: 400;
+                        text-align: left;
+                        color: $basefontColor;
+                        line-height: 50px;
+                        text-align: center;
+                        border-top: none;
+                        border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+                        .ststusshow {
+                            display: inline-block;
+                            padding: 0 7px;
+                            height: 26px;
+                            line-height: 26px;
+                            color: #fff;
+                            opacity: 0.6;
+                            background: $lightBlue;
+                            border-radius: 14px;
+                        }
+                    }
+                }
+            }
+        }
+        .providerlists {
+            height: 100%;
+            .form-group {
+                margin: 0;
+            }
+            .providerbox {
+                max-height: calc(100vh - 270px);
+                overflow-y: auto;
+                cursor: pointer;
+            }
+            .card {
+                width:95%;
+                margin:15px;
+                &.selected {
+                    background: $darkGray;
+                }
+                .card-body {
+                    .headerimg {
+                        float:left; 
+                        width:68px; 
+                        height: 68px;
+                        border-radius: 34px;
+                        overflow: hidden;
+                        margin-right:10px;
+                        img {
+                            width: 100%;
+                            vertical-align: top;
+                        }
+                    }
+                    .info {
+                        margin-bottom: 5px;
+                        .main-info {
+                            font-size: $fontSize22;
+                            font-family: PingFangSC, PingFangSC-Medium;
+                            font-weight: 500;
+                            text-align: left;
+                            color: $baseBlue;
+                            line-height: 38px;
+                            span:nth-child(2) {
+                                color: $basefontColor;
+                                font-size: $fontSize14;
+                                margin-left: 10px;
+                            }
+                        }
+                        .specialty {
+                            font-size: $fontSize14;
+                            font-family: PingFangSC, PingFangSC-Light;
+                            font-weight: 300;
+                            text-align: left;
+                            color: $basefontColor;
+                            line-height: 28px;
+                            overflow: hidden;
+                            text-overflow:ellipsis;
+                            white-space: nowrap;
+                        }
+                    }
+                    .desc {
+                        font-size: $fontSize14;
+                        font-family: PingFangSC, PingFangSC-Regular;
+                        font-weight: 400;
+                        text-align: left;
+                        color:  $basefontColor;
+                        line-height: 24px;
+                    }
+                }
+            }
+        }
+        .selprovider {
+            .infobox {
+                padding: 10px 0;
+                .card-body {
+                    .photo {
+                        float:left; 
+                        width:70px;
+                        height: 70px;
+                        margin-right:10px; 
+                        border-radius:35px;
+                        overflow: hidden;
+                        img {
+                            width: 100%;
+                            vertical-align: top;
+                        }
+                    }
+                    .info {
+                        font-size: $fontSize22;
+                        font-family: PingFangSC, PingFangSC-Semibold;
+                        font-weight: 600;
+                        color: $darkfontColor;
+                        line-height: 37px;
+                        span:nth-child(2),span:nth-child(3) {
+                            font-size: $fontSize16;
+                            font-weight: 400;
+                            margin-left: 15px;
+                        }
+                        .btn {
+                            height: 1.2;
+                            border: 1px solid #eee;
+                            margin-left: 20px;
+                            &:hover {
+                                color: #fff;
+                                background: $lightBlue;
+                                border-color: $lightBlue;
+                            }
+                        }
+                    }
+                }
+            }
+            .card {
+                background: $white;
+                margin-bottom: 15px;
+                &:last-child {
+                    margin-bottom: 0;
+                }
+                .card-header {
+                    .title {
+                        font-size: $fontSize20;
+                        font-family: PingFangSC, PingFangSC-Medium;
+                        font-weight: 500;
+                        text-align: left;
+                        color: $darkfontColor;
+                        line-height: 38px;
+                    }
+                    .zixun {
+                        font-size: $fontSize16;
+                        color: $darkfontColor;
+                        line-height: 36px;
+                        span {
+                            margin-right: 20px;
+                            display: inline-block;
+                        }
+                        .btn {
+                            line-height: 1.2;
+                            border: 1px solid #eee;
+                        }
+                    }
+                    .islink {
+                        font-size: $fontSize14;
+                        color: $baseBlue;
+                        text-decoration: underline;
+                        margin-left: 20px;
+                        cursor: pointer;
+                    }
+                }
+                .card-body {
+                    padding-top: 0;
+                    .table {
+                        margin-bottom: 0;
+                        tr {
+                            cursor: pointer;
+                        }
+                        td {
+                            font-size: $fontSize16;
+                            font-family: PingFangSC, PingFangSC-Regular;
+                            font-weight: 400;
+                            text-align: left;
+                            color: $basefontColor;
+                            line-height: 25px;
+                            border-bottom: 1px solid #eee;
+                            .tablebtn {
+                                display: inline-block;
+                                padding: 0 7px;
+                                height: 26px;
+                                line-height: 26px;
+                                color: #fff;
+                                opacity: 0.6;
+                                background: $lightBlue;
+                                border-radius: 14px;
+                            }
+                        }
+                    }
+                }
+                .tableheight {
+                    max-height: 245px;
+                    overflow-y: auto;
+                }
+            }
+        }
+    }
+}
+.popping {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,.6);
+    z-index: 998;
+}
+.mail-pc {
+    width: 80%;
+    height: 90%;
+    position: fixed;
+    left: 10%;
+    top: 5%;
+    z-index: 999;
+    //overflow: hidden;
+    //padding:2px;
+    background-color: white;
+    border: none;
+    box-shadow: 0 4px 20px 0px #aaabaf, 0 7px 10px -5px rgba(#b5b5b8, 0.4);
+    border-radius: 20px;
+    margin: 0;
+}
+.icon-btn {
+    margin: 2px 10px;
+    background: $lightBlue;
+    color: $whitefontColor;
+}
+.form-control {
+    padding: 10px 20px;
+    font-size: 20px;
+    border-radius: 4px;
+    background-image: none;
+}
+
+//song-wap style
+.wap-wapper {
+    position: relative;
+    padding-top: 80rem/$base;
+    .header {
+        padding: 20rem/$base;
+        background: linear-gradient(142deg,$lightBlue,$baseBlue);
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 2;
+        .topbarbox {
+            width: 100%;
+            height: 40rem/$base;
+            border: 2rem/$base solid $lightBlue;
+            border-radius: 20rem/$base;
+            overflow: hidden;
+            span {
+                display: inline-block;
+                width: 50%;
+                font-size: 16rem/$base;
+                font-family: PingFangSC, PingFangSC-Semibold;
+                text-align: center;
+                color: #ffffff;
+                line-height: 36rem/$base;
+                letter-spacing: 1px;
+                &.active {
+                    background: $lightBlue;
+                    border-radius: 20rem/$base;
+                }
+            }
+        }
+    }
+    .main-content {
+        padding-top: 50rem/$base;
+        position: relative;
+        .statusbtn {
+            position: fixed;
+            top: 85rem/$base;
+            right: 8rem/$base;
+            z-index: 3;
+            .btn {
+                padding: 0.2rem 1rem;
+            }
+        }
+        .consult {
+            .listitem {
+                padding: 10rem/$base;
+                margin: 8rem/$base 0;
+                position: relative;
+                padding-left: 120rem/$base;
+                border-bottom: 1px solid #eee;
+                .headerimg {
+                    width: 100rem/$base;
+                    height: 100rem/$base;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    position: absolute;
+                    top: 10rem/$base;
+                    left: 10rem/$base;
+                    img {
+                        width: 100%;
+                        vertical-align: top;
+                    }
+                }
+                .infobox {
+                    .doctor-name,.profile-name {
+                        font-size:1rem;
+                        color: $darkfontColor;
+                        line-height: 30rem/$base;
+                    }
+                    .doctor-info {
+                        font-size: 0.75rem;
+                        color: $lightfontColor;
+                        line-height: 20rem/$base;
+                        span {
+                            margin-right: 10rem/$base;
+                            &:last-child {
+                                margin-right: 0;
+                            }
+                        }
+                    }
+                    .profile-info {
+                        font-size: 0.875rem;
+                        color: $basefontColor;
+                        line-height: 20rem/$base;
+                        span {
+                            margin-right: 10rem/$base;
+                            &:last-child {
+                                margin-right: 0;
+                            }
+                        }
+                    }
+                    .basecolor {
+                        color: $lightBluefontColor;
+                    }
+                }
+            }
+        }
+    }
+    .searchbox {
+        padding: 20rem/$base 20rem/$base 10rem/$base;
+    }
+    .doclists {
+        padding: 10rem/$base 20rem/$base;
+        .card {
+            margin: 0;
+        }
+        .card-body {
+            .desc {
+                font-size: $fontSize14;
+                color: $basefontColor;
+                line-height: 28rem/$base;
+            }
+        }
+    }
+    .docinfo {
+        padding-left: 80rem/$base;
+        min-height: 60rem/$base;
+        position: relative;
+        .photo {
+            width: 60rem/$base;
+            height: 60rem/$base;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            top: 0;
+            left: 0;
+            img {
+                width: 100%;
+                vertical-align: top;
+            }
+        }
+        .docname {
+            span:nth-child(1) {
+                display: block;
+                font-size: $fontSize18;
+                color: $darkfontColor;
+                font-weight: 600;
+                line-height: 36rem/$base;
+            }
+            span:nth-child(2) {
+                display: block;
+                font-size: $fontSize14;
+                color: $lightfontColor;
+                line-height: 24rem/$base;
+            }
+        }
+    }
+    .docdetailbox {
+        margin-top: -80rem/$base;
+        .card {
+            border: none;
+            box-shadow: none;
+            border-radius: 0;
+        }
+        .docinfo {
+            padding: 20rem/$base 20rem/$base 20rem/$base 100rem/$base;
+            min-height: 100rem/$base;
+            background: $white;
+            margin-bottom: 10rem/$base;
+            .photo {
+                top: 20rem/$base;
+                left: 20rem/$base;
+            }
+            span {
+                .btn {
+                    padding: 2rem/$base 8rem/$base;
+                    font-size: $fontSize12;
+                    margin-left: 5rem/$base;
+                }  
+            }
+            .alldoc {
+                position: absolute;
+                top: 10px;
+                right: 10px;
+                .btn {
+                    padding: 2rem/$base 13rem/$base;
+                    font-size: 14rem/$base;
+                }
+            }
+            
+        }
+        .consult {
+            margin: 0 0 10rem/$base 0;
+            padding: 0;
+            .card-header {
+                .title {
+                    font-size: $fontSize18;
+                    color: $darkfontColor;
+                    font-weight: 600;
+                    line-height: 36rem/$base;
+                }
+                .costinfo {
+                    display: flex;
+                    justify-content: space-between;
+                    span {
+                        font-size: $fontSize14;
+                        color: $lightBluefontColor;
+                        line-height: 32rem/$base;
+                    }
+                    .btn {
+                        font-size: $fontSize14;
+                        margin: 0;
+                        padding: 4px 15px;
+                    }
+                }
+            }
+            .card-body {
+                padding: 10rem/$base 20rem/$base;
+                .table {
+                    td {
+                        font-size: $fontSize14;
+                        color: $basefontColor;
+                        padding: 8rem/$base 5rem/$base;
+                        border-bottom: 1px solid #eee;
+                    }
+                }
+                .btns {
+                    margin: 0 -10rem/$base;
+                    .btn {
+                        padding: 4rem/$base 16rem/$base 5rem/$base;
+                        font-size: $fontSize14;
+                        margin: 5rem/$base;
+                    }
+                }
+            }
+        }
+    }
+}
+
+//tab样式
+:host ::ng-deep .mat-tab-group {
+    margin-top: -5rem/$base;
+  }
+:host ::ng-deep .mat-tab-header {
+    border-bottom: none;
+    .mat-ink-bar {
+      background-color: transparent!important;
+    }
+    .mat-tab-labels {
+      padding-top: 5px;
+    }
+    .mat-tab-label {
+      height: 42px;
+      padding: 0 30px;
+      font-size: $fontSize16;
+      font-family: PingFangSC, PingFangSC-Regular;
+      text-align: center;
+      color: $basefontColor;
+      font-weight: normal!important;
+      background: $darkGray;
+      border-radius: 0 14px 0 0;
+      box-shadow: 0 0 4px 0 rgba(121, 161, 161, 0.5);
+      margin-left: -10px;
+      position: relative;
+      opacity: 1;
+      &:nth-child(1) {
+        z-index: 49;
+        margin-left: 0;
+      }
+      &:nth-child(2) {
+        z-index: 48;
+      }
+      &:nth-child(3) {
+        z-index: 47;
+      }
+      &:nth-child(4) {
+        z-index: 46;
+      }
+      &:nth-child(5) {
+        z-index: 45;
+      }
+      &:nth-child(6) {
+        z-index: 44;
+      }
+      &:nth-child(7) {
+        z-index: 43;
+      }
+      &:nth-child(8) {
+        z-index: 42;
+      }
+      &:nth-child(9) {
+        z-index: 41;
+      }
+      &:nth-child(10) {
+        z-index: 40;
+      }
+      &.mat-tab-label-active {
+        font-weight: normal!important;
+        padding: 0 30px;
+        background: $white;
+        color: $darkfontColor!important;
+      }
+    }
+  }
+:host  ::ng-deep .mat-tab-body-wrapper {
+    width: 100%;
+    background: $white;
+    border-radius: 0 20px 20px 20px;
+    box-shadow: 0px 0px 4px 0px rgba(121, 161, 161, 0.5);
+    box-sizing: border-box;
+    overflow: hidden;
+    overflow-y: auto;
+    .mat-tab-body-content {
+      padding: 2px 0;
+    }
+    .row {
+      margin-left: 0;
+      margin-right: 0;
+    }
+  }
+
+:host ::ng-deep .wap-wapper {
+    .mat-tab-header {
+        position: fixed;
+        top: 80rem/$base;
+        left: 0;
+        right: 0;
+        z-index: 2;
+        background: $grey-background;
+    }
+    .mat-tab-body-wrapper {
+        border-radius: 0;
+        .mat-tab-body-content {
+            padding-bottom: 30rem/$base;
+          }
+    } 
+}

@@ -1,0 +1,189 @@
+.pc-home-page-main {
+   
+    .pc-public-main {
+        width: 100%;
+        float: left;
+       // margin-top: 5%;
+     
+        height:100%;
+        .pc-public-main-left {
+            margin: 10% 6%;
+            width: 30%;
+            float: left;
+            padding:70px;
+        
+        }
+        .pc-public-main-right {
+            margin: 3% 3%;
+            width: 50%;
+            float: right;
+            padding:40px;
+            img {
+                width: 90%;
+                padding-top:60px;
+            }
+        }
+        .pc-public-main-left1 {
+            margin: 0 1%;
+            width: 60%;
+            float: left;
+            img {
+                width: 90%;
+            }
+        }
+        .pc-public-main-right1 {
+            margin: 10% 2%;
+            width: 30%;
+            float: right;
+        }
+        .pc-public-p1 {
+            height: 32px;
+            opacity: 1;
+            font-size: 18px;
+            font-family: SourceHanSansSC, SourceHanSansSC-Regular;
+            font-weight: 400;
+            text-align: left;
+            color: #071d55;
+            line-height: 32px;
+            margin: 0px 6px;
+        }
+        .pc-public-p2 {
+            opacity: 1;
+            font-size: 72px;
+            font-family: SourceHanSansSC, SourceHanSansSC-Bold;
+            font-weight: 700;
+            text-align: left;
+            color: #0b3691;
+            line-height: 80px;
+            margin: 0px 6px;
+        }
+        .pc-public-p3 {
+            height: 80px;
+            opacity: 0.2;
+            font-size: 36px;
+            font-family: SourceHanSansSC, SourceHanSansSC-Bold;
+            font-weight: 700;
+            text-align: left;
+            color: #5781ed;
+            line-height: 80px;
+            margin-top: -38px;
+            margin-left: 6px;
+        }
+        .pc-public-p4 {
+            height: 20px;
+            opacity: 1;
+            font-size: 20px;
+            //font-family: SourceHanSansSC, SourceHanSansSC-Normal;
+            font-weight: 700;
+            text-align: left;
+            color: #0b3691;
+            line-height: 20px;
+           // margin: 2px 6px;
+        }
+    }
+}
+
+.phone-home-page-main {
+    margin-top:-300px;
+    background: url('/assets/images/home/pc/blue-3.jpg');
+    height:100%;
+    img {
+        margin-top:50px;
+        margin-left:50px;
+        height: 80%;
+        width: 80%;
+    }
+    .phone-public-main {
+        padding-top: 40px;
+        padding-bottom:40px;
+        p {
+            text-align: center;
+        }
+    }
+    .phone-public-p1 {
+        height: 32px;
+        opacity: 1;
+        font-size: 18px;
+        font-family: SourceHanSansSC, SourceHanSansSC-Regular;
+        font-weight: 500;
+        text-align: left;
+        color: #5781ed;
+        line-height: 32px;
+        margin: 0px 6px;
+    }
+    .phone-public-p2 {
+        opacity: 1;
+        font-size: 48px;
+        font-family: SourceHanSansSC, SourceHanSansSC-Bold;
+        font-weight: 700;
+        text-align: left;
+        color: #0b3691;
+        line-height: 48px;
+        margin: 0px 6px;
+    }
+    .phone-public-p3 {
+        height: 36px;
+        opacity: 0.5;
+        font-size: 36px;
+        font-family: SourceHanSansSC, SourceHanSansSC-Bold;
+        font-weight: 700;
+        text-align: left;
+        color: #041c41;
+        line-height: 36px;
+        margin-top: -10px;
+        margin-left: 6px;
+    }
+    .phone-public-p4 {
+       // height: 16px;
+        opacity: 1;
+        font-size: 16px;
+        font-family: SourceHanSansSC, SourceHanSansSC-Normal;
+        font-weight: Normal;
+        text-align: left;
+        color: rgb(76, 86, 228);
+      //  line-height: 16px;
+        margin: 2px 6px;
+    }
+}
+.cell{
+    font-weight:700; 
+    background-color: transparent; 
+    color: #0b3691;
+}
+.public-phone-main-bottom {
+    height: 284px;
+    opacity: 1;
+    background: #07244d;
+    text-align: left;
+  
+    span {
+        height: 24px;
+        opacity: 0.99;
+        font-size: 16px;
+        font-family: SourceHanSansSC, SourceHanSansSC-Regular;
+        font-weight: 400;
+        color: #ffffff;
+        line-height: 24px;
+    }
+    #public-phone-main-bottom-top {
+        margin-top: 15px;
+        margin-left: 10px;
+    }
+    .public-phone-img {
+       // vertical-align: middle;
+        width: 45px;
+        height: 45px;
+        margin-left:10px;
+        margin-top:10px;
+    }
+    #public-phone-select-img {
+        margin-right: 120px;
+    }
+    
+    .public-phone-main {
+        margin-top: 20px;
+    }
+    .public-phone-main p {
+        text-align: center;
+    }
+}

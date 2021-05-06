@@ -1,0 +1,348 @@
+@import 'src/assets/scss/base.scss';
+.container-login-pc {
+    .spinner-wrapper {
+        img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            opacity: 0;
+            height: 100%;
+        }
+    }
+    a {
+        text-decoration: none;
+    }
+    //background: linear-gradient(240deg, #376cde 9%, #2cc9ff 80%);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    display: -webkit-box;
+    display: -webkit-flex;
+    flex-direction: column;
+    -ms-flex-direction: column;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    vertical-align: middle;
+    text-align: center;
+  //  background: url("/assets/images/home/pc/background-blue.jpg");
+    .pc-login-forgetPassword {
+        float: left;
+        margin-left: 10%;
+        width: 63px;
+        height: 20px;
+        opacity: 1;
+        font-size: 14px;
+        font-family: SourceHanSansSC, SourceHanSansSC-Regular;
+        font-weight: 400;
+        text-align: right;
+        color: #fc4850;
+        line-height: 20px;
+    }
+    
+    #pc-login-return-button {
+        text-align: right;
+        opacity: 1;
+        font-size: 20px;
+        font-family: SourceHanSansSC, SourceHanSansSC-Bold;
+        font-weight: 700;
+        color: #ffffff;
+        line-height: 32px;
+    }
+    .public-main {
+        padding: 120px 100px 85px;
+        justify-content: center;
+        align-items: center;
+        display: -webkit-flex;
+       
+        .public-main-left1 {
+            width: 50%;
+            margin: 0 2%;
+            float: left;
+            p {
+                margin-top: 3%;
+                font-size: 12px;
+                font-family: SourceHanSansSC, SourceHanSansSC-Regular;
+                font-weight: 400;
+                text-align: left;
+                color: #00846c;
+                line-height: 20px;
+            }
+            img {
+                margin-top: 10%;
+                width: 80%;
+            }
+        }
+        .public-main-right1 {
+            width: 580px;
+            //min-height: 750px;
+            background:$lightGray;
+    // background: linear-gradient(to bottom, #e2e9f9 0%,#f8fbff  20%);
+            border-radius: 5px;
+            box-shadow: 0 4px 20px 0px rgba(250, 244, 244, 0.14), 0 7px 10px -5px rgba(#4e505a, 0.4);
+            position: relative;
+            .pc-login-logo {
+                margin-top: 30px;
+                width: 100px;
+            }
+            .pc-login-main-left {
+                padding: 20px;
+                .pc-login-main-input {
+                    margin: 65px 40px;
+                    vertical-align: middle;
+                    .full-width {
+                        width: 100%;
+                        span {
+                            opacity: 1;
+                            font-size: $fontSize16;
+                            font-family: SourceHanSansSC, SourceHanSansSC-Regular;
+                            font-weight: 400;
+                            text-align: left;
+                            color: $lightBluefontColor;
+                            line-height: 36px;
+                        }
+                        input {
+                            opacity: 1;
+                            font-size: $fontSize18;
+                            font-family: SourceHanSansSC, SourceHanSansSC-Regular;
+                            font-weight: 400;
+                            text-align: left;
+                            color: $darkfontColor;
+                            line-height: 36px;
+                        }
+                        .pc-login-sendMessage{
+                            float: right;
+                            height: 36px;
+                            width: 160px;
+                            margin-left: 20px;
+                            background: #3f51b5;
+                            border-radius: 10px;
+                            font-size: 13px;
+                            font-family: SourceHanSansSC, SourceHanSansSC-Bold;
+                            font-weight: 700;
+                            color: #ffffff;
+                        }
+                    }
+                }
+                #pc-login-main-message {
+                    margin-top: 20px;
+                    height: 56px;
+                    font-size: $fontSize32;
+                    font-family: SourceHanSansSC, SourceHanSansSC-Bold;
+                    font-weight: 700;
+                    text-align: center;
+                    color: $baseBluefontColor;
+                    line-height: 56px;
+                    letter-spacing: 1px;
+                    margin-bottom: 15px;
+                }
+                .pc-login-main-select {
+                    margin: 0 auto;
+                    width: 82.5%;
+                    margin-left: 8%;
+                }
+            }
+            .pc-login-bottom{
+                margin-top: 32px;
+                .pc-login-registry {
+                    margin-top: 5%;
+                    a {
+                        width: 28px;
+                        height: 20px;
+                        opacity: 1;
+                        font-size: 14px;
+                        font-family: SourceHanSansSC, SourceHanSansSC-Regular;
+                        font-weight: 400;
+                        text-align: left;
+                        color: #5781ed;
+                        line-height: 20px;
+                    }
+                    span {
+                        width: 84px;
+                        height: 20px;
+                        opacity: 1;
+                        font-size: 14px;
+                        font-family: SourceHanSansSC, SourceHanSansSC-Regular;
+                        font-weight: 400;
+                        text-align: center;
+                        color: #414857;
+                        line-height: 20px;
+                    }
+                }   
+            }
+            .pc-login-button {
+                margin: 20% 8% 0 8%;
+                line-height: 16px;
+                width: 100%;
+                height: 48px;
+                background: linear-gradient(240deg, #376cde 9%, #2cc9ff 80%);
+                border-radius: 16px;
+                font-size: 20px;
+                font-family: SourceHanSansSC, SourceHanSansSC-Bold;
+                font-weight: 700;
+                color: #ffffff;
+                line-height: 27px;
+            }
+            .pc-login-main-right {
+                margin: 0 18%;
+                iframe {
+                    padding: 0px;
+                    margin: 0px;
+                    width: 300px;
+                    height: 400px;
+                    overflow: hidden;
+                    border-width: 0cm;
+                }
+                .qrcode {
+                    width: 10px;
+                }
+                .title {
+                    display: none;
+                }
+                .info {
+                    width: 10px;
+                }
+                .status_icon {
+                    display: none;
+                }
+                .status {
+                    text-align: center;
+                }
+            }
+        }
+    }
+}
+
+.container-login-phone {
+    margin-top: -190px;
+    min-height: calc(100vh - 110px);
+    width: 100%;
+    display: flex;
+    display: -webkit-box;
+    display: -webkit-flex;
+    flex-direction: column;
+    -ms-flex-direction: column;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    vertical-align: middle;
+    text-align: center;
+    a {
+        text-decoration: none;
+    }
+    .main-title {
+        font-size: 24px;
+    }
+    .phone-login-forgetPassword {
+        float: left;
+        margin-left: 8%;
+        width: 63px;
+        height: 20px;
+        opacity: 1;
+        font-size: 14px;
+        font-family: SourceHanSansSC, SourceHanSansSC-Regular;
+        font-weight: 400;
+        text-align: right;
+        color: #fc4850;
+        line-height: 20px;
+    }
+    .phone-login-registry {
+        margin-top: 5%;
+        a {
+            width: 28px;
+            height: 20px;
+            opacity: 1;
+            font-size: 14px;
+            font-family: SourceHanSansSC, SourceHanSansSC-Regular;
+            font-weight: 400;
+            text-align: left;
+            color: #5781ed;
+            line-height: 20px;
+        }
+        span {
+            width: 84px;
+            height: 20px;
+            opacity: 1;
+            font-size: 14px;
+            font-family: SourceHanSansSC, SourceHanSansSC-Regular;
+            font-weight: 400;
+            text-align: center;
+            color: #414857;
+            line-height: 20px;
+        }
+    }
+    #phone-login-bottom {
+        margin-top: 30%;
+    }
+    .public-main {
+        justify-content: center;
+        align-items: center;
+        display: -webkit-flex;
+        .public-main-right1 {
+            width: 90%;
+            background: $white;
+            border-radius: 20px;
+            .phone-login-main {
+                margin: 30rem/$base 0;
+                .full-width {
+                    width: 86%;
+                    text-align: left;
+                    opacity: 1;
+                    font-size: 16px;
+                    font-family: SourceHanSansSC, SourceHanSansSC-Regular;
+                    margin: 10rem/$base auto;
+                    span {
+                        color: #5781ed;
+                    }
+                    input {
+                        color: #121a2d;
+                    }
+                }
+                .pc-login-bottom {
+                    width: 86%;
+                    margin: 0 auto 35rem/$base;
+                }
+            }
+        }
+    }
+}
+
+
+.loginways {
+    margin: 70px 0;
+   
+    .way {
+        width: 300px;
+        height: 56px;
+        font-size: $fontSize18;
+        line-height: 56px;
+        color: $darkfontColor;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        margin: 25px auto;
+        background: #fff;
+        cursor: pointer;
+        &:hover {
+            background: $darkGray;
+        }
+    }
+}
+.loginways2 {
+    position: absolute;
+    top: 20px;
+    right: 0;
+  
+    li {
+        font-size: 14px;
+        height: 36px;
+        line-height: 36px;
+        padding: 0 10px;
+        background: #fff;
+        border-radius: 18px 0 0 18px;
+        cursor: pointer;
+        &.active {
+            color: $whitefontColor;
+            background: $lightBlue;
+        }
+    }
+}
+.forgetpsd,.register {
+    color: $baseBluefontColor!important;
+}

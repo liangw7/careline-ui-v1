@@ -1,0 +1,29 @@
+@import 'src/assets/scss/base.scss';
+.wapper {
+    max-height: calc(100vh - 227px);
+    overflow-y: auto;
+}
+.searchbox {
+    padding: 10px 0;
+   
+    .form-control {
+        border-radius: 4px;
+    }
+}
+.table {
+    th {
+        font-size: $fontSize16;
+        color: $darkfontColor;
+        background: $darkGray;
+        text-align: center;
+        font-weight:600;
+    }
+    td {
+        font-size: $fontSize16;
+        color: $basefontColor;
+        text-align: center;
+    }
+}
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: $lightGray;
+}

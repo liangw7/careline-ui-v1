@@ -1,0 +1,309 @@
+
+  <div class="overlay" *ngIf='loading'>
+    <div class="spinner-wrapper">
+      <spinner></spinner>
+    </div>
+  </div>
+<div *ngIf='bigScreen==1'>
+  <div class="wapper">
+    <div class="nav-tabs-wrapper" *ngIf='!hideHeader'>
+      <ul  class="nav nav-tabs">
+        <li class="nav-item" [ngClass]="{'active':consult,'non-active':!consult}" style="z-index: 10;">
+          <a mat-button class="nav-link " (click)='consult=true; vedio=false;isVisit=false;charge=false'
+            data-toggle="tab">图文咨询
+          </a>
+        </li>
+        <!-- <li class="nav-item" [ngClass]="{'active':vedio,'non-active':!vedio}" style="z-index: 9;">
+          <a mat-button class="nav-link" (click)='consult=false; vedio=true;isVisit=false;charge=false'
+            data-toggle="tab">
+            视频咨询
+            <div class="ripple-container"></div>
+          </a>
+        </li>
+        <li class="nav-item" [ngClass]="{'active':isVisit,'non-active':!isVisit}" style="z-index: 8;">
+          <a mat-button class="nav-link " (click)='consult=false; vedio=false;isVisit=true;charge=false'
+            data-toggle="tab">
+            门诊咨询
+            <div class="ripple-container"></div>
+          </a>
+        </li> -->
+        <li class="nav-item" [ngClass]="{'active':charge,'non-active':!charge}" 
+        style="z-index: 7;">
+          <a mat-button class="nav-link "
+            (click)='consult=false; vedio=false;isVisit=false;charge=true;getInvoices()' data-toggle="tab">
+            收费统计
+            <div class="ripple-container"></div>
+          </a>
+        </li>
+      </ul>
+    </div>
+    <div [ngClass]="{'tab-content':!hideHeader}">
+      <div class="tabcard" *ngIf='consult'>
+        <div class='tabitem'>
+          <div class="title">
+            <div class="title-left">
+              <div class="txt"><span></span><span>图文咨询</span></div>
+            </div>
+          </div>
+          <div style="width: 100%;overflow:hidden;">
+            <div class="tablebox">
+              <table class='table table-striped'>
+                <tr *ngFor="let visit of allConsultVisits|filter: 'consult'"
+                  [ngClass]="{'active': ['active','reserved'].includes(visit.status)}" 
+                  (click)='goToChat(visit)'>
+                  <td><span class="headerimg"><img [src]='getUrl(visit.patient)' /></span></td>
+                  <td *ngIf='visit.profiles'>
+                    <span *ngFor='let profile of visit.profiles'>
+                      <span *ngIf='profile'>{{profile.label.ch}}</span>
+                    </span>
+                  </td>
+                  <td *ngIf='visit.patient'>{{visit.patient.name}}</td>
+    
+                  <td>{{visit.type}}</td>
+                  <td><span class="ststusshow">{{visit.status}}</span></td>
+                  <td>{{visit.visitDate| date: 'yyyy/MM/dd hh:mm'}}</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tabcard" *ngIf='vedio'>
+        <div class='tabitem'>
+          <a class='btn btn-round btn-base' (click)="status='active';" *ngIf="status=='inactive'">active</a>
+          <a class='btn btn-round btn-base' (click)="status='inactive';" *ngIf="status=='active'">all</a>
+          <div class="title">
+            <div class="title-left">
+              <div class="txt"><span></span><span>视频咨询</span></div>
+            </div>
+          </div>
+          <div style="width: 100%;overflow:hidden;">
+            <div class="tablebox">
+              <table class='table table-striped'>
+                <tr *ngFor="let visit of allVedioVisits|filter: 'vedio'">
+                  <td><span class="headerimg"><img [src]='getUrl(visit.patient)' /></span></td>
+                  <td *ngIf='visit.profiles'>
+                    <span *ngFor='let profile of visit.profiles'>
+                      <span *ngIf='profile'>{{profile.label.ch}}</span>
+                    </span>
+                  </td>
+                  <td *ngIf='visit.patient'>{{visit.patient.name}}</td>
+                  <td>{{visit.type}}</td>
+                  <td><span class="ststusshow">{{visit.status}}</span></td>
+                  <td>{{visit.visitDate| date: 'yyyy/MM/dd hh:mm'}}</td>
+                </tr>
+              </table>
+            </div>
+          </div>  
+        </div>
+      </div>
+      <div class="tabcard" *ngIf='isVisit'>
+        <div class='tabitem'>
+          <a class='btn btn-round btn-base' (click)="status='active';" *ngIf="status=='inactive'">active</a>
+          <a class='btn btn-round btn-base' (click)="status='inactive';" *ngIf="status=='active'">all</a>
+          <div class="title">
+            <div class="title-left">
+              <div class="txt"><span></span><span>门诊咨询</span></div>
+            </div>
+          </div>
+          <div style="width: 100%;overflow:hidden;">
+            <div class="tablebox">
+              <table class='table table-striped'>
+                <tr *ngFor="let visit of allOfficeVisits|filter: 'visit'">
+                  <td><span class="headerimg"><img [src]='getUrl(visit.patient)' /></span></td>
+                  <td *ngIf='visit.profiles'>
+                    <span *ngFor='let profile of visit.profiles'>
+                      <span *ngIf='profile'>{{profile.label.ch}}</span>
+                    </span>
+                  </td>
+                  <td *ngIf='visit.patient'>{{visit.patient.name}}</td>
+                  <td>{{visit.type}}</td>
+                  <td><span class="ststusshow">{{visit.status}}</span></td>
+                  <td>{{visit.visitDate| date: 'yyyy/MM/dd hh:mm'}}</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="tabcard" *ngIf='charge'>
+        <div class='tabitem'>
+          <div class="title">
+            <div class="title-left">
+              <div class="txt"><span></span><span>收费统计</span></div>
+            </div>
+          </div>
+          <div style="width: 100%;overflow:hidden;">
+            <div class="tablebox">
+              <table class='table table-striped'>
+                <tr>
+                  <th>患者姓名</th>
+                  <th>咨询金额</th>
+                  <!-- <th>desc</th> -->
+                  <th>时间</th>
+                </tr>
+                <tr *ngFor="let invoice of invoices|orderBy: createdAt">
+                  <td>{{invoice.patient}}</td>
+                  <td>{{invoice.amount}}</td>
+                  <!-- <td>{{invoice.desc}}</td> -->
+                  <td>{{invoice.createdAt| date: 'yyyy/MM/dd hh:mm'}}</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf='bigScreen==0' class='card' style='padding-bottom:80px;
+margin-top:0px;
+overflow:auto;
+background: linear-gradient(to bottom, #19498d 0%, #a8c5ec 50%);' [ngStyle]="{'height':screenHeight *0.95+'px'}">
+  <div class="card-header card-header-tabs " style='margin:0px;padding:0px;background:#19498d;color:white'>
+    <div class="nav-tabs-navigation">
+      <div class="nav-tabs-wrapper">
+        <ul class="nav nav-tabs" data-tabs="tabs">
+
+          <li class="nav-item">
+            <a mat-button class="nav-link active" (click)='consult=true; vedio=false;isVisit=false;charge=false'
+              data-toggle="tab">图文咨询
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a mat-button class="nav-link" (click)='consult=false; vedio=true;isVisit=false;charge=false'
+              data-toggle="tab">
+              视频咨询
+              <div class="ripple-container"></div>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a mat-button class="nav-link " (click)='consult=false; vedio=false;isVisit=true;charge=false'
+              data-toggle="tab">
+              门诊咨询
+              <div class="ripple-container"></div>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a mat-button class="nav-link " (click)='consult=false; vedio=false;isVisit=false;charge=true;getInvoices()'
+              data-toggle="tab">
+              收费统计
+              <div class="ripple-container"></div>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="tab-content card-body" style='background-color: transparent;padding-bottom:0px;min-height:600px;'>
+    <div class="tab-pane active" id="consult" *ngIf='consult'>
+      <div class='card consult'>
+        <span class=' title' style='color:black'>图文咨询</span>
+        <table class='table table-striped'>
+          <tr *ngFor="let visit of allConsultVisits|filter: 'consult'"
+            [ngClass]="{'active': ['active','reserved'].includes(visit.status)}" 
+            (click)='goToChat(visit)'>
+            <td> <img style='width:50px; border-radius: 25px; float:left; margin-right:10px;'
+                [src]='getUrl(visit.patient)'></td>
+            <td *ngIf='visit.profiles'>
+              <span *ngFor='let profile of visit.profiles'>
+                <span *ngIf='profile'>{{profile.label.ch}}</span>
+              </span>
+            </td>
+            <td *ngIf='visit.patient'>{{visit.patient.name}}</td>
+
+            <td>{{visit.type}}</td>
+            <td>{{visit.status}}</td>
+            <td>{{visit.visitDate| date: 'yyyy/MM/dd hh:mm'}}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div class="tab-pane" id="vedio" *ngIf='vedio'>
+      <a class='btn btn-round' style='background-color:transparent;' (click)="status='active';"
+        *ngIf="status=='inactive'">active</a>
+      <a class='btn btn-round' style='background-color:transparent;' (click)="status='inactive';"
+        *ngIf="status=='active'">all</a>
+
+      <div class='card consult'>
+        <span class=' title' style='color:black'>视频咨询</span>
+        <table class='table table-striped'>
+          <tr *ngFor="let visit of allVedioVisits|filter: 'vedio'">
+            <td><img style='width:50px; border-radius: 25px; float:left; margin-right:10px;'
+                [src]='getUrl(visit.patient)'></td>
+            <td *ngIf='visit.profiles'>
+              <span *ngFor='let profile of visit.profiles'>
+                <span *ngIf='profile'>{{profile.label.ch}}</span>
+              </span>
+
+            </td>
+            <td *ngIf='visit.patient'>{{visit.patient.name}}</td>
+
+            <td>{{visit.type}}</td>
+            <td>{{visit.status}}</td>
+            <td>{{visit.visitDate| date: 'yyyy/MM/dd hh:mm'}}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div class="tab-pane" id="visit" *ngIf='isVisit'>
+      <a class='btn btn-round' style='background-color:transparent;' (click)="status='active';"
+        *ngIf="status=='inactive'">active</a>
+      <a class='btn btn-round' style='background-color:transparent;' (click)="status='inactive';"
+        *ngIf="status=='active'">all</a>
+
+      <div class='card consult'>
+        <span class=' title' style='color:black'>门诊咨询</span>
+        <table class='table table-striped'>
+          <tr *ngFor="let visit of allOfficeVisits|filter: 'visit'">
+            <td> <img style='width:50px; border-radius: 25px; float:left; margin-right:10px;'
+                [src]='getUrl(visit.patient)'></td>
+            <td *ngIf='visit.profiles'>
+              <span *ngFor='let profile of visit.profiles'>
+                <span *ngIf='profile'>{{profile.label.ch}}</span>
+              </span>
+
+            </td>
+            <td *ngIf='visit.patient'>{{visit.patient.name}}</td>
+            <td>{{visit.type}}</td>
+            <td>{{visit.status}}</td>
+            <td>{{visit.visitDate| date: 'yyyy/MM/dd hh:mm'}}</td>
+          </tr>
+        </table>
+      </div>
+
+    </div>
+    <div class="tab-pane" id="charge" *ngIf='charge'>
+
+      <div class='card consult'>
+        <span class=' title' style='color:black'>收费统计</span>
+        <table class='table table-striped'>
+          <tr>
+            <th>name</th>
+            <th>amount</th>
+            <th>desc</th>
+            <th>time</th>
+          </tr>
+          <tr *ngFor="let invoice of invoices|orderBy: createdAt">
+            <td>{{invoice.patient}}</td>
+
+            <td>{{invoice.amount}}</td>
+            <td>{{invoice.desc}}</td>
+            <td>{{invoice.createdAt| date: 'yyyy/MM/dd hh:mm'}}</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="popping" *ngIf='chatRoom'>
+  <div class='card' *ngIf='chatRoom' [ngClass]="{'mail-cell':bigScreen==0,'mail-pc':bigScreen==1}">
+    <chat [selected]='selectedPatient' [visit]='activeConsultVisit' [profile]='selectedProfile' [user]='user'
+      [language]='language' [bigScreen]='this.bigScreen' (messageEvent)="receiveMessage($event)"></chat>
+  </div>
+</div>
+
+
+  

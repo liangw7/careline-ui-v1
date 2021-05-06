@@ -1,0 +1,176 @@
+<div class='side-bar' [ngClass]="{'sidbarhidden': !sidebarShow}">
+  <div *ngIf='bigScreen==1'>
+    <div class="user-container">
+      <div class="headerimg" (click)="getPersonInfo()">
+        <img *ngIf="user.photo" [src]="getImg(user.photo)" />
+        <img *ngIf="!user.photo" src="../../../../assets/images/header.png" />
+      </div>
+      <div class="info" *ngIf="language=='Chinese'">
+        <div *ngIf="!hasFamilyMembers">
+          <span>{{user.name}}</span>
+          <span class="quit">
+            <img (click)='logout()' src="../../../../assets/images/core/quit.png" alt="">
+          </span>
+        </div>
+        <div *ngIf="hasFamilyMembers">
+          <span mat-button [matMenuTriggerFor]="menu"
+            *ngIf="nowFamilyMember">{{nowFamilyMember}}<i>{{nowFamilyMemberrelationships}}</i></span>
+          <span mat-button [matMenuTriggerFor]="menu" *ngIf="!nowFamilyMember">{{user.name}}</span>
+          <mat-menu #menu="matMenu">
+            <button mat-menu-item *ngFor="let u of allFamilyMembers"
+              (click)="changeFamilyMember(u)">{{u.name}}_{{getRelationshipName(u.relationship)}}</button>
+          </mat-menu>
+          <span class="quit">
+            <img (click)='logout()' src="../../../../assets/images/core/quit.png" alt="">
+          </span>
+        </div>
+        <!-- <div class="selrolebox" *ngIf="hasFamilyMembers">
+          <mat-form-field appearance="fill" style="width: 60%;">
+            <mat-select>
+              <mat-option *ngFor="let u of allFamilyMembers" [value]="u._id">
+                {{u.name}}_{{getRelationshipName(u.relationship)}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+          <span class="quit">
+            <img (click)='logout()' src="../../../../assets/images/core/quit.png" alt="">
+          </span>
+        </div> -->
+        <p>{{user.title}}</p>
+      </div>
+      <div class="info" *ngIf="language=='English'">
+        <div><span>Logging user: {{user.name}}</span><span class="quit"><img (click)='logout()'
+              src="../../../../assets/images/core/quit.png" alt=""></span></div>
+        <p>{{user.enTitle}}</p>
+      </div>
+    </div>
+    <div *ngIf='!user.name'>
+      <a class='btn btn-round btn-block' style='color:red'>personal information!!!</a>
+
+    </div>
+  </div>
+  <div class="el-scrollbar">
+    <div class="scrollbar-wrapper el-scrollbar__wrap">
+      <div class="el-scrollbar__view">
+
+        <ul class="el-menu green" *ngIf="color=='green'">
+          <div class="menu-wrapper" *ngFor="let menuItem of menuItems" class="{{menuItem.class}} nav-item"
+            (click)='getLink(menuItem)'>
+            <li class="el-menu-item" [ngClass]="{'is-active':menuItem.active}">
+              <a class="nav-link" [routerLink]="menuItem.path"  [queryParams]="menuItem.param">
+                <i class="menu-icon"><img [src]="menuItem.img" alt=""></i>
+                <!-- <i class="{{menuItem.icon}}"></i> -->
+                <span *ngIf="language=='Chinese'">{{menuItem.title}}</span>
+                <span *ngIf="language=='English'">{{menuItem.enTitle}}</span>
+                <i class="el-submenu__icon-arrow el-icon-arrow-down"></i>
+              </a>
+            </li>
+          </div>
+        </ul>
+        <ul class="el-menu purple" *ngIf="color=='purple'">
+          <div class="menu-wrapper" *ngFor="let menuItem of menuItems" class="{{menuItem.class}} nav-item"
+            (click)='getLink(menuItem)'>
+            <li class="el-menu-item" [ngClass]="{'is-active':menuItem.active}">
+              <a class="nav-link" [routerLink]="menuItem.path">
+                <i class="menu-icon"><img [src]="menuItem.img" alt=""></i>
+                <!-- <i class="{{menuItem.icon}}"></i> -->
+                <span *ngIf="language=='Chinese'">{{menuItem.title}}</span>
+                <span *ngIf="language=='English'">{{menuItem.enTitle}}</span>
+                <i class="el-submenu__icon-arrow el-icon-arrow-down"></i>
+              </a>
+            </li>
+          </div>
+
+        </ul>
+        <ul class="el-menu" *ngIf="color!='purple'&&color!='green'">
+          <div class="menu-wrapper" *ngFor="let menuItem of menuItems" class="{{menuItem.class}} nav-item"
+            (click)='getLink(menuItem)'>
+            <li class="el-menu-item" [ngClass]="{'is-active':menuItem.active}">
+              <a class="nav-link" [routerLink]="menuItem.path">
+                <i class="menu-icon"><img [src]="menuItem.img" alt=""></i>
+                <!-- <i class="{{menuItem.icon}}"></i> -->
+                <span *ngIf="language=='Chinese'">{{menuItem.title}}</span>
+                <span *ngIf="language=='English'">{{menuItem.enTitle}}</span>
+                <i class="el-submenu__icon-arrow el-icon-arrow-down"></i>
+              </a>
+            </li>
+          </div>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- <div class='side-bar' [ngClass]="{'side-bar-rose':color=='purple',
+        'side-bar-green':color=='green',
+        'side-bar-blue':color!='green'
+        &&color!='purple'}">
+  <div *ngIf='bigScreen==1'>
+    <p><img [src]="user.photo" class='photo' style='margin-top:10px;' />
+      <a class='btn btn-round'  (click)='logout()' >
+        退出
+     </a>
+    </p>
+
+    <a href='javascript:void(0);' style='padding:35px;color:white'>
+      <span>
+        <span *ngIf="language=='Chinese'">{{this.user.name}}
+
+          &nbsp; {{this.user.title}} </span>
+        <span *ngIf="language=='English'">Logging user:
+          <span style='font-weight:600'> {{this.user.name}}
+            &nbsp; {{this.user.enTitle}}</span>
+        </span>
+      </span>
+    </a>
+
+    <div class="side-bar-wrapper">
+       <ul class="nav" *ngIf="color=='green'">
+        <li routerLinkActive="greenActive" 
+        *ngFor="let menuItem of menuItems" 
+            class="{{menuItem.class}} nav-item" 
+            (click)='getLink(menuItem)' >
+          <a class="nav-link"  >
+            <i class="{{menuItem.icon}}"></i>
+            <p> <span *ngIf="language=='Chinese'">{{menuItem.title}}</span>
+              <span *ngIf="language=='English'">{{menuItem.enTitle}}</span>
+            </p>
+          </a>
+       
+        </li>
+
+      </ul>
+      <ul class="nav" *ngIf="color=='purple'">
+        <li 
+        routerLinkActive="purpleActive" 
+        *ngFor="let menuItem of menuItems" 
+        class="{{menuItem.class}} nav-item"  
+        (click)='getLink(menuItem)'>
+          <a class="nav-link">
+            <i class="{{menuItem.icon}}"></i>
+            <p> <span *ngIf="language=='Chinese'">{{menuItem.title}}</span>
+              <span *ngIf="language=='English'">{{menuItem.enTitle}}</span>
+            </p>
+          </a>
+        
+        </li>
+
+      </ul>
+      <ul class="nav" *ngIf="color!='purple'&&color!='green'">
+        <li [ngClass]="{'blueActive':menuItem.active}"
+        *ngFor="let menuItem of menuItems" 
+        class="{{menuItem.class}} nav-item"
+        (click)='getLink(menuItem)'>
+           <a class="nav-link"  >
+            <i class="{{menuItem.icon}}"></i>
+            <p> <span *ngIf="language=='Chinese'">{{menuItem.title}}</span>
+              <span *ngIf="language=='English'">{{menuItem.enTitle}}</span>
+            </p>
+          </a>
+        
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>  -->

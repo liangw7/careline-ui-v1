@@ -1,0 +1,272 @@
+<button mat-button class="btn btn-primary" (click)="close()">取消</button>
+<button mat-button class="btn btn-primary" (click)="save()">提交</button>
+<div>
+  <h2 *ngIf='registryUser'>{{registryUser.name}}</h2>
+  <!-- <app-form [forms]='forms' *ngIf='initialProfiles' [language]='language'></app-form> -->
+  <mat-tab-group *ngIf="!initialProfiles" (selectedTabChange)="tabSelectionChanged($event)">
+    <mat-tab label='general'>
+      <select class="form-control" [(ngModel)]="specialty">
+        <option *ngFor="let specialty of specialtyList" value={{specialty.text}}>
+          {{specialty.text}}
+        </option>
+      </select>-->
+      <div *ngIf="forms">
+        <!-- <app-form [language]='language' [forms]='forms' [emBedSet]=true [registry]=true>
+        </app-form> -->
+      </div>
+    </mat-tab>
+    <mat-tab label='Profile' *ngIf="(role=='service'||role=='provider')">
+      <div class='row'>
+        <div class='col-sm-6'>
+          <div class="card">
+            <div class="card-header card-header-primary">
+              <h4 class="card-title ">Profiles</h4>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table">
+
+                  <tbody>
+                    <tr (click)=" select(profileItem,selectedProfiles);"
+                      *ngFor="let profileItem of profiles|filter: search"
+                      [ngClass]="{'selected': find(profileItem, selectedProfiles)}">
+                      <td>{{profileItem.name}}</td>
+
+                    </tr>
+                  </tbody>
+
+                </table>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div class='col-sm-6'>
+          <div class="card">
+            <div class="card-header card-header-primary">
+              <h4 class="card-title ">Selected Profiles</h4>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table">
+
+                  <tbody>
+                    <tr  *ngFor="let profile of selectedProfiles">
+                      <td>{{profile.name}}</td>
+
+                    </tr>
+                  </tbody>
+
+                </table>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-tab>
+    <mat-tab label='Form'>
+      <div class='row'>
+        <div class='col-sm-6'>
+          <div class="card">
+            <div class="card-header card-header-primary">
+              <h4 class="card-title ">forms</h4>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table">
+
+                  <tbody>
+                    <tr (click)=" select(formItem,selectedForms);" *ngFor="let formItem of poolForms|filter: search"
+                      [ngClass]="{'selected': find(formItem, selectedForms)}">
+                      <td>{{formItem.name}}</td>
+
+                    </tr>
+                  </tbody>
+
+                </table>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div class='col-sm-6'>
+          <div class="card">
+            <div class="card-header card-header-primary">
+              <h4 class="card-title ">Selected Forms</h4>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table">
+
+                  <tbody>
+                    <tr *ngFor="let form of selectedForms">
+                      <td>{{form.label.ch}}</td>
+
+                    </tr>
+                  </tbody>
+
+                </table>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-tab>
+    <mat-tab label='Provider' *ngIf="role=='service'">
+      <div class='row'>
+        <div class='col-sm-6'>
+          <div class="card">
+            <div class="card-header card-header-primary">
+              <h4 class="card-title">Providers</h4>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table">
+
+                  <tbody>
+                    <tr (click)=" select(providerItem,selectedProviders);"
+                      *ngFor="let providerItem of providers|filter: search"
+                      [ngClass]="{'selected': find(providerItem, selectedProviders)}">
+                      <td>{{providerItem.name}}</td>
+
+                    </tr>
+                  </tbody>
+
+                </table>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div class='col-sm-6'>
+          <div class="card">
+            <div class="card-header card-header-primary">
+              <h4 class="card-title ">Selected Providers</h4>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table">
+
+                  <tbody>
+                    <tr *ngFor="let provider of selectedProviders">
+                      <td>{{provider.name}}</td>
+
+                    </tr>
+                  </tbody>
+
+                </table>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-tab>
+    <mat-tab label='Service' *ngIf="role=='market place'">
+      <div class='row'>
+        <div class='col-sm-6'>
+          <div class="card">
+            <div class="card-header card-header-primary">
+              <h4 class="card-title ">Service</h4>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table">
+
+                  <tbody>
+                    <tr (click)=" select(serviceItem,selectedServiceList);"
+                      *ngFor="let serviceItem of serviceList|filter: search"
+                      [ngClass]="{'selected': find(serviceItem, selectedServiceList)}">
+                      <td>{{serviceItem.name}}</td>
+
+                    </tr>
+                  </tbody>
+
+                </table>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div class='col-sm-6'>
+          <div class="card">
+            <div class="card-header card-header-primary">
+              <h4 class="card-title ">Selected ServiceList</h4>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table">
+
+                  <tbody>
+                    <tr *ngFor="let service of selectedServiceList">
+                      <td>{{service.name}}</td>
+
+                    </tr>
+                  </tbody>
+
+                </table>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-tab>
+    <mat-tab label='Market' *ngIf="role=='market place'">
+      <div class='row'>
+        <div class='col-sm-6'>
+          <div class="card">
+            <div class="card-header card-header-primary">
+              <h4 class="card-title ">Market</h4>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table">
+
+                  <tbody>
+                    <tr (click)=" select(marketItem,selectedMarketList);"
+                      *ngFor="let marketItem of marketList|filter: search"
+                      [ngClass]="{'selected': find(marketItem, selectedMarketList)}">
+                      <td *ngIf='!marketItem.label'>{{marketItem.name}}</td>
+                      <td *ngIf="marketItem.label&&language=='Chinese'">{{marketItem.label.ch}}</td>
+                      <td *ngIf="marketItem.label&&language=='English'">{{marketItem.label.en}}</td>
+
+                    </tr>
+                  </tbody>
+
+                </table>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        <div class='col-sm-6'>
+          <div class="card">
+            <div class="card-header card-header-primary">
+              <h4 class="card-title ">Selected MarketList</h4>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <table class="table">
+
+                  <tbody>
+                    <tr *ngFor="let market of selectedMarketList">
+                      <td>{{market.name}}</td>
+
+                    </tr>
+                  </tbody>
+
+                </table>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-tab>
+
+  </mat-tab-group>
+
+</div>

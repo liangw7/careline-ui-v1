@@ -1,0 +1,33 @@
+<div class="wapper" [ngClass]="{'card': bigScreen==1}">
+    <div class="closebtn" (click)='close()'>
+      <i class='material-icons'>close</i>
+    </div>
+    <div class='btns'>
+      <button class='btn btn-round btn-base' (click)='payment()'>提交预约: 费用5$</button>
+      <button class='btn btn-round btn-default' (click)='delete()'>取消预约</button>
+    </div>
+  
+    <div class='card-header' *ngIf='profiles&&profiles.length>1'>
+      <span *ngFor='let profile of profiles ' (click)='getForm(profile)'>
+        <i class='fa fa-circle-o' *ngIf="!selectedProfile||(selectedProfile&&profile._id!=selectedProfile._id)"
+          style='font-size:24px;  margin-bottom:0px;color:blue'></i>
+        <i class='fa fa-check-circle-o' *ngIf="selectedProfile&&profile._id==selectedProfile._id"
+          style='font-size:24px;  margin-bottom:0px;color:blue'></i>
+        <span> &nbsp;&nbsp;{{profile.label.ch}}</span>
+      </span>
+    </div>
+    <div class='card-header' *ngIf='profiles&&profiles.length==1'>
+      <span style='font-weight: 700;font-size: large;'> &nbsp;&nbsp;{{profiles[0].label.ch}} 预约表</span>
+    </div>
+    <div class='card-body' *ngIf='forms'>
+      <app-form [forms]='forms' [language]='language' [visit]='schedule' [patient]='patient' [emBedSet]=true></app-form>
+    </div>
+  </div>
+  
+  
+  <div class="overlay" *ngIf="loading">
+    <div class="spinner-wrapper">
+      <spinner></spinner>
+    </div>
+  </div>
+  

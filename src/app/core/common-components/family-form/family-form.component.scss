@@ -1,0 +1,38 @@
+@import 'src/assets/scss/base.scss';
+.mat-radio-button ~ .mat-radio-button {
+    margin-left: 16px;
+}
+.wapper {
+    position: relative;
+    padding: 20px;
+    .forms {
+        .form-group {
+            margin: 0;
+            padding: 0;
+            .control-label {
+                font-size: $fontSize16;
+                color: $darkfontColor;
+                text-align: right;
+                line-height: 60px;
+                padding: 0 10px 0;
+            }
+            .mat-radio-button {
+                margin: 20px 10px;
+            }
+            .thumbnail {
+                width: 160px;
+                display: inline-block;
+                margin-right: 20px;
+                vertical-align: top;
+                img {
+                    width: 100%;
+                    vertical-align: top;
+                }
+            }
+            & > .btn-base {
+                width: 200px;
+                margin: 20px auto 0;
+            }
+        }
+    }
+}

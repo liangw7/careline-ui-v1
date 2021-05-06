@@ -1,0 +1,226 @@
+@import 'src/assets/scss/base.scss';
+
+.row-pc {
+  display: block;
+  flex-wrap: nowrap;
+  margin-top: -15px;
+  margin-bottom: -15px;
+  margin-left: -30px;
+  margin-right: -30px;
+
+  .col-sm-3 {
+    float: left;
+  }
+
+  .col-sm-6 {
+    float: left;
+  }
+
+  .rowitem {
+    margin: 15px 0;
+    padding: 30px 45px 0 50px;
+    height: calc((100vh - 190px)/3);
+    min-height: 180px;
+    background: #ffffff;
+    border-radius: 19px;
+    box-shadow: 0px 9px 29px 0px rgba(0, 0, 0, 0.09);
+    box-sizing: border-box;
+
+    .title {
+      font-size: $fontSize20;
+      font-family: SourceHanSansSC, SourceHanSansSC-Bold;
+      font-weight: 700;
+      text-align: left;
+      color: #0c4492;
+      line-height: 36px;
+      text-shadow: 0px 8px 2px #C2DDFF;
+    }
+
+    .link {
+      margin-top: 8px;
+      font-size: $fontSize16;
+      font-family: SourceHanSansSC, SourceHanSansSC-Regular;
+      font-weight: 400;
+      text-align: left;
+      color: $lightfontColor;
+      line-height: 29px;
+      cursor: pointer;
+    }
+
+    .pic {
+      float: right;
+      display: inline-block;
+      width: 70px;
+
+      img {
+        width: 100%;
+        vertical-align: top;
+      }
+    }
+
+    &.infobox {
+      height: calc((100vh - 190px)/1.5 + 29px);
+
+      // min-height: 440px;
+      .title {
+        text-align: center;
+      }
+
+      .headerimg {
+        width: 164px;
+        height: 164px;
+        border-radius: 82px;
+        overflow: hidden;
+        margin: 45px auto 30px;
+
+        img {
+          width: 100%;
+          vertical-align: top;
+        }
+      }
+
+      .info {
+        margin-bottom: 50px;
+
+        .name {
+          font-size: $fontSize20;
+          font-family: SourceHanSansSC, SourceHanSansSC-Bold;
+          font-weight: 700;
+          text-align: center;
+          color: $darkfontColor;
+          line-height: 36px;
+          margin-bottom: 14px;
+        }
+
+        .title {
+          font-size: $fontSize16;
+          font-family: SourceHanSansSC, SourceHanSansSC-Medium;
+          font-weight: 500;
+          text-align: center;
+          color: $lightfontColor;
+          line-height: 29px;
+        }
+      }
+
+      .link {
+        text-align: center;
+      }
+    }
+  }
+}
+
+.wap-wapper {
+  .phone-top {
+    height: 170px;
+    width: 100%;
+    margin-top: 0px;
+    background: linear-gradient(to left top, rgba(5, 52, 118, 1), rgba(45, 121, 230, 1));
+    position: relative;
+    .quit {
+        position: absolute;
+        top: 10rem/$base;
+        right: 10rem/$base;
+        width: 30rem/$base;
+        height: 30rem/$base;
+        img{
+            width: 100%;
+            vertical-align: top;
+        }
+      }
+    .user-container {
+      padding: 20rem/$base 20rem/$base 20rem/$base 140rem/$base;
+      position: relative;
+      .headerimg {
+          position: absolute;
+          top: 20rem/$base;
+          left: 20rem/$base;
+          width: 100rem/$base;
+          height: 100rem/$base;
+          border-radius: 50%;
+          overflow: hidden;
+        img {
+            width: 100%;
+            vertical-align: top;
+        }
+      }
+      .info {
+        .name {
+          font-size: $fontSize20;
+          font-family: SourceHanSansSC, SourceHanSansSC-Bold;
+          font-weight: 700;
+          text-align: center;
+          color: #fff;
+          line-height: 36rem/$base;
+        }
+        .title {
+          font-size: $fontSize16;
+          font-family: SourceHanSansSC, SourceHanSansSC-Medium;
+          font-weight: 500;
+          text-align: center;
+          color: #fff;
+          line-height: 28rem/$base;
+          min-height: 10rem/$base;
+          margin-bottom: 0;
+        }
+        .btn-blue {
+          background: $grey-background;
+          box-shadow: 8px 0px 2px #C2DDFF;
+          margin: 0;
+          font-size: small;
+          font-weight: 600;
+          color: rgba(45, 121, 230, 1);
+        }
+      }
+    } 
+  }
+
+  .row-cell {
+    margin-top: -30rem/$base;
+    padding-top: 30rem/$base;
+    background: $grey-background;
+    border-radius: 30rem/$base 30rem/$base;
+    position: relative;
+    z-index: 2;
+    .rowitem {
+      float: left;
+      width: 25%;
+      margin-bottom: 15rem/$base;
+      box-sizing: border-box;
+      .pic {
+        width: 36rem/$base;
+        height: 36rem/$base;
+        margin: 0 auto;
+        img {
+          width: 100%;
+          vertical-align: top;
+        }
+      }
+      .title {
+        font-size: 0.75rem;
+        font-family: SourceHanSansSC, SourceHanSansSC-Bold;
+        text-align: left;
+        color: $darkfontColor;
+        line-height: 36px;
+        text-align: center;
+      }
+    }
+  }
+
+
+}
+
+.block {
+  height: 105%;
+  width: 102%;
+  left: 0;
+  background: $grey-background;
+  top: 0;
+  margin-top: -5%;
+  margin-left: -1%;
+  bottom: 0;
+  right: 0;
+  position: fixed;
+  z-index: 1000;
+  overflow: auto;
+  padding: 5px;
+}

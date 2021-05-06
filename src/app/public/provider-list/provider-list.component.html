@@ -1,0 +1,58 @@
+<div class="pc-doctor-main" *ngIf='bigScreen==1'>
+    <!-- <div class="container">
+      <div class="image-slider">
+        <img *ngFor="let  slider of sliders" [src]="slider">
+      </div>
+      <div class="nav-section">
+        <span *ngFor="let _ of sliders;let idx=index" class="slide-button"
+        [ngClass]="{'slide-button-select': idx==selectedIndex}"></span>
+      </div>
+    </div> -->
+    <div class="pc-doctor-middle">
+        <!-- <div>最新</div>
+        <div>参与度</div>
+        <div>浏览量</div>
+        <div>互动</div> -->
+    </div>
+    <div class="pc-doctor-bottom">
+        <div class="pc-doctor-bottom-div" *ngFor='let provider of providers|filter:search'>
+            <a class='card' [routerLink]="['../provider', provider._id]">
+                <img [src]="getUrl(provider.photo)" alt="" class="pc-doctor-bottom-main-img"
+                [ngStyle]="{'margin-left': imgMarginleft + 'px'}">
+                <p class="pc-doctor-bottom-1">{{provider.name}}</p>
+                <p class="pc-doctor-bottom-2">{{provider.title}}</p>
+                <p class="pc-doctor-bottom-3">{{provider.desc}}</p>
+            </a>
+        </div>
+    </div>
+</div>
+
+
+<div class="phone-doctor-main"  *ngIf='bigScreen==0'>
+    <!-- <div class="container">
+      <div class="image-slider">
+        <img *ngFor="let  slider of sliders" [src]="slider">
+      </div>
+      <div class="nav-section">
+        <span *ngFor="let _ of sliders;let idx=index" class="slide-button"
+        [ngClass]="{'slide-button-select': idx==selectedIndex}"></span>
+      </div>
+    </div> -->
+    <div class="phone-doctor-middle">
+        <!-- <div>最新</div>
+        <div>参与度</div>
+        <div>浏览量</div>
+        <div>互动</div> -->
+    </div>
+    <div class="phone-doctor-bottom">
+        <div class="phone-doctor-bottom-div" *ngFor='let provider of providers|filter:search'>
+            <a class='card' [routerLink]="['../provider', provider._id]">
+                <img [src]="getUrl(provider.photo)" alt="" class="phone-doctor-bottom-main-img"
+                [ngStyle]="{'margin-left': imgMarginleftPhone + 'px'}">
+                <p class="phone-doctor-bottom-1">{{provider.name}}</p>
+                <p class="phone-doctor-bottom-2">{{provider.title}}</p>
+                <p class="phone-doctor-bottom-3">{{provider.desc}}</p>
+            </a>
+        </div>
+    </div>
+</div>

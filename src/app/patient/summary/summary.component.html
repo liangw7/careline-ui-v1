@@ -1,0 +1,134 @@
+<div class="overlay" *ngIf="loading">
+  <div class="spinner-wrapper">
+    <spinner></spinner>
+  </div>
+</div>
+<mat-tab-group *ngIf='!selectedObSet&&bigScreen==1'>
+  <mat-tab label='生长曲线' *ngIf='pedsPatient()'>
+    <div class='row'>
+      <div class="col-sm-6 col-md-4" *ngFor="let ob of growthChartObs|orderBy:'index'">
+        <div class='card'>
+          <div class='card-header' [ngClass]="{'card-header-rose':color=='purple',
+            'card-header-success':color=='green',
+            'card-header-primary':color!='green'&&color!='purple'}">{{ob.label.ch}}
+          </div>
+          <div class='card-body' *ngIf='ob.desc&&ob.desc.charts'>
+            <growth-chart [ob]='ob' [patient]='patient' [width]=600 [height]=500></growth-chart>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-tab>
+  <mat-tab label="{{getProfileName(language,profile)}}" *ngFor='let profile of profiles'>
+    <div [ngClass]="{'row':bigScreen==1}" style='padding:20px;'>
+      <div [ngClass]="{'col-md-3':bigScreen==1}" 
+      *ngFor="let obSet of profile.summary|orderBy:'index'">
+        <div class='card' 
+              [ngClass]="{'selected_1': obSet.dataViewerType!='table'&& bigScreen==0,
+                          'selected_2':  obSet.dataViewerType=='table'&& bigScreen==0}">
+
+          <div class='card-header chart-header' >
+            <span *ngIf="!obSet.label">{{obSet.name}}</span>
+            <span *ngIf="language=='Chinese'&&obSet.label">{{obSet.label.ch}}</span>
+            <span *ngIf="language=='English'&&obSet.label">{{obSet.label.en}}</span>
+            <span>&nbsp;&nbsp;&nbsp;&nbsp;最近{{obSet.limit}}次:</span>
+            <button class='btn pull-right' (click)='obSet.limit=5'
+              style='background-color: inherit; color:white; padding:2px;margin-left:5px;'>5 </button>
+            <button class='btn pull-right' (click)='obSet.limit=10'
+              style='background-color: inherit; color:white;padding:2px;margin-left:5px;'>10 </button>
+            <button class='btn pull-right' (click)='obSet.limit=15'
+              style='background-color: inherit; color:white;padding:2px;margin-left:5px;'>15</button>
+            <button class='btn pull-right' (click)='obSet.limit=20'
+              style='background-color: inherit; color:white;padding:2px;margin-left:5px;'>20 </button>
+          </div>
+          <div *ngIf='!profile.profileUrl'>
+            <graph-summary [profile]='profile' [limit]='obSet.limit' [selectedPatient]='patient' [obSet]='obSet'
+              [language]='language'></graph-summary>
+          </div>
+          <div *ngIf='profile.profileUrl'>
+            <graph-device-summary [profile]='profile' [limit]='obSet.limit' [selectedPatient]='patient' [obSet]='obSet'
+              [language]='language'></graph-device-summary>
+          </div>
+        </div>
+      </div>
+      
+    </div>
+  </mat-tab>
+</mat-tab-group>
+<div class="wap-wapper" *ngIf="!selectedObSet&&bigScreen==0">
+  <ul class="profile-lists">
+    <li class="profile-list"  *ngFor='let profile of  profiles' (click)='selectedProfile=profile;showGrowthChart=false;'>
+      <div class="imgbox"><img [src]="profile.imageUrl" /></div>
+      <div class="title" *ngIf='profile.label'>{{profile.label.ch}}</div>
+    </li>
+  </ul>
+  <div class='card card-stats' (click)='showGrowthChart=true; selectedProfile=null;'>
+    <p class="card-title">
+      <span style='font-weight: 800' *ngIf='pedsPatient()'>生长曲线</span>
+    </p>
+  </div>
+
+  <div class='summary' *ngIf='selectedProfile'>
+    <div class="backbox">
+      <span (click)='selectedProfile=undefined' class="material-icons">chevron_left</span>
+      <span *ngIf="language=='Chinese'">{{selectedProfile.label.ch}}</span>
+      <span *ngIf="language=='English'"> {{selectedProfile.label.en}}</span>
+    </div>
+    <div *ngFor="let obSet of selectedProfile.summary|orderBy:'index'" class='card chartlist'>
+      <div class='card-header' style='padding:10px;' [ngClass]="{'card-header-rose':color=='purple',
+                                'card-header-success':color=='green',
+                                'card-header-primary':color!='green'
+                                &&color!='purple'}">
+        <span *ngIf="!obSet.label">{{obSet.name}}</span>
+        <span *ngIf="language=='Chinese'&&obSet.label">{{obSet.label.ch}}</span>
+        <span *ngIf="language=='English'&&obSet.label">{{obSet.label.en}}</span>
+        <button class='btn pull-right' (click)='obSet.limit=5'
+          style='background-color: inherit; color:white; padding:2px;margin-left:5px;'>5 </button>
+        <button class='btn pull-right' (click)='obSet.limit=10'
+          style='background-color: inherit; color:white;padding:2px;margin-left:5px;'>10 </button>
+        <button class='btn pull-right' (click)='obSet.limit=15'
+          style='background-color: inherit; color:white;padding:2px;margin-left:5px;'>15</button>
+        <button class='btn pull-right' (click)='obSet.limit=20'
+          style='background-color: inherit; color:white;padding:2px;margin-left:5px;'>20 </button>
+      </div>
+      <div class='card-body'>
+        <div *ngIf='!selectedProfile.profileUrl' style='min-height:300px;'>
+          <graph-summary [profile]='selectedProfile' [limit]='obSet.limit' [selectedPatient]='patient' [obSet]='obSet'
+            [language]='language'></graph-summary>
+        </div>
+        <div *ngIf='selectedProfile.profileUrl' style='min-height:300px;'>
+          <graph-device-summary [profile]='selectedProfile' [limit]='obSet.limit' [selectedPatient]='patient'
+            [obSet]='obSet' [language]='language'></graph-device-summary>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class='summary' *ngIf='showGrowthChart'>
+    <div class="backbox">
+      <span (click)='showGrowthChart=false' class="material-icons">chevron_left</span>
+    </div>
+    <div *ngFor="let ob of growthChartObs|orderBy:'index'" class='card' style='width:92%; margin:10px auto;'>
+      <div class='card-header' [ngClass]="{'card-header-rose':color=='purple',
+        'card-header-success':color=='green',
+        'card-header-primary':color!='green'&&color!='purple'}">{{ob.label.ch}}
+      </div>
+      <div class='card-body'>
+        <growth-chart [ob]='ob' [patient]='patient' [width]=600 [height]=500></growth-chart>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class='card' [ngClass]="{'chat-report row':bigScreen==1}" [ngClass]="{'wap-chat-report row':bigScreen==0}" *ngIf='selectedObSet'>
+  <div class='card-header'>
+    <span *ngIf="!selectedObSet.label">{{selectedObSet.name}}</span>
+    <span *ngIf="language=='Chinese'&&selectedObSet.label">{{selectedObSet.label.ch}}</span>
+    <span *ngIf="language=='English'&&selectedObSet.label">{{selectedObSet.label.en}}</span>
+    <button class='btn pull-right' (click)='selectedObSet.limit=5'>5 </button>
+    <button class='btn pull-right' (click)='selectedObSet.limit=10'>10 </button>
+    <button class='btn pull-right' (click)='selectedObSet.limit=15'>15</button>
+    <button class='btn pull-right' (click)='selectedObSet.limit=20'>20 </button>
+  </div>
+  <graph-summary [limit]='selectedObSet.limit' [selectedPatient]='patient' [obSet]='selectedObSet'
+    [language]='language'></graph-summary>
+</div>

@@ -1,0 +1,145 @@
+<div class='card'style='margin-left:8px;'>
+    <div class="row">
+        <div class="col-sm-4">
+            <input class="form-control" type="text" 
+            placeholder="search Diagnosis" 
+            (input)="clearSearch($event)"
+            [(ngModel)]="search">
+        </div>
+        
+        <div class="col-sm-6" >
+            <button class="btn btn-primary"
+            (click)='searchDiagnosis(search)'
+            [ngClass]="{'card-rose':color=='purple',
+            'card-success':color=='green',
+            'card-primary':color!='green'
+            &&color!='purple'}" >
+                Search
+             </button>
+           <!-- <button class="btn btn-primary"
+            (click)='addDiagnosis()'
+            [ngClass]="{'card-rose':color=='purple',
+            'card-success':color=='green',
+            'card-primary':color!='green'
+            &&color!='purple'}" >
+                 Add
+             </button>
+             <button class="btn btn-primary"
+             (click)='updateDiagnosis()'
+             [ngClass]="{'card-rose':color=='purple',
+             'card-success':color=='green',
+             'card-primary':color!='green'
+             &&color!='purple'}" >
+                  update with Chinese
+              </button>-->
+           
+        </div>
+        <div class='col-sm-2'>
+                <span   [ngClass]="{'card-rose-color':color=='purple',
+                'card-success-color':color=='green',
+                'card-primary-color':color!='green'
+                &&color!='purple'}" (click)='showCh=true;'>Chiness|</span>
+                <span   [ngClass]="{'card-rose-color':color=='purple',
+                'card-success-color':color=='green',
+                'card-primary-color':color!='green'
+                &&color!='purple'}" (click)='showEn=!showEn;'>English</span>
+              </div>
+    </div>
+  
+        <div class='row'>
+            <div class='col-sm-3'>
+        <table class="table">
+            <tr  *ngFor="let diagnosis of diagnosisList"
+            (click)='addToDiagnosis(diagnosis)'
+            [ngClass]="{'primary-selectedLevel':findDiagnosis(diagnosis)&&color!='purple'&&color!='green',
+                        'success-selectedLevel':findDiagnosis(diagnosis)&&color=='green',
+                        'rose-selectedLevel':findDiagnosis(diagnosis)&&color=='purple'   }">
+            <td>{{diagnosis._code}}</td>
+            <td>
+            <span *ngIf='diagnosis.chRubric&&diagnosis.chRubric.length>0&&diagnosis.chRubric[0].Label&&showCh'> 
+                    {{diagnosis.chRubric[0].Label.__Text}}</span>
+            <span *ngIf='diagnosis.Rubric.length>0&&showEn'> 
+                   {{diagnosis.Rubric[0].Label.__text}}</span>
+                </td>
+                <td>      
+                    <button (click)='getLevelTwoClass(diagnosis)'style='padding:0'
+                    [ngClass]="{'primary-selectedLevel': selectedLevelOne&&selectedLevelOne._id==diagnosis._id&&color!='purple'&&color!='green',
+                    'success-selectedLevel':selectedLevelOne&&selectedLevelOne._id==diagnosis._id&&color=='green',
+                    'rose-selectedLevel':selectedLevelOne&&selectedLevelOne._id==diagnosis._id&&color=='purple'}"><i class='material-icons'>unfold_more</i></button>
+          
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div class='col-sm-3'>
+        <table class="table">
+            <tr    *ngFor="let diagnosis of diagnosisLevelTwoList"
+            (click)='addToDiagnosis(diagnosis)'
+            [ngClass]="{'primary-selectedLevel':findDiagnosis(diagnosis)&&color!='purple'&&color!='green',
+                        'success-selectedLevel':findDiagnosis(diagnosis)&&color=='green',
+                        'rose-selectedLevel':findDiagnosis(diagnosis)&&color=='purple'}">
+                <td>{{diagnosis._code}}</td>
+                <td>
+                    <span *ngIf='diagnosis.chRubric&&diagnosis.chRubric.length>0&&diagnosis.chRubric[0].Label&&showCh'> 
+                            {{diagnosis.chRubric[0].Label.__Text}}</span>
+                    <span *ngIf='showEn'>  
+                        {{diagnosis.Rubric[0].Label.__text}}</span>
+                </td>
+                    <td>      
+                        <button (click)='getLevelThreeClass(diagnosis)'
+                        style='padding:0'
+                        [ngClass]="{'primary-selectedLevel': selectedLevelTwo&&selectedLevelTwo._id==diagnosis._id&&color!='purple'&&color!='green',
+                    'success-selectedLevel':selectedLevelTwo&&selectedLevelTwo._id==diagnosis._id&&color=='green',
+                    'rose-selectedLevel':selectedLevelTwo&&selectedLevelTwo._id==diagnosis._id&&color=='purple'}"><i class='material-icons'>unfold_more</i></button>
+              
+                    </td>
+                    </tr>
+                </table>
+        </div>
+        <div class='col-sm-3'>
+            <table class='table'>
+                <tr *ngFor="let diagnosis of diagnosisLevelThreeList"
+                (click)='addToDiagnosis(diagnosis)'
+                [ngClass]="{'primary-selectedLevel':findDiagnosis(diagnosis)&&color!='purple'&&color!='green',
+                            'success-selectedLevel':findDiagnosis(diagnosis)&&color=='green',
+                            'rose-selectedLevel':findDiagnosis(diagnosis)&&color=='purple'}">
+           
+                        <td>{{diagnosis._code}}</td>
+                        <td>
+                        <span *ngIf='diagnosis.chRubric&&diagnosis.chRubric.length>0&&diagnosis.chRubric[0].Label&&showCh'> 
+                                {{diagnosis.chRubric[0].Label.__Text}}</span>
+                        <span *ngIf='showEn'>{{diagnosis.Rubric[0].Label.__text}}</span>
+                    </td>
+                        <td>      
+                        <button  (click)='getLevelFourClass(diagnosis)' 
+                        style='padding:0'
+                        [ngClass]="{'primary-selectedLevel': selectedLevelThree&&selectedLevelThree._id==diagnosis._id&&color!='purple'&&color!='green',
+                    'success-selectedLevel':selectedLevelThree&&selectedLevelThree._id==diagnosis._id&&color=='green',
+                    'rose-selectedLevel':selectedLevelThree&&selectedLevelThree._id==diagnosis._id&&color=='purple'}"><i class='material-icons'>unfold_more</i></button>
+              
+                    </td>
+                </tr>
+            </table>
+        </div>
+        <div class='col-sm-3'>
+                <table class='table'>
+                    <tr *ngFor="let diagnosis of diagnosisLevelFourList"  
+                    (click)='addToDiagnosis(diagnosis)'
+                    [ngClass]="{'primary-selectedLevel':findDiagnosis(diagnosis)&&color!='purple'&&color!='green',
+                    'success-selectedLevel':findDiagnosis(diagnosis)&&color=='green',
+                    'rose-selectedLevel':findDiagnosis(diagnosis)&&color=='purple'   }">
+                            <td>{{diagnosis._code}}</td>
+                            <td *ngIf='diagnosis.chRubric&&diagnosis.chRubric.length>0&&diagnosis.chRubric[0].Label&&showCh'> 
+                                    {{diagnosis.chRubric[0].Label.__Text}}</td>
+                        <td *ngIf='showEn'>{{diagnosis.Rubric[0].Label.__text}}</td>
+                       
+                    </tr>
+                </table>
+            </div>
+    </div>
+</div>
+<div class="overlay" *ngIf="loading">
+        <div class="spinner-wrapper" >
+          <spinner></spinner>
+        </div>
+      </div>

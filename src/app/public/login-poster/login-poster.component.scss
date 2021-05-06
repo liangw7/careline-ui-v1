@@ -1,0 +1,56 @@
+@import "src/assets/scss/base.scss";
+.alert-pc {
+    position: fixed;
+    top: 200px;
+    margin-top: 200px;
+    left: 400px;
+    margin-left: 400px;
+    background-color: transparent;
+    width: 50%;
+}
+
+.alert-cell {
+    position: fixed;
+    top: 100px;
+    margin-top: 100px;
+
+    background-color: transparent;
+}
+
+.pc-login-main-input {
+    margin: 65px 40px;
+    vertical-align: middle;
+    .full-width {
+        width: 100%;
+        span {
+            opacity: 1;
+            font-size: $fontSize16;
+            font-family: SourceHanSansSC, SourceHanSansSC-Regular;
+            font-weight: 400;
+            text-align: left;
+            color: $lightBluefontColor;
+            line-height: 36px;
+        }
+        input {
+            opacity: 1;
+            font-size: $fontSize18;
+            font-family: SourceHanSansSC, SourceHanSansSC-Regular;
+            font-weight: 400;
+            text-align: left;
+            color: $darkfontColor;
+            line-height: 36px;
+        }
+        .pc-login-sendMessage {
+            float: right;
+            height: 36px;
+            width: 160px;
+            margin-left: 20px;
+            background: #3f51b5;
+            border-radius: 10px;
+            font-size: 13px;
+            font-family: SourceHanSansSC, SourceHanSansSC-Bold;
+            font-weight: 700;
+            color: #ffffff;
+        }
+    }
+}

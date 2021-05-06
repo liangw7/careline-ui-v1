@@ -1,0 +1,15 @@
+
+ 
+@media print
+  {
+     div#print { 
+        display:block;
+        height: 100%;
+        width: 100%;
+        div#print {font-family:times,serif;font-size:10px;}
+      }
+}  
+@media screen,print
+  {
+  div#print {font-weight:bold;}
+  }

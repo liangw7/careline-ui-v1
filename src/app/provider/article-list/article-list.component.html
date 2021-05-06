@@ -1,0 +1,49 @@
+<div class="wapper">
+  <div class="form-inline">
+    <input class="form-control" type="text" [(ngModel)]="search" placeholder="search">
+    <button class="btn btn-base" (click)='add()'>Add</button>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-striped table-hover">
+      <tr class="header">
+        <td>
+          <span>图片</span>
+        </td>
+        <td>
+          <span>标题</span>
+        </td>
+        <td>
+          <span>创建时间</span>
+        </td>
+        <td>
+          <span>操作</span>
+        </td>
+      </tr>
+      <tr *ngFor="let article of articles|filter:search">
+        <td (click)=addImage(article)>
+          <div *ngIf="!article.image">
+            <span>click to add image</span>
+          </div>
+          <div class="thumbnail" *ngIf='article.image'>
+            <img [src]='getImage(article)' />
+          </div>
+        </td>
+        <td>{{article.label.ch}}</td>
+        <td>{{article.createdAt|date: 'yyyy/MM/dd hh:mm'}}</td>
+        <td>
+          <div>
+             <i class='material-icons'  (click)='edit(article)'>edit</i>
+            <i class='material-icons'  (click)='view(article)'>File Upload </i>
+            <i class='material-icons'style='color:red'  (click)='delete(article)'>delete</i> 
+       
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
+<div class="overlay" *ngIf="loading">
+  <div class="spinner-wrapper">
+    <spinner></spinner>
+  </div>
+</div>

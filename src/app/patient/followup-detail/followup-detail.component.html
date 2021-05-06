@@ -1,0 +1,12 @@
+<label *ngIf="language=='English'">Date:</label>
+<label *ngIf="language=='Chinese'">时间:</label>
+<input type='datetime' [ngModel]="followupDate| date:'yyyy/MM/dd hh:mm'" placeholde="visit date">
+<div style='height:80%'>
+  <app-form [forms]='forms' [language]='language' [visit]='visit' [patient]='patient' [emBed]='emBed'>
+  </app-form>
+</div>
+<button mat-button class='btn pull-right' (click)='save()'>save</button>
+<button mat-button class='btn pull-right' (click)='close()'>close</button>
+<div class="spinner-wrapper" *ngIf='loading'>
+  <spinner></spinner>
+</div>

@@ -1,0 +1,279 @@
+@import 'src/assets/scss/base.scss';
+
+.card-rose {
+    background-color: #9c27b0;
+
+    border-radius: 5px;
+    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(#9c27b0, 0.4);
+}
+.card-success {
+    border: 3px solid #4caf50;
+
+    border-radius: 5px;
+
+    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(#4caf50, 0.4);
+}
+.card-primary {
+    background-color: rgb(86, 86, 167);
+
+    border-radius: 5px;
+    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(rgb(86, 86, 167), 0.4);
+}
+.card-vaccine {
+    background-color: rgb(157, 179, 241);
+
+    //border-radius: 5px;
+    //  box-shadow: 0 4px 20px 0px rgba(0, 0, 0, .14),
+    //  0 7px 10px -5px rgba(rgb(86, 86, 167) , 0.4)
+}
+.card-rose-bottom {
+    border-bottom: 3px solid #9c27b0;
+}
+.card-success-bottom {
+    border-bottom: 3px solid #4caf50;
+}
+.card-primary-bottom {
+    border-bottom: 3px solid rgb(86, 86, 167);
+}
+.card-rose-font {
+    color: #9c27b0;
+}
+.card-success-font {
+    color: #4caf50;
+}
+.card-primary-font {
+    color: rgb(86, 86, 167);
+}
+.due-color {
+    background-color: #bef5c0;
+}
+.vaccine {
+    height: 40%;
+    width: 40%;
+
+    right: 0;
+    margin-right: 30%;
+    margin-top: 20px;
+    top: 0;
+
+    position: fixed;
+    z-index: 100;
+    overflow: auto;
+    padding: 5px;
+    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(rgb(86, 86, 167), 0.4);
+}
+.profile {
+    height: 100%;
+    width: 100%;
+    left: 0;
+    margin-left: 0px;
+    top: 0;
+    margin-top: 0px;
+    position: fixed;
+    z-index: 100;
+    overflow: auto;
+    padding-top: 42rem/$base;
+    background-color: #f0f0f0;
+    box-sizing: border-box;
+}
+.levelOne {
+    color: orangered;
+    font-weight: 600;
+}
+.levelTwo {
+    color: red;
+    font-weight: 600;
+}
+.normal {
+    color: blue;
+    font-weight: 600;
+}
+.popping {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,.4);
+    z-index: 9998;
+}
+.search {
+    width: 60%;
+    height: 70%;
+    position: fixed;
+    left: 50%;
+    top: 100px;
+    transform: translateX(-50%);
+    z-index: 9999;
+    margin: 0;
+    padding: 30px 20px 20px;
+    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(128, 128, 128, 0.4);
+    .input-group {
+        width: 82%;
+    }
+    .form-control {
+        background-image: none;
+        padding-left: 20px;
+        border-radius: 4px 0 0 4px;
+        font-size: 22px;
+    }
+    .btn {
+        border-radius: 0 4px 4px 0;
+        margin: 0;
+        border: none;
+    }
+    .card-header {
+        padding: 0;
+        margin-bottom: 15px;
+    }
+    .card-body {
+        max-height: calc(70vh - 133px);
+        padding: 0;
+        overflow-y: auto;
+        td {
+            font-size: $fontSize16;
+            padding: 0.5em;
+            cursor: pointer;
+        }
+    }
+}
+
+.nav-tabs {
+    background: transparent;
+    border-bottom: none;
+    .nav-item {
+        min-width: 120px;
+        height: 42px;
+        background: $darkGray;
+        border-radius: 0 14px 0 0;
+        box-shadow: 0px 0px 4px 0px rgba(121,161,161,0.50);
+        position: relative;
+        z-index: 1;
+        margin-left: -10px;
+        &:first-child {
+            margin-left: 0;
+        }
+        .nav-link {
+            display: block;
+            padding: 0;
+            font-size: $fontSize16;
+            font-family: PingFangSC, PingFangSC-Regular;
+            font-weight: 400;
+            text-align: center;
+            color: $basefontColor!important;
+            line-height: 42px;
+        }
+        &.active {
+            color: $darkfontColor;
+            background: #fff;
+        }
+    }
+}
+.tab-content {
+    width: 100%;
+    height: calc(100vh - 172px);
+    background: $white;
+    border-radius: 0 20px 20px 20px;
+    box-shadow: 0px 0px 4px 0px rgba(121, 161, 161, 0.5);
+    .tab-pane {
+        padding: 20px;
+        .btn {
+            min-width: 100px; 
+            background: $lightBlue; 
+            color:$whitefontColor;
+        }
+    }
+    .table {
+        tr {
+            font-size: $fontSize16;
+            font-family: PingFangSC;
+            text-align: left;
+            color: $basefontColor!important;
+            line-height: 30px;
+            &.header {
+                font-size: $fontSize16;
+                line-height: 32px;
+                background: $darkGray;
+            }
+            th, td {
+                border-top: none;
+                border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+                vertical-align: middle;
+                a {
+                    color: $basefontColor!important;
+                }
+                .tablebtn {
+                    display: inline-block;
+                    padding: 0 12px;
+                    height: 28px;
+                    color: #fff!important;
+                    background: $lightBlue;
+                    border-radius: 14px;
+                    cursor: pointer;
+                    font-style: normal;
+                }
+                .btn-icons {
+                    color:$lightBlue; 
+                    display: inline-block;
+                    padding: 0 12px;
+                    height: 28px;
+                    vertical-align: middle;
+                }
+                .tablestatus {
+                    display: inline-block;
+                    padding: 0 7px;
+                    height: 26px;
+                    line-height: 26px;
+                    color: #fff;
+                    opacity: 0.6;
+                    background: $lightBlue;
+                    border-radius: 14px;
+                    cursor: pointer;
+                    font-style: normal;
+                }
+            }
+        }
+    }
+}
+.main-body {
+    height: calc(100vh - 265px);
+    overflow-y: auto;
+}
+.tablebody {
+    height: calc(100vh - 265px);
+    overflow-y: auto; 
+}
+.immunizationbox {
+    padding: 10px 20px!important;
+    height: calc(100vh - 185px);
+    overflow-y: auto;
+}
+
+//wap-style
+.wap-wapper {
+    .search {
+        width: 92%;
+        height: 95%;
+        position: fixed;
+        left: 50%;
+        top: 2.5%;
+        transform: translateX(-50%);
+        .input-group {
+            width: 80%;
+        }
+        .card-body {
+            max-height: calc(95vh - 133px);
+        }
+    }
+    .main-body {
+        height: calc(100vh - 190px);
+    }
+    .tab-content {
+        height: calc(100vh - 115px);
+        box-shadow: none;
+        border-radius: 0 20rem/$base 0 0;
+        .tab-pane .btn {
+            min-width: 20%;
+        }
+    }
+}

@@ -1,0 +1,183 @@
+.pc-heathy-main {
+    padding-bottom:80px;
+   //   margin-top:-2%;
+    //  background: url('/assets/images/home/pc/background-blue.jpg'); width:100%; height:100%;
+      padding:200px;
+      padding-top:100px;
+      .pc-healthy{
+          background: linear-gradient(to bottom, #e2e9f9 0%,#f8fbff  20%);
+      }
+      .white-color{
+          padding:25px 50px 25px 50px;
+          //background: linear-gradient(to bottom, #e2e9f9 0%,#89b4ee  20%);
+      }
+  }
+  
+  .phone-heathy-main {
+     margin-top:-220px;
+    background-color: transparent;
+      .container {
+        
+          overflow: hidden;
+          img {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+              /* 吸附效果 吸附起始位置 */
+              scroll-snap-align: start;
+          }
+          .image-slider {
+              display: flex;
+              overflow-x: scroll;
+              /* 过渡 */
+              scroll-behavior: smooth;
+              /* x轴吸附，与下面图片的样式配合 */
+              scroll-snap-type: x mandatory;
+          }
+          .nav-section {
+              position: absolute;
+              bottom: 0;
+              width: 100%;
+              opacity: 0.5;
+              color: #fff;
+              background-color: #000;
+              display: flex;
+              justify-content: flex-end;
+              align-items: stretch;
+              .slide-button {
+                  display: flex;
+                  width: 10px;
+                  height: 10px;
+                  background-color: #fff;
+                  text-decoration: none;
+                  border-radius: 50%;
+                  margin: 5px;
+              }
+              .slide-button-select {
+                  background-color: red;
+              }
+          }
+      }
+      .phone-heathy-middle {
+         // border: 1px solid #eeeeee;
+         
+          width: 100%;
+         
+          text-align: center;
+        
+            width: 100%;
+              background: transparent;
+              opacity: 0.99;
+              font-size: 25px;
+              font-family: SourceHanSansSC, SourceHanSansSC-Regular;
+              font-weight: 800;
+              text-align: center;
+              color: #ffffff;
+              line-height: 24px;
+              padding-bottom:20px;
+             // padding-bottom:120px;
+            input{
+                  margin-left:20px;
+                  margin-right:0px;
+                  margin-bottom:20px;
+                  border-radius: 25px;
+                  width:90%;
+                  border-color: transparent;
+                  background: rgb(27, 101, 204);
+                  float:left;
+            }
+            i{
+                margin-left:-25px;
+                margin-top:5px;
+                float:left;
+            }
+             
+          
+      }
+      .phone-heathy-bottom {
+        //  background-color:  #e2e9f5 ;
+         padding-top:30px;
+         padding-bottom:50px;
+          .phone-heathy-bottom-div {
+              
+              border: 1px solid #eeeeee;
+             
+             // width: 90%;
+              margin: 5% 5% 5% 13%;
+              background-color: white;
+              padding:10px;
+              border-radius:15px;
+              height:110px;
+              box-shadow: 0 4px 10px 0px rgb(192, 210, 235), 0 7px 10px -5px rgb(122, 167, 230);;
+              
+              .phone-heathy-bottom-main-img {
+                 
+                  width: 60px;
+                  height: 60px;
+                  border-radius:30px;
+                  float:left;
+                  margin-left:-15%;
+                  margin-top:10px;
+              }
+              .phone-heathy-bottom-main-content{
+                 
+                  padding-left:5px;
+                  height:60;
+                  overflow: hidden;
+                  .phone-heathy-bottom-title {
+                      word-wrap: break-word;
+                      word-break: break-all;
+                      opacity: 1;
+                      font-size: 16px;
+                      font-family: SourceHanSansSC, SourceHanSansSC-Bold;
+                      font-weight: 600;
+                      text-align: center;
+                      color: #6e6969;
+                      line-height: 20px;
+                  }
+                  .phone-heathy-bottom-describe {
+                      word-wrap: break-word;
+                      word-break: break-all;
+                      opacity: 1;
+                      font-size: 12px;
+                      font-family: SourceHanSansSC, SourceHanSansSC-Bold;
+                      font-weight:400;
+                      text-align: center;
+                      color: #7e7575;
+                      line-height: 16px;
+                      display: -webkit-box;
+                      -webkit-line-clamp: 3;
+                      -webkit-box-orient: vertical;
+                      overflow: hidden;
+                  }
+  
+              }
+            
+              .phone-heathy-bottom-down {
+                  float: left;
+                  img {
+                      float: left;
+                      height: 32px;
+                  }
+                  p {
+                      margin-right: 0 10px 0 0;
+                      float: right;
+                      opacity: 1;
+                      font-size: 10px;
+                      font-family: SourceHanSansSC, SourceHanSansSC-Regular;
+                      font-weight: 400;
+                      text-align: left;
+                      color: #333333;
+                      line-height: 10px;
+                  }
+              }
+          }
+      }
+  }
+  .photo
+  {
+      height : 150px;
+      width : 100%;
+      margin-left:4px;
+  }
+  

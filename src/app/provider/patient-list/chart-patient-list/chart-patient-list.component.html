@@ -1,0 +1,103 @@
+<div *ngIf='bigScreen==1'>
+    <div class='row' style='width:100%'>
+        <div class='colo-sm-8' *ngIf="user.role=='admin'||user.role=='market'">
+            <input class="form-control pull-left" type="text" [(ngModel)]="searchProfile" placeholder="搜索管理包"
+                (input)='loadPatient()'>
+        </div>
+        <div class='colo-sm-8' *ngIf="user.role!='admin'&&user.role!='market'">
+            <button mat-button class='btn ' (click)="group='myPatients'" *ngIf="group=='teamPatients'">my
+                patients</button>
+            <button mat-button class='btn ' (click)="group='teamPatients'"
+                *ngIf="group=='myPatients'&&user.service">team patients</button>
+        </div>
+        <div class='col-sm-12'>
+            <mat-tab-group (selectedTabChange)="profileSelected($event)" 
+            *ngIf='profiles' style="padding:2px;">
+                <mat-tab *ngFor='let profile of profiles' label='{{getProfileName(language, profile)}}'>
+                    <div style='background-color: #efefef;'>
+                        <div>
+                            <mat-tab-group *ngIf='profile.report'>
+
+                                <mat-tab label="{{getObSetLabel(language,obSet)}}"
+                                    *ngFor='let obSet of profile.report.obSets'>
+                                    <div class='row' style="width:98%">
+                                        <div [ngClass]="{'col-sm-3':bigScreen==1,'col-sm-12':bigScreen==0}">
+                                            <div class='table tabel-responsive'>
+                                                <table class='table'>
+                                                    <tr *ngFor='let ob of obSet.obs' (click)='selectedOb=ob;'
+                                                        [ngClass]="{'selected':selectedOb&& selectedOb._id==ob._id}">
+                                                        <td> {{ob.label.ch}}</td>
+                                                    </tr>
+                                                </table>
+                                            </div>
+                                        </div>
+                                        <div class='col-sm-9' *ngIf='selectedOb&&bigScreen==1'>
+                                            <div class="card">
+                                                <div class="card-header " [ngClass]="{'card-header-rose':color=='purple',
+                                   'card-header-success':color=='green',
+                                   'card-header-primary':color!='green' &&color!='purple'}">
+                                                    <h4 class="card-title ">
+                                                        <span *ngIf="language=='English'">{{selectedOb.label.en}}</span>
+                                                        <span *ngIf="language=='Chinese'">{{selectedOb.label.ch}}</span>
+                                                    </h4>
+                                                </div>
+                                                <div class="card-body" *ngIf='selectedOb'>
+                                                    <graph-report #graph [isReport]='profile.isReport'
+                                                        [profile]='profile' [language]='language'
+                                                        [patients]=' profile.totalPatients' [obSet]='obSet'
+                                                        [limit]='limit' [ob]='selectedOb'></graph-report>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </mat-tab>
+                            </mat-tab-group>
+                        </div>
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+        </div>
+    </div>
+</div>
+<div *ngIf='bigScreen==0'>
+    <div class="card card-stats" *ngFor='let profile of  profiles'
+        (click)='selectedProfile=profile;getReport(selectedProfile)'>
+        <div class="card-header  card-header-icon">
+            <div class="card-icon" style='padding:0px;'>
+                <img [src]="profile.imageUrl" class='photo'>
+            </div>
+            <p class="card-title">
+                <span style='font-weight: 800' *ngIf='profile.label'>{{profile.label.ch}}</span>
+            </p>
+        </div>
+    </div>
+    <div class='card profile' *ngIf='selectedProfile'>
+        <div class='card-header'>
+            <i class='material-icons pull-right' (click)='selectedProfile=null'>close</i>
+        </div>
+        <mat-tab-group *ngIf='selectedProfile'>
+            <mat-tab label="{{getObSetLabel(language,obSet)}}" *ngFor='let obSet of selectedProfile.report.obSets'>
+                <div class="card" style="width:95%" *ngFor='let selectedOb of obSet.obs'>
+                    <div class="card-header " [ngClass]="{'card-header-rose':color=='purple',
+                                           'card-header-success':color=='green',
+                                           'card-header-primary':color!='green' &&color!='purple'}">
+                        <h4 class="card-title ">
+                            <span *ngIf="language=='English'">{{selectedOb.label.en}}</span>
+                            <span *ngIf="language=='Chinese'">{{selectedOb.label.ch}}</span>
+                        </h4>
+                    </div>
+                    <div class="card-body">
+                        <graph-report #graph [isReport]='selectedProfile.isReport' [profile]='selectedProfile'
+                            [language]='language' [patients]=' selectedProfile.totalPatients' [obSet]='obSet'
+                            [limit]='limit' [ob]='selectedOb'></graph-report>
+                    </div>
+                </div>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</div>
+<div class="overlay" *ngIf="loading">
+    <div class="spinner-wrapper">
+        <spinner></spinner>
+    </div>
+</div>

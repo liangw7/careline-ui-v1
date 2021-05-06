@@ -1,0 +1,11 @@
+<div class="wapper">
+    <div class="closebtnAll"><i class='material-icons' (click)='close()'>close</i></div>
+    <mat-tab-group class="firsttab" (selectedTabChange)="getSeletedPatient($event)" [selectedIndex]='selectedIndex'>
+        <mat-tab *ngFor='let patient of this.selectedPatients' 
+            label="{{patient.name}},{{patient.gender}},{{patient.birthday|date: 'yyyy/MM/dd'}}">
+            <patient-cell *ngIf='patient.selected' [selectedPatient]='patient'
+             [selectedPatientID]='patient._id'
+                ></patient-cell>
+        </mat-tab>
+    </mat-tab-group>
+</div>

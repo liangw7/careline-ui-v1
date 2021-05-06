@@ -1,0 +1,40 @@
+<div class='main-layout' [ngClass]="{'sidbarhidden': !sidebarShow}" *ngIf=" bigScreen==1">
+    <div class='sidebar-container'>
+      <app-sidebar [sidebarShow]='sidebarShow' [menuItems]='menuItems'></app-sidebar>
+    </div>
+    <div class="main-container">
+        <div class="navbar">
+          <div class="navbar-left">
+            <span (click)="sidebarShow = !sidebarShow"><img src="../../../../../assets/images/core/fold.png" alt=""></span>
+            <span>欢迎登录数基健康·患者端</span>
+          </div>
+          <div class="navbar-right" (click)='goIndex()'>
+            <div class="heard"></div>
+            <div class="txt">
+              <span>HOME</span>
+              <span>返回官网首页</span>
+            </div>
+            <div class="arrow-down"><img src="../../../../../assets/images/core/arrow-down.png" alt=""></div>
+          </div>
+        </div>
+   
+      <div class="app-main">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+</div>
+<div class='cell-layout' *ngIf=" bigScreen==0">
+  <!-- <patient-story></patient-story> -->
+  <div class="cell-main">
+    <router-outlet></router-outlet>
+  </div>
+  <footer class="footer-nav-bar">
+    <dl class="nav" [routerLink]="['patient-story']" routerLinkActive="sel"><dt class="home-icon"></dt><dd>首页</dd></dl>
+    <!-- <dl class="nav" [routerLink]="['/provider-platform/homepage/main']" routerLinkActive="sel"><dt class="home-icon"></dt><dd>首页</dd></dl> -->
+    <dl class="nav" [routerLink]="['patient-schedule']" routerLinkActive="sel"><dt class="yy-icon"></dt><dd>预约</dd></dl>
+    <div class="bignav" [routerLink]="['provider-list']" routerLinkActive="sel"><img src="../../../../assets/images/core/bignav.png" alt=""></div>
+    <div class="kong"></div>
+    <dl class="nav" [routerLink]="['followups']" routerLinkActive="sel"><dt class="article-icon"></dt><dd>健康管理</dd></dl>
+    <dl class="nav" [routerLink]="['profile']" routerLinkActive="sel"><dt class="my-icon"></dt><dd>我的</dd></dl>
+  </footer>
+</div>

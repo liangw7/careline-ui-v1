@@ -1,0 +1,179 @@
+.publish {
+    text-align: center;
+   
+   
+    // max-width: 800px;
+    //margin: 0 auto;
+  // height: 800px;
+    width: 100%;
+    background-color:#f3f3f3;
+    overflow-y: auto;
+    background-color:#edf1f7e7 ;
+    margin-top:150px;
+    //background: linear-gradient(to bottom, rgb(219, 223, 245) 0%, white 50%);
+  //  overflow-x: auto;
+    
+  }
+  
+  .article-header{
+    display:inline;
+     margin:20px;
+     color:white;
+    input{
+      margin-left:20px;
+      margin-right:0px;
+      margin-bottom:20px;
+      border-radius: 25px;
+      width:90%;
+      border-color: transparent;
+      background: rgb(27, 101, 204);
+      float:left;
+    }
+    i{
+    margin-left:-25px;
+    margin-top:5px;
+    float:left;
+    }
+  }  
+  
+  .cell-publish {
+  text-align: left;
+  // max-width: 800px;
+  padding-top: 40px;
+  padding-bottom:40px;
+  //padding-left:50px;
+  // height: 800px;
+  // width: 100%;
+  }
+  body {
+  background: #333;
+  }
+  
+  .login {
+  margin: 20px 10px;
+  }
+  
+  .my-card {
+  
+  padding: 40px;
+  border-radius: 10px;
+  background-color: transparent;
+  color: white;
+  font-weight: 900;
+  
+  }
+  .cell-publish {
+  margin-top: -250px;
+  }
+  .photo
+  {
+  
+    width : 100%;
+    border-radius:15px;
+    padding:10px;
+    margin-left:10px;
+  }
+  .head-photo
+  {
+    height : 300px;
+    width : 100%;
+  }
+  
+  
+  
+  .align-center {
+  text-align: center;
+  margin-top: -20px;
+  margin-left: 40%;
+  width: 700px;
+  padding: 50px;
+  
+  }
+  .align-left {
+  text-align: center;
+  margin-top: 10%;
+  padding: 20px;
+  //width: 550px;
+  }
+  .my-form{
+  min-width: 150px;
+  max-width: 600px;
+  width: 100%;
+  padding:20px;
+  }
+  
+  .my-small-form{
+  min-width: 150px;
+  //  max-width: 400px;
+  //  width: 100%;
+  padding:20px;
+  }  
+  .full-width {
+  width: 100%;
+  }
+  .nav-2 {
+  color:white;
+  
+  background-color:  rgb(86, 86, 167); 
+  height: 40px;
+  
+  font-weight:900;
+  font-style: inherit;
+  font-feature-settings: "blwf";
+  font-size-adjust: inherit;
+  }
+  .login-main{
+  
+  
+  margin-top: 10%;
+  width: 550px;
+  // position: absolute;
+  // margin-left: 600px;
+  
+  }
+  
+  
+  mat-card{
+  
+  
+  min-width: 40%;
+  
+  
+  }
+  
+  .image{
+    height:1000px; background-size:cover; 
+   // background-image:url('../../assets/img/cover.jpeg');
+    background-position:100% 100%;
+    background-color: white
+  
+  }
+  
+  .photo
+  {
+  height : 130px;
+  width : 60%;
+  margin-left:-25px;
+  }
+  .head-photo
+  {
+  height : 30px;
+  width : 100%;
+  }
+  
+  
+  .publish{
+  
+  
+  padding-top:0px;
+    padding-left:20px;
+    padding-right: 20px;
+   margin-top:1%;
+    margin-left:10%;
+    margin-right:10%;
+    width:80%;
+    box-shadow: 0 4px 20px 0px #3f51b5,
+  0 7px 10px -5px rgba(#3f51b5, 0.4);
+  
+  }
+  

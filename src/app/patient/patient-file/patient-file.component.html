@@ -1,0 +1,8 @@
+<div Class='wapper' *ngIf='data'>
+  <div class='closebtn'(click)="cancel()">
+    <i class='material-icons'>close</i>
+  </div>
+  <div class='image'>
+    <img [src]="getUrl(data.item)" />
+  </div>
+</div>

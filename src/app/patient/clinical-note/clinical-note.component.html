@@ -1,0 +1,85 @@
+<div class="overlay" *ngIf="loading">
+    <div class="spinner-wrapper">
+      <spinner></spinner>
+    </div>
+  </div>
+<div class='wapper'>
+ <div *ngIf="noteType=='nursing'&&selectedProfile">
+  <div class="card-header titlebox" >
+        <div class="header-left" >
+            </div>
+
+        <div class="header-right" >
+            <a class="btn btn-round"
+              (click)='visitNote=true;homeNote=false;'
+              [ngClass]="{'active':visitNote}">
+             <span >门诊护理</span>
+            
+              <div class="ripple-container"></div>
+            </a>
+        
+                <a class="btn btn-round"
+                  (click)="homeNote=true;visitNote=false;"
+                  [ngClass]="{'active':homeNote}">
+                 <span >家庭护理</span>
+                
+                  <div class="ripple-container"></div>
+                </a>
+       
+                    <a class="btn btn-round"
+                    *ngIf='homeNote'
+                      (click)='addVisit(noteType)'>
+                     <span > Add</span>
+                    
+                      <div class="ripple-container"></div>
+                    </a>
+        </div>
+   
+</div>
+
+    <div  *ngIf='visitNote'>
+            <div class='row'>
+              <div class='col-sm-10' *ngIf='selectedProfile' >
+                <flowsheet  [profile]='selectedProfile' [patient]='patient' [noteType]='noteType' [visitNote]='visitNote'>
+                </flowsheet>
+              </div>
+              <div class='col-sm-2' *ngIf='profiles'>
+                <div class="card profile">
+                 
+                  <div class='card-body table-responsive'>
+                    <table class="table">
+                      <tr *ngFor='let profile of profiles' 
+                      [ngClass]="{'selected-profile':profile._id==selectedProfile._id}"
+                        (click)='profileSelected(profile)'>
+                        <td *ngIf='profile&&profile.label'> 
+                          <span *ngIf="language=='Chinese'">{{profile.label.ch}}</span>
+                          <span *ngIf="language=='English'"> {{profile.label.en}}</span>
+                       </td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+            </div>
+    </div>
+ 
+    <div *ngIf='homeNote'>
+      <flowsheet [patient]='patient' [noteType]='noteType'  [addNote]='addNote' [homeNote]='homeNote'></flowsheet>
+    </div>
+</div>
+  <div *ngIf="noteType=='pt'" >
+    <div class="card-header titlebox" >
+        <div class="header-left" >
+            </div>
+    <div class="header-right" >
+        <a class="btn btn-round"
+          (click)='addVisit(noteType)'>
+         <span > Add</span>
+        
+          <div class="ripple-container"></div>
+        </a>
+        </div>
+        </div>
+    <flowsheet [patient]='patient' [noteType]='noteType'  [addNote]='addNote'></flowsheet>
+  </div>
+</div>

@@ -1,0 +1,70 @@
+<div class="wapper">
+    <div class="searchbox">
+        <input class="form-control" type="text" [(ngModel)]="search" placeholder="search patient"></div>
+    <div class="table-responsive">
+        <table class="table table-striped table-hover" *ngIf='patients&&patients.length>0'>
+            <thead *ngIf='patients[0].selectedObs'>
+                <tr>
+                    <th>姓名</th>
+                    <th>性别</th>
+                    <th>生日</th>
+                    <th *ngFor='let ob of patients[0].selectedObs'><span *ngIf='ob'>{{ob.label.ch}}</span></th>
+                </tr>
+            </thead>
+            <thead *ngIf='!patients[0].selectedObs'>
+                <tr>
+                    <th>姓名</th>
+                    <th>性别</th>
+                    <th>生日</th>
+                    <th *ngFor='let device of patients[0].devices'><span>{{device.name}}</span></th>
+                </tr>
+            </thead>
+            <tbody *ngIf='patients[0].selectedObs'>
+                <tr (click)="select(patient)" *ngFor="let patient of patients|filter: search">
+
+                    <td><span>{{patient.name}}</span></td>
+                    <td><span>{{patient.gender}}</span></td>
+                    <td><span>{{patient.birthday|date: 'yyyy/MM/dd'}}</span></td>
+                    <td *ngFor='let selectedOb of patient.selectedObs'>
+                        <span *ngIf='selectedOb'>{{selectedOb.value}}
+                            <span *ngFor="let item of selectedOb.values">
+                                <span *ngIf="!item.text">{{item}}&nbsp;&nbsp;</span>
+                                <span *ngIf="item.text">{{item.text}}&nbsp;&nbsp;</span>
+                            </span>
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+            <tbody *ngIf='!patients[0].selectedObs'>
+                <tr (click)="select(patient)" *ngFor="let patient of patients|filter: search">
+                    <td><span>{{patient.name}}</span></td>
+                    <td><span>{{patient.gender}}</span></td>
+                    <td><span>{{patient.birthday|date:'yyyy/MM/dd'}}</span></td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-striped table-hover">
+            <thead *ngIf='devicePatients&&devicePatients.length>0'>
+                <tr>
+                    <th>userName</th>
+                    <th>userID</th>
+                    <th>DeviceUserNumber1</th>
+                    <th>DeviceUserNumber2</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let patient of devicePatients" (click)='select(patient)'>
+                    <td>{{patient.userName}}</td>
+                    <td>{{patient.userID}}</td>
+                    <td>{{patient.DeviceUserNumber1}}</td>
+                    <td>{{patient.DeviceUserNumber2}}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div class="overlay" *ngIf="loading">
+    <div class="spinner-wrapper">
+        <spinner></spinner>
+    </div>
+</div>

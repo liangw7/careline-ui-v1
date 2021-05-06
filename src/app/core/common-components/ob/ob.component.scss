@@ -1,0 +1,245 @@
+.ob {
+    //  text-align: center;
+      // max-width: 800px;
+   //   margin: 20px auto;
+  
+      height: 600px;
+      width: 800px;
+      font-weight:bolder;
+      padding:0px;
+      margin:0px;
+      //background:url('/assets/img/ob-background-5.jpg');
+     //background: url('http://lorempixel.com/1800/780/sports/1/') 0 0 no-repeat transparent;
+  }
+  .obOrder{
+    
+      margin:0px;
+  }
+  .obMobile {
+      text-align: center;
+       max-width: 800px;
+      margin: 20px auto;
+    
+      height: 90%;
+      width: 98%;
+      padding:0px;
+      margin:0px;
+     // border-bottom:1px black solid;
+      border-width: small;
+     // background-color: rgba(255, 255, 255, 1);
+      //background:url('/assets/img/ob-background-2.jpg');
+      background-size: 100% 100%;
+    // box-shadow: 0 4px 20px 0px lightgrey,
+   //   0 7px 10px -5px rgba(lightgrey, 0.4);
+      font-weight:bolder;
+  }
+  .obMobile-embed {
+      // text-align: center;
+       // max-width: 800px;
+     //  margin: 20px auto;
+     
+      // height: 90%;
+      // width: 98%;
+       padding:0px;
+       margin:0px;
+       border-bottom:1px black solid;
+       border-width: small;
+      // background-color: rgba(255, 255, 255, 1);
+      // background:url('/assets/img/ob-background-2.jpg');
+     //  background-size: 100% 100%;
+    //   box-shadow: 0 4px 20px 0px lightgrey,
+    //   0 7px 10px -5px rgba(lightgrey, 0.4);
+       font-weight:bolder;
+   }
+   .ob-embed {
+    // text-align: center;
+     // max-width: 800px;
+   //  margin: 20px auto;
+   
+    // height: 90%;
+    // width: 98%;
+     padding:0px;
+     margin:0px;
+     border-bottom:1px black solid;
+     border-width: small;
+    // background-color: rgba(255, 255, 255, 1);
+    // background:url('/assets/img/ob-background-2.jpg');
+   //  background-size: 100% 100%;
+  //   box-shadow: 0 4px 20px 0px lightgrey,
+  //   0 7px 10px -5px rgba(lightgrey, 0.4);
+     font-weight:bolder;
+  }
+  .ng-hide {
+      height: 0;
+      width: 0;
+      background-color: transparent;
+      top:-200px;
+      left: 200px;
+    }
+  .selected {
+      background-color: rgb(215, 240, 252);
+      margin:20px;
+      width:90%;
+      border-radius: 25px;
+      box-shadow: 0 4px 20px 0px rgba(0, 0, 0, .14),
+      0 7px 10px -5px rgba(lightgray , 0.4);
+  }
+  .obItem
+   {
+      background-color: whitesmoke;
+      margin:5px;
+      border-radius: 15px;
+      color:lightgrey;
+      box-shadow: 0 4px 20px 0px rgba(0, 0, 0, .14),
+      0 7px 10px -5px rgba(lightgray , 0.4);
+  }
+  .obLabel
+   {
+      background-color: rgb(163, 193, 218);
+      margin:5px;
+      border-radius: 25px;
+      color:grey;
+      box-shadow: 0 4px 20px 0px rgba(0, 0, 0, .14),
+      0 7px 10px -5px rgba(lightgray , 0.4);
+  }
+  .image{
+      width: 100px;
+     
+  }
+  .photo{
+      width: 100px;
+      height: 100px;
+  }
+  .progress-bar {
+      width: 300px; height: 14px;
+      border-radius: 10px;
+      border: 1px solid #CCC;
+      background-image: -webkit-gradient(linear, left top, left bottom, from(#6666cc), to(#4b4b95));
+      border-image: initial;
+  
+  }
+  .levelOne{
+     color:orangered;
+     font-weight: 600;
+    
+     
+  }
+  .levelTwo{
+      color:red;
+      font-weight: 600;
+      
+  }
+  .normal{
+      color:blue;
+      font-weight: 600;
+     
+  }
+  .test {
+      transition: all linear 0.5s;
+      background-color: #b0d5ec;
+      height: 100px;
+      width: 100%;
+      position: relative;
+    
+    }
+    .ob-body{
+     height:95%;
+     width:100%;
+      overflow: auto;
+      text-align: center;
+    }
+    .ob-image{
+      
+        height:150px;
+        margin-bottom:10px;
+    }
+    .back-blue{
+    
+      // margin-top:-50px;
+      // box-shadow: 0 4px 20px 0px #67a3f1e7;
+      
+       //background-color:#E0F0F7 ;
+      // background: linear-gradient(to bottom, #E0F0F7 0%, white  50%);
+     // background: linear-gradient(to bottom, #E0F0F7 0%, white  50%);
+      
+       //background: linear-gradient(to bottom, rgb(219, 223, 245) 0%, white 50%);
+     }
+     .back-green{
+     
+      // margin-top:-50px;
+      // box-shadow: 0 4px 20px 0px #9fe4a1;
+       //background-color:#E0F0F7 ;
+       background:linear-gradient(to bottom, #e9f8eb 0%, white 50%);
+       //background: linear-gradient(to bottom, rgb(219, 223, 245) 0%, white 50%);
+     }
+     .back-purple{
+       
+      // margin-top:-50px;
+     //  box-shadow: 0 4px 20px 0px #efaafc;
+       //background-color:#E0F0F7 ;
+       background:linear-gradient(to bottom,#f0e4f3  0%,white 50%);
+       //background: linear-gradient(to bottom, rgb(219, 223, 245) 0%, white 50%);
+     }
+    
+     .button-green{
+      // background-color:#ccf0cd;
+       background:linear-gradient(to bottom,#ccf0cd 0%, #e9f8eb 50%);
+      // margin:20px;
+      // width:90%;
+       border-radius: 25px;
+       box-shadow: 0 4px 20px 0px rgba(0, 0, 0, .14),
+       0 7px 10px -5px rgba(lightgray , 0.4);
+     }
+     .button-purple{
+      background:linear-gradient(to bottom,#f2e0f5 0%,#f0e4f3 50%);
+      // background-color:#f2e0f5;
+      // margin:20px;
+      // width:90%;
+       border-radius: 25px;
+       box-shadow: 0 4px 20px 0px rgba(0, 0, 0, .14),
+       0 7px 10px -5px rgba(lightgray , 0.4);
+     }
+     .button-blue{
+       //background-color:#E0F0F7;
+       background: linear-gradient(to bottom, rgb(224, 243, 252) 0%, rgb(240, 248, 252)  50%);
+      // margin:20px;
+     //  width:90%;
+       border-radius: 25px;
+       box-shadow: 0 4px 20px 0px rgba(0, 0, 0, .14),
+       0 7px 10px -5px rgba(lightgray , 0.4);
+     }
+     .chart{
+      height:100%;
+      width:100%; 
+      left:0;
+      margin-left:0px;
+      top:0;
+      margin-top:0px;
+       position:fixed; 
+       z-index:100;
+       overflow:auto; 
+       padding:5px;
+    }
+    .ob-header{
+      padding-top:30px;padding-bottom:20px; 
+    }
+    .label-required{
+        color:red; font-weight: 700;
+    }
+    .label{
+        color:black; font-weight:700; padding:10px; 
+    }
+    .label-value{
+        color:blue; font-weight:600; padding:10px;
+    }
+    .ob-header-emBed{
+        padding:5px;
+        
+    }
+    .ob-body-emBed{
+      
+    }
+    .row {
+      margin: 0;
+    }
+   

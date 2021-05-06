@@ -1,0 +1,653 @@
+@import 'src/assets/scss/base.scss';
+
+// .schedule {
+//     margin-top: 45px;
+//     height: 450px;
+// }
+card-rose {
+    background-color: #9c27b0;
+    color: white;
+    margin: 15px;
+    border-radius: 5px;
+    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(#9c27b0, 0.4);
+}
+.card-success {
+    background-color: #4caf50;
+    color: white;
+    border-radius: 5px;
+    margin: 15px;
+    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(#4caf50, 0.4);
+}
+.card-primary {
+    background-color: #3f51b5;
+
+    margin: 15px;
+    border-radius: 5px;
+    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(#3f51b5, 0.4);
+}
+
+[col-1] {
+    -webkit-box-flex: 0;
+    -webkit-flex: 0 0 8.33333%;
+    -ms-flex: 0 0 8.33333%;
+    flex: 0 0 14.285714285714286%;
+    width: 14.285714285714286%;
+    max-width: 14.285714285714286%;
+}
+.header {
+    background-color: #238989;
+    color: white;
+    height: 25px;
+}
+.header-2 {
+    background-color: #33c7c7;
+    color: white;
+    height: 25px;
+}
+.header-3 {
+    background-color: white;
+    color: black;
+    height: 20px;
+}
+.col {
+    text-align: center;
+    padding: 5px;
+}
+.last-month,
+.next-month {
+    color: #999999;
+    font-size: 90%;
+}
+.currentDate,
+.otherDate {
+    padding: 5px;
+}
+.currentDate {
+    font-weight: bold;
+    background-color: blue;
+    color: white;
+    border-radius: 30px;
+}
+.calendar-header {
+    // margin-top: 10px;
+    background-color: #238989;
+    color: #ffffff;
+}
+.event-bullet {
+    margin: 2px auto;
+    height: 5px;
+    width: 5px;
+    background-color: green;
+    border-radius: 30px;
+}
+.selected-date {
+    width: 20px;
+    height: 2px;
+    background-color: blue;
+}
+.unselected-date {
+    border: none;
+}
+.calendar-day {
+    width: 40%;
+}
+.calendar-body {
+    width: 80%;
+
+    .grid {
+        padding: 0;
+    }
+    .col:last-child {
+        border-right: none;
+    }
+    .calendar-weekday,
+    .calendar-date {
+        text-align: center;
+        margin: 0;
+    }
+    .calendar-weekday {
+        font-weight: bold;
+        border-bottom: solid 1px #1a732d;
+        background-color: #26ab56;
+    }
+    .calendar-date {
+        border-top: solid 1px #1a732d;
+        border-bottom: solid 1px #1a732d;
+    }
+}
+.selected-1 {
+    background-color: #7986cb;
+    color: white;
+    font-weight: 700;
+    border-radius: 5px;
+}
+.selected-2 {
+    background-color: #7986cb;
+    color: white;
+    font-weight: 700;
+    border-radius: 5px;
+}
+.selected-3 {
+    color: lightgray;
+}
+.selected-4 {
+    color: yellowgreen;
+    font-weight: 700;
+}
+.schedule {
+    padding: -5px;
+}
+.card-rose-color {
+    color: #9c27b0;
+    font-weight: 700;
+    font-size: medium;
+}
+.card-success-color {
+    color: #4caf50;
+    font-weight: 700;
+    font-size: medium;
+}
+.card-primary-color {
+    color: #3f51b5;
+    font-weight: 700;
+    font-size: medium;
+}
+// .schedule {
+//     height: 100%;
+//     width: 100%;
+//     left: 0;
+//     margin-left: 0px;
+//     top: 0;
+//     margin-top: 0px;
+//     position: fixed;
+//     z-index: 100;
+//     overflow: auto;
+//     padding: 5px;
+// }
+
+
+//song-pc style
+.pc-wapper {
+    position: relative;
+    .rightcontent {
+      
+        height: calc(100vh - 150px);
+        background: $white;
+        border-radius: 20px;
+        box-shadow: 0px 9px 29px 0px rgba(0,0,0,0.09);
+        overflow-y: auto;
+        .card-header {
+            padding: 20px 0;
+            font-size: $fontSize20;
+            font-family: SourceHanSansSC, SourceHanSansSC-Bold;
+            font-weight: 700;
+            text-align: center;
+            color: $white;
+            line-height: 36px;
+            background: $lightBlue;
+        }
+    }
+}
+
+
+//song-phone style
+.wap-wapper {
+    .card {
+        margin: 0;
+        padding: 0;
+        box-shadow: none;
+        border: none;
+        border-radius: 0;
+    }
+    .checkdatebox {
+        padding: 5rem/$base 0 15rem/$base;
+        .date {
+            font-size: $fontSize16;
+            color: $darkfontColor;
+            font-weight: 600;
+            text-align: center;
+        }
+    }
+    .checktimebox {
+        margin:10rem/$base auto;
+        .doctorinfo {
+            padding: 1.25rem;
+            span {
+                display: inline-block;
+                font-weight: 700;
+                font-size: 1rem;
+                color: $darkfontColor;
+                margin-bottom: 5rem/$base;
+                
+            }
+            p {
+                font-size: 0.875rem;
+                color: $basefontColor;
+                margin-bottom: 0;
+            }
+        }
+        .card-body {
+            margin: 0;
+            padding: 0 1.25rem;
+            padding-bottom: 30rem/$base;
+            .btn {
+                display: inline-block;
+                width: 23%;
+                margin: 10rem/$base 1%;
+            }
+        }
+    }
+}
+.avail {
+    background-color: $lightBlue;
+}
+.reserved {
+    background-color: $darkGray;
+    border-color: $darkGray;
+    color: $basefontColor;
+}
+.photo {
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+}
+.nav-tabs-wrapper {
+    padding-left: 10px;
+}
+.nav-tabs {
+    background: transparent;
+    border-bottom: none;
+    .nav-item {
+        min-width: 110px;
+        height: 42px;
+        background: $darkGray;
+        border-radius: 0 14px 0 0;
+        box-shadow: 0px 0px 4px 0px rgba(121,161,161,0.50);
+        position: relative;
+        z-index: 1;
+        margin-left: -10px;
+        .nav-link {
+            display: block;
+            padding: 0;
+            font-size: $fontSize16;
+            font-family: PingFangSC, PingFangSC-Regular;
+            font-weight: 400;
+            text-align: center;
+            color: $basefontColor!important;
+            line-height: 42px;
+        }
+        &.active {
+            background: $white;
+        }
+    }
+}
+.tab-content {
+    width: 100%;
+    padding: 20px;
+  //  height: calc(100vh - 250px);
+    background: $white;
+    border-radius: 0 20px 20px 20px;
+    box-shadow: 0px 0px 4px 0px rgba(121,161,161,0.50); 
+    box-sizing: border-box;
+    overflow-y: auto;
+}
+.tabcard {
+    width: 100%;
+    margin:0px;
+    
+    .checkstatus {
+        margin-bottom: 20px;
+        .label {
+            font-size: $fontSize16;
+            font-family: PingFangSC, PingFangSC-Regular;
+            font-weight: 400;
+            text-align: left;
+            color: $basefontColor
+        }
+        .selbox {
+            width: 200px;
+            padding: 10px 20px;
+            text-align: center;
+            margin-left: 15px;
+            border: 1px solid #eee;
+            border-radius: 6px;
+        }
+        
+    }
+    .tabitem {
+        margin-bottom: 20px;
+        &:last-child {
+            margin-bottom: 0;
+        }
+        .title {
+            width: 100%;
+            height: 66px;
+            padding: 5px;;
+            background: $darkGray;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            box-sizing: border-box;
+            .title-left {
+                .txt {
+                    // margin-bottom: 9px;
+                    span:nth-child(1) {
+                        display: inline-block;
+                        width: 18px;
+                        height: 36px;
+                        vertical-align: top;
+                        background: $lightBlue;
+                        border-radius: 103px 0;
+                        margin-right: 12px;
+                    }
+                    span:nth-child(2) {
+                        font-size: $fontSize22;
+                        font-family: PingFangSC, PingFangSC-Medium;
+                        text-align: left;
+                        color: $baseBlue;
+                        line-height: 36px;
+                    }
+                }
+                .date {
+                    font-size: $fontSize16;
+                    font-family: PingFangSC, PingFangSC-Light;
+                    font-weight: 300;
+                    text-align: left;
+                    color: $lightfontColor;
+                    line-height: 33px;
+                    letter-spacing: 1px;
+                }
+            }
+            .title-right {
+                width: 0;
+                height: 0;
+                border-width: 16px;
+                border-color: #B0BED4 transparent transparent transparent;
+                border-style: solid;
+                border-radius: 5px;
+                margin-top: 12px;
+                cursor: pointer;
+                &.up {
+                    transform: rotate(180deg);
+                    margin-top: -6px;
+                }
+            }
+        }
+        .tablebox {
+            max-height: 405px;
+            overflow-y: scroll;
+            margin-right: -17px;
+            transition: height .3s;
+            .table {
+                margin-bottom: 0;
+            }
+            tr {
+                cursor: pointer;
+                .headerimg {
+                    display: inline-block;
+                    width: 50px;
+                    height: 50px;
+                    border-radius: 25px;
+                    overflow: hidden;
+                    vertical-align: top;
+                    img {
+                        width: 100%;
+                        vertical-align: top;
+                    }
+                }
+                td {
+                    padding: 5px 0;
+                    font-size: $fontSize16;
+                    font-family: PingFangSC, PingFangSC-Regular;
+                    font-weight: 400;
+                    text-align: left;
+                    color: $basefontColor;
+                    line-height: 50px;
+                    text-align: center;
+                    border-top: none;
+                    border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+                    .ststusshow {
+                        display: inline-block;
+                        padding: 0 7px;
+                        height: 26px;
+                        line-height: 26px;
+                        color: #fff;
+                        opacity: 0.6;
+                        background: $lightBlue;
+                        border-radius: 14px;
+                    }
+                }
+            }
+        }
+    }
+    .providerlists {
+        height: 100%;
+        .form-group {
+            margin: 0;
+        }
+        .providerbox {
+            max-height: calc(100vh - 290px);
+            overflow-y: auto;
+            cursor: pointer;
+        }
+        .card {
+            width:95%;
+            margin:15px;
+            &.selected {
+                background: $darkGray;
+            }
+            .card-body {
+                .headerimg {
+                    float:left; 
+                    width:68px; 
+                    height: 68px;
+                    border-radius: 34px;
+                    overflow: hidden;
+                    margin-right:10px;
+                    img {
+                        width: 100%;
+                        vertical-align: top;
+                    }
+                }
+                .info {
+                    margin-bottom: 5px;
+                    .main-info {
+                        font-size: $fontSize22;
+                        font-family: PingFangSC, PingFangSC-Medium;
+                        font-weight: 500;
+                        text-align: left;
+                        color: $baseBlue;
+                        line-height: 38px;
+                        span:nth-child(2) {
+                            color: $basefontColor;
+                            font-size: $fontSize14;
+                            margin-left: 10px;
+                        }
+                    }
+                    .specialty {
+                        font-size: $fontSize14;
+                        font-family: PingFangSC, PingFangSC-Light;
+                        font-weight: 300;
+                        text-align: left;
+                        color: $basefontColor;
+                        line-height: 28px;
+                        overflow: hidden;
+                        text-overflow:ellipsis;
+                        white-space: nowrap;
+                    }
+                }
+                .desc {
+                    font-size: $fontSize14;
+                    font-family: PingFangSC, PingFangSC-Regular;
+                    font-weight: 400;
+                    text-align: left;
+                    color:  $basefontColor;
+                    line-height: 24px;
+                }
+            }
+        }
+    }
+    .selprovider {
+        .infobox {
+            padding: 10px 0;
+            .card-body {
+                .photo {
+                    float:left; 
+                    width:70px;
+                    height: 70px;
+                    margin-right:10px; 
+                    border-radius:35px;
+                    overflow: hidden;
+                    img {
+                        width: 100%;
+                        vertical-align: top;
+                    }
+                }
+                .info {
+                    font-size: $fontSize22;
+                    font-family: PingFangSC, PingFangSC-Semibold;
+                    font-weight: 600;
+                    color: $darkfontColor;
+                    line-height: 37px;
+                    span:nth-child(2),span:nth-child(3) {
+                        font-size: $fontSize16;
+                        font-weight: 400;
+                        margin-left: 15px;
+                    }
+                    .btn {
+                        height: 1.2;
+                        border: 1px solid #eee;
+                        margin-left: 20px;
+                        &:hover {
+                            color: #fff;
+                            background: $lightBlue;
+                            border-color: $lightBlue;
+                        }
+                    }
+                }
+            }
+        }
+        .card {
+            background: $white;
+            margin-bottom: 15px;
+            &:last-child {
+                margin-bottom: 0;
+            }
+            .card-header {
+                .title {
+                    font-size: $fontSize20;
+                    font-family: PingFangSC, PingFangSC-Medium;
+                    font-weight: 500;
+                    text-align: left;
+                    color: $darkfontColor;
+                    line-height: 38px;
+                }
+                .zixun {
+                    font-size: $fontSize16;
+                    color: $darkfontColor;
+                    line-height: 36px;
+                    span {
+                        margin-right: 20px;
+                        display: inline-block;
+                    }
+                    .btn {
+                        line-height: 1.2;
+                        border: 1px solid #eee;
+                    }
+                }
+                .islink {
+                    font-size: $fontSize14;
+                    color: $baseBlue;
+                    text-decoration: underline;
+                    margin-left: 20px;
+                    cursor: pointer;
+                }
+            }
+            .card-body {
+                padding-top: 0;
+                .table {
+                    margin-bottom: 0;
+                    tr {
+                        cursor: pointer;
+                    }
+                    td {
+                        font-size: $fontSize16;
+                        font-family: PingFangSC, PingFangSC-Regular;
+                        font-weight: 400;
+                        text-align: left;
+                        color: $basefontColor;
+                        line-height: 25px;
+                        border-bottom: 1px solid #eee;
+                        .tablebtn {
+                            display: inline-block;
+                            padding: 0 7px;
+                            height: 26px;
+                            line-height: 26px;
+                            color: #fff;
+                            opacity: 0.6;
+                            background: $lightBlue;
+                            border-radius: 14px;
+                        }
+                    }
+                }
+            }
+            .tableheight {
+                max-height: 245px;
+                overflow-y: auto;
+            }
+        }
+    }
+}
+.calendar{
+    height: calc(100vh - 390px);
+    overflow-y: auto;
+
+.appoint {
+    margin: 0;
+    text-align: center;
+    li {
+        display: inline-block;
+        width: 130px;
+        padding: 0 5px;
+        list-style: none;
+        font-size: $fontSize12;
+        font-family: PingFangSC, PingFangSC-Regular;
+        font-weight: 400;
+        text-align: center;
+        color: $lightBlue;
+        line-height: 46px;
+        background: $darkGray;
+        border-radius: 23px;
+        box-shadow: 0px 26px 20px -20px $darkGray; 
+        margin: 7px;
+        cursor: pointer;
+        span {
+            display: inline-block;
+            margin: 0 5px;
+            i {
+                vertical-align: sub;
+            }
+        }
+        &.all {
+            display: block;
+            width: 120px;
+            height: 46px;
+            background: $darkGray;
+            border-radius: 23px;
+            box-shadow: 0px 26px 20px -20px #d6e2f6; 
+            font-size: $fontSize18;
+            font-family: PingFangSC, PingFangSC-Regular;
+            font-weight: 400;
+            text-align: center;
+            color: $lightBlue;
+            line-height: 46px;
+            margin: 10px auto;
+        }
+        &.active {
+            color: #fff;
+            background: $lightBlue;
+        }
+    }
+}
+}

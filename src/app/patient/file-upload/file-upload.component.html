@@ -1,0 +1,40 @@
+<div class="overlay" *ngIf="loading">
+  <div class="spinner-wrapper">
+    <spinner></spinner>
+  </div>
+</div>
+<div class='row'>
+  <div class='col-sm-4'>
+    <mat-form-field class="full-width" *ngIf='!option'>
+      <mat-select placeholder="file type" [(ngModel)]="fileType">
+        <mat-option value='lab'>lab</mat-option>
+        <mat-option value='image'>image</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div class='col-sm-6' *ngIf='fileType'>
+    <input type="file" name="photo" placeholder='选择' ng2FileSelect [uploader]="uploader" />
+  </div>
+</div>
+<button type="button" class="btn btn-primary btn-s" *ngIf='!option' (click)="uploader.uploadAll()"
+  [disabled]="!uploader.getNotUploadedItems().length||!fileType">
+  上传
+</button>
+<button type="button" class="btn btn-primary btn-s" *ngIf='option' (click)="uploader.uploadAll();save()"
+  [disabled]="!uploader.getNotUploadedItems().length||!fileType">
+  上传
+</button>
+<button type="button" class="btn btn-primary btn-s" *ngIf='option' (click)="close()">
+  取消
+</button>
+<div><img [src]="url"></div>
+<div class="progress-bar progress-bar-success" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }">
+</div>
+{{uploader.progress}}%
+<div class='card' *ngFor='let item of urlList' style='padding:0px'>
+  <div class='row' (click)='openFile(item)'>
+    <div class='col-sm-4'><img [src]="item.url" class="thumbnail"></div>
+    <div class='col-sm-4'>{{item.fileType}}</div>
+    <div class='col-sm-4'>{{item.createdAt|date: "MM/dd/yyyy HH:mm"}}</div>
+  </div>
+</div>

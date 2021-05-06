@@ -1,0 +1,32 @@
+<div [ngClass]="{'registry-1':!popOut, 'registry-2':popOut}">
+    <div class='row'>
+      <div class='col-sm-4'>
+        <span class='txt'>用户注册表</span>
+      </div>
+      <div class='col-sm-5'>
+        <mat-form-field *ngIf='userType==1'>
+          <mat-select 
+          (selectionChange)="onOptionChange($event)"
+          placeholder='请选择您的临床角色：'
+         >
+            <mat-option 
+            *ngFor="let type of typeList" 
+            [value]="type.label.en">
+              {{type.label.ch}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+      <div class='col-sm-3'>
+        <a style='float:right; margin-right:50px;' class='btn btn-primary btn-round' 
+        (click)=save()>提交</a>
+        <a style='float:right' class='btn  btn-round' (click)='close()' *ngIf='popOut'>cancel</a>
+     
+      </div>
+       </div>
+    <div class='inner'>
+      <app-form [forms]='forms' [emBedSet]=true [registry]=true>
+      </app-form>
+    </div>
+   
+  </div>

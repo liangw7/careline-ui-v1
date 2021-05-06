@@ -1,0 +1,575 @@
+<div class="overlay" *ngIf="loading">
+  <div class="spinner-wrapper">
+    <spinner></spinner>
+  </div>
+</div>
+
+<div class="wapper">
+  <div class="closebox" (click)="closeForm();">
+    <a href="javascript:void(0);" class='btn btn-round btn-default'>
+      <span *ngIf="language=='English'">close</span>
+      <span *ngIf="language=='Chinese'">
+        {{patient.name}}&nbsp;{{patient.gender}}&nbsp;{{patient.age}} 关闭</span>
+    </a>
+  </div>
+  <h4 class='pull-left' *ngIf="visit.profiles&&visit.profiles[0].label">{{visit.profiles[0].label.ch}}</h4>
+  
+  <div class="nav">
+    <ul class="nav-tabs" *ngIf='patient.allergyList!=undefined'>
+      <!--<div class='col-sm-5'><label *ngIf="language=='English'">Visit Date:</label>
+              <label *ngIf="language=='Chinese'">就诊时间:</label>
+              <input type='date' class='form-conrol' [ngModel] ="visit.visitDate| date:'yyyy-MM-dd'" 
+              placeholde="visit date" (change)='updateVisit($event.target.value)'>
+              <label *ngIf="language=='English'">Surgery Date:</label>
+              <label *ngIf="language=='Chinese'">治疗/手术时间:</label>
+              
+              <input type='date' class='form-conrol' [ngModel] ="procedureDate| date:'yyyy-MM-dd'" 
+              placeholde="Surgery date" (change)='updatePatient($event.target.value)'></div>-->
+      <li class="nav-item" (click)='getAllergy()'>
+        <span *ngIf="language=='Chinese'" style='color:red'>过敏:</span>
+        <span *ngIf="language=='English'" style='color:red'>Allergy:</span>
+        <span class="nav-item" *ngFor='let allergy of patient.allergyList' style="margin: 0 5px;">
+          <span>
+            <span style='color:red'>{{allergy.allergy}} </span>
+            <span *ngFor='let reaction of allergy.reactions'style='color:red'>{{reaction}}&nbsp;&nbsp;</span>
+          </span>
+        </span>
+      </li>
+    </ul>
+    <ul class="nav-tabs" *ngIf='patient.allergyList==undefined'>
+      <li class="nav-item" (click)='getAllergy()'>
+        <span *ngIf="language=='Chinese'" style='color:red'>过敏:</span>
+        <span *ngIf="language=='English'" style='color:red'>Allergy:</span>
+      </li>
+    </ul>
+  </div>
+
+  <!--<mat-toolbar class="nav card"  style='padding:0px; margin:0px;'>
+      
+          <a href="javascript:void(0);#currentHistory" class="nav-link cell"
+                (click)="record=false;
+                currentHistory=true;
+                orderList=false;
+                evaluation=false;
+                treatment=false;
+                visitSummary=false;
+                diagnosis=false;"
+                [ngClass]="{'card-rose':currentHistory&&color=='purple',
+                            'card-success':currentHistory&&color=='green',
+                            'card-primary':currentHistory&&color!='purple'&&color!='green'
+                          }">
+              <span style='padding: 0px; margin: 0px; font-weight: 700;font-size:medium;'>
+                                <span *ngIf="language=='English'">Visit Record</span>
+                                  <span *ngIf="language=='Chinese'">病史纪录</span>
+                                </span>
+          </a>
+        
+          <a href="javascript:void(0);#treatment" class="nav-link cell"
+          (click)="treatment=true;
+          evaluation=false;
+          orderList=false;
+          currentHistory=false;
+          visitSummary=false;
+          diagnosis=false;
+          record=false;
+          getEval();"
+          [ngClass]="{'card-rose':treatment&&color=='purple',
+          'card-success':treatment&&color=='green',
+          'card-primary':treatment&&color!='purple'&&color!='green'}">
+          <span style='padding: 0px; margin: 0px; font-weight: 700;font-size:medium;'>
+                            <span *ngIf="language=='English'">CDS</span>
+                            <span *ngIf="language=='Chinese'"> 临床决策</span>
+                    
+          </span>
+          </a>
+        
+              <a href="javascript:void(0);#orderList" class="nav-link cell"
+              (click)="treatment=false;
+              orderList=true;
+              evaluation=false;
+              currentHistory=false;
+              visitSummary=false;
+              diagnosis=false;
+              record=false;
+              getMedicationOrder();
+              missing=[]"
+              [ngClass]="{'card-rose':orderList&&color=='purple',
+                          'card-success':orderList&&color=='green',
+                          'card-primary':orderList&&color!='purple'&&color!='green'}">
+              <span style='padding: 0px; margin: 0px; font-weight: 700;font-size:medium;'>
+                                <span *ngIf="language=='English'">Orders</span>
+                                <span *ngIf="language=='Chinese'"> 医嘱</span>
+                        
+              </span>
+              </a>
+        
+          <a href="javascript:void(0);#diagnosis" class="nav-link cell"
+          (click)="treatment=false;
+          evaluation=false;
+          currentHistory=false;
+          orderList=false;
+          visitSummary=false;
+          diagnosis=true;
+          record=false"
+          [ngClass]="{'card-rose':diagnosis&&color=='purple',
+                      'card-success':diagnosis&&color=='green',
+                      'card-primary':diagnosis&&color!='purple'&&color!='green'}">
+          <span style='padding: 0px; margin: 0px; font-weight: 700;font-size:medium;'>
+                            <span *ngIf="language=='English'">Diagnosis</span>
+                            <span *ngIf="language=='Chinese'">诊断</span>
+          </span>
+          </a>
+        
+            <a href="javascript:void(0);#diagnosis" class="nav-link cell"
+            (click)="print();">
+            <span style='padding: 0px; margin: 0px; font-weight: 700;font-size:medium;'>
+            <span *ngIf="language=='English'">Visit Report</span>
+            <span *ngIf="language=='Chinese'">就诊报告</span></span>
+          </a>
+      
+        
+      
+      
+    </mat-toolbar>-->
+  <mat-horizontal-stepper (selectionChange)="selectionChange($event)">
+    <mat-step label="病史纪录">
+      <div style='padding: 0px; margin: 0px; background-color: #e2e9f9'>
+        <div [ngClass]="{'row': bigScreen==1}">
+          <div [ngClass]="{'col-sm-12': bigScreen==1}">
+            <div class="tab-content">
+              <div class="tab-pane active" id='current'>
+                <div class='row' style='width:100%;height: 100%; margin: 0;'>
+                  <div class='col-sm-3 scrollbox'>
+                    <div class='card' *ngFor="let form of forms|orderBy: 'index'"
+                      (click)='formChanged(form);form.clicked=true;'>
+                      <div class='card-header tab-left' [ngClass]="{'selected':form.selected&&form.clicked}">
+                        <span>
+                          <span *ngIf="language=='English'&&form.label">{{form.label.en}}</span>
+                          <span *ngIf="language=='Chinese'&&form.label">{{form.label.ch}}</span>
+                        </span>
+                      </div>
+                      <div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class='col-sm-9 scrollbox'>
+                    <div *ngFor="let form of forms|orderBy: 'index'">
+                      <div *ngIf="form&&form.selected
+                &&form.formType!='lab'
+                &&form.formType!='image'
+                &&form.formType!='problem'
+                &&form.formType!='medication'">
+                        <app-form [forms]='[form]' [visit]='visit' [visitDate]='visit.visitDate' [language]='language'
+                          [procedureDate]='this.procedureDate' [patient]='patient' [visitRecord]='visitRecord'
+                          [showInstruction]=true style='padding:0;margin:0; background:#fff;'>
+                        </app-form>
+                      </div>
+                      <div *ngIf="form&&form.selected&&form.formType=='lab'&&labPatient">
+                        <lab [patient]='labPatient'></lab>
+                      </div>
+                      <div *ngIf="form&&form.selected&&form.formType=='image'&&imagePatient">
+                        <image class="imagebox" [patient]='imagePatient'></image>
+                      </div>
+                      <div *ngIf="form&&form.selected&&form.formType=='problem'&&problemPatient">
+                        <problem [patient]='problemPatient'></problem>
+                      </div>
+                      <div *ngIf="form&&form.selected&&form.formType=='medication'&&medicationPatient">
+                        <medication [patient]='medicationPatient'></medication>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="tab-pane" id='lab' (click)='labPatient=patient'>
+                <lab [patient]='labPatient' [visit]='visit' [language]='language'></lab>
+              </div>
+              <div class="tab-pane" id='image' (click)='imagePatient=patient'>
+                <image [patient]='imagePatient' [language]='language'></image>
+              </div>
+              <div class="tab-pane" id='healthHistory' (click)='historyPatient=patient'>
+                <problem [patient]='historyPatient' [language]='language'></problem>
+              </div>
+              <div class="tab-pane" id='medicationHistory' (click)='medsPatient=patient'>
+
+                <medication [patient]='medsPatient' [language]='language'></medication>
+              </div>
+            </div>
+          </div>
+          <!--<div class='col-sm-1' *ngIf="bigScreen==1">
+    
+      <div class='card' style='height: 800px;'>
+    <div class="nav-tabs-navigation">
+    <div class="nav-tabs-wrapper" >
+        <span class="nav-tabs-title"> 
+            <span *ngIf="language=='English'">Visit Record</span>
+            <span *ngIf="language=='Chinese'"> 病史纪录</span>
+          </span>
+    <p></p><p></p>
+        <ul class="nav nav-tabs" data-tabs="tabs" style=' width: 100%;' *ngIf='bigScreen==1'>
+            <li class="nav-item visit-li" 
+            (click)='current=true;lab=false;image=false;healthHistory=false;medicationHistory=false;'
+            [ngClass]="{'card-primary':current&&color!='purple'&&color!='green',
+                        'card-rose':current&&color=='purple',
+                        'card-success':current&&color=='green'}">
+                <a mat-button class="nav-link active" href="#current" data-toggle="tab"  
+                style='width:100%;'
+                >
+                    
+                    <span style='width:100%; color:black'>
+                    <span *ngIf="language=='English'">HPI/Physical exam</span>
+                    <span *ngIf="language=='Chinese'"> 现病史/体格检查</span>
+                  </span> 
+                    <div class="ripple-container"></div>
+                </a>
+            </li>
+            
+            <li class="nav-item visit-li"
+            (click)='current=false;lab=true;image=false;healthHistory=false;medicationHistory=false;labPatient=patient'
+            [ngClass]="{'card-primary':lab&&color!='purple'&&color!='green',
+            'card-rose':lab&&color=='purple',
+            'card-success':lab&&color=='green'}">
+                <a mat-button class="nav-link" href="#lab" data-toggle="tab"  
+                style='width:100%;'
+                >
+                    <i class="material-icons" >code</i>
+                    <span style='width:100%; color:black' 
+                    
+                    > 
+                    <span *ngIf="language=='English'">Lab Report</span>
+                    <span *ngIf="language=='Chinese'">  实验室报告</span></span>
+                    <div class="ripple-container"></div>
+                </a>
+            </li>
+            <li class="nav-item visit-li"
+            (click)='current=false;lab=false;image=true;healthHistory=false;medicationHistory=false;imagePatint=patient'
+            [ngClass]="{'card-primary':image&&color!='purple'&&color!='green',
+            'card-rose':image&&color=='purple',
+            'card-success':image&&color=='green'}">
+                <a mat-button class="nav-link" href="#image" data-toggle="tab"  
+                style='width:100%;'
+                >
+                    <i class="material-icons" >code</i>
+                    <span style='width:100%; color:black'
+                  
+                    >  
+                    <span *ngIf="language=='English'">Image Report</span>
+                    <span *ngIf="language=='Chinese'"> 影像学报告</span>
+                  </span>
+                    <div class="ripple-container"></div>
+                </a>
+            </li>
+            <li class="nav-item visit-li"
+            (click)='current=false;lab=false;image=false;healthHistory=true;medicationHistory=false;problemPatient=patient'
+            [ngClass]="{'card-primary':healthHistory&&color!='purple'&&color!='green',
+                        'card-rose':healthHistory&&color=='purple',
+                        'card-success':healthHistory&&color=='green'}">
+                <a mat-button class="nav-link" href="#healthHistory" data-toggle="tab" 
+                  style='width:100%;'>
+                    <i class="material-icons" >code</i>
+                    <span style='width:100%; color:black'> 
+                  <span *ngIf="language=='English'">Health History</span>
+                  <span *ngIf="language=='Chinese'"> 健康史</span>
+                </span>
+                    <div class="ripple-container"></div>
+                </a>
+            </li>
+            <li class="nav-item visit-li"
+            (click)='current=false;lab=false;image=false;healthHistory=false;medicationHistory=true;medicationPatient=patient'
+            [ngClass]="{'card-primary':medicationHistory&&color!='purple'&&color!='green',
+                        'card-rose':medicationHistory&&color=='purple',
+                        'card-success':medicationHistory&&color=='green'}">
+                <a mat-button class="nav-link" href="#medicationHistory" data-toggle="tab"  
+                style='width:100%;'
+            >
+                    <i class="material-icons" >code</i>
+                    <span style=' width:100%; color:black'> 
+                  <span *ngIf="language=='English'">Medication History</span>
+                  <span *ngIf="language=='Chinese'">用药史</span>
+                </span>
+                    <div class="ripple-container"></div>
+                </a>
+            </li>
+            
+        </ul>
+        <button class="btn" style='margin-bottom:10px;margin-left:10px;'
+    [ngClass]="{'card-rose': color=='purple',
+    'card-success': color=='green',
+    'card-primary': color!='purple'&&color!='green'
+    }"(click)="addPathway();"><span *ngIf="language=='English'">Clinical Pathway</span>
+    <span *ngIf="language=='Chinese'">临床路径</span>
+    </button>
+    <button class="btn"  style='margin-bottom:10px;margin-left:10px;'
+    [ngClass]="{'card-rose': color=='purple',
+    'card-success': color=='green',
+    'card-primary': color!='purple'&&color!='green'
+    }"
+    (click)=" getEval();treatment=true;
+    evaluation=false;
+    orderList=false;
+    currentHistory=false;
+    visitSummary=false;
+    diagnosis=false;
+    record=false;"><span *ngIf="language=='English'">get decision support</span>
+    <span *ngIf="language=='Chinese'"> 临床决策</span></button>
+    </div>
+    </div>
+    </div>
+    </div>-->
+        </div>
+      </div>
+    </mat-step>
+    <mat-step label="临床决策">
+      <div>
+        <div class="scrollbox" style='background-color: #e2e9f9;'>
+          <button class="btn btn-round btn-base pull-right" (click)="submitRec()">提交CDS</button>
+          <div class='card' *ngFor='let value of recList'>
+            <div class='table table-responsive'>
+              <table class='table'>
+                <thead>
+                  <tr>
+                    <th> {{value.instruction}} (推荐医嘱):
+                      <button mat-button class='btn btn-round btn-base pull-right' (click)='selectAllOrders(value)'>selecte All</button>
+                    </th>
+                  </tr>
+                </thead>
+                <tbody *ngFor='let order of value.orders'>
+                  <tr>
+                    <td (click)='checkOrder(order, value)'>
+                      <mat-checkbox [checked]='order.valid==true'></mat-checkbox>
+                      {{order.label.ch}}
+                    </td>
+                  </tr>
+                  <tr *ngIf='order.valid==true'>
+                    <td>
+                      <app-form [forms]='order.forms' [emBed]='order.emBed' [patient]='patient' [visit]='visit'
+                        [language]='language' [noTitle]='order.noTitle'></app-form>
+                    </td>
+                  </tr>
+                  <tr *ngIf='order.valid==false'>
+                    <td>
+                      <span *ngIf='order.patientAllergyList.length>0'>过敏: </span>
+                      <span *ngFor='let allergy of order.patientAllergyList'>
+                        <i class="material-icons" style='color: red'>error</i>
+                        <span style='color: red'>{{allergy}}
+                        </span>
+                      </span>
+                      <span *ngFor='let item of order.items'>
+                        <span *ngIf='item.warning'><i class="material-icons" style='color: orange'>warning</i></span>
+                        <span *ngIf='item.stop'><i class="material-icons" style='color: red'>error</i></span>
+                        <span>{{item.label.ch}}: {{item.value}}</span>
+                        <span *ngIf='item.values&&item.values.length>0'>&nbsp;&nbsp;({{item.values[0].text}})</span>
+                        <span *ngIf='!item.values||item.values.length==0'>{{item.stopSign}}</span>
+                      </span>
+                      <span *ngIf='order.patientConflictingProblems&&order.patientConflictingProblems.length>0'>
+                        <i class="material-icons" style='color: red'>error</i>禁忌症:</span>
+                      <span *ngFor='let problem of order.patientConflictingProblems'>{{problem.name}}
+                        &nbsp;&nbsp;&nbsp;</span>
+                      <span *ngIf='order.patientDuplicationList&&order.patientDuplicationList.length>0'>
+                        <i class="material-icons" style='color: red'>error</i>重复医嘱:
+                        {{order.patientDuplicationList[0].desc}}
+                        {{order.patientDuplicationList[0].createdAt|date:"yyyy/MM/dd"}}
+                        <span
+                          *ngIf='order.patientDuplicationList[0].label'>{{order.patientDuplicationList[0].label.ch}}</span>
+                      </span>
+                      <span *ngIf='order.readyList&&order.readyList.length>0'>
+                        <i class="material-icons" style='color: red'>error</i>重复医嘱:
+                        <span *ngIf='order.readyList[0].label'>{{order.readyList[0].label.ch}}</span>
+                      </span>
+                      <span *ngIf='order.patientConflictingOrders&&order.patientConflictingOrders.length>0'>
+                        <i class="material-icons" style='color: red'>error</i> 禁忌药物:
+                        {{order.patientConflictingOrders[0].desc}}
+                      </span>
+                      <span *ngIf='order.conflictingList&&order.conflictingList.length>0'>
+                        <i class="material-icons" style='color: red'>error</i> 禁忌药物:
+                        {{order.conflictingList[0].label.ch}}
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+                <tbody *ngIf="value.profiles&&value.profiles.length>0">
+                  <tr>
+                    <th>推荐慢病项目:</th>
+                    <td *ngFor='let profile of value.profiles'> {{profile.label.ch}}</td>
+                  </tr>
+                </tbody>
+                <tbody *ngIf="value.forms&&value.forms.length>0">
+                  <tr>
+                    <th>患者教育:</th>
+                    <td *ngFor='let form of value.forms'> {{form.label.ch}}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!--<div class='card-header'
+            style='color:white;font-size:large; padding:0px;'    
+            [ngClass]="{'card-rose-1':color=='purple',
+                          'card-success-1':color=='green',
+                            'card-primary-1':color!='green'&&color!='purple'}">
+                            {{value.instruction}}
+                            <button mat-button class='btn pull-right' 
+                            
+                            [ngClass]="{'card-rose':color=='purple',
+                            'card-success':color=='green',
+                            'card-primary':color!='green'
+                            &&color!='purple'}"
+                            (click)='selectAllOrders(value)'>selecte All</button>
+                        </div>
+            <div class='card-body'>
+          
+                <h4><u>推荐医嘱: </u></h4>
+                
+                <div class='row' >
+                  
+                  <div class='col-sm-6' 
+                        style='padding: 10px;'
+                        *ngFor='let order of value.orders'    
+                        > 
+                  <div class='row'><div class='col-sm-4'>
+                  <div (click)='checkOrder(order)'>
+                      <mat-checkbox [checked]='order.selected==true'></mat-checkbox>
+                      {{order.internalName}}:{{order.message}} 
+                    </div></div>
+                    <div clas='col-sm-8'>
+                      <div *ngIf='order.valid&&order.selected' >
+                        <app-form [forms]='order.forms' style='margin:-10px;'
+                        [emBed]='order.emBed' 
+                        [patient]='patient'
+                        [visit]='visit'
+                        [language]='language'
+                        [noTitle]='order.noTitle'></app-form>
+                      </div>
+                      <div *ngIf='!order.valid&&order.selected' >
+                          <span *ngIf='order.patientAllergyList.length>0'>过敏: </span>
+                            <span *ngFor='let allergy of order.patientAllergyList'>
+                              <i class="material-icons" style='color: red'>error</i>
+                              <span style='color: red'>{{allergy.name}}
+                              </span>
+                            </span>
+                
+              
+                                <span *ngFor='let item of order.items'>
+                                
+                              
+                                <span *ngIf='item.warning'><i class="material-icons" style='color: orange'>warning</i></span>
+                                <span *ngIf='item.stop'><i class="material-icons" style='color: red'>error</i></span>
+                                <span >{{item.label.ch}}: {{item.value}}</span> 
+                                <span *ngIf='item.values&&item.values.length>0'>&nbsp;&nbsp;({{item.values[0].text}})</span>
+                                <span *ngIf='!item.values||item.values.length==0'>{{item.stopSign}}</span>
+                                </span>
+          
+                                <span *ngIf='order.patientConflictingProblems&&order.patientConflictingProblems.length>0'>
+                                  <i class="material-icons" style='color: red'>error</i>禁忌症:</span>
+                                <span *ngFor='let problem of order.patientConflictingProblems'>{{problem.name}}
+                                  &nbsp;&nbsp;&nbsp;</span>
+                
+                  
+                                  
+                                <span *ngIf='order.patientDuplicationList&&order.patientDuplicationList.length>0'>
+                                  <i class="material-icons" style='color: red'>error</i>重复医嘱:
+                                        {{order.patientDuplicationList[0].desc}}
+                                </span>
+                                  
+                
+                                
+                              <span *ngIf='order.patientConflictingOrders&&order.patientConflictingOrders.length>0'>
+                              <i class="material-icons" style='color: red'>error</i> 禁忌药物:
+                              {{order.patientConflictingOrders[0].desc}}
+                              </span>
+                            
+          
+                        </div>
+                    </div>
+                    </div>
+                </div>
+              </div>
+            
+                <h4><u>推荐慢病项目:</u></h4>
+            
+                  
+                    <span *ngFor='let profile of value.profiles'>
+                        {{profile.label.ch}}&nbsp;&nbsp;
+                    </span>
+                  
+                
+                <h4><u>患者教育:</u></h4>
+                
+                  
+                    <span class='col-sm-6' *ngFor='let form of value.forms'>
+                        {{form.label.ch}}&nbsp;&nbsp;
+                    </span>
+                  
+              
+                  </div>-->
+          </div>
+        </div>
+      </div>
+    </mat-step>
+    <mat-step label="医嘱">
+      <div style='padding: 5px;padding-top:15px; margin: 0px; background-color: #e2e9f9;position:relative'>
+        <div class='btns' style="position: absolute; top:0;right: 0;z-index: 9;">
+          <button class="btn btn-round btn-base" *ngIf="status==''" (click)="status='active'">有效</button>
+          <button class="btn btn-round btn-base" *ngIf="status=='active'" (click)="status=''">全部</button>
+          <button class="btn btn-round btn-base" (click)="addOrder()"> 添加医嘱
+          </button>
+        </div>
+        <div style='padding:10px; padding-bottom:20px;'>
+        <mat-tab-group (selectedTabChange)="orderSelectionChanged($event)">
+          <mat-tab label='{{orderType.enText}}' *ngFor='let orderType of orderTypes'>
+            <div class="yzheight">
+              <table class='table table-striped'>
+                <tr>
+                  <th>名称</th>
+                  <th>状态</th>
+                  <th>信息</th>
+                  <th>时间</th>
+                  <th>作者</th>
+                </tr>
+                <tr *ngFor='let order of orders|filter:status '>
+                  <td (click)='getOrder(order)'>
+                    <a href="javascript:void(0);">{{order.desc}}</a>
+                  </td>
+                  <td>{{order.status}}</td>
+                  <td>
+                    <span *ngIf='order.infor'>
+                      <span *ngFor='let obSet of order.infor.obSets'>
+                        <span *ngFor='let ob of obSet.obs'>{{ob.value}}&nbsp;&nbsp;
+                          <span *ngFor='let value of ob.values'>
+                            <span *ngIf='value'>{{value.text}}</span>
+                          </span>
+                        </span>
+                      </span>
+                    </span>
+                  </td>
+                  <td>{{order.createdAt| date: "yyyy/MM/dd HH:mm"}}</td>
+                  <td><span *ngIf="order.createdBy">{{order.createdBy.name}}</span></td>
+                  <td>
+                    <a style='display:inline-block;padding: 0 5px;' href="javascript:void(0);"
+                      *ngIf="order.status!='completed'&&(order.type=='lab'||order.type=='image')"
+                      (click)='complete(order)'>complete</a>
+                    <a style='display:inline-block;padding: 0 5px;' href="javascript:void(0);"
+                      *ngIf="order.status!='discontinued'&&order.type=='medication'"
+                      (click)='discontinue(order)'>discontinue</a>
+                    <a style='display:inline-block;padding: 0 5px;' href="javascript:void(0);" (click)='delete(order)'>
+                      <i class="fa fa-remove" aria-hidden="true" style="font-size:24px; color: red"></i></a>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+      </div>
+    </mat-step>
+    <mat-step label="诊断">
+      <div class="scrollbox" style='padding: 2px; margin: 0px;' *ngIf='diagnosis'>
+        <diagnosis [diagnosis]=true [color]='color' [language]='language'></diagnosis>
+      </div>
+    </mat-step>
+    <mat-step label="就诊报告">
+      <div class="scrollbox" style="padding: 0;margin: 0;overflow-x: hidden;">
+        <message-box [message]='message' [forms]='forms' [visit]='visit' [patient]='printPatient' [color]='color'>
+        </message-box>
+      </div>
+    </mat-step>
+  </mat-horizontal-stepper>
+</div>

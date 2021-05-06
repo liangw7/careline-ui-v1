@@ -1,0 +1,103 @@
+<div class="overlay" *ngIf="loading">
+  <div class="spinner-wrapper">
+    <spinner></spinner>
+  </div>
+</div>
+<div class="wapper">
+  <div class="closebtn" (click)=close()>
+    <i class='material-icons'>close</i>
+  </div>
+  <div class='btns'>
+    <button (click)=save() class='btn btn-base btn-round' [disabled]='selectedOrder&&!selectedOrder.isValid'
+      [hidden]='order'>保存</button>
+    <button (click)=getPatient() class='btn btn-base btn-round' [hidden]='!showConsult'>Get Patient Chart</button>
+  </div>
+  <div style="max-height: calc(80vh - 100px);overflow-y: auto;overflow-x: hidden;">
+    <div [hidden]='order'>
+      <div class='searchbox'>
+        <div class='inputbox'>
+          <input class="form-control" placeholder='search orders' [(ngModel)]="search">
+        </div>
+        <div class='btns'>
+          <a (click)='searchOrder(search)' class='btn btn-base btn-round'>搜索</a>
+          <a (click)='showList=false' class='btn btn-default btn-round'>关闭</a>
+        </div>
+      </div>
+      <div class="responsive-table" *ngIf='showList' style="max-height: 40vh; overflow-y: auto;">
+        <div class='table'>
+          <table class='table table-striped'>
+            <tr *ngFor='let order of orders' (click)='validate(order)'>
+              <td *ngIf="language=='Chinese'">{{order.label.ch}}</td>
+              <td *ngIf="language=='English'">{{order.label.en}}</td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class='table'>
+        <div class='card-header'>
+          <h5 class="card-title ">{{title}} <u *ngIf='order'>{{order.status}}</u></h5>
+        </div>
+        <table class='table table-striped' *ngIf="selectedOrder&&!selectedOrder.isValid">
+          <tr>
+            <th>药物过敏</th>
+            <th *ngFor='let item of selectedOrder.items'>{{item.name}}</th>
+            <th>禁忌症</th>
+            <th>重复医嘱</th>
+            <th>相互矛盾的药物</th>
+          </tr>
+          <tr>
+            <td>
+              <span *ngFor='let allergy of selectedOrder.patientAllergyList'>
+                <i class="material-icons" style='color: red'>error</i>
+                <span style='color: red'>{{allergy.label.ch}}
+                </span>
+              </span>
+            </td>
+            <td *ngFor='let item of selectedOrder.items'>
+              <span *ngIf='item.warning'><i class="material-icons" style='color: orange'>warning</i></span>
+              <span *ngIf='item.stop'><i class="material-icons" style='color: red'>
+                  error</i></span>
+              <span> {{item.value}}</span>
+              <span *ngIf='item.values&&item.values.length>0'>&nbsp;&nbsp;({{item.values[0].text}})</span>
+              <span *ngIf='!item.values||item.values.length==0'>{{item.stopSign}}</span>
+            </td>
+            <td>
+              <span *ngIf='selectedOrder.patientConflictingProblems
+                          &&selectedOrder.patientConflictingProblems.length>0'><i class="material-icons"
+                  style='color: red'>error</i>
+                <span *ngFor='let problem of selectedOrder.patientConflictingProblems'>{{problem.name}}.</span></span>
+            </td>
+            <td>
+              <span *ngIf='selectedOrder.patientDuplicationList&&selectedOrder.patientDuplicationList.length>0'>
+                <i class="material-icons" style='color: red'>error</i>
+                {{selectedOrder.patientDuplicationList[0].desc}}
+              </span>
+            </td>
+            <td>
+              <span *ngIf='selectedOrder.patientConflictingOrders&&selectedOrder.patientConflictingOrders.length>0'>
+                <i class="material-icons" style='color: red'>error</i>{{selectedOrder.patientConflictingOrders[0].desc}}
+              </span>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+    <div style="max-height: calc(80vh - 220px);overflow-y: auto;overflow-x: hidden;" *ngIf='(selectedOrder&&selectedOrder.isValid)||order'>
+      <app-form *ngIf='selectedOrder&&selectedOrder.forms' [forms]='selectedOrder.forms' [patient]='patient'
+        [visit]='visit' [language]='language' [emBedSet]=true>
+      </app-form>
+      <app-form *ngIf='forms' [forms]='forms' [patient]='patient' [visit]='visit' [language]='language' [emBedSet]=true>
+      </app-form>
+      <div *ngIf="selectedOrder&&selectedOrder.orderType=='consult'||order&&order.type=='consult'">
+        <mat-form-field class="full-width">
+          <mat-select placeholder="Consulting Service" [(ngModel)]="serviceID">
+            <mat-option *ngFor='let serviceItem of serviceList' value={{serviceItem._id}}>{{serviceItem.name}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,57 @@
+<div class="overlay" *ngIf="loading">
+  <div class="spinner-wrapper">
+    <spinner></spinner>
+  </div>
+</div>
+<div class="wapper">
+  <div class='row'>
+    <div class='col-sm-6'>
+      <div class='row'>
+        <div class='col-sm-7'>
+          <input class="form-control" type="text" [(ngModel)]="filter" placeholder="search">
+        </div>
+        <div class='col-sm-5'>
+          <button class="btn btn-round btn-base" (click)="searchMeds()">药物</button>
+          <button class="btn btn-round btn-base" (click)="searchOther()" style="margin-left: 6px;">其它过敏原</button>
+        </div>
+      </div>
+      <div style="height: 62vh;overflow-y: auto;">
+        <mat-card>
+          <div *ngFor='let allergy of allergyList|filter: filter'>
+            <div class='list-group-item' (click)='select(allergy)'
+              [ngClass]="{'allergy-selected':findAllergy(allergy)}">
+              <span *ngIf='allergy!=null'>{{allergy}}</span>
+
+            </div>
+            <div *ngIf='findAllergy(allergy)'>
+              <div class='list-group-item' *ngFor='let option of reaction.options' style='padding:2px;'
+                [ngClass]="{'reaction-selected':findReaction(allergy,option)}"
+                (click)='selectReaction(allergy, option)'>
+                {{option.text}}
+              </div>
+            </div>
+          </div>
+        </mat-card>
+      </div>
+    </div>
+    <div class='col-sm-6'>
+        <div style="max-height: calc(62vh + 40px);overflow-y: auto;">
+            <mat-card *ngIf='selectedAllergyList'>
+                <div class='list-group-item row-striped' *ngFor='let selectedAllergy of selectedAllergyList'>
+                <div class='row'>
+                    <div class='col-sm-7'>
+                    <span>{{selectedAllergy.allergy}}</span>
+                    </div>
+                    <div class='col-sm-5'><span *ngFor='let reaction of selectedAllergy.reactions'>
+                        {{reaction}}</span></div>
+                </div>
+                </div>
+            </mat-card>
+        </div>
+    </div>
+  </div>
+  <div class="btns">
+    <button class="btn btn-round btn-default" (click)="close()">取消</button>
+    <button class="btn btn-round btn-base" (click)="save()">保存</button>
+  </div>
+</div>

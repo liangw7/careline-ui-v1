@@ -1,0 +1,164 @@
+<div [ngClass]="{'patient-story':!popOut,'patient-story-popOut':popOut}" *ngIf="bigScreen==0">
+    <i class='material-icons pull-right' style='margin-top:70px;' *ngIf='popOut' (click)='close()'>close</i>
+    <div class="card card-profile" [ngClass]="{'patient':!popOut,'patient-popOut':popOut}">
+        <div class="card-avatar" style='margin-top:20px;'>
+            <img class="img" [src]="patient.photo" />
+        </div>
+        <div class="card-body">
+            <h6 class="card-title">{{patient.name}},{{patient.gender}}, {{patient.birthday}}</h6>
+            <p class="card-title">
+                <span>健康管理项目:</span>
+                <span *ngFor='let profile of patient.profiles'>
+                    <span *ngIf='profile&&profile.label'>{{profile.label.ch}}&nbsp;&nbsp;</span></span>
+            </p>
+            <a class="btn btn-primary btn-round" (click)='showProfile=true;'>档案</a>
+        </div>
+    </div>
+    <!--<div class='card block' *ngIf='!popOut'>
+            <span  
+            [ngClass]="{'card-rose-color':color=='purple',
+            'card-success-color':color=='green',
+            'card-primary-color':color!='green'&&color!='purple'}">
+           
+                <span style='font-weight: 800' *ngIf="language=='Chinese'">咨询</span>
+                <span style='font-weight: 800' *ngIf="language=='English'">consult</span>
+          </span>
+              <div >
+                <mail [patient]='patient' [selected]='selected'></mail>
+            </div>
+           
+    </div>
+    <div class='card block' *ngIf='!popOut'>
+        <span  
+        [ngClass]="{'card-rose-color':color=='purple',
+        'card-success-color':color=='green',
+        'card-primary-color':color!='green'&&color!='purple'}"
+        (click)='editSchedule=true'>
+        
+            <span style='font-weight: 700' *ngIf="language=='Chinese'">预约</span>
+            <span style='font-weight: 700' *ngIf="language=='English'">Reservation</span>
+       
+                
+                <i class='material-icons pull-right' >edit</i>
+         
+        </span>
+          <div >
+            <schedule-patient [patient]='patient' 
+            [editSchedule]='editSchedule'
+            (messageEvent)="receiveMessageFromSchedule($event)"
+            [selectedProvider]='scheduleProvider'
+             ></schedule-patient>
+        </div>
+       
+    </div>-->
+
+    <!--<div class='card' [ngClass]="{'block':!popOut,'block-popOut':popOut}">
+    <span 
+    [ngClass]="{'card-rose-color':color=='purple',
+    'card-success-color':color=='green',
+    'card-primary-color':color!='green'&&color!='purple'}">
+    <span style='font-weight: 700' *ngIf="language=='Chinese'">健康计划</span>
+    <span style='font-weight: 700' *ngIf="language=='English'">Care Plan</span>
+    </span>
+    
+    <div>
+        <followups [patient]='patient' ></followups>
+    </div>
+    </div>-->
+    <div class='card' [ngClass]="{'block':!popOut,'block-popOut':popOut}">
+        <span [ngClass]="{'card-rose-color':color=='purple',
+        'card-success-color':color=='green',
+        'card-primary-color':color!='green'
+        &&color!='purple'}">
+            <span style='font-weight: 700' *ngIf="language=='Chinese'">健康图标</span>
+            <span style='font-weight: 700' *ngIf="language=='English'">Clinical Summary</span>
+        </span>
+        <div>
+            <summary [patient]='patient'></summary>
+        </div>
+    </div>
+    <!--<div class='card' [ngClass]="{'block':!popOut,'block-popOut':popOut}">
+        <span  
+        [ngClass]="{'card-rose-color':color=='purple',
+        'card-success-color':color=='green',
+        'card-primary-color':color!='green'&&color!='purple'}">
+        
+            <span style='font-weight: 800' *ngIf="language=='Chinese'">健康教育</span>
+            <span style='font-weight: 800' *ngIf="language=='English'">Education</span>
+        </span>
+          <div >
+            <education [patient]='patient'></education>
+        </div>
+       
+    </div>-->
+    <div class='card ' [ngClass]="{'block':!popOut,'block-popOut':popOut}">
+        <span [ngClass]="{'card-rose-color':color=='purple',
+        'card-success-color':color=='green',
+        'card-primary-color':color!='green'&&color!='purple'}">
+            <span style='font-weight: 700' *ngIf="language=='Chinese'">过去史</span>
+            <span style='font-weight: 700' *ngIf="language=='English'">Health History</span>
+        </span>
+        <div>
+            <problem [patient]='patient' [language]='language'></problem>
+        </div>
+    </div>
+    <div class='card ' [ngClass]="{'block':!popOut,'block-popOut':popOut}">
+        <span [ngClass]="{'card-rose-color':color=='purple',
+        'card-success-color':color=='green',
+        'card-primary-color':color!='green'&&color!='purple'}">
+            <span style='font-weight: 700' *ngIf="language=='Chinese'">用药史</span>
+            <span style='font-weight: 700' *ngIf="language=='English'">Medication</span>
+        </span>
+        <div>
+            <medication [patient]='patient'></medication>
+        </div>
+    </div>
+    <div class='card' [ngClass]="{'block':!popOut,'block-popOut':popOut}">
+        <span [ngClass]="{'card-rose-color':color=='purple',
+        'card-success-color':color=='green',
+        'card-primary-color':color!='green'&&color!='purple'}">
+            <span style='font-weight: 700' *ngIf="language=='Chinese'">实验室</span>
+            <span style='font-weight: 700' *ngIf="language=='English'">lab</span>
+        </span>
+        <div>
+            <lab [patient]='patient'></lab>
+        </div>
+    </div>
+
+    <div class='card' [ngClass]="{'block':!popOut,'block-popOut':popOut}">
+        <span [ngClass]="{'card-rose-color':color=='purple',
+        'card-success-color':color=='green',
+        'card-primary-color':color!='green'&&color!='purple'}">
+            <span style='font-weight: 700' *ngIf="language=='Chinese'">影像</span>
+            <span style='font-weight: 700' *ngIf="language=='English'">Image</span></span>
+        <div>
+            <image [patient]='patient'></image>
+        </div>
+
+    </div>
+    <div class='card ' [ngClass]="{'block':!popOut,'block-popOut':popOut}">
+        <span [ngClass]="{'card-rose-color':color=='purple',
+        'card-success-color':color=='green',
+        'card-primary-color':color!='green'&&color!='purple'}">
+            <span style='font-weight: 700' *ngIf="language=='Chinese'">就诊记录</span>
+            <span style='font-weight: 700' *ngIf="language=='English'">Visit record</span></span>
+        <div>
+            <visit-list [patient]='patient'></visit-list>
+        </div>
+    </div>
+
+    <div class='profile-cell' *ngIf='showProfile'>
+        <div class='card-header'>
+            <i class='material-icons pull-right' (click)='showProfile=false;'>close</i>
+
+            <span style='border-bottom:1px  solid;
+                    border-width:medium;font-size:medium;padding:3px'>
+                <span style='font-weight: 700' *ngIf="language=='Chinese'">档案</span>
+                <span style='font-weight: 700' *ngIf="language=='English'">Profile</span>
+            </span>
+        </div>
+        <div>
+            <profile [patient]='patient' (sendSubmit)='saveProfile($event)'></profile>
+        </div>
+    </div>
+</div>

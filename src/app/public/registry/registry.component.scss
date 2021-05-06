@@ -1,0 +1,33 @@
+@import "src/assets/scss/base.scss";
+
+.registry-1 {
+    margin-top: 100px;
+    margin-bottom: 50px;
+    margin-left: 350px;
+    margin-right: 350px;
+    background-color: white;
+    border-radius: 15px;
+    padding:10px;
+    .inner {
+      
+        height: 600px;
+        overflow-y: auto;
+    }
+}
+.registry-2 {
+    margin:20px;
+    
+    .inner {
+      
+       margin-top:10px;
+        height: 680px;
+        overflow-y: auto;
+    }
+}
+.txt{
+     margin-left:50px; 
+     font-size:larger;
+     font-weight: 600;
+     text-align: right;
+     color:darkslateblue;
+}

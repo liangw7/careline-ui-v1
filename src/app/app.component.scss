@@ -1,0 +1,56 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+ul,ol,li {
+    list-style: none;
+}
+
+::ng-deep .mat-tab-list .mat-tab-labels .mat-tab-label-active {
+    font-weight: bolder;
+    color: blue !important;
+
+    font-weight: 900;
+    padding: 0px;
+    margin: 0px;
+}
+
+.mat-tab {
+    padding: 0px;
+    margin: 0px;
+}
+::ng-deep.mat-tab {
+    padding: 0px;
+    margin: 0px;
+}
+
+.mat-tab-label {
+    color: white;
+    min-width: 20px !important;
+    padding: 5px;
+    background-color: transparent;
+
+    font-weight: 700;
+}
+
+::ng-deep .mat-tab-label {
+    min-width: 20px !important;
+    padding: 5px;
+    background-color: transparent;
+
+    font-weight: 700;
+}
+
+/* ink bar */
+::ng-deep .mat-ink-bar {
+    background-color: var(--primary-color, #9eb0c7) !important;
+}
+:host ::ng-deep .mat-tab-body-wrapper {
+    height: 100%;
+    overflow: visible;
+}
+
+:host ::ng-deep .mat-tab-body.mat-tab-body-active {
+    height: 100%;
+    overflow: visible;
+}

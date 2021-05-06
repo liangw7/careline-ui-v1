@@ -1,0 +1,456 @@
+<div *ngIf='provider'>
+    <div *ngIf="bigScreen==1" style='margin-left: 3%;margin-right: 10%; margin-top: 5%;' [ngClass]="{'has-margin-blue':provider.color!='green'&&provider.color!='purple',
+                        'has-margin-green':provider.color=='green',
+                        'has-margin-purple':provider.color=='purple'}">
+      <div class='row'>
+        <div class='col-sm-3'>
+          <div style='height:520px;color:black; width:40%; padding-top:30px;padding-left:40px;'>
+            <img [src]="getUrl(provider.photo)" class='provider-image'>
+            <div *ngIf="language=='Chinese'" style='width:250px;'>
+              <span style="font-size:x-large;font-weight:800; ">{{provider.name}}&nbsp;&nbsp;</span>
+              <span style="font-size:large;font-weight:500;">{{provider.title}}</span>
+            </div>
+            <div *ngIf="language=='English'" style='width:250px;'>
+              <span style="font-weight:800;">{{provider.name}}</span>
+              <span style="font-weight:500;">{{provider.enTitle}}</span>
+            </div>
+            <div style="margin-top:55px;">
+              <div class='search-button'
+                (click)="profileSelected=false;descSelected=true;mapSelected=false;oneProfile=false;articleSelected=false;"
+                [ngClass]="{'active':descSelected,'non-active':!descSelected,
+                      'button-color-blue':provider.color!='green'&&provider.color!='purple',
+                      'button-color-green':provider.color=='green',
+                      'button-color-purple':provider.color=='purple'}">
+                <a href="javascript:void(0);">
+                  <span>介绍</span></a>
+              </div>
+              <div class='search-button'
+                (click)="profileSelected=true;descSelected=false;mapSelected=false;articleSelected=false;oneProfile=false;getProfiles();"
+                [ngClass]="{'active':profileSelected,'non-active':!profileSelected,
+                    'button-color-blue':provider.color!='green'&&provider.color!='purple',
+                    'button-color-green':provider.color=='green',
+                    'button-color-purple':provider.color=='purple'}">
+                <a href="javascript:void(0); ">
+                  <span>项目</span></a>
+              </div>
+              <div class='search-button' (click)="profileSelected=false;descSelected=false;articleSelected=true;mapSelected=false;forms=null;
+                   oneProfile=false;getArticles();" [ngClass]="{'active':articleSelected,'non-active':!articleSelected,
+                   'button-color-blue':provider.color!='green'&&provider.color!='purple',
+                   'button-color-green':provider.color=='green',
+                   'button-color-purple':provider.color=='purple'}">
+                <a href="javascript:void(0); ">
+                  <span>文章</span></a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class='col-sm-9'>
+          <div class='row'>
+            <div class='col-sm-6' style="font-weight:600;font-size:medium;"
+              (click)="profileSelected=false;descSelected=false;mapSelected=false;oneProfile=true;" [ngClass]="{'active':oneProfile,'non-active':!oneProfile,
+              'color-blue':provider.color!='green'&&provider.color!='purple',
+              'color-green':provider.color=='green',
+              'color-purple':provider.color=='purple'}">
+              <a href="javascript:void(0);" *ngIf="selectedProfile">
+                <span style='font-size:large'>{{selectedProfile.label.ch}}&nbsp;&nbsp;</span>
+              </a>
+              <a class='btn btn-round' *ngIf="selectedProfile"
+                style='padding:10px;padding-left:25px; padding-right:25px;color:white' href="javascript:void(0);"
+                [ngClass]="{
+                'button-color-blue':provider.color!='green'&&provider.color!='purple',
+                'button-color-green':provider.color=='green',
+                'button-color-purple':provider.color=='purple'}" (click)='submit()'>
+                <span>咨询</span>
+              </a>
+            </div>
+            <div class='pull-right row'>
+              <input style='height:35px;margin:10px; 
+                margin-left:10px;
+                background-color: #f0f5fce7;
+                border-radius:15px;' [(ngModel)]="search" placeholder="搜索" #textInput>
+              <a class="nav-link" href="javascript:void(0);" (click)='goToHome()'>
+                <span *ngIf="language=='Chinese'">首页</span>
+                <span *ngIf="language=='English'">Homepage</span>
+              </a>
+            </div>
+          </div>
+          <div class='card' class='profile' [ngStyle]="{'height':scrollSize+'px'}" style="overflow: auto;">
+            <div class='row' *ngIf="profileSelected&&!selectedProfile">
+              <div class='col-sm-4' *ngFor='let profile of profiles|filter:search'>
+                <div class='card' (click)='getForms(profile); selectedProfile=profile;'>
+                  <div class="card-header card-header-infor">
+                    <img [src]="getUrl(profile.image)" class='photo'>
+                  </div>
+                  <div class="card-body" style='height: 148px;  overflow:hidden; font-weight:600;
+                                font-style: inherit;
+                                font-feature-settings: "blwf";
+                                font-size-adjust: inherit;
+                                border-color: blue'>
+                    <div class='row'>
+                      <div class='col-sm-12'>
+                        <h4 *ngIf="language=='Chinese'" style='color:steelblue;font-weight: 700;'>
+                          <span *ngIf='!profile.label'>{{profile.name}}</span>
+                          <span *ngIf='profile.label'>{{profile.label.ch}}</span>
+                        </h4>
+                        <p *ngIf="profile.desc&&language=='Chinese'" style='color:steelblue;font-weight: 700;'>
+                          {{profile.desc.patient}}
+                        </p>
+                        <h5 *ngIf="language=='English'" style='color:steelblue;font-weight: 700;'>
+                          <span *ngIf='!profile.label'>{{profile.name}}</span>
+                          <span *ngIf='profile.label'>{{profile.label.en}}</span>
+                        </h5>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="profileSelected&&selectedProfile&&forms" style='padding:10px;'>
+              <div class='row'>
+                <div style='float:right;' (click)='selectedProfile=null;profileSelected=true;getProfiles();'>
+                  All profiles</div>
+              </div>
+              <mat-tab-group *ngIf='forms'>
+                <mat-tab *ngFor='let form of forms' label="{{form.label.ch}}">
+                  <app-form [forms]='[form]' [color]='color' [language]='language' [showInstruction]=true
+                    (messageEvent)="receiveMessage($event)"></app-form>
+                </mat-tab>
+              </mat-tab-group>
+            </div>
+            <div *ngIf="descSelected" style='padding:50px;'>
+              <div class='card'>
+                <div class='card-body'>
+                  <div *ngFor="let item of breakLines(provider.desc)">
+                    {{item}}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="mapSelected">
+            </div>
+            <div class='row' *ngIf="articleSelected&&!selectedArticle" style='min-height:500px;'>
+              <div class='col-sm-12' *ngFor='let article of articles|filter:search'
+                (click)='selectedArticle=article; selectArticle(article);'>
+                <div class='card' style='height:150px;'>
+                  <div class="card-body" style=' font-weight:600;
+                                    font-style: inherit;
+                                    font-feature-settings: "blwf";
+                                    font-size-adjust: inherit;
+                                    border-color: blue'>
+                    <div class='row'>
+                      <div style='width:20%'>
+                        <img [src]="getUrl(article.image)" style="width:100px;height:100px;">
+                      </div>
+                      <div style='width:80%'>
+                        <h4 *ngIf="language=='Chinese'" style='color:steelblue;font-weight: 700;'>
+                          <span>{{article.label.ch}}</span>
+                        </h4>
+                        <p style='color:steelblue;font-weight: 700;' *ngIf='article.desc'>
+                          {{article.desc.patient}}
+                        </p>
+                      </div>
+                    </div>
+                    <div class='row'>
+                      <div class='pull-right'>
+                        <span>author:{{article.createdBy.name}}, {{article.createdBy.title}}</span>
+                        <span>time:{{article.createdAt|date: 'yyyy/MM/dd hh:mm'}}</span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div *ngIf="articleSelected&&selectedArticle" style='min-height:500px;padding:10px;'>
+              <div class='row'>
+                <div style='text-align:center; width:70%;font-weight:700;font-size: large;'>
+                  {{selectedArticle.label.ch}}</div>
+                <div style='text-align:right; width:30%'
+                  (click)='selectedArticle=null;articleSelected=true;getArticles();'>
+                  All Articles</div>
+              </div>
+              <div *ngIf='articleForms'>
+                <app-form [forms]='articleForms' [language]='language'>
+                </app-form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div *ngIf="bigScreen==0" [ngClass]="{'has-margin-blue':provider.color!='green'&&provider.color!='purple',
+    'has-margin-green':provider.color=='green',
+    'has-margin-purple':provider.color=='purple'}">
+      <div class='row'>
+        <div style='width:40%'>
+          <img [src]="getUrl(provider.photo)" class='provider-image-cell'>
+        </div>
+        <div style='width:60%'>
+          <a class='btn btn-round btn-block' style='background-color:transparent;' href="javascript:void(0);"
+            (click)='selectedProfile=null;profileSelected=false;homePage=true;'>
+            <span> {{provider.name}}, &nbsp;{{provider.title}}</span>
+          </a>
+          <div style="margin-left:0px;font-weight:600;
+                font-size:medium;" (click)="profileSelected=false;descSelected=false;mapSelected=false;oneProfile=true;"
+            [ngClass]="{'active':oneProfile,'non-active':!oneProfile,
+                  'color-blue':provider.color!='green'&&provider.color!='purple',
+                  'color-green':provider.color=='green',
+                  'color-purple':provider.color=='purple'}">
+            <div style='margin-bottom:5px'>
+              <h4 style='font-weight: 600;' *ngIf="selectedProfile">{{selectedProfile.label.ch}}&nbsp;&nbsp;</h4>
+  
+              <h4 style='font-weight: 600;' *ngIf="selectedArticle">{{selectedArticle.label.ch}}&nbsp;&nbsp;</h4>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <div style="margin-top:5px;margin-left:5%;" class='row' *ngIf='!selectedProfile&&!selectedArticle'>
+        <div class='search-button-cell' (click)="profileSelected=false;descSelected=true;articleSelected=false;"
+          [ngClass]="{'active-cell':descSelected,'non-active-cell':!descSelected,
+                'color-blue':provider.color!='green'&&provider.color!='purple',
+                'color-green':provider.color=='green',
+                'color-purple':provider.color=='purple'}">
+          <a href="javascript:void(0);">
+            <span>介绍</span></a>
+        </div>
+        <div class='search-button-cell'
+          (click)="profileSelected=true;descSelected=false;articleSelected=false;getProfiles();" [ngClass]="{'active-cell':profileSelected,'non-active-cell':!profileSelected,
+                'color-blue':provider.color!='green'&&provider.color!='purple',
+                'color-green':provider.color=='green',
+                'color-purple':provider.color=='purple'}">
+          <a href="javascript:void(0); ">
+            <span>项目</span></a>
+        </div>
+        <div class='search-button-cell'
+          (click)="profileSelected=false;descSelected=false;articleSelected=true;getArticles()" [ngClass]="{'active-cell':articleSelected,'non-active-cell':!articleSelected,
+                'color-blue':provider.color!='green'&&provider.color!='purple',
+                'color-green':provider.color=='green',
+                'color-purple':provider.color=='purple'}">
+          <a href="javascript:void(0);">
+            <span>文章</span></a>
+        </div>
+        <div class='search-button-cell'
+          (click)="profileSelected=false;descSelected=false;articleSelected=false;homePage=true" [ngClass]="{'active-cell':articleSelected,'non-active-cell':!articleSelected,
+                'color-blue':provider.color!='green'&&provider.color!='purple',
+                'color-green':provider.color=='green',
+                'color-purple':provider.color=='purple'}">
+          <a href="javascript:void(0);">
+            <span>首页</span></a>
+        </div>
+      </div>
+  
+      <div style=' width:95%; margin-left:10px;min-height:600px;margin-bottom:0px;'
+        *ngIf='!selectedProfile&&!selectedArticle'>
+        <div class='row' *ngIf="profileSelected">
+          <div class='col-sm-12' *ngFor='let profile of profiles|filter:search'>
+            <div class='card' (click)='profileSelected=false;selectedProfile=profile;getForms(profile)'>
+              <div class="card-header card-header-infor">
+                <img [src]="getUrl(profile.image)" class='photo'>
+              </div>
+              <div class="card-body" style='height: 148px;  overflow:hidden; font-weight:600;
+                                    font-style: inherit;
+                                    font-feature-settings: "blwf";
+                                    font-size-adjust: inherit;
+                                    border-color: blue'>
+                <div class='row'>
+                  <div class='col-sm-12'>
+                    <div *ngIf="language=='English'" style='color:steelblue;font-weight: 700;'>
+                      <h4 *ngIf='!profile.label'>{{profile.name}}</h4>
+                      <h4 *ngIf='profile.label'>{{profile.label.en}}</h4>
+                    </div>
+                    <div *ngIf="language=='Chinese'" style='color:steelblue;font-weight: 700;'>
+                      <h4 *ngIf='!profile.label'>{{profile.name}}</h4>
+                      <h4 *ngIf='profile.label'>{{profile.label.ch}}</h4>
+                    </div>
+                    <p *ngIf="profile.desc&&language=='Chinese'" style='color:steelblue;font-weight: 500;'>
+                      {{profile.desc.patient}}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="descSelected" class='card ' style='background-color:transparent;'>
+          <div class='card-body'>
+            <div *ngFor="let item of breakLines(provider.desc)">
+              {{item}}
+            </div>
+          </div>
+        </div>
+        <div *ngIf="mapSelected">
+        </div>
+        <div class='row' *ngIf="articleSelected&&!selectedArticle">
+          <div class='col-sm-12' *ngFor='let article of articles|filter:search'
+            (click)='selectedArticle=article; selectArticle(article);'>
+            <div class='card' style='height:150px;'>
+              <div class="card-body" style=' font-weight:600;
+                                        font-style: inherit;
+                                        font-feature-settings: "blwf";
+                                        font-size-adjust: inherit;
+                                        border-color: blue'>
+                <div class='row'>
+                  <div style='width:20%'>
+                    <img [src]="getUrl(article.image)" style="width:100px;height:100px;">
+                  </div>
+                  <div style='width:80%'>
+                    <h4 *ngIf="language=='Chinese'" style='color:steelblue;font-weight: 700;'>
+                      <span>{{article.label.ch}}</span>
+                    </h4>
+                    <p style='color:steelblue;font-weight: 700;' *ngIf='article.desc'>
+                      {{article.desc.patient}}
+                    </p>
+                  </div>
+                </div>
+                <div class='row'>
+                  <div class='pull-right'>
+                    <span>author:{{article.createdBy.name}}, {{article.createdBy.title}}</span>
+                    <span>time:{{article.createdAt|date: 'yyyy/MM/dd hh:mm'}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf='selectedProfile' style='width:95%;
+          margin-left:10px;
+          margin-bottom:20px;'>
+        <img [src]="getUrl(profile.image)" class='profile-cell'>
+        <div class='title-cell'>
+          <div [ngClass]="{
+        'text-center-cell':bigScreen==0,
+        'card-rose-color':color=='purple',
+        'card-success-color':color=='green',
+        'card-primary-color':color!='purple'&&color!='green'}">
+            <div style='margin:80px;'>
+              <span style="font-size:x-large; font-weight:700;padding-left:10px;">
+                <p *ngIf="language=='Chinese'&&forms">{{forms[0].label.ch}}</p>
+                <p *ngIf="language=='English'&&forms">{{forms[0].label.en}}</p>
+              </span>
+            </div>
+            <div class='pull-right' style='padding-right:60px;'>
+              <a class='btn btn-round' style='color:white' (click)='goToHome()' [ngClass]="{
+                    'card-primary':color!='green'&&color!='purple',
+                    'card-success':color=='green',
+                    'card-rose':color=='purple'}">
+                <span>所有项目</span>
+              </a>
+              <a href="javascript:void(0);" class='btn btn-round' (click)='popOut=true;' style=' color:white' [ngClass]="{
+              'card-rose':color=='purple',
+              'card-success':color=='green',
+              'card-primary':color!='purple'&&color!='green'}">
+                <span style="font-weight: 600;" *ngIf="language=='Chinese'">阅读自测</span>
+                <span style="font-weight: 600;" *ngIf="language=='English'">click for detail</span>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class='card' style='background-color:transparent;margin:0px;overflow:auto'
+          [ngStyle]="{'height':this.scrollSize+'px'}">
+          <app-form [forms]='forms' [color]='color' [language]='language' [showInstruction]=true [emBedSet]=false
+            [popOut]='popOut' (messageEvent)="receiveMessage($event)"></app-form>
+        </div>
+        <div class='row' style='padding-left:10px; 
+            bottom:0px;
+            margin-bottom:0px;
+            position:fixed;
+            z-index:5;
+            width:100%;
+            text-align: center;'>
+          <div style='width:50%'>
+            <a class='btn btn-block' style='color:white' (click)='followup=true;submit()' href="javascript:void(0);"
+              [ngClass]="{
+                'button-color-blue':provider.color!='green'&&provider.color!='purple',
+                'button-color-green':provider.color=='green',
+                'button-color-purple':provider.color=='purple'}">
+              <span>智能管理</span>
+            </a>
+          </div>
+          <div style='width:50%'>
+            <a class='btn btn-block' style='color:white' (click)='consult=true;submit()' href="javascript:void(0);"
+              [ngClass]="{
+                'button-color-blue':provider.color!='green'&&provider.color!='purple',
+                'button-color-green':provider.color=='green',
+                'button-color-purple':provider.color=='purple'}">
+              <span>去咨询</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="selectedArticle" style='width:95%;
+        margin-left:10px;
+        margin-bottom:20px;'>
+        <div class='card' *ngIf='articleForms'
+          style='background-color:transparent;margin:0px;padding-bottom:50px; overflow:auto'
+          [ngStyle]="{'height':this.scrollSize+'px'}">
+          <app-form [forms]='articleForms' [language]='language'>
+          </app-form>
+        </div>
+        <div class='row' style='padding-left:10px; 
+            bottom:0px;
+            margin-bottom:0px;
+            position:fixed;
+            z-index:5;
+            width:100%;
+            text-align: center;'>
+          <div style='width:50%'>
+            <a class='btn btn-round btn-block' style='color:white;' href="javascript:void(0);"
+              (click)='selectedArticle=null;articleSelected=true;getArticles();' [ngClass]="{
+                            'button-color-blue':provider.color!='green'&&provider.color!='purple',
+                            'button-color-green':provider.color=='green',
+                            'button-color-purple':provider.color=='purple'}">
+              <span>所有文章</span>
+            </a>
+          </div>
+          <div style='width:50%'>
+            <a class='btn btn-round btn-block' style='color:white' (click)='submit()' href="javascript:void(0);"
+              [ngClass]="{
+                'button-color-blue':provider.color!='green'&&provider.color!='purple',
+                'button-color-green':provider.color=='green',
+                'button-color-purple':provider.color=='purple'}">
+              <span>去咨询</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div *ngIf='homePage' class='provider-home'>
+        <div class='photo-cell' [ngClass]="{'has-margin-blue':provider.color!='green'&&provider.color!='purple',
+                    'has-margin-green':provider.color=='green',
+                    'has-margin-purple':provider.color=='purple'}">
+          <img [src]="getUrl(provider.photo)" class='provider-image-cell-2'>
+          <h4 style='text-align:center; margin-top:10px;font-weight: 800;font-size:large' [ngClass]="{
+                    'color-blue':provider.color!='green'&&provider.color!='purple',
+                    'color-green':provider.color=='green',
+                    'color-purple':provider.color=='purple'}">
+            {{provider.name}}, &nbsp;{{provider.title}}</h4>
+        </div>
+        <a class='btn btn-round btn-block' [ngClass]="{
+            'btn-primary':provider.color!='green'&&provider.color!='purple',
+            'btn-success':provider.color=='green',
+            'btn-rose':provider.color=='purple'}"
+          (click)='profileSelected=false;descSelected=true;articleSelected=false;homePage=false;'
+          href="javascript:void(0);">
+          <span>介绍</span>
+        </a>
+        <a class='btn btn-round btn-block' [ngClass]="{
+            'btn-primary':provider.color!='green'&&provider.color!='purple',
+            'btn-success':provider.color=='green',
+            'btn-rose':provider.color=='purple'}"
+          (click)='profileSelected=true;descSelected=false;articleSelected=false;homePage=false;getProfiles();'
+          href="javascript:void(0);">
+          <span>项目</span>
+        </a>
+        <a class='btn btn-round btn-block' [ngClass]="{
+            'btn-primary':provider.color!='green'&&provider.color!='purple',
+            'btn-success':provider.color=='green',
+            'btn-rose':provider.color=='purple'}"
+          (click)='profileSelected=false;descSelected=false;articleSelected=true;homePage=false;'
+          href="javascript:void(0);">
+          <span>文章</span>
+        </a>
+      </div>
+      <div class="spinner-wrapper" *ngIf='loading'>
+        <app-spinner></app-spinner>
+      </div>

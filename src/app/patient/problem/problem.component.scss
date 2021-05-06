@@ -1,0 +1,111 @@
+@import 'src/assets/scss/base.scss';
+.card-rose {
+    background-color: #9c27b0;
+
+    border-radius: 5px;
+    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(#9c27b0, 0.4);
+}
+.card-success {
+    border: 3px solid #4caf50;
+
+    border-radius: 5px;
+
+    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(#4caf50, 0.4);
+}
+.card-primary {
+    background-color: rgb(86, 86, 167);
+
+    border-radius: 5px;
+    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(rgb(86, 86, 167), 0.4);
+}
+.card-rose-bottom {
+    border-bottom: 3px solid #9c27b0;
+}
+.card-success-bottom {
+    border-bottom: 3px solid #4caf50;
+}
+.card-primary-bottom {
+    border-bottom: 3px solid rgb(86, 86, 167);
+}
+.card-rose-font {
+    color: #9c27b0;
+}
+.card-success-font {
+    color: #4caf50;
+}
+.card-primary-font {
+    color: rgb(86, 86, 167);
+}
+.problem {
+    height: 100%;
+    width: 100%;
+    left: 0;
+    margin-left: 0px;
+    top: 0;
+    margin-top: 0px;
+    position: fixed;
+    z-index: 100;
+    overflow: auto;
+    padding: 5px;
+}
+.levelOne {
+    color: orangered;
+    font-weight: 600;
+}
+.levelTwo {
+    color: red;
+    font-weight: 600;
+}
+.normal {
+    color: blue;
+    font-weight: 600;
+}
+
+.wapper-pc {
+    .tab-pane {
+        padding: 20px;
+        .title {
+            margin-bottom: 15px;
+            .form-control {
+                width: 50%;
+                border-radius: 4px 0 0 4px;
+                display: inline-block;
+                vertical-align: top;
+            }
+            .btn {
+                margin: 0;
+                min-width: 100px;
+                border-radius: 0 4px 4px 0;
+                i {
+                    font-size: 24px;
+                }
+            }
+        }
+        .main-body {
+            padding: 0;
+            height: calc(100vh - 275px);
+            overflow-y: auto;
+            .table {
+                td {
+                    font-size: $fontSize16;
+                    color: $basefontColor;
+                }
+            }
+        }
+    }
+}
+.search {
+    width: 60%;
+    height: 60%;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    z-index: 100;
+    margin: 0;
+    padding: 20px 0;
+    .card-body {
+        height: 90%;
+        overflow-y: auto;
+    }
+}

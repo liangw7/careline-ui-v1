@@ -1,0 +1,257 @@
+<div *ngIf="bigScreen==1">
+  <mat-tab-group class="secondtab" (selectedTabChange)="selectedPatientChanged($event)" 
+  *ngIf="user&&user.role!='patient'">
+    <mat-tab label="{{getLabel('临床总结', language)}}">
+      <summary [patient]='summaryPatient' [language]='language'></summary>
+    </mat-tab>
+    <mat-tab label="{{getLabel('门诊', language)}}">
+      <visit-list [patient]='visitPatient' [language]='language'></visit-list>
+    </mat-tab>
+    <mat-tab label="{{getLabel('nurse', language)}}">
+      <clinical-note [patient]='nursePatient' [language]='language' [noteType]='nurseNote'></clinical-note>
+    </mat-tab>
+    <mat-tab label="{{getLabel('pt', language)}}">
+      <clinical-note [patient]='ptPatient' [language]='language' [noteType]='ptNote'></clinical-note>
+    </mat-tab>
+  
+    <mat-tab label="{{getLabel('病史', language)}}">
+      <problem [patient]='problemPatient' [language]='language'></problem>
+    </mat-tab>
+    <mat-tab label="{{getLabel('用药', language)}}">
+      <medication [patient]='medicationPatient' [language]='language'></medication>
+    </mat-tab>
+   
+    <mat-tab label="{{getLabel('实验室报告', language)}}">
+      <lab [patient]='labPatient' [language]='language'></lab>
+    </mat-tab>
+    <mat-tab label="{{getLabel('影像学报告', language)}}">
+      <image class="imagetab" [patient]='imagePatient' [language]='language'></image>
+    </mat-tab>
+    <mat-tab label="{{getLabel('上传文件', language)}}">
+    </mat-tab>
+    <mat-tab label="{{getLabel('健康计划', language)}}">
+      <followups [patient]='followupPatient'></followups>
+    </mat-tab>
+    <!--<mat-tab label="{{getLabel('会诊', language)}}">
+      <consults [patient]='consultPatient' [language]='language'></consults> 
+    </mat-tab>-->
+    <mat-tab label="{{getLabel('患者教育', language)}}">
+    </mat-tab>
+    <!-- <mat-tab  label="{{getLabel('信箱', language)}}" >
+
+         <mail [patient]='mailPatient' [inPatient]='inPatient'></mail>
+      
+      </mat-tab>-->
+    <mat-tab label="{{getLabel('档案', language)}}">
+      <profile [patient]='profilePatient'></profile>
+    </mat-tab>
+  </mat-tab-group>
+</div>
+<!--<div *ngIf="bigScreen==0&&patient" >
+    <div  class="card" >
+        <div class="card-header card-header-tabs " 
+        style='padding:0px;'
+        [ngClass]="{'card-header-rose':color=='purple',
+        'card-header-success':color=='green',
+        'card-header-primary':color!='green'
+        &&color!='purple'}">
+        <div class="nav-tabs-navigation" >
+            <div class="nav-tabs-wrapper" >
+                
+              <ul class="nav nav-tabs" data-tabs="tabs" >
+                  <li class="nav-item" 
+                  style='padding:0; margin:0' >
+                      <a mat-button class="nav-link active" data-toggle="tab" 
+                      href='#profile'>
+                          
+                          <span *ngIf="language=='Chinese'">我</span>
+                          <span *ngIf="language=='English'">me</span> 
+                      </a>
+                      
+                  </li>
+                  <li class="nav-item"  
+                  (click)='patient.showRecord=true;patient.showSummary=false;
+                  patient.showConsult=false;patient.showVisit=false;patient.showProblem=false;
+                  patient.showMedication=false;'>
+                      <a mat-button class="nav-link" data-toggle="tab" href='#record'>
+                          
+                          <span *ngIf="language=='Chinese'">记录</span>
+                          <span *ngIf="language=='English'">Record</span> 
+                      </a>
+                      
+                  </li>
+                  <li class="nav-item" >
+                      <a mat-button class="nav-link" data-toggle="tab" 
+                      href='#report' (click)='labPatient=selectedPatient'>
+                          
+                          <span *ngIf="language=='Chinese'">报告</span>
+                          <span *ngIf="language=='English'">Report</span> 
+                      </a>
+                      
+                  </li>
+                  <li class="nav-item"  >
+                      <a mat-button class="nav-link" 
+                      data-toggle="tab" href='#infor'
+                      (click)='schedulePatient=selectedPatient'
+                      >
+                          
+                          <span *ngIf="language=='Chinese'">信息</span>
+                          <span *ngIf="language=='English'">Infor</span> 
+                      </a>
+                      
+                  </li>
+                  <li class="nav-item" (click)='goToHome()' >
+                    <a mat-button class="nav-link" data-toggle="tab" 
+                        href='javascript:void(0);'>
+        
+                      <p><span *ngIf="language=='Chinese'">主页</span>
+                          <span *ngIf="language=='English'">Home</span></p>
+                  </a>
+                    
+                </li>
+                
+                  <li *ngIf="user.role=='patient'">
+                      <i (click)='logout()' class="material-icons">logout</i>
+                  </li>
+
+              </ul>
+                  
+            </div>
+        </div>
+        </div>
+      
+    <div class="tab-content" style='padding:0; margin:0;'>
+        <div class="tab-pane active" id='profile'>
+            <profile [patient]='profilePatient' style='padding:0; margin:0;'></profile>
+        </div>
+        <div class="tab-pane" id='record'>
+          <div style='margin-top:10%; text-align: center;' 
+          *ngIf='patient.showRecord'>
+            
+              
+              <button class='btn  patient-btn' 
+              (click)='summaryPatient=selectedPatient;patient.showRecord=false;patient.showSummary=true;'>
+                <i class='material-icons'>insert_chart</i>健康图表</button>
+              <button class='btn patient-btn'
+              (click)='visitPatient=selectedPatient;patient.showRecord=false;patient.showVisit=true;'>
+                <i class='material-icons'>meeting_room</i>门诊</button>
+              <button class='btn patient-btn'
+              (click)='followupPatient=selectedPatient;
+                      patient.showRecord=false;
+                      patient.showFollowup=true;'> 
+                <i class='material-icons'>calendar_view_day</i>
+                随访</button>
+              <button class='btn  patient-btn'
+              (click)='problemPatient=selectedPatient;patient.showRecord=false;patient.showProblem=true;'>
+              <i class='material-icons'>folder</i>病史</button>
+              <button class='btn  patient-btn'
+              (click)='medicationPatient=selectedPatient;patient.showRecord=false;patient.showMedication=true;'>
+                <i class='material-icons'>folder</i>用药</button>
+              <button class='btn patient-btn'
+              (click)='consultPatient=selectedPatient;patient.showRecord=false;patient.showConsult=true;'>
+              <i class='material-icons'>meeting_room</i>会诊</button>
+              
+            
+          </div>
+          
+          
+          <div *ngIf='!patient.showRecord' class='card pop-out'> 
+          
+            <div *ngIf='patient.showSummary'>
+           
+                <div class='card-header'>
+                  <i class='material-icons pull-right' 
+                  (click)='patient.showRecord=true;patient.showSummary=false;'>close</i>
+               </div>
+                <summary [patient]='summaryPatient' [language]='language' ></summary>
+              </div>
+                <div *ngIf='patient.showVisit'>
+                  
+                    <div class='card-header'>
+                      <i class='material-icons pull-right' 
+                      (click)='patient.showRecord=true;patient.showVisit=false;'>close</i>
+                   </div>
+                    <visit-list [patient]='visitPatient'[language]='language'></visit-list>
+                </div>
+                <div *ngIf='patient.showFollowup'>
+                  
+                  <div class='card-header'>
+                    <i class='material-icons pull-right' 
+                    (click)='patient.showRecord=true;patient.showFollowup=false;'>close</i>
+                 </div>
+                 <followups [patient]='followupPatient' [language]='language'></followups>
+              </div>
+               
+                  <div *ngIf='patient.showProblem;'>
+                
+                    <div class='card-header' >
+                      <i class='material-icons pull-right' 
+                      (click)='patient.showRecord=true;patient.showProblem=false;'>close</i>
+                   </div>
+                    <problem [patient]='problemPatient'[language]='language' ></problem>
+                  </div>
+                  <div *ngIf='patient.showMedication;'>
+                  
+                    <div class='card-header' *ngIf='bigScreen==0'>
+                      <i class='material-icons pull-right' 
+                      (click)='patient.showRecord=true;patient.showMedication=false;'>close</i>
+                   </div>
+                    <medication [patient]='medicationPatient'[language]='language' ></medication>
+                  </div>
+                  <div *ngIf='patient.showConsult;'>
+                  
+                    <div class='card-header' *ngIf='bigScreen==0'>
+                      <i class='material-icons pull-right' 
+                      (click)='patient.showRecord=true;patient.showConsult=false;'>close</i>
+                   </div>
+                    <consults [patient]='consultPatient' [language]='language' ></consults>
+                  </div>
+            </div> 
+            
+          
+        </div>
+        <div class="tab-pane card" id='report'>
+            <mat-tab-group (selectedTabChange)="selectedPatientChanged($event)"
+              >
+                <mat-tab label="{{getLabel('实验室报告', language)}}">
+                    <lab [language]='language' [patient]='labPatient'></lab>
+                  </mat-tab>
+            
+                <mat-tab label="{{getLabel('影像学报告', language)}}">
+                    <image [language]='language' [patient]='imagePatient'></image>
+                </mat-tab>
+           
+          </mat-tab-group>
+      
+        </div>
+        <div class="tab-pane" id='infor'>
+            <mat-tab-group (selectedTabChange)="selectedPatientChanged($event)"
+              >
+              <mat-tab label="{{getLabel('预约', language)}}" >
+                    
+                <schedule-patient [patient]='schedulePatient'></schedule-patient>
+                        
+            </mat-tab>
+              <mat-tab *ngIf="user.role=='patient'" label="{{getLabel('信箱', language)}}" >
+                    
+                <mail [patient]='mailPatient'></mail>
+                        
+                </mat-tab>
+              <mat-tab label="{{getLabel('患者教育', language)}}" >
+
+                <education [language]='language' [patient]='educationPatient'></education> 
+              </mat-tab>
+                    
+                  
+                 
+                
+                          
+          </mat-tab-group>
+        </div>
+      
+  </div>
+     
+    </div>
+ 
+   
+ </div>-->

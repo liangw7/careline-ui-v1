@@ -1,0 +1,103 @@
+body {
+    background: #333;
+}
+
+.category {
+    background-color: #eee;
+    color: #666;
+    padding: 40px;
+    border-radius: 10px;
+    position: absolute;
+    border: 1px solid #fff;
+    margin-top: 85px;
+    margin-left: 200px;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 1600px;
+    height: 850px;
+    //  overflow-y: auto;
+}
+
+.align-center {
+    text-align: center;
+}
+
+.group {
+    overflow-y: scroll;
+    //width: 1000px;
+    height: 700px;
+}
+.nav {
+    background-color: #c2c2c2;
+    height: 40px;
+}
+.button {
+    background-color: #c2c2c2;
+    width: 80px;
+}
+.row-striped:nth-of-type(odd) {
+    background-color: #ffffff;
+}
+
+.row-striped:nth-of-type(even) {
+    background-color: #efefef;
+}
+.primary-selectedLevel {
+    background-color: #3f51b5;
+    color: white;
+    font-weight: 700;
+    border-radius: 5px;
+    box-shadow: 0 4px 20px 0px #3f51b5, 0 7px 10px -5px rgba(#3f51b5, 0.4);
+}
+.rose-selectedLevel {
+    background-color: #9c27b0;
+    color: white;
+    font-weight: 700;
+    border-radius: 5px;
+    box-shadow: 0 4px 20px 0px #9c27b0, 0 7px 10px -5px rgba(#9c27b0, 0.4);
+}
+.success-selectedLevel {
+    background-color: #4caf50;
+    color: white;
+    font-weight: 700;
+    border-radius: 5px;
+    box-shadow: 0 4px 20px 0px #4caf50, 0 7px 10px -5px rgba(#4caf50, 0.4);
+}
+.card-rose {
+    background-color: #9c27b0;
+    color: white;
+    margin: 15px;
+    border-radius: 5px;
+    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(#9c27b0, 0.4);
+}
+.card-success {
+    background-color: #4caf50;
+    color: white;
+    border-radius: 5px;
+    margin: 15px;
+    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(#4caf50, 0.4);
+}
+.card-primary {
+    background-color: #3f51b5;
+
+    margin: 15px;
+    border-radius: 5px;
+    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(#3f51b5, 0.4);
+}
+.card-rose-color {
+    color: #9c27b0;
+    font-weight: 700;
+    font-size: medium;
+}
+.card-success-color {
+    color: #4caf50;
+    font-weight: 700;
+    font-size: medium;
+}
+.card-primary-color {
+    color: #3f51b5;
+    font-weight: 700;
+    font-size: medium;
+}

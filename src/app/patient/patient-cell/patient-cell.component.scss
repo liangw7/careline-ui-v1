@@ -1,0 +1,311 @@
+@import 'src/assets/scss/base.scss';
+body {
+    background: #333;
+}
+.table-cell {
+    border-bottom: 1px #ccc solid;
+    border-width: small;
+    margin: 0px;
+    padding: 0px;
+}
+
+.patient-btn {
+    background-color: rgb(219, 219, 241);
+    width: 100%;
+    color: rgb(86, 86, 167);
+    font-size: large;
+}
+.patient {
+    color: #666;
+    //  padding: 40px;
+    //  border-radius: 10px;
+    //position: absolute;
+    // border: 1px solid #fff;
+    margin-top: 0px;
+    height: 100%;
+    overflow: visible;
+    top: 0px;
+    padding-top: 0px;
+
+    //  top: 0;
+    //  right: 0;
+    //  bottom: 0;
+    //  left: 0;
+    width: 100%;
+    height: 900px;
+    overflow-y: auto;
+}
+.followup {
+    background-color: #eee;
+    color: #666;
+    padding: 40px;
+    //  border-radius: 10px;
+    position: absolute;
+    border: 1px solid #fff;
+    //margin-top: 85px;
+    margin-right: 0px;
+    margin-left: 450px;
+
+    top: 0;
+    //  right: 0;
+    //  bottom: 0;
+    //  left: 0;
+    //  width: 80%;
+    height: 1800px;
+    //   overflow-y: auto;
+}
+.report {
+    overflow-y: auto;
+    height: 500px;
+}
+
+.line-graph-holder {
+    margin: 10px 5px;
+    background-color: white;
+}
+.selected_1 {
+    width: 480px;
+    padding: 10px;
+}
+.selected_2 {
+    width: 480px;
+    padding: 10px;
+    margin-left: 10px;
+}
+.selected_3 {
+    width: 100%;
+    padding: 10px;
+}
+.selected {
+    background-color: lightblue;
+}
+.align-center {
+    text-align: center;
+}
+.dash-bar-graph-holder {
+    margin: 10px 5px;
+    background-color: white;
+}
+.group {
+    overflow-y: scroll;
+    //width: 1000px;
+    height: 700px;
+}
+.holder {
+    width: 500px;
+    height: 700px;
+}
+.nav {
+    background-color: #c2c2c2;
+    height: 40px;
+}
+.button {
+    background-color: #c2c2c2;
+    width: 80px;
+}
+.selected {
+    background-color: #c2c2c2;
+}
+.row-striped:nth-of-type(odd) {
+    background-color: #ffffff;
+}
+
+.row-striped:nth-of-type(even) {
+    background-color: #efefef;
+}
+
+page-followup-list {
+    [col-1] {
+        -webkit-box-flex: 0;
+        -webkit-flex: 0 0 8.33333%;
+        -ms-flex: 0 0 8.33333%;
+        flex: 0 0 14.285714285714286%;
+        width: 14.285714285714286%;
+        max-width: 14.285714285714286%;
+    }
+    .header {
+        background-color: #238989;
+        color: white;
+        height: 25px;
+    }
+    .header-2 {
+        background-color: #33c7c7;
+        color: white;
+        height: 25px;
+    }
+    .header-3 {
+        background-color: white;
+        color: black;
+        height: 20px;
+    }
+    .col {
+        text-align: center;
+        padding: 5px;
+    }
+    .last-month,
+    .next-month {
+        color: #999999;
+        font-size: 90%;
+    }
+    .currentDate,
+    .otherDate {
+        padding: 5px;
+    }
+    .currentDate {
+        font-weight: bold;
+        background-color: blue;
+        color: white;
+        border-radius: 30px;
+    }
+    .calendar-header {
+        // margin-top: 10px;
+        background-color: #238989;
+        color: #ffffff;
+    }
+    .event-bullet {
+        margin: 2px auto;
+        height: 5px;
+        width: 5px;
+        background-color: green;
+        border-radius: 30px;
+    }
+    .selected-date {
+        width: 20px;
+        height: 2px;
+        background-color: blue;
+    }
+    .unselected-date {
+        border: none;
+    }
+    .calendar-day {
+        width: 40%;
+    }
+    .calendar-body {
+        .grid {
+            padding: 0;
+        }
+        .col:last-child {
+            border-right: none;
+        }
+        .calendar-weekday,
+        .calendar-date {
+            text-align: center;
+            margin: 0;
+        }
+        .calendar-weekday {
+            font-weight: bold;
+            border-bottom: solid 1px #1a732d;
+            background-color: #26ab56;
+        }
+        .calendar-date {
+            border-top: solid 1px #1a732d;
+            border-bottom: solid 1px #1a732d;
+        }
+    }
+}
+.full-width {
+    width: 100%;
+}
+.unread {
+    color: blue;
+}
+.thumbnail {
+    height: 75px;
+    width: 75px;
+}
+.allergy {
+    height: 50px;
+    //  color: white;
+    margin-top: -5px;
+}
+
+.card-rose {
+    background-color: #9c27b0;
+    color: white;
+    margin: 15px;
+    border-radius: 5px;
+    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(#9c27b0, 0.4);
+}
+.card-success {
+    background-color: #4caf50;
+    color: white;
+    border-radius: 5px;
+    margin: 15px;
+    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(#4caf50, 0.4);
+}
+.card-primary {
+    background-color: rgb(86, 86, 167);
+
+    margin: 15px;
+    border-radius: 5px;
+    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(rgb(86, 86, 167), 0.4);
+}
+
+.blueActive {
+    background-color: #3f51b5;
+
+    margin: 15px;
+    border-radius: 5px;
+    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(#3f51b5, 0.4);
+}
+.blueActive a {
+    color: white;
+}
+
+.greenActive {
+    background-color: #4caf50;
+    color: white;
+    border-radius: 5px;
+    margin: 15px;
+    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(#4caf50, 0.4);
+}
+.greenActive a {
+    color: white;
+}
+.purpleActive {
+    background-color: #9c27b0;
+    color: white;
+    margin: 15px;
+    border-radius: 5px;
+    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(#9c27b0, 0.4);
+}
+.purpleActive a {
+    color: white;
+}
+.purpleActive i {
+    color: white;
+}
+.patient-card {
+    bottom: 0;
+    margin-bottom: 0;
+    position: fixed;
+    z-index: 1000;
+    width: 100%;
+    margin-left: 0;
+    left: 0;
+
+    font-weight: 700;
+}
+.pop-out {
+    height: 100%;
+    width: 100%;
+    left: 0;
+    margin-left: 0px;
+    top: 0;
+    margin-top: 0px;
+    position: fixed;
+    z-index: 100;
+    overflow: auto;
+    padding: 5px;
+}
+
+::ng-deep .secondtab > .mat-tab-body-wrapper {
+    height: calc(100vh - 126px) !important;
+}
+:host ::ng-deep .imagetab {
+    .card-pc {
+        height: calc(100vh - 170px);
+        border: none;
+        box-shadow: none;
+    }
+}

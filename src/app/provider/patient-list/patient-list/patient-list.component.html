@@ -1,0 +1,85 @@
+
+<!--<div class='col-sm-8' *ngIf="user.role!='admin'&&user.role!='market'">
+     <button mat-button class='btn '(click)="group='myPatients'" *ngIf="group=='teamPatients'">my patients</button>
+     <button mat-button class='btn '(click)="group='teamPatients'" *ngIf="group=='myPatients'&&user.service">team patients</button> 
+    </div>-->
+<div class="wapper" *ngIf="bigScreen==1">
+  <div class='row'>
+    <div class='col-sm-10' *ngIf='selectedProfile'>
+      <profile-patient-list  [profile]='selectedProfile' [language]='language'
+        [user]='user' [group]='group' [content]='content'>
+      </profile-patient-list>
+    </div>
+    <div class='col-sm-2' *ngIf='profiles'>
+      <div class="card main-right">
+        <div class='card-header'>
+          <div class='card-title'>Profiles</div>
+          <input class="form-control pull-left" type="text" [(ngModel)]="searchProfile" placeholder="搜索管理包"
+          (input)='loadPatient()'>
+        </div>
+        <div class='profile-card' *ngFor='let profile of profiles' >
+          
+          <div [ngClass]="{'selected-profile':profile.selected}"
+                   (click)='profileSelected(profile)'>
+             
+                <span *ngIf="language=='Chinese'"> {{profile.label.ch}}</span>
+                <span *ngIf="language=='English'"> {{profile.label.en}}</span>
+           </div>
+         
+           
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="table table-responsive overflow-hidden" style='margin-bottom:0px' *ngIf="bigScreen==0">
+  <table class="table table-striped table-hover overflow-hidden">
+    <tbody *ngFor='let profile of profiles'>
+      <tr (click)='selectedProfile=profile;getAllPatients(selectedProfile)'>
+        <th>{{profile.label.ch}}:
+          <span *ngIf='profile.totalPatientsByProvider'>{{profile.totalPatientsByProvider}}</span>
+        </th>
+      <tr *ngFor='let patientList of profile.patientLists'
+        (click)='selectedList=patientList;selectedProfile=profile; getFilterPatients(selectedList,selectedProfile )'>
+        <td style='text-align: right;'>{{patientList.label.ch}}</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class='card patient-list' *ngIf='selectedList&&selectedProfile'>
+    <div class='card-header'>
+      <span>{{selectedProfile.label.ch}}: {{selectedList.label.ch}}</span>
+      <i class='material-icons pull-right' (click)='selectedList=null;selectedProfile=null'>close</i>
+    </div>
+    <div class='card-body'>
+      <child-patient-list [patients]='selectedProfile.patients' [profile]='selectedProfile'
+        [selectedObs]='selectedList.selectedObs' [listName]='selectedList.name' [language]='language'>
+      </child-patient-list>
+    </div>
+    <div class="overlay" *ngIf="loading">
+      <div class="spinner-wrapper">
+        <spinner></spinner>
+      </div>
+    </div>
+  </div>
+  <div class='card patient-list' *ngIf='selectedProfile&&!selectedList'>
+    <div class='card-header'>
+      <span>{{selectedProfile.label.ch}}</span>
+      <i class='material-icons pull-right' (click)='selectedProfile=null'>close</i>
+    </div>
+    <div class='card-body'>
+      <child-patient-list [patients]='selectedProfile.patients' [profile]='selectedProfile'
+        [listName]='selectedProfile.name' [language]='language'>
+      </child-patient-list>
+    </div>
+    <div class="overlay" *ngIf="loading">
+      <div class="spinner-wrapper">
+        <spinner></spinner>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="overlay" *ngIf="loading">
+  <div class="spinner-wrapper">
+    <spinner></spinner>
+  </div>
+</div>

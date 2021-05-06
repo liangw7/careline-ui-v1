@@ -1,0 +1,55 @@
+<div [ngClass]="{'card-pc': bigScreen==1,'wap-wapper':bigScreen==0}" *ngIf='!selectedImage'>
+  <div class='card-header'>
+    <span class="title">病历报告</span>
+    <button *ngIf='user' mat-button (click)='moreFile()' class='btn pull-right' >
+      <span *ngIf="language=='Chinese'">上传报告</span>
+      <span *ngIf="language=='English'">add records</span>
+    </button>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-striped table-hover">
+      <tr class="header">
+        <td>
+          <span *ngIf="language=='Chinese'">病历图片</span>
+          <span *ngIf="language=='English'">picture</span>
+        </td>
+        <td>
+          <span *ngIf="language=='Chinese'">创建时间</span>
+          <span *ngIf="language=='English'">createtime</span>
+        </td>
+        <td>
+          <span *ngIf="language=='Chinese'">操作</span>
+          <span *ngIf="language=='English'">operate</span>
+        </td>
+      </tr>
+      <tr *ngFor="let image of images|orderBy: 'createdAt'">
+        <td (click)='openFile(image)'>
+          <div class="thumbnail">
+            <img [src]="getUrl(image)" />
+          </div>
+        </td>
+        <td (click)='openFile(image)'>{{image.createdAt| date: "yyyy/MM/dd HH:mm"}}</td>
+        <td>
+          <div (click)='deleteUploadedImage(image)'>
+            <i class='material-icons'>delete</i>
+          </div>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>
+<div class='card chat-report' [ngClass]="{'chat-wap-wapper':bigScreen==0}" *ngIf='selectedImage'>
+  <div class='card-header'>影像学报告</div>
+  <table class='table' (click)='openFile(selectedImage)'>
+    <tr>
+      <td>
+        <div class="thumbnail"><img [src]="getUrl(selectedImage)" /></div>
+      </td>
+      <td>{{selectedImage.createdAt| date: "yyyy/MM/dd HH:mm"}}</td>
+    </tr>
+  </table>
+</div>
+<input #fileInput type="file" name="file" id="file" class="call__messages___send" ng2FileSelect [uploader]="uploader"
+  [hidden]=true>
+<div *ngIf="uploader && uploader.progress != 100" class="progress-bar progress-bar-success" role="progressbar"
+  [ngStyle]="{ 'width': uploader.progress + '%' }"  style="margin-top: 15px;border-radius: 10px;">{{uploader.progress}}%</div>

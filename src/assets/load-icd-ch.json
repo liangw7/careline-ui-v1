@@ -1,0 +1,453 @@
+[
+    {
+      "_code": "I",
+      "chRubric": [
+         {
+            "Label": {
+               "__Text": "某些传染病和寄生虫病"
+            }
+         }
+      ],
+      "code_2": "mxcrbhjscb"
+   },
+    {
+      "_code": "II",
+      "chRubric": [
+         {
+            "Label": {
+               "__Text": "肿瘤"
+            }
+         }
+      ],
+      "code_2": "zl"
+   },
+    {
+      "_code": "III",
+      "chRubric": [
+         {
+            "Label": {
+               "__Text": "血液及造血器官疾病和某些涉及免疫机制的疾患"
+            }
+         }
+      ],
+      "code_2": "xyjzxqgjbhmxsjmyjzdjh"
+   },
+    {
+      "_code": "IV",
+      "chRubric": [
+         {
+            "Label": {
+               "__Text": "内分泌、营养和代谢疾病"
+            }
+         }
+      ],
+      "code_2": "nfmyyhdxjb"
+   },
+    {
+      "_code": "V",
+      "chRubric": [
+         {
+            "Label": {
+               "__Text": "精神和行为障碍"
+            }
+         }
+      ],
+      "code_2": "jshxwza"
+   },
+    {
+      "_code": "VI",
+      "chRubric": [
+         {
+            "Label": {
+               "__Text": "神经系统疾病"
+            }
+         }
+      ],
+      "code_2": "sjxtjb"
+   },
+    {
+      "_code": "VII",
+      "chRubric": [
+         {
+            "Label": {
+               "__Text": "眼和附器疾病"
+            }
+         }
+      ],
+      "code_2": "yhfqjb"
+   },
+    {
+      "_code": "VIII",
+      "chRubric": [
+         {
+            "Label": {
+               "__Text": "耳和乳突疾病"
+            }
+         }
+      ],
+      "code_2": "ehrtjb"
+   },
+    {
+      "_code": "IX",
+      "chRubric": [
+         {
+            "Label": {
+               "__Text": "循环系统疾病"
+            }
+         }
+      ],
+      "code_2": "xhxtjb"
+   },
+    {
+      "_code": "X",
+      "chRubric": [
+         {
+            "Label": {
+               "__Text": "呼吸系统疾病"
+            }
+         }
+      ],
+      "code_2": "hxxtjb"
+   },
+    {
+      "_code": "XI",
+      "chRubric": [
+         {
+            "Label": {
+               "__Text": "消化系统疾病"
+            }
+         }
+      ],
+      "code_2": "xhxtjb"
+   },
+    {
+      "_code": "XII",
+      "chRubric": [
+         {
+            "Label": {
+               "__Text": "皮肤和皮下组织疾病"
+            }
+         }
+      ],
+      "code_2": "pfhpxzzjb"
+   },
+    {
+      "_code": "XIII",
+      "chRubric": [
+         {
+            "Label": {
+               "__Text": "肌肉骨骼系统和结缔组织疾病"
+            }
+         }
+      ],
+      "code_2": "jrggxthjdzzjb"
+   },
+    {
+      "_code": "XIV",
+      "chRubric": [
+         {
+            "Label": {
+               "__Text": "泌尿生殖系统疾病"
+            }
+         }
+      ],
+      "code_2": "mnszxtjb"
+   },
+    {
+      "_code": "XV",
+      "chRubric": [
+         {
+            "Label": {
+               "__Text": "妊娠、分娩和产褥期"
+            }
+         }
+      ],
+      "code_2": "rsfmhcrq"
+   },
+    {
+      "_code": "XVI",
+      "chRubric": [
+         {
+            "Label": {
+               "__Text": "起源于围生期的某些情况"
+            }
+         }
+      ],
+      "code_2": "qyywsqdmxqk"
+   },
+    {
+      "_code": "XVII",
+      "chRubric": [
+         {
+            "Label": {
+               "__Text": "先天性畸形、变形和染色体异常"
+            }
+         }
+      ],
+      "code_2": "xtxjxbxhrstyc"
+   },
+    {
+      "_code": "XVIII",
+      "chRubric": [
+         {
+            "Label": {
+               "__Text": "症状、体征和临床与实验室异常所见，不可归类在他处者"
+            }
+         }
+      ],
+      "code_2": "zztzhlcysysycsjbkglztcz"
+   },
+    {
+      "_code": "XIX",
+      "chRubric": [
+         {
+            "Label": {
+               "__Text": "损伤、中毒和外因的某些其他后果"
+            }
+         }
+      ],
+      "code_2": "sszdhwydmxqthg"
+   },
+    {
+      "_code": "XX",
+      "chRubric": [
+         {
+            "Label": {
+               "__Text": "疾病和死亡的外因"
+            }
+         }
+      ],
+      "code_2": "jbhswdwy"
+   },
+    {
+      "_code": "XXI",
+      "chRubric": [
+         {
+            "Label": {
+               "__Text": "影响健康状态和与保健机构接触的因素"
+            }
+         }
+      ],
+      "code_2": "yxjkzthybjjgjcdys"
+   },
+    {
+      "_code": "A00-A09 ",
+      "chRubric": [
+         {
+            "Label": {
+               "__Text": "肠道传染病"
+            }
+         }
+      ],
+      "code_2": "cdcrb"
+   },
+    {
+      "_code": "A15-A19 ",
+      "chRubric": [
+         {
+            "Label": {
+               "__Text": "结核病"
+            }
+         }
+      ],
+      "code_2": "jhb"
+   },
+    {
+      "_code": "A20-A28 ",
+      "chRubric": [
+         {
+            "Label": {
+               "__Text": "某些动物传染的细菌性疾病"
+            }
+         }
+      ],
+      "code_2": "mxdwcrdxjxjb"
+   },
+    {
+      "_code": "A30-A49 ",
+      "chRubric": [
+         {
+            "Label": {
+               "__Text": "其他细菌性疾病"
+            }
+         }
+      ],
+      "code_2": "qtxjxjb"
+   },
+    {
+      "_code": "A50-A64 ",
+      "chRubric": [
+         {
+            "Label": {
+               "__Text": "主要为性传播模式的感染"
+            }
+         }
+      ],
+      "code_2": "zywxcbmsdgr"
+   },
+    {
+      "_code": "A65-A69 ",
+      "chRubric": [
+         {
+            "Label": {
+               "__Text": "其他螺旋体病"
+            }
+         }
+      ],
+      "code_2": "qtlxtb"
+   },
+    {
+      "_code": "A70-A74 ",
+      "chRubric": [
+         {
+            "Label": {
+               "__Text": "由衣原体引起的其他疾病"
+            }
+         }
+      ],
+      "code_2": "yyytyqdqtjb"
+   },
+    {
+      "_code": "A75-A79 ",
+      "chRubric": [
+         {
+            "Label": {
+               "__Text": "立克次氏体病"
+            }
+         }
+      ],
+      "code_2": "lkcstb"
+   },
+    {
+      "_code": "A80-A89 ",
+      "chRubric": [
+         {
+            "Label": {
+               "__Text": "中枢神经系统的病毒性感染"
+            }
+         }
+      ],
+      "code_2": "zssjxtdbdxgr"
+   },
+    {
+      "_code": "A90-A99 ",
+      "chRubric": [
+         {
+            "Label": {
+               "__Text": "节肢动物媒介的病毒性发热和病毒性出血热"
+            }
+         }
+      ],
+      "code_2": "jzdwmjdbdxfrhbdxcxr"
+   },
+    {
+      "_code": "B00-B09 ",
+      "chRubric": [
+         {
+            "Label": {
+               "__Text": "特征为皮肤和粘膜损害的病毒性感染"
+            }
+         }
+      ],
+      "code_2": "tzwpfhnmshdbdxgr"
+   },
+    {
+      "_code": "B15-B19 ",
+      "chRubric": [
+         {
+            "Label": {
+               "__Text": "病毒性肝炎"
+            }
+         }
+      ],
+      "code_2": "bdxgy"
+   },
+    {
+      "_code": "B20-B21 ",
+      "chRubric": [
+         {
+            "Label": {
+               "__Text": "人类免疫缺陷病毒[HIV]病"
+            }
+         }
+      ],
+      "code_2": "rlmyqxbdb"
+   },
+    {
+      "_code": "B25-B34 ",
+      "chRubric": [
+         {
+            "Label": {
+               "__Text": "其他病毒性疾病"
+            }
+         }
+      ],
+      "code_2": "qtbdxjb"
+   },
+    {
+      "_code": "B35-B49 ",
+      "chRubric": [
+         {
+            "Label": {
+               "__Text": "霉菌病"
+            }
+         }
+      ],
+      "code_2": "mjb"
+   },
+    {
+      "_code": "B50-B64 ",
+      "chRubric": [
+         {
+            "Label": {
+               "__Text": "原生动物性疾病"
+            }
+         }
+      ],
+      "code_2": "ysdwxjb"
+   },
+    {
+      "_code": "B65-B83 ",
+      "chRubric": [
+         {
+            "Label": {
+               "__Text": "蠕虫病"
+            }
+         }
+      ],
+      "code_2": "rcb"
+   },
+    {
+      "_code": "B85-B89 ",
+      "chRubric": [
+         {
+            "Label": {
+               "__Text": "虱病、螨病和其他病虫侵染"
+            }
+         }
+      ],
+      "code_2": "sbmbhqtbcqr"
+   },
+    {
+      "_code": "B90-B94 ",
+      "chRubric": [
+         {
+            "Label": {
+               "__Text": "传染病和寄生虫病的后遗症"
+            }
+         }
+      ],
+      "code_2": "crbhjscbdhyz"
+   },
+    {
+      "_code": "B95-B98 ",
+      "chRubric": [
+         {
+            "Label": {
+               "__Text": "细菌、病毒和其他传染性病原体"
+            }
+         }
+      ],
+      "code_2": "xjbdhqtcrxbyt"
+   }
+   ]

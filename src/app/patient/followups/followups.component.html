@@ -1,0 +1,132 @@
+<div class="spinner-wrapper" *ngIf='loading'>
+  <spinner></spinner>
+  <a class='btn btn-block'>
+    <span styel='color:white'> {{loadingWords}}</span></a>
+</div>
+
+<div class="pc-wapper" *ngIf='bigScreen==1'>
+  <div class='row'>
+    <div class='col-sm-4 col-xs-6'>
+      <div *ngIf='patient'>
+        <calendar (messageDateEvent)="receiveMessage($event)"></calendar>
+      </div>
+      <div class="record-lists">
+        <div class="list" *ngFor='let followupType of  followupTypeList' (click)='selectForms(followupType)'>
+          <div class="pic"><img src="{{getImage(followupType)}}" alt=""></div>
+          <div class="txt">{{ getLabel(followupType)}}</div>
+        </div>
+      </div>
+    </div>
+    <div class='col-sm-8 col-xs-6'>
+      <div *ngIf='followup&&!showMonitor'>
+        <span style='font-size: 18px;font-weight: 600;'>
+          健康日志: {{selectedDate|date:'yyyy/MM/dd'}}
+        </span>
+        <div *ngFor='let form of selectedForms'>
+          <app-form *ngIf='form' [forms]='[form]' [patient]='patient' [visit]='followup' [language]='language'>
+          </app-form>
+        </div>
+      </div>
+      <div *ngIf='showMonitor'>
+        <span style='font-size: 18px;font-weight: 600;'>病人日志: {{selectedDate|date:'yyyy/MM/dd'}}
+        </span>
+        <input aria-label="default time" [ngxTimepicker]="defaultValue" placeholder="点击选择时间" [(ngModel)]="followupTime"
+          (ngModelChange)="selectChanged()" readonly>
+        <ngx-material-timepicker #defaultValue></ngx-material-timepicker>
+
+        <div class='card' *ngFor='let followupItem of followupList'>
+          <h4 class="card-title" style='font-size:18px;font-weight: 600;'>
+            {{followupItem.visitDate|date: 'yyyy/MM/dd hh:mm'}}
+          </h4>
+          <app-form *ngIf='followupItem.forms' [forms]='followupItem.forms' [patient]='patient' [visit]='followupItem'
+            [language]='language'></app-form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="bigScreen==0" class='wap-wapper' [ngStyle]="{'height':screenHeight *0.95+'px'}">
+  <div>
+    <div *ngIf='patient'>
+      <calendar (messageDateEvent)="receiveMessage($event)" [followup]=true></calendar>
+    </div>
+    <div class="seldate">{{selectedDate|date: "yyyy/MM/dd"}} </div>
+    <div class="followup-types">
+      <div class="card followup-type" *ngFor='let followupType of  followupTypeList'
+        (click)='showFollowup=true;selectedForms=followupType.forms'>
+        <div class="card-header">
+          <div class='row'>
+            <div style='width:30%;text-align: center;'>
+              <img src="{{getImage(followupType)}}" class='photo'>
+              <div style='font-weight: 800; color:#313131;margin-top: 2px;'>{{ getLabel(followupType)}}</div>
+            </div>
+            <div style='padding-left:10px; width:70%'>
+              <table class='table table-striped' *ngFor="let form of followupType.forms">
+                <tBody *ngFor="let obSet of form.obSets">
+                  <tr *ngIf='getValue(obSet)'>
+                    <td style='font-weight:600;' [ngClass]="{'levelOne':getValue(obSet).alertLevel==1,
+                      'levelTwo':getValue(obSet).alertLevel==2,
+                      'normal':getValue(obSet).alertLevel!=1&&getValue(obSet)[0].alertLevel!=2}">
+                      <div class='row' style='width:98%'>
+                        <div class='col-sm-4'>{{obSet.label.ch}}</div>
+                        <div class='col-sm-6'>{{getValue(obSet)[0].text}}</div>
+                      </div>
+                      <div class='row' style='width:98%'>
+                        <div class='col-sm-12'>{{getValue(obSet).comments}}</div>
+                      </div>
+                    </td>
+                  </tr>
+                </tBody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class='followup-pop' *ngIf="showFollowup">
+    <div class="backbox" (click)='showFollowup=false;'><span class="material-icons">chevron_left</span></div>
+    <div class='card-header'>
+      <span style='font-weight: 600;'>
+        病人日志：{{selectedDate|date:'yyyy/MM/dd'}}
+      </span>
+    </div>
+    <div *ngIf='showFollowup&&!showMonitor'>
+      <app-form *ngIf='selectedForms' [forms]='selectedForms' [patient]='patient' [visit]='followup'
+        [language]='language' [popOut]=true></app-form>
+    </div>
+    <div *ngIf='monitorForms&&showMonitor'>
+      <span style='font-weight: 600;'>病人日志：{{selectedDate|date:'yyyy/MM/dd'}}
+      </span>
+      <input aria-label="default time" [ngxTimepicker]="defaultValue" placeholder="点击选择时间" [(ngModel)]="followupTime"
+        (ngModelChange)="selectChanged()" readonly>
+      <ngx-material-timepicker #defaultValue></ngx-material-timepicker>
+
+      <div calss='card' *ngFor='let followupItem of followupList'>
+        <h4 class="card-title">
+          {{followupItem.visitDate|date: 'yyyy/MM/dd hh:mm'}}
+        </h4>
+        <app-form *ngIf='followupItem.forms' [forms]='followupItem.forms' [patient]='patient' [visit]='followupItem'
+          [language]='language'></app-form>
+      </div>
+
+    </div>
+    <div class='row' style='padding-left:10px; 
+      bottom:0px;
+      margin-bottom:0px;
+      position:fixed;
+      z-index:5;
+      width:100%;
+      text-align: center;'>
+
+      <a class='btn btn-block' style='color:white;margin-bottom:0px;'
+        [routerLink]="['/provider-platform/patient/provider-list']" [ngClass]="{
+          'card-primary':color!='green'&&color!='purple',
+          'card-success':color=='green',
+          'card-rose':color=='purple'}">
+        <span>去咨询</span>
+      </a>
+    </div>
+  </div>
+</div>

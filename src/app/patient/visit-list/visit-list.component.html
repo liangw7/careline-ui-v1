@@ -1,0 +1,102 @@
+<div class="spinner-wrapper" *ngIf='loading'>
+  <spinner></spinner>
+</div>
+<div class="pc-wapper" *ngIf="bigScreen==1">
+  <button class="btn btn-round btn-base " (click)='addVisit()' *ngIf="user.role!='patient'">
+    <span *ngIf="language=='Chinese'">添加就诊记录</span>
+    <span *ngIf="language=='English'">Add Visit</span>
+  </button>
+  <div>
+    <div class="table-responsive">
+      <table class="table table-striped table-hover">
+        <tr class="header">
+          <td>
+            <span *ngIf="language=='Chinese'">名称</span>
+            <span *ngIf="language=='English'">visit name</span>
+          </td>
+          <td>
+            <span *ngIf="language=='Chinese'">类型</span>
+            <span *ngIf="language=='English'">type</span>
+          </td>
+          <td>
+            <span *ngIf="language=='Chinese'">状态</span>
+            <span *ngIf="language=='English'">status</span>
+          </td>
+          <td>
+            <span *ngIf="language=='Chinese'">门诊时间</span>
+            <span *ngIf="language=='English'">visit time</span>
+          </td>
+          <td>
+            <span *ngIf="language=='Chinese'">病历完成时间</span>
+            <span *ngIf="language=='English'">created at</span>
+          </td>
+          <td>
+            <span *ngIf="language=='Chinese'"> 作者</span>
+            <span *ngIf="language=='English'">created by</span>
+          </td>
+          <td>
+            <span *ngIf="language=='Chinese'">修改作者</span>
+            <span *ngIf="language=='English'">modified by</span>
+          </td>
+        </tr>
+        <tr (click)="getVisit(visit)" *ngFor="let visit of visits">
+          <td>
+            <span *ngIf="language=='Chinese'&&visit.desc&&visit.desc.label">{{visit.desc.label.ch}}</span>
+            <span *ngIf="language=='English'&&visit.desc&&visit.desc.label">{{visit.desc.label.en}}</span>
+          </td>
+          <td> <span *ngIf="language=='Chinese'">{{visit.type}}</span>
+            <span *ngIf="language=='English'">{{visit.entype}}</span>
+          </td>
+          <td>
+            <span *ngIf="language=='Chinese'">{{visit.status}}</span>
+            <span *ngIf="language=='English'">{{getStatus(visit)}}</span>
+          </td>
+          <td>{{visit.visitDate| date: "yyyy/MM/dd HH:mm"}}</td>
+          <td>{{visit.createdAt| date: "yyyy/MM/dd HH:mm"}}</td>
+          <td>
+            <span *ngIf='visit.createdBy'>
+              {{visit.createdBy.name}},&nbsp;{{visit.createdBy.title}},&nbsp;{{visit.createdBy.service}}
+            </span>
+          </td>
+          <td><span *ngIf='visit.modifiedBy'>
+              {{visit.modifiedBy.name}},&nbsp;{{visit.modifiedBy.title}},&nbsp;{{visit.modifiedBy.service}}
+            </span></td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</div>
+<div class="wap-wapper" *ngIf="bigScreen==0">
+  <button class="btn btn-round btn-base addbtn" (click)='addVisit()' *ngIf="user.role!='patient'">
+    <span *ngIf="language=='Chinese'">添加就诊记录</span>
+    <span *ngIf="language=='English'">Add Visit</span>
+  </button>
+  <div class="emptybox" *ngIf="!visits">
+    <div class="imgbox"><span class="material-icons">content_paste</span></div>
+    <p>暂无记录，赶紧去咨询吧~</p>
+  </div>
+  <mat-accordion class="mat-lists" *ngIf="visits">
+    <mat-expansion-panel *ngFor="let visit of visits">
+      <mat-expansion-panel-header>
+        <mat-panel-title *ngIf="visit.desc&&visit.desc.label">
+          名称：{{visit.desc.label.ch}}
+        </mat-panel-title>
+        <mat-panel-description>
+          {{visit.type}}
+        </mat-panel-description>
+      </mat-expansion-panel-header>
+      <ul class="mat-main">
+        <li>类型：{{visit.type}}</li>
+        <li>状态：{{visit.status}}</li>
+        <li>门诊时间：{{visit.visitDate| date: "yyyy/MM/dd HH:mm"}}</li>
+        <li>病历完成时间：{{visit.createdAt| date: "yyyy/MM/dd HH:mm"}}</li>
+        <li>作者：<span *ngIf='visit.createdBy'>
+          {{visit.createdBy.name}},&nbsp;{{visit.createdBy.title}},&nbsp;{{visit.createdBy.service}}
+        </span></li>
+        <li>修改作者：<span *ngIf='visit.modifiedBy'>
+          {{visit.modifiedBy.name}},&nbsp;{{visit.modifiedBy.title}},&nbsp;{{visit.modifiedBy.service}}
+        </span></li>
+      </ul>
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>

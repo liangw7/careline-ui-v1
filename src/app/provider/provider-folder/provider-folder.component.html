@@ -1,0 +1,351 @@
+<div class="card card-profile" style="width:100%;padding-left:5px;margin-top:0px;height:400px;" [ngClass]="{'has-margin-blue':color!='green'&&color!='purple',
+    'has-margin-green':color=='green',
+    'has-margin-purple':color=='purple'}">
+    <div class="card-body">
+        <div class='row' style='padding-left:5px;'>
+            <div style='width:20%'> <img class="img" [src]="user.photo" class='photo' /></div>
+            <div style='width:75%; text-align: left;margin-right:3px;'>
+                <span style='font-weight:700;font-size:x-large'>{{user.name}},</span>
+                <span style='font-size:medium'> {{user.title}}</span>
+                <p>
+                    <span>健康管理项目:</span>
+                    <span *ngFor='let profile of user.profiles'>{{profile.label.ch}}.&nbsp;</span>
+                </p>
+            </div>
+        </div>
+        <div class='row' style='margin-left:10%'>
+            <div style='width:20%;'>
+                <a class='btn btn-round' style='background-color:transparent' [ngClass]="{'card-rose-color':color=='purple',
+                                'card-success-color':color=='green',
+                                'card-primary-color':color!='green'&&color!='purple'}"
+                    (click)='showBusinessCard=true;'>
+
+                    <span *ngIf="language=='Chinese'||!language">名片</span>
+                    <span *ngIf="language=='English'">business card</span>
+                </a>
+            </div>
+            <div style='width:20%;'>
+                <a class='btn btn-round' style='background-color:transparent' [ngClass]="{'card-rose-color':color=='purple',
+                                'card-success-color':color=='green',
+                                'card-primary-color':color!='green'&&color!='purple'}" (click)='showProfile=true;'>档案
+                </a>
+            </div>
+            <div style='width:20%;'>
+                <a class='btn btn-round' style='background-color:transparent' [ngClass]="{'card-rose-color':color=='purple',
+                                'card-success-color':color=='green',
+                                'card-primary-color':color!='green'&&color!='purple'}" (click)='showMail=true;'>
+                    信箱</a>
+            </div>
+            <div style='width:20%;'>
+                <a class='btn btn-round' style='background-color:transparent' [ngClass]="{'card-rose-color':color=='purple',
+                                'card-success-color':color=='green',
+                                'card-primary-color':color!='green'&&color!='purple'}" (click)='showSchedule=true;'>
+                    日程</a>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class='row' style=" 
+padding-bottom:40px; 
+background-color: white;">
+    <div class='card profile' *ngIf='showBusinessCard'>
+
+        <div class='card-header'>
+            <i class='material-icons pull-right' (click)='showBusinessCard=false;'>close</i>
+        </div>
+        <span style='border-bottom:1px  solid;padding:3px;
+    border-width:medium;font-size:medium;' [ngClass]="{'card-rose-color':color=='purple',
+    'card-success-color':color=='green',
+    'card-primary-color':color!='green'&&color!='purple'}">
+            <span style='font-weight: 700' *ngIf="language=='Chinese'">名片</span>
+            <span style='font-weight: 700' *ngIf="language=='English'">business card</span>
+        </span>
+
+        <div style='margin-top:10px;'>
+            <account-provider [showCard]='showCard'></account-provider>
+        </div>
+    </div>
+    <div class='card block'>
+        <span [ngClass]="{'card-rose-color':color=='purple',
+        'card-success-color':color=='green',
+        'card-primary-color':color!='green'&&color!='purple'}">
+            <span style='font-weight: 700' *ngIf="language=='Chinese'">疾病筛选</span>
+            <span style='font-weight: 700' *ngIf="language=='English'">Filter</span>
+            <span class='pull-right'>Total: {{totalProviderPatients}}</span>
+        </span>
+        <div>
+            <patient-list></patient-list>
+        </div>
+    </div>
+    <div class='card block'>
+        <span [ngClass]="{'card-rose-color':color=='purple',
+            'card-success-color':color=='green',
+            'card-primary-color':color!='green'&&color!='purple'}">
+            <span style='font-weight: 700' *ngIf="language=='Chinese'">人群分析</span>
+            <span style='font-weight: 700' *ngIf="language=='English'">group Analysis</span>
+        </span>
+        <div>
+            <patient-cell></patient-cell>
+        </div>
+    </div>
+    <div class='card block'>
+        <span [ngClass]="{'card-rose-color':color=='purple',
+    'card-success-color':color=='green',
+    'card-primary-color':color!='green'&&color!='purple'}">
+            <span style='font-weight: 800' *ngIf="language=='Chinese'"> publish</span>
+            <span style='font-weight: 800' *ngIf="language=='English'">publish</span>
+        </span>
+        <div>
+            <article-list></article-list>
+        </div>
+    </div>
+    <div class='card block'>
+        <span [ngClass]="{'card-rose-color':color=='purple',
+    'card-success-color':color=='green',
+    'card-primary-color':color!='green'&&color!='purple'}">
+            <span style='font-weight: 800' *ngIf="language=='Chinese'"> 概述</span>
+            <span style='font-weight: 800' *ngIf="language=='English'">Outline</span>
+        </span>
+        <div>
+            <dashboard-provider></dashboard-provider>
+        </div>
+    </div>
+    <div class='profile' *ngIf='showProfile'>
+        <div>
+            <i class='material-icons pull-right' (click)='showProfile=false;'>close</i>
+        </div>
+        <span style='border-bottom:1px  solid;
+        border-width:medium;font-size:medium;padding:3px' [ngClass]="{'card-rose-color':color=='purple',
+        'card-success-color':color=='green',
+        'card-primary-color':color!='green'&&color!='purple'}">
+            <span style='font-weight: 700' *ngIf="language=='Chinese'">档案</span>
+            <span style='font-weight: 700' *ngIf="language=='English'">Profile</span>
+        </span>
+        <div>
+            <account-provider [showProfile]='showProfile' (sendSubmit)="saveProfile($event)"></account-provider>
+        </div>
+    </div>
+
+    <div class='card profile' *ngIf='showMail'>
+        <div class='card-header'>
+            <i class='material-icons pull-right' (click)='showMail=false;'>close</i>
+        </div>
+        <span style='border-bottom:1px  solid;
+        border-width:medium;font-size:medium;padding:3px' [ngClass]="{'card-rose-color':color=='purple',
+        'card-success-color':color=='green',
+        'card-primary-color':color!='green'&&color!='purple'}">
+            <span style='font-weight: 800' *ngIf="language=='Chinese'">信箱</span>
+            <span style='font-weight: 800' *ngIf="language=='English'">Mail Box</span>
+        </span>
+        <div>
+            <!-- <mail [selected]='selected'></mail>-->
+        </div>
+    </div>
+    <div class='card profile' *ngIf='showSchedule'>
+        <div class='card-header'>
+            <i class='material-icons pull-right' (click)='showSchedule=false;'>close</i>
+        </div>
+        <span style='border-bottom:1px  solid;padding:3px;
+        border-width:medium;font-size:medium;' [ngClass]="{'card-rose-color':color=='purple',
+        'card-success-color':color=='green',
+        'card-primary-color':color!='green'&&color!='purple'}">
+            <span style='font-weight: 800' *ngIf="language=='Chinese'">预约日程</span>
+            <span style='font-weight: 800' *ngIf="language=='English'">Schedule</span>
+        </span>
+        <div>
+            <schedule-provider></schedule-provider>
+        </div>
+    </div>
+</div>
+<!--
+<div class='row' style=" 
+padding-bottom:40px; 
+padding:50px;
+margin-top:-70px;
+height:100%;
+background:url('/assets/img/ob-background-2.jpg');">
+<div class='row'>
+    <div style="margin-left:15px;    height:100px;" (click)='gotoChart()'>
+        <div class="card card-stats" style='background-color: transparent;'>
+            <div class="card-header  card-header-icon" >
+                <div class="card-icon" style='padding:0px;'>
+                    <img src="./assets/img/chart.png" class='photo'>
+                </div>
+                <p class="card-title" >
+                <span style='font-weight: 800' *ngIf="language=='Chinese'">人群分析</span>
+                <span style='font-weight: 800' *ngIf="language=='English'">group Analysis</span>
+                </p>
+            
+            </div>
+           
+        </div>
+    </div>
+    <div style="margin-left:15px;    height:100px;" (click)='gotoFilter()'>
+        <div class="card card-stats" style='background-color: transparent;'>
+            <div class="card-header  card-header-icon" 
+            >
+                <div class="card-icon" style='padding:0px;'>
+                    <img src="./assets/img/filter.png" class='photo'>
+                </div>
+                <p class="card-title">
+                        <span style='font-weight: 800' *ngIf="language=='Chinese'">疾病筛选 </span>
+                        <span style='font-weight: 800' *ngIf="language=='English'">filter</span>
+                  </p>
+                
+            </div>
+           
+        </div>
+    </div>
+    
+    <div style="margin-left:15px;    height:100px;" (click)='gotoPatientList()'>
+        <div class="card card-stats"  style='background-color: transparent;'>
+            <div class="card-header  card-header-icon" 
+            >
+                <div class="card-icon" style='padding:0px;'>
+                    <img src="./assets/img/patient-list.png" class='photo'>
+                </div>
+                <p class="card-title">
+                        <span style='font-weight: 800' *ngIf="language=='Chinese'">我的病人</span>
+                        <span style='font-weight: 800' *ngIf="language=='English'">My Patient</span>
+                  </p>
+                
+            </div>
+           
+        </div>
+    </div>
+</div>
+<div class='row'>
+    <div style="margin-left:15px;    height:100px;" (click)='gotoMail()'>
+        <div class="card card-stats"  style='background-color: transparent;'>
+            <div class="card-header  card-header-icon" 
+           >
+                <div class="card-icon" style='padding:0px;'>
+                    <img src="./assets/img/mail.jpg" class='photo'>
+                </div>
+                <p class="card-title">
+                        <span style='font-weight: 800' *ngIf="language=='Chinese'">信箱</span>
+                        <span style='font-weight: 800' *ngIf="language=='English'">Mail Box</span>
+                  </p>
+                
+            </div>
+           
+        </div>
+    </div>
+    <div style="margin-left:15px;    height:100px;" (click)='gotoDashboard()' >
+        <div class="card card-stats"  style='background-color: transparent;'>
+            <div class="card-header  card-header-icon" 
+            >
+                <div class="card-icon" style='padding:0px;'>
+                    <img src="./assets/img/dashboard.png" class='photo'>
+                </div>
+                <p class="card-title">
+                        <span style='font-weight: 800' *ngIf="language=='Chinese'"> 概述</span>
+                        <span style='font-weight: 800' *ngIf="language=='English'">Outline</span>
+                  </p>
+               
+            </div>
+           
+        </div>
+    </div>
+    <div style="margin-left:15px;    height:100px;"  (click)='gotoSchedule()'>
+        <div class="card card-stats"  style='background-color: transparent;'>
+            <div class="card-header  card-header-icon" 
+            >
+                <div class="card-icon" style='padding:0px;'>
+                    <img src="./assets/img/schedule.jpg" class='photo'>
+                </div>
+                <p class="card-title">
+                        <span style='font-weight: 800' *ngIf="language=='Chinese'">预约日程</span>
+                        <span style='font-weight: 800' *ngIf="language=='English'">Schedule</span>
+                  </p>
+               
+            </div>
+           
+        </div>
+    </div>
+    <div style='margin-left:15px; height:100px;'(click)='gotoChat()'>
+        <div class="card card-stats"  style='background-color: transparent;'>
+            <div class="card-header  card-header-icon" 
+           >
+                <div class="card-icon" style='padding:0px;'>
+                    <img src="./assets/img/distance-visit.jpg" class='photo'>
+                </div>
+                <p class="card-title">
+                        <span style='font-weight: 800' *ngIf="language=='Chinese'">远程诊室</span>
+                        <span style='font-weight: 800' *ngIf="language=='English'">Distance Visit</span>
+                  </p>
+               
+            </div>
+           
+        </div>
+    </div>
+</div>
+<div class='row'>
+    <div style="margin-left:15px;    height:100px;"  (click)='gotoPublish()'>
+        <div class="card card-stats" style='background-color: transparent;'>
+            <div class="card-header  card-header-icon" 
+          >
+                <div class="card-icon" style='padding:0px;'>
+                    <img src="./assets/img/publish.jpg" class='photo'>
+                </div>
+                <p class="card-title">
+                        <span style='font-weight: 800' *ngIf="language=='Chinese'">文章</span>
+                        <span style='font-weight: 800' *ngIf="language=='English'">Article</span>
+                  </p>
+                
+            </div>
+           
+        </div>
+    </div>
+    <div style="margin-left:15px;    height:100px;"  (click)='gotoUser()'>
+        <div class="card card-stats" style='background-color: transparent;'>
+            <div class="card-header  card-header-icon" 
+          >
+                <div class="card-icon" style='padding:0px;'>
+                    <img src="./assets/img/provider.jpg" class='photo'>
+                </div>
+                <p class="card-title">
+                        <span style='font-weight: 800' *ngIf="language=='Chinese'">我</span>
+                        <span style='font-weight: 800' *ngIf="language=='English'">Me</span>
+                  </p>
+                
+            </div>
+           
+        </div>
+    </div>
+    <div style="margin-left:15px;    height:100px;"  (click)='gotoUserList()'>
+        <div class="card card-stats" style='background-color: transparent;'>
+            <div class="card-header  card-header-icon" 
+          >
+                <div class="card-icon" style='padding:0px;'>
+                    <img src="./assets/img/provider.jpg" class='photo'>
+                </div>
+                <p class="card-title">
+                        <span style='font-weight: 800' *ngIf="language=='Chinese'">user management</span>
+                        <span style='font-weight: 800' *ngIf="language=='English'">user management</span>
+                  </p>
+                
+            </div>
+           
+        </div>
+    </div>
+    <div style='margin-left:15px;    height:100px;'(click)='logout()'>
+        <div class="card card-stats"  style='background-color: transparent;'>
+            <div class="card-header  card-header-icon" 
+           >
+                <div class="card-icon" style='padding:0px;' >
+                    <img src="./assets/img/provider-logout.png" class='photo'>
+                </div>
+                <p class="card-title">
+                        <span style='font-weight: 800' *ngIf="language=='Chinese'">退出</span>
+                        <span style='font-weight: 800' *ngIf="language=='English'">Logout</span>
+                  </p>
+                
+            </div>
+           
+        </div>
+    </div>
+    </div>
+    </div>
+-->

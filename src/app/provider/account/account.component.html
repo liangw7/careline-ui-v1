@@ -1,0 +1,102 @@
+<div class="overlay" *ngIf="loading">
+  <div class="spinner-wrapper">
+    <spinner></spinner>
+  </div>
+</div>
+<!-- background:url('/assets/img/ob-background-2.jpg'); -->
+<div class="wapper">
+<div class='card'>
+  <div class='card-header'>
+    <button *ngIf='bigScreen==1' class="btn btn-round btn-base" (click)='save()'>
+      <span *ngIf="language=='English'">Save</span>
+      <span *ngIf="language=='Chinese'">提交</span>
+    </button>
+  </div>
+  <div class='card-body'>
+
+    <!--<div class="nav card" style='margin-bottom:0; max-height:42px;padding:0px;'>
+  
+    <ul class='nav' style='margin:0px; padding:0px;'>
+        <li class='nav-item active' >
+          <a 
+          href="javascript:void(0);" 
+          class="nav-link link-cell "
+          
+          (click)='generalInfor=true;profileInfor=false;'
+          > 
+          <span *ngIf="language=='English'">General</span>
+          <span *ngIf="language=='Chinese'">基本信息</span>
+                            
+          </a>
+        </li>
+        <li class='nav-item' > <a href="javascript:void(0);" class="nav-link link-cell" 
+          (click)='generalInfor=false;profileInfor=true;' 
+      
+          >
+               
+            <span *ngIf="language=='English'">Profiles</span>
+             <span *ngIf="language=='Chinese'">项目信息</span>
+                       
+      </a></li></ul></div>-->
+    <div *ngIf='showProfile'>
+      <app-form [forms]='forms' [registryUser]='user' [language]='language' [emBed]=false ></app-form>
+      <button *ngIf='bigScreen==0' class="btn btn-round btn-block" (click)='save()'>
+        <span *ngIf="language=='English'">Save</span>
+        <span *ngIf="language=='Chinese'">提交</span>
+      </button>
+    </div>
+
+
+
+    <!--<div class='card' *ngIf='selectedProfile'>
+        <div class='card-header'>
+        <a  *ngIf="user.role!='provider'" [routerLink]="['/homepage/registry/', selectedProfile._id, user.undefined,user.color, user.undefined]"
+            >
+        <h4> 前往项目海报</h4>
+        </a>
+        <a  *ngIf="user.role=='provider'" 
+        [routerLink]="['/homepage/registry/', selectedProfile._id, user._id,user.color, user.imageOrigin]"
+            >
+        <h4> 前往项目海报</h4>
+        </a>
+  </div>
+            <div class='card-body'>
+                    <a [hidden]='href'>
+                    <canvas  width="400" height="600" class='canvas' id='canvas'></canvas>
+                    </a>
+                    <a  [href]="href" download *ngIf='href' >
+                        <img [src]='href' width="200" height="300" class='canvas'>
+                    </a>
+                    
+                        
+                            <ngx-qrcode qrc-element-type="url" [qrc-value]="selectedProfile.QRCode" 
+                            ></ngx-qrcode>
+                            <img [src]="user.URLphoto"  (load)='loadUser=true;' class='photo' >
+                            <img [src]="selectedProfile.image"  (load)='downloadImage();' class='photo' >
+                            
+                    
+                </div>
+                
+        </div>-->
+
+
+    <div>
+      <mat-checkbox [(ngModel)]="follow" *ngIf='!user.follow'>
+        <span style="color:red;font-weight:800">！！！点击关注基数健康 可收取病人预约 邮件 以及病人警报临床数据</span>
+      </mat-checkbox>
+      <div *ngIf='showCard'>
+        <div>
+            <a class='btn btn-base' *ngFor='let profile of user.profiles' (click)="share(profile)"> {{profile.label.ch}}
+            </a>
+        </div>
+        <div>长按分享个人名片:</div>
+        <div>
+          <ngx-qrcode [elementType]="elementType" [errorCorrectionLevel]="correctionLevel" [value]="QRCode"
+            cssClass="bshadow">
+          </ngx-qrcode>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>

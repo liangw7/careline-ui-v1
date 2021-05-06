@@ -1,0 +1,28 @@
+.user {
+    background-color: #eee;
+    color: #666;
+    padding: 40px;
+    position: absolute;
+    border: 1px solid #fff;
+    margin-top: 85px;
+    margin-left: 250px;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    width: 80%;
+    height: 1000px;
+}
+
+.group {
+    overflow-y: scroll;
+    height: 700px;
+}
+
+.row-striped:nth-of-type(odd) {
+    background-color: #ffffff;
+}
+
+.row-striped:nth-of-type(even) {
+    background-color: lavender;
+}

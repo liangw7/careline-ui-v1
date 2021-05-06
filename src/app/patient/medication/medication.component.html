@@ -1,0 +1,189 @@
+<div class="wapper" [ngClass]="{'wap-wapper': bigScreen==0}">
+    <div class="nav-tabs-wrapper">
+        <ul class="nav nav-tabs" data-tabs="tabs">
+            <li class="nav-item" [ngClass]="{'active':medicationActive,'non-active':!medicationActive}" style="z-index: 4;">
+                <a mat-button class="nav-link" data-toggle="tab" (click)='immunizationActive=false;medicationActive=true;'>
+                    <span *ngIf="language=='Chinese'">用药史</span>
+                    <span *ngIf="language=='English'">Medication History</span>
+                </a>
+            </li>
+            <li class="nav-item" [ngClass]="{'active':immunizationActive,'non-active':!immunizationActive}" style="z-index: 3;">
+                <a mat-button class="nav-link" data-toggle="tab" (click)='immunizationActive=true;medicationActive=false;showVaccine=true;'>
+                    <span *ngIf="language=='Chinese'">免疫史</span>
+                    <span *ngIf="language=='English'">Vaccination History</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="tab-content">
+        <div class="tab-pane" *ngIf="medicationActive" [ngClass]="{'active':medicationActive==true}" id="medication">
+            <div *ngIf='user'>
+                <a class='btn btn-round btn-base' (click)='showItems=true;'>
+                    <i class='material-icons' style="font-size: 22px;">search</i>
+                </a>
+            </div>
+            <div class="popping" *ngIf='showItems'>
+                <div class='search card'>
+                    <div class="closebtn">
+                        <i class='material-icons pull-right' (click)='showItems=false'>close</i>
+                    </div>
+                    <div class='card-header'>
+                        <div class="form-inline">
+                            <div class="input-group">
+                            <input type='text' [(ngModel)]="search" class='form-control' placeholder='search medication'>
+                            </div>
+                            <a class='btn pull-right' (click)='searchMeds(search)' style="height: 49px;line-height: 32px;">
+                                <i class='material-icons' style="font-size: 26px;">search</i>
+                            </a>
+                        </div>
+                    </div>
+                    <div class='card-body'>
+                        <table class="table table-striped">
+                            <tr *ngFor='let item of medicationItems|filter: search' (click)='select(item)'>
+                                <td>
+                                    <span *ngIf="language=='Chinese'&&item.label">{{item.label.ch}}</span>
+                                    <span *ngIf="language=='English'&&item.label">{{item.label.en}}</span>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>  
+            <div class='card-body main-body'>
+                <table class="table">
+                    <tr *ngIf='medications&&medications.length>0&&medications[0].medicationItem'>
+                        <td> <span *ngIf="language=='Chinese'"> 药名</span>
+                            <span *ngIf="language=='English'"> Medication Name</span>
+                        </td>
+                        <td>状态</td>
+                        <td *ngFor="let ob of medications[0].medicationItem.obs|orderBy:'index'">
+                            <span *ngIf="language=='Chinese'&&ob.label">{{ob.label.ch}}</span>
+                            <span *ngIf="language=='English'&&ob.label">{{ob.label.en}}</span>
+                        </td>
+                        <td *ngIf="user&&user.role=='provider'"></td>
+                        <td *ngIf="user&&user.role=='provider'"></td>
+                        <td></td>
+                    </tr>
+                    <tbody *ngFor='let medication of medications'>
+                        <tr *ngIf='medication.medicationItem' (mouseover)='medication.delete=true' (mouseleave)='medication.delete=false'>
+                            <td>
+                                <a href="javascript:void()" (click)='getObSet(medication, medications)'>
+                                    <span *ngIf="language=='Chinese'&&medication.label">
+                                        {{medication.label.ch}}</span>
+                                    <span *ngIf="language=='English'&&medication.label">
+                                        {{medication.label.en}}</span>
+                                </a>
+                                <span *ngIf='!medication.label'>{{medication.name}}</span>
+                            </td>
+                            <td><span *ngIf="medication.status" class="tablestatus">{{medication.status}}</span></td>
+                            <td *ngFor="let ob of medication.medicationItem.obs|orderBy:'index'">
+
+                                <span *ngIf="ob.type!='date'"> {{ob.value}}</span>
+                                <span *ngIf="ob.type=='date'"> {{ob.value|date:"yyyy/MM/dd"}}</span>
+                                <span *ngFor='let value of ob.values'>
+                                    <span *ngIf="language=='Chinese'"> {{value.text}}</span>
+                                    <span *ngIf="language=='English'"> {{value.enText}}</span>
+                                </span>
+                            </td>
+
+                            <td *ngIf="user&&user.role=='provider'">
+                                <a href="javascript:void(0);#orderList" class="tablebtn">renew</a>
+                            </td>
+                            <td *ngIf="user&&user.role=='provider'">
+                                <a href="javascript:void(0);#orderList"
+                                    (click)='discontinue(medication)' class="tablebtn">discontinue</a>
+                            </td>
+                            <td>
+                                <!-- <i class="fa fa-remove tablebtn" aria-hidden="true" (click)='delete(medication,medications )'>移除</i> -->
+                                <i class='material-icons btn-icons' (click)='delete(medication,medications )'>delete</i>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="tab-pane immunizationbox" *ngIf="immunizationActive" [ngClass]="{'active':immunizationActive==true}" id="immunization">
+            <div class='table-responsive' *ngIf='bigScreen==1'>
+                <table class='table' *ngIf='timeList'>
+                    <tr>
+                        <th>疫苗</th>
+                        <th *ngFor='let timeItem of timeList'>{{timeItem.time}}</th>
+                    </tr>
+                    <tbody class="tablebody">
+                        <tr *ngFor='let vaccine of vaccines'>
+                            <td>{{vaccine.label.ch}}</td>
+                            <td *ngFor='let timeItem of timeList' (click)='recordVaccine(vaccine,timeItem)'
+                                [ngClass]="{'card-vaccine':hasDose(vaccine,timeItem),
+                            'due-color':hasDose(vaccine,timeItem)&&patient&&patient.Obj&&timeItem.number<=patient.ageObj.number&&patient.ageObj.uom=='m'
+                            ||timeItem.number==0&&patient.ageObj.uom=='d'}">
+                                <span *ngIf="hasDose(vaccine,timeItem)&& 
+                        hasDose(vaccine,timeItem)=='dose'">
+                                    <span>
+                                        {{hasDate(vaccine,timeItem)|date: 'yyyy/MM/dd'}}
+                                    </span>
+                                    <i class='material-icons' style='color:blue;font-size: medium;'
+                                        *ngIf="!hasDate(vaccine,timeItem)">
+                                        check_box_outline_blank</i>
+                                </span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class='card vaccine' *ngIf='showDate'
+                    style='position:absolute;width:300;height:300px;margin-left:50%;margin-top:50px;'>
+                    <div class='card-header'>
+
+                        <a class='btn btn-round btn-primary pull-right'
+                            (click)='showDate=false;saveVaccine(selectedVaccine,selectedTimeItem)'>save</a>
+                        <a class='btn btn-round  pull-right' (click)='showDate=false;'>close</a>
+                    </div>
+                    <h3>疫苗接种时间:{{vaccineDate|date: 'yyyy/MM/dd'}}</h3>
+
+                    <input type='date' [(ngModel)]="vaccineDate" class="form-control">
+                </div>
+            </div>
+            <div *ngIf='bigScreen==0&&showVaccine' class='card profile'>
+                <div class="backbox" (click)='showVaccine=false;'><span class="material-icons">chevron_left</span></div>
+                <div class='card' *ngFor='let vaccine of vaccines'>
+                    <div class='card-header'><span style='font-weight:600'>{{vaccine.label.ch}}</span></div>
+                    <div class='table table-reponsive'>
+                        <table class='table'>
+                            <tbody *ngFor='let timeItem of timeList'>
+                                <tr *ngIf="hasDose(vaccine,timeItem)&&hasDose(vaccine,timeItem)"
+                                    (click)='recordVaccine(vaccine,timeItem)' [ngClass]="{'card-vaccine':hasDose(vaccine,timeItem),
+                        'due-color':hasDose(vaccine,timeItem)&&timeItem.number<=patient.ageObj.number&&patient.ageObj.uom=='m'
+            ||timeItem.number==0&&patient.ageObj.uom=='d'}">
+                                    <th>{{timeItem.time}}
+                                    </th>
+                                    <td>
+                                        {{hasDate(vaccine,timeItem)|date: 'yyyy/MM/dd'}}
+
+                                        <i class='material-icons' style='color:blue;font-size: medium;' *ngIf="!hasDate(vaccine,timeItem)&& 
+                    hasDose(vaccine,timeItem)=='dose'">
+                                            check_box_outline_blank</i>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <div class='card vaccine' *ngIf='showDate'
+                style='position:absolute;width:500;height:300px;margin-left:50%;margin-top:50px;'>
+                <div class='card-header'>
+
+                    <a class='btn btn-round btn-primary pull-right'
+                        (click)='showDate=false;saveVaccine(selectedVaccine,selectedTimeItem)'>save</a>
+                    <a class='btn btn-round  pull-right' (click)='showDate=false;'>close</a>
+                </div>
+                <div>疫苗接种时间:{{vaccineDate|date: 'yyyy/MM/dd'}}</div>
+                <div>填写:</div>
+                <input type='date' [(ngModel)]="vaccineDate" class="form-control">
+            </div>
+        </div>
+    </div>
+</div>
+<div class="spinner-wrapper" *ngIf='loading'>
+    <spinner></spinner>
+</div>

@@ -1,0 +1,135 @@
+<div class="container-login-pc" *ngIf='bigScreen==1 && !code'>
+    <div class="overlay" *ngIf="loading">
+      <div class="spinner-wrapper">
+        <img src="./assets/img/poster-3.png">
+        <spinner></spinner>
+      </div>
+    </div>
+  
+    <button mat-button color="primary" (click)="closeDialogRef()">关闭</button>
+    <div class="public-main" *ngIf='!pageRole'>
+      <div class="public-main-right1">
+        <div class="pc-login-main-left">
+          <div id="pc-login-main-message">用户登录</div>
+          <mat-card-content>
+            <div class="loginways" *ngIf="IsLoginWays">
+              <div class="way" (click)="PhoneLogin()">手机号登录</div>
+              <div class="way" (click)="AccountLogin()">邮箱登录</div>
+              <div class="way" (click)="WxLogin()">微信扫码登录</div>
+            </div>
+            <ul class="loginways2" *ngIf="!IsLoginWays">
+              <li [ngClass]="{'active':isShowPhone }" (click)="PhoneLogin()">手机号登录</li>
+              <li [ngClass]="{'active':isShowEmail }" (click)="AccountLogin()">邮箱登录</li>
+              <li [ngClass]="{'active':isShowWeixinQrcode }" (click)="WxLogin()">微信扫码登录</li>
+            </ul>
+            <div class="pc-login-main-input" *ngIf="isShowEmail||isShowPhone">
+              <mat-form-field class="full-width" *ngIf="isShowEmail">
+                <mat-label>
+                  <span>邮箱</span>
+                </mat-label>
+                <input matInput name="email" [(ngModel)]="email" type='email'>
+              </mat-form-field>
+              <mat-form-field class="full-width" *ngIf="isShowPhone">
+                <mat-label>
+                  <span>手机号</span>
+                </mat-label>
+                <input matInput name="phone" [(ngModel)]="phone" type='text'>
+              </mat-form-field>
+              <mat-form-field class="full-width">
+                <mat-label>
+                  <span>密码</span>
+                </mat-label>
+                <input matInput name="password" [(ngModel)]="password" type='password'>
+              </mat-form-field>
+              <div class="pc-login-bottom">
+                <a class="btn btn-round btn-base btn-block" (click)="login()">登录</a>
+              </div>
+            </div>
+            <div class="pc-login-main-right" *ngIf="isShowWeixinQrcode">
+              <div>
+                <iframe [src]="wxQrcodeUrl"></iframe>
+              </div>
+            </div>
+          </mat-card-content>
+        </div>
+      </div>
+      <div>
+        <!-- 引用注册组件 -->
+      </div>
+    </div>
+  </div>
+  <div *ngIf='pageRole' class='card'>
+    <div class='card-header'>
+      <span id="pc-login-main-message">用户登录</span>&nbsp;&nbsp;&nbsp;&nbsp;
+      <span id="pc-login-main-select">切换身份</span>
+  
+      <div>
+        <mat-form-field class="full-width">
+          <mat-label>
+            <span>邮箱/手机号</span>
+          </mat-label>
+          <input matInput name="email" [(ngModel)]="email" type='email'>
+        </mat-form-field>
+        <mat-form-field class="full-width">
+          <mat-label>
+            <span>密码</span>
+          </mat-label>
+          <input matInput name="password" [(ngModel)]="password" type='password'>
+        </mat-form-field>
+      </div>
+      <div style='margin-left:20px'>
+        <a [routerLink]="['/public-platform/homepage/forget-password']">忘记密码?</a>
+        <a class="btn btn-round btn-primary btn-block" (click)="login()">登录</a>
+        <div class="pc-login-registry">
+          <span>还没有账号?</span>&nbsp;&nbsp;&nbsp;&nbsp;<a href="">注册</a>
+        </div>
+      </div>
+    </div>
+    <div>
+      <iframe
+        src="https://open.weixin.qq.com/connect/qrconnect?appid=wx154c4c5bdaeba8d9&redirect_uri=https://www.digitalbaseas.com/homepage/login-poster&response_type=code&scope=snsapi_login#wechat_redirect">
+      </iframe>
+    </div>
+  </div>
+  
+  
+  
+  <div class="container-login-phone" *ngIf='bigScreen==0'>
+    <div class="public-main">
+      <div class="public-main-right1">
+        <div>
+          <div class="phone-login-main">
+            <span id="phone-login-main-message">用户登录</span>&nbsp;&nbsp;&nbsp;&nbsp;
+            <span id="phone-login-main-select">切换身份</span>
+            <div>
+              <mat-card-content>
+                <div>
+                  <mat-form-field class="full-width">
+                    <mat-label>
+                      <span>邮箱/手机号</span>
+                    </mat-label>
+                    <input matInput [(ngModel)]="email" type='mail'>
+                  </mat-form-field>
+                  <mat-form-field class="full-width">
+                    <mat-label>
+                      <span>密码</span>
+                    </mat-label>
+                    <input matInput [(ngModel)]="password" type='password'>
+                  </mat-form-field>
+                </div>
+              </mat-card-content>
+            </div>
+          </div>
+        </div>
+        <a class="phone-login-forgetPassword" [routerLink]="['/public-platform/homepage/forget-password']">忘记密码?</a>
+        <!-- <router-outlet></router-outlet> -->
+        <div id="phone-login-bottom">
+          <img src="assets/images/login/wx_logo.png" alt="">
+          <button class="phone-login-button" (click)="login()">登录</button>
+          <div class="phone-login-registry">
+            <span>还没有账号?</span>&nbsp;&nbsp;&nbsp;&nbsp;<a href="">注册</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

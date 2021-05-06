@@ -1,0 +1,343 @@
+@import 'src/assets/scss/base.scss';
+.template {
+    text-align: left;
+    height: 100%;
+    max-height: 700px;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 1);
+    font-weight: 600;
+}
+
+.form-row {
+    border-left: none;
+    border-right: none;
+    padding: 0px;
+}
+
+.form-header-1 {
+    background-color: gainsboro;
+    border-left: none;
+    border-right: none;
+    font-size: medium;
+    font-weight: bold;
+}
+
+.form-header-2 {
+    background-color: rgb(86, 86, 167);
+    color: white;
+    border-left: none;
+    border-right: none;
+    font-weight: bolder;
+    padding: 5px;
+}
+
+.record-row {
+    color: black;
+    
+    
+}
+
+.selected-1 {
+    color: red;
+}
+
+.selected-2 {
+    color: red;
+}
+
+.selected-3 {
+    background-color: rgb(239, 239, 247);
+}
+
+.full-width {
+    width: 100%;
+
+    margin-bottom: -10px;
+}
+
+.thumbnail {
+    height: 75px;
+    width: 75px;
+}
+
+.card-rose {
+    background-color: #9c27b0;
+
+    span {
+        color: white;
+    }
+
+    margin: 15px;
+    border-radius: 5px;
+    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(#9c27b0, 0.4);
+}
+
+.card-success {
+    background-color: #4caf50;
+
+    span {
+        color: white;
+    }
+
+    border-radius: 5px;
+    margin: 15px;
+    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(#4caf50, 0.4);
+}
+
+.card-primary {
+    background-color: #3f51b5;
+
+    span {
+        color: white;
+    }
+
+    margin: 15px;
+    border-radius: 5px;
+    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(#3f51b5, 0.4);
+}
+
+.card-rose-color {
+    color: #9c27b0;
+    font-weight: 700;
+    font-size: medium;
+}
+
+.card-success-color {
+    color: #4caf50;
+    font-weight: 700;
+    font-size: medium;
+}
+
+.card-primary-color {
+    color: #3f51b5;
+    font-weight: 700;
+    font-size: medium;
+}
+
+.card-rose-1 {
+    background-color: #ce93d8;
+    color: white;
+    margin: 15px;
+    border-radius: 5px;
+    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(#ce93d8, 0.4);
+}
+
+.card-success-1 {
+    background-color: #81c784;
+    color: white;
+    border-radius: 5px;
+    margin: 15px;
+    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(#81c784, 0.4);
+}
+
+.card-primary-1 {
+    background-color: #7986cb;
+
+    margin: 15px;
+    border-radius: 5px;
+    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(#7986cb, 0.4);
+}
+
+.card-rose-2 {
+    background-color: #d1c4e9;
+    color: white;
+    margin: 15px;
+    border-radius: 5px;
+    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(#d1c4e9, 0.4);
+}
+
+.card-success-2 {
+    background-color: #c8e6c9;
+    color: white;
+    border-radius: 5px;
+    margin: 15px;
+    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(#c8e6c9, 0.4);
+}
+
+.card-primary-2 {
+    background-color: #c5cae9;
+
+    margin: 15px;
+    border-radius: 5px;
+    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(#c5cae9, 0.4);
+}
+
+.levelOne {
+    color: orange;
+    font-weight: 900;
+    font-size: medium;
+}
+
+.levelTwo {
+    color: red;
+    font-weight: 900;
+    font-size: medium;
+}
+
+.normal {
+    color: blue;
+    font-weight: 900;
+    font-size: medium;
+}
+
+.selected {
+    background-color: lightgray;
+    // margin:15px;
+    border-radius: 5px;
+    box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(lightgray, 0.4);
+}
+
+.nav {
+    color: rgb(86, 86, 167);
+
+    background-color: transparent;
+    height: 50px;
+}
+
+.large-letter {
+    font-size: medium;
+}
+
+.small-letter {
+    font-size: medium;
+}
+
+.image-position {
+    padding-left: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.ob-image {
+    width: 100%;
+    padding-left: 15px;
+    padding-bottom: 30px;
+    // height:200px;
+}
+
+.followup-ob {
+    font-size: $fontSize14;
+    color: $basefontColor!important;
+}
+
+.cell-width {
+    margin-bottom: 10px;
+    //width: 95%;
+}
+
+
+
+.card-level-1 {
+    background-color: white;
+}
+
+.card-level-2 {
+    background-color: rgb(230, 235, 245);
+}
+
+.card-level-3 {
+    background-color: rgb(206, 220, 247);
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+li {
+    float: left;
+}
+
+li a {
+    display: block;
+    text-align: center;
+    padding: 10px;
+    text-decoration: none;
+}
+
+.pc-width {
+    width:100%;
+}
+
+.pc-width-education {
+    width: 98%;
+    margin: 1%;
+}
+
+.pc-width-template {
+    width: 96%;
+    margin: 1%;
+    padding: 1%;
+}
+
+.cell-width {
+    width: 98%;
+}
+
+.card {
+    margin: 0;
+    box-shadow: none;
+    border: none;
+}
+
+.formbase {
+    .card-header {
+        display: flex;
+        justify-content: space-between;
+        background: #F0F5FB;
+        .title {
+            font-size: 28px;
+            font-family: PingFangSC, PingFangSC-Medium;
+            font-weight: 500;
+            text-align: left;
+            color: #223E9C;
+            line-height: 36px;
+        }
+        .btn {
+            margin: 0;
+            &.btn-primary{
+                background-color: #1B69C7;
+                border-color: #1B69C7;
+                
+            }
+        }
+    }
+    .formcontent {
+        .questionbox {
+            margin-bottom: 0;
+            .table {
+                margin-bottom: 0;
+                td {
+                    font-size: 20px;
+                    color: #606060;
+                }
+            }
+        }
+    }
+}
+.btn-base {
+    font-size: $fontSize14;
+    margin: 0 0 0 20px;
+    padding: 2px 6px;
+    font-size:small;
+    
+}
+.card-title {
+    width:90%;
+    padding: 0 0 10px 0;
+    border-bottom: 1px solid $lightBluefontColor;
+    border-width:medium;
+    display: flex;
+    justify-content: space-between;
+    .txt {
+        font-size: $fontSize18;
+        color: $baseBluefontColor;
+        line-height: 36px;
+    }
+}
+:host ::ng-deep .mat-dialog-container {
+    padding: 0!important;
+    overflow: visible!important;
+}

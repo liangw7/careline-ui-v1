@@ -1,0 +1,29 @@
+<div *ngIf='!selectedProvider'>
+    <div class='card' style='margin-top:0px;margin-bottom:4px;padding:4px;' *ngFor='let provider of providers'
+        (click)='select(provider, providers)' [ngClass]="{selected:provider.selected}">
+        <mat-checkbox class='pull-right' [checked]='provider.selected==true'></mat-checkbox>
+        <div class='row'>
+            <div class='col-sm-2'>
+                <img [src]="getUrl(provider)" class='photo-provider'>
+            </div>
+            <div class='col-sm-10'>
+                <p>{{provider.name}}-{{provider.title}}-<span *ngIf='provider.service'>{{provider.service.name}}</span>
+                </p>
+                <p>{{provider.desc}}</p>
+            </div>
+        </div>
+    </div>
+</div>
+<div *ngIf='selectedProvider'>
+    <div class='row'>
+        <div class='col-sm-2'>
+            <img [src]="getUrl(selectedProvider)" class='photo-provider'>
+        </div>
+        <div class='col-sm-10'>
+            <p>{{selectedProvider.name}}-{{selectedProvider.title}}-
+                <span *ngIf='selectedProvider.service'>{{selectedProvider.service.name}}</span>
+            </p>
+            <p>{{selectedProvider.desc}}</p>
+        </div>
+    </div>
+</div>

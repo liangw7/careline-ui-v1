@@ -1,0 +1,892 @@
+<div class='pc-wapper' *ngIf='bigScreen==1'>
+  <div class="wapper">
+  
+    <div class="header">
+      <div class="left">
+       
+      </div>
+      <div class="right">
+          <span [ngClass]="{'active':myOrder}" (click)="myOrder=true;addOrder=false;myProviders=false;searchProviders=false;">现有咨询</span>
+          <span [ngClass]="{'active':addOrder}" (click)='myOrder=false;addOrder=true;myProviders=true;searchProviders=false;'>增加咨询</span>
+      </div>
+  </div>
+    <div class="tab-content">
+      <div class="tab-pane" *ngIf="myOrder" [ngClass]="{'active':list==true}">
+        <div class="tabcard">
+          <div class="checkstatus">
+            <span *ngIf="language=='Chinese'" class="label">选择状态</span>
+            <span *ngIf="language=='English'" class="label">Selection state</span>
+            <mat-select class="selbox" (selectionChange)="onChangeStatus($event)" [(ngModel)]="status">
+              <mat-option value='All'>所有订单</mat-option>
+              <mat-option value="active">成功订单</mat-option>
+              <mat-option value="reserved">已完成订单</mat-option>
+              <mat-option value="canceled">取消订单</mat-option>
+            </mat-select>
+          </div>
+          <div class='tabitem'>
+            <div class="title">
+              <div class="title-left">
+                <div class="txt"><span></span><span>图文咨询</span></div>
+                <!-- <div class="date">数据更新时间：2020-02-01 21:22</div> -->
+              </div>
+              <div class="title-right" [ngClass]="{'up':!consultShow }" (click)="consultShow = !consultShow"></div>
+            </div>
+            <div *ngIf="consultShow" style="width: 100%;overflow:hidden;">
+              <div class="tablebox">
+                <table class='table table-striped'>
+                  <tr *ngFor="let visit of allVisits|filter: 'consult'"
+                    [ngClass]="{'active': ['active','reserved'].includes(visit.status)}" (click)='selectedProvider=visit.provider;
+                              activeConsultVisit=visit;
+                              selectedProfile=visit.profiles[0];
+                              chatRoom=true;isOpenChat(visit)'>
+                    <td><span class="headerimg"><img [src]='getUrl(visit.provider)' /></span></td>
+                    <td *ngIf='visit.profiles'>
+                      <span *ngFor='let profile of visit.profiles'>
+                        <span *ngIf='profile'>{{profile.label.ch}}</span>
+                      </span>
+                    </td>
+                    <td *ngIf='visit.provider'>{{visit.provider.name}}</td>
+                    <td *ngIf='visit.provider'>{{visit.provider.specialty}}</td>
+                    <td *ngIf='visit.provider'>{{visit.provider.title}}</td>
+                    <td>{{visit.type}}</td>
+                    <td><span class="ststusshow">{{visit.status}}</span></td>
+                    <td>{{visit.visitDate|date: 'yyyy/MM/dd hh:mm'}}</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+          <div class='tabitem'>
+            <div class="title">
+              <div class="title-left">
+                <div class="txt"><span></span><span>视频咨询</span></div>
+              </div>
+              <div class="title-right" [ngClass]="{'up':!vedioShow }" (click)="vedioShow = !vedioShow"></div>
+            </div>
+            <div *ngIf="vedioShow" style="width: 100%;overflow:hidden;">
+              <div class="tablebox">
+                <table class='table table-striped'>
+                  <tr *ngFor="let visit of allVisits|filter: 'vedio'">
+                    <td><span class="headerimg"><img [src]='getUrl(visit.provider)' /></span></td>
+                    <td *ngIf='visit.profiles'>
+                      <span *ngFor='let profile of visit.profiles'>
+                        <span *ngIf='profile'>{{profile.label.ch}}</span>
+                      </span>
+                    </td>
+                    <td *ngIf='visit.provider'>{{visit.provider.name}}</td>
+                    <td *ngIf='visit.provider'>{{visit.provider.specialty}}</td>
+                    <td>{{visit.type}}</td>
+                    <td><span class="ststusshow">{{visit.status}}</span></td>
+                    <td>{{visit.visitDate|date: 'yyyy/MM/dd hh:mm'}}</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+          <!-- <div class='tabitem'>
+            <div class="title">
+              <div class="title-left">
+                <div class="txt"><span></span><span>门诊咨询</span></div>
+              </div>
+              <div class="title-right" [ngClass]="{'up':!visitShow }" (click)="visitShow = !visitShow"></div>
+            </div>
+            <div *ngIf="visitShow" style="width: 100%;overflow:hidden;">
+              <div class="tablebox tableheight">
+                <table class='table table-striped'>
+                  <tr *ngFor="let visit of allVisits|filter: 'visit'">
+                    <td><span class="headerimg"><img [src]='getUrl(visit.provider)' /></span></td>
+                    <td *ngIf='visit.profiles'>
+                      <span *ngFor='let profile of visit.profiles'>
+                        <span *ngIf='profile'>{{profile.label.ch}}</span>
+                      </span>
+                    </td>
+                    <td *ngIf='visit.provider'>{{visit.provider.name}}</td>
+                    <td *ngIf='visit.provider'>{{visit.provider.specialty}}</td>
+                    <td>{{visit.type}}</td>
+                    <td><span class="ststusshow">{{visit.status}}</span></td>
+                    <td>{{visit.visitDate|date: 'yyyy/MM/dd hh:mm'}}</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div> -->
+        </div>
+      </div>
+      <div class="tab-pane" *ngIf="addOrder" [ngClass]="{'active':list==true}">
+        <div class="nav-tabs-wrapper">
+       <ul class='nav nav-tabs' data-tabs='tabs'>
+        <li class="nav-item" *ngIf='providers' [ngClass]="{'active':myProviders,'non-active':!myProviders}" style="z-index: 3;">
+          <a mat-button class="nav-link" (click)="myProviders=true;searchProviders=false;profileProvider=false;"
+            data-toggle="tab" (click)='selectedProvider=providers[0]'>
+            我的医生
+            <div class="ripple-container"></div>
+          </a>
+        </li>
+        <li class="nav-item" [ngClass]="{'active':searchProviders,'non-active':!searchProviders}" style="z-index: 2;">
+          <a mat-button class="nav-link " (click)="myProviders=false;searchProviders=true;profileProvider=false;"
+            data-toggle="tab" (click)="getAllProviders();selectedProvider=null;">
+            搜索医生
+            <div class="ripple-container"></div>
+          </a>
+        </li>
+        <li class="nav-item" *ngIf='profile' [ngClass]="{'active':consult==true}">
+          <a mat-button class="nav-link " 
+          (click)="myOrder=false;myProviders=false;searchProviders=false;profileProvider=true;getProfileProviders()" data-toggle="tab">
+            项目医生
+            <div class="ripple-container"></div>
+          </a>
+        </li>
+       </ul>
+       </div>
+        <div class="tab-content">
+        <div class="tab-pane" *ngIf="myProviders" [ngClass]="{'active':list==true}">
+          <div class="tabcard">
+            <div class='row'>
+              <div class='col-sm-4 providerlists'>
+                <div *ngFor='let provider of providers'>
+                  <div class='card' [ngClass]="{'selected':selectedProvider&&provider._id==selectedProvider._id}" (click)='selectProvider(provider)'>
+                    <div class='card-body'>
+                      <div class="headerimg"><img [src]='getUrl(provider)'></div>
+                      <div class="info">
+                        <div class="main-info"><span>{{provider.name}}</span><span>{{provider.title}}</span></div>
+                        <div class="specialty">{{provider.specialty}}</div>
+                      </div>
+                      <div *ngFor="let item of breakLines(provider.desc)">
+                        {{item}}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class='col-sm-8'>
+                <div *ngIf='selectedProvider'>
+                  <div class="selprovider">
+                    <div class="infobox">
+                      <div class='card-body'>
+                        <div class='photo'><img [src]='getUrl(selectedProvider)'/></div>
+                        <div class="info">
+                          <span>{{selectedProvider.name}}</span><span>{{selectedProvider.title}}</span><span>{{selectedProvider.specialty}}</span>
+                          <a class='btn' (click)='getDetail(selectedProvider)'>详细介绍</a>
+                        </div>
+                      </div>
+                    </div>
+                    <div class='card consult'>
+                      <div class='card-header'>
+                        <div class='title'>图文咨询</div>
+                        <div class="zixun">
+                          <span *ngIf='!activeConsultVisit'>点击选择咨询内容, 并支付咨询费用: 20元</span>
+                          <a class='btn' (click)='cancelConsult()' *ngIf="activeConsultVisit&&activeConsultVisit.status != 'refunded'&&isRefund">申请退款</a>
+                        </div>
+                      </div>
+                      <div class='card-body tableheight'>
+                        <div *ngIf='selectedProvider'>
+                          <table class='table table-striped' *ngIf='activeConsultVisit' 
+                          (click)='selectedProfile=activeConsultVisit.profiles[0];chatRoom=true;isOpenChat(activeConsultVisit)'>
+                            <tr>
+                              <td>
+                                <span *ngFor='let profile of activeConsultVisit.profiles'>
+                                  <span *ngIf='profile'>{{profile.label.ch}}</span>
+                                </span>
+                              </td>
+                              <td><span class="tablebtn">{{activeConsultVisit.status}}</span></td>
+                              <td>{{activeConsultVisit.visitDate|date: 'yyyy/MM/dd hh:mm'}}</td>
+                            </tr>
+                          </table>
+                          <div *ngIf='!activeConsultVisit'>
+                            <div class='btn btn-round icon-btn'
+                              *ngFor='let profileItem of selectedProvider.profiles'
+                              (click)='selectedProfile=profileItem;chatRoom=true;isOpenChat(activeConsultVisit)'>
+                              <span>{{profileItem.label.ch}}</span>
+                            </div>
+                          </div>
+                        </div>
+                        <!--<div style='width:20%'>  
+                            <img class='consult-img'  src='./assets/img/file-consult-online.jpg' >
+                          </div>-->
+                      </div>
+                    </div>
+                    <!-- <div class='card consult'>
+                      <div class='card-header' (click)='editSchedule=true'>
+                        <span class='title'>门诊咨询</span>
+                        <span class='appoint' style="margin-left: 20px; font-size: 16px;">预约</span>
+                      </div>
+                      <div class='card-body tableheight'>
+                        <div class='row'>
+                          <div style='width:70%'></div>
+                          <div style='width:30%' (click)='editSchedule=true'>
+                            <img class='consult-img' src='./assets/img/office-consult.jpg'>
+                          </div>
+                        </div>
+                      </div>
+                    </div> -->
+                    <div class='card consult'>
+                      <div class='card-header'>
+                        <span class='title'>咨询记录</span>
+                        <span class='islink' (click)='getVisits()'>查看详情</span>
+                      </div>
+                      <div class='card-body tableheight'>
+                        <table class='table table-striped'>
+                          <tr *ngFor="let visit of visits">
+                            <td *ngIf='visit.profiles'>
+                              <span *ngFor='let profile of visit.profiles'>
+                                <span *ngIf='profile'>{{profile.label.ch}}</span>
+                              </span>
+  
+                            </td>
+                            <td>{{visit.type}}</td>
+                            <td>{{visit.status}}</td>
+                            <td>{{visit.visitDate|date: 'yyyy/MM/dd hh:mm'}}</td>
+                            <!-- <td (click)='activate(visit)' *ngIf="visit.status=='prePay'||visit.status=='canceled'">
+                              <span class="tablebtn">activate</span>
+                            </td> -->
+                            <td (click)='delete(visit)'>
+                              <span class="tablebtn">delete</span>
+                            </td>
+                            <td (click)='deActivate(visit)'>
+                              <span class="tablebtn">deactivate</span>
+                            </td>
+                          </tr>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane" *ngIf="searchProviders" [ngClass]="{'active':list==true}">
+          <div class="tabcard">
+            <div class='row'>
+              <div class='col-sm-4 providerlists'>
+                <div class="form-group">
+                  <input class="form-control" type="text" [(ngModel)]="search" placeholder="search">
+                </div>
+                <div class="providerbox">
+                  <div *ngFor='let provider of allProviders|filter: search'>
+                    <div class='card' [ngClass]="{'selected':selectedProvider&&provider._id==selectedProvider._id}" (click)='selectProvider(provider)'>
+                      <div class='card-body' *ngIf='search'>
+                        <div class="headerimg"><img [src]='getUrl(provider)'></div>
+                        <div class="info">
+                          <div class="main-info"><span>{{provider.name}}</span><span>{{provider.title}}</span></div>
+                          <div class="specialty">{{provider.specialty}}</div>
+                        </div>
+                        <div class="desc" *ngFor="let item of breakLines(provider.desc)">
+                          {{item}}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class='col-sm-8'>
+                <div *ngIf='selectedProvider'>
+                  <div class="selprovider">
+                    <div class="infobox">
+                      <div class='card-body'>
+                        <div class='photo'><img [src]='getUrl(selectedProvider)'/></div>
+                        <div class="info">
+                          <span>{{selectedProvider.name}}</span><span>{{selectedProvider.title}}</span><span>{{selectedProvider.specialty}}</span>
+                          <a class='btn' (click)='getDetail(selectedProvider)'>详细介绍</a>
+                        </div>
+                      </div>
+                    </div>
+                    <div class='card consult'>
+                      <div class='card-header'>
+                        <div class='title'>图文咨询</div>
+                        <div class="zixun">
+                          <span *ngIf='!activeConsultVisit'>点击选择咨询内容, 并支付咨询费用: 20元</span>
+                          <a class='btn' (click)='cancelConsult()' *ngIf="activeConsultVisit&&activeConsultVisit.status != 'refunded'&&isRefund">申请退款</a>
+                        </div>
+                      </div>
+                      <div class='card-body tableheight'>
+                        <div *ngIf='selectedProvider'>
+                          <table class='table table-striped ' *ngIf='activeConsultVisit'
+                            (click)='selectedProfile=activeConsultVisit.profiles[0];chatRoom=true;isOpenChat(activeConsultVisit)'>
+                            <tr>
+                              <td>
+                                <span *ngFor='let profile of activeConsultVisit.profiles'>
+                                  <span *ngIf='profile'>{{profile.label.ch}}</span>
+                                </span>
+                              </td>
+                              <td><span class="tablebtn">{{activeConsultVisit.status}}</span></td>
+                              <td>{{activeConsultVisit.visitDate|date: 'yyyy/MM/dd hh:mm'}}</td>
+                            </tr>
+                          </table>
+                          <div *ngIf='!activeConsultVisit'>
+                            <div class='btn btn-round icon-btn'
+                              *ngFor='let profileItem of selectedProvider.profiles'
+                              (click)='selectedProfile=profileItem;chatRoom=true;isOpenChat(activeConsultVisit)'>
+                              <span>{{profileItem.label.ch}}</span>
+                            </div>
+                          </div>
+                        </div>
+                        <!--<div style='width:20%'>  
+                            <img class='consult-img'  src='./assets/img/file-consult-online.jpg' >
+                          </div>-->
+                      </div>
+                    </div>
+                    <!-- <div class='card consult' *ngIf="bigScreen == 0">
+                      <div class='card-header' (click)='editSchedule=true'>
+                        <span class='title'>视频咨询</span>
+                        <span class='appoint' style="margin-left: 20px; font-size: 16px;">预约</span>
+                      </div>
+                      <div class='card-body'>
+                        <div class='row'>
+                          <div style='width:70%'></div>
+                          <div style='width:30%' (click)='editSchedule=true'>
+                            <img class='consult-img' src='./assets/img/vedio-consult.jpg'>
+                          </div>
+                        </div>
+                      </div>
+                    </div> -->
+                    <!-- <div class='card consult'>
+                      <div class='card-header' (click)='editSchedule=true'>
+                        <span class='title'>门诊咨询</span>
+                        <span class='appoint' style="margin-left: 20px; font-size: 16px;">预约</span>
+                      </div>
+                      <div class='card-body tableheight'>
+                        <div class='row'>
+                          <div style='width:70%'></div>
+                          <div style='width:30%' (click)='editSchedule=true'>
+                            <img class='consult-img' src='./assets/img/office-consult.jpg'>
+                          </div>
+                        </div>
+                      </div>
+                    </div> -->
+                    <div class='card consult'>
+                      <div class='card-header'>
+                        <span class='title'>咨询记录</span>
+                        <span class='islink' (click)='getVisits()'>查看详情</span>
+                      </div>
+                      <div class='card-body tableheight'>
+                        <table class='table table-striped'>
+                          <tr *ngFor="let visit of visits">
+                            <td *ngIf='visit.profiles'>
+                              <span *ngFor='let profile of visit.profiles'>
+                                <span *ngIf='profile'>{{profile.label.ch}}</span>
+                              </span>
+                            </td>
+                            <td>{{visit.type}}</td>
+                            <td>{{visit.status}}</td>
+                            <td>{{visit.visitDate|date: 'yyyy/MM/dd hh:mm'}}</td>
+                            <!-- <td (click)='activate(visit)' *ngIf="visit.status=='prePay'||visit.status=='canceled'">
+                              <span class='tablebtn'>activate</span>
+                            </td> -->
+                            <td (click)='delete(visit)'>
+                              <span class='tablebtn'>delete</span>
+                            </td>
+                            <td (click)='deActivate(visit)'>
+                              <span class='tablebtn'>deactivate</span>
+                            </td>
+                          </tr>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="tab-pane" *ngIf="profileProviders" [ngClass]="{'active':consult==true}">
+          <div class="tabcard">
+            <div class='row'>
+              <div class='col-sm-4 providerlists'>
+                <span style='font-weight: 700;font-size: large;' *ngIf='profile'>{{profile.label.ch}}</span>
+                <div *ngFor='let provider of profileProviders'>
+                  <div class='card' [ngClass]="{'selected':selectedProvider&&provider._id==selectedProvider._id}"
+                    style='margin:15px; width:95%' (click)='selectProvider(provider)'>
+  
+                    <div class='card-body'>
+                      <img class='photo' style=' float:left; margin-right:10px; border-radius:50px;'
+                        [src]='getUrl(provider)'>
+  
+                      <span style='font-weight: 700;font-size: medium;'>
+                        {{provider.name}},{{provider.title}} &nbsp;{{provider.specialty}}&nbsp;
+                      </span>
+                      <div *ngFor="let item of breakLines(provider.desc)">
+                        {{item}}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class='col-sm-8'>
+                <div *ngIf='selectedProvider'>
+                  <div>
+                    <div style='margin-top:10px;width:96%; border-radius: 15px;'>
+  
+                      <div class='card-body'>
+                        <img class='photo' style=' float:left; margin-right:10px; border-radius:50px;'
+                          [src]='getUrl(selectedProvider)'>
+  
+                        <span style='font-weight: 700;font-size: medium;'>
+                          {{selectedProvider.name}},{{selectedProvider.title}} &nbsp;{{selectedProvider.specialty}}
+                        </span>
+                        <a class='btn btn-round' style='background-color:transparent' (click)='getDetail(selectedProvider)'>
+                          详细介绍
+                        </a>
+                      </div>
+                    </div>
+                    <div class='card consult'>
+                      <div class='card-header' style='padding-top:5px;'>
+                        <span class=' title' style='color:black'>图文咨询</span>
+                        <span *ngIf='!activeConsultVisit'>点击选择咨询内容, 并支付咨询费用: 20元</span>
+                        <a class='btn btn-round pull-right' (click)='cancelConsult()' *ngIf="activeConsultVisit&&activeConsultVisit.status != 'refunded'&&isRefund">申请退款</a>
+                      </div>
+                      <div class='card-body'>
+                        <div *ngIf='selectedProvider'>
+                          <table class='table table-striped ' *ngIf='activeConsultVisit'
+                            style=' background-color: transparent;'
+                            (click)='selectedProfile=activeConsultVisit.profiles[0];chatRoom=true;isOpenChat(activeConsultVisit)'>
+                            <tr style='color:red;font-weight:700'>
+                              <td>
+                                <span *ngFor='let profile of activeConsultVisit.profiles'>
+                                  <span *ngIf='profile'>{{profile.label.ch}}</span>
+                                </span>
+                              </td>
+                              <td>{{activeConsultVisit.status}}</td>
+                              <td>{{activeConsultVisit.visitDate|date: 'yyyy/MM/dd hh:mm'}}</td>
+                            </tr>
+                          </table>
+                          <div *ngIf='!activeConsultVisit'>
+                            <div class='btn btn-round icon-btn'
+                              *ngFor='let profileItem of selectedProvider.profiles'
+                              (click)='selectedProfile=profileItem;'>
+  
+                              <span>{{profileItem.label.ch}}</span>
+                            </div>
+                          </div>
+                        </div>
+                        <!--<div style='width:20%'>  
+                            <img class='consult-img'  src='./assets/img/file-consult-online.jpg' >
+                          </div>-->
+                      </div>
+                    </div>
+                    <div class='card consult'>
+                      <div class='card-header' style='padding-top:5px;' (click)='editSchedule=true'>
+                        <span class=' title' style='color:black'>视频咨询</span>
+                        <span class='title' style='color:black;float:right;padding-top:5px;'>
+                          预约</span>
+                      </div>
+                      <div class='card-body' style='padding:0px;'>
+                        <div class='row' style='padding-left:20px;padding-right:15px;'>
+                          <div style='width:70%'>
+                          </div>
+                          <div style='width:30%' (click)='editSchedule=true'>
+                            <img class='consult-img' src='./assets/img/vedio-consult.jpg'>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- <div class='card consult'>
+                      <div class='card-header' style='padding-top:5px;' (click)='editSchedule=true'>
+                        <span class=' title' style='color:black'>门诊咨询</span>
+                        <span class='title' style='color:black;float:right;padding-top:5px;'>
+                          预约
+                        </span>
+                      </div>
+                      <div class='card-body' style='padding:0px;'>
+                        <div class='row' style='padding-left:20px;padding-right:15px;'>
+                          <div style='width:70%'>
+                          </div>
+                          <div style='width:30%' (click)='editSchedule=true'>
+                            <img class='consult-img' src='./assets/img/office-consult.jpg'>
+                          </div>
+                        </div>
+                      </div>
+                    </div> -->
+                    <div class='card consult'>
+                      <div class='card-body' style='padding:0px;'>
+                        <a class='btn btn-round btn-primary pull-right' (click)='getVisits()'>咨询记录</a>
+                        <table class='table table-striped'>
+                          <tr *ngFor="let visit of visits">
+                            <td *ngIf='visit.profiles'>
+                              <span *ngFor='let profile of visit.profiles'>
+                                <span *ngIf='profile'>{{profile.label.ch}}</span>
+                              </span>
+                            </td>
+                            <td>{{visit.type}}</td>
+                            <td>{{visit.status}}</td>
+                            <td>{{visit.visitDate|date: 'yyyy/MM/dd hh:mm'}}</td>
+                            <!-- <td (click)='activate(visit)' *ngIf="visit.status=='prePay'||visit.status=='canceled'">
+                              <a class='btn btn-round btn-primary'>activate</a>
+                            </td> -->
+                            <td (click)='delete(visit)'>
+                              <a class='btn btn-round'>delete</a>
+                            </td>
+                            <td (click)='deActivate(visit)'>
+                              <a class='btn btn-round'>deactivate</a>
+                            </td>
+                          </tr>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+     
+    </div>
+  </div>
+</div>
+<!-- [ngStyle]="{'height':screenHeight *0.95+'px'}" -->
+<div class='wap-wapper' *ngIf='bigScreen==0'>
+  <div *ngIf="!selectedProvider">
+    <div class="header">
+      <div class="topbarbox">
+        <span [ngClass]="{'active': myOrder}" (click)='myOrder=true;showProvider=false;'>我的咨询</span>
+        <span [ngClass]="{'active': showProvider}" (click)='myOrder=false;showProvider=true;'>我的医生</span>
+      </div>
+    </div>
+    <!--<div class="card-header card-header-tabs "
+    style='margin:0px;padding:0px;background:#19498d;color:white'
+    >
+        <div class="nav-tabs-navigation">
+            <div class="nav-tabs-wrapper">
+             <ul class="nav nav-tabs" data-tabs="tabs">
+                
+              <li class="nav-item" 
+              [ngClass]="{'active':!consult}">
+                  <a mat-button class="nav-link active" 
+                  href="#myOrder" 
+                  data-toggle="tab"
+                  >我的咨询
+                  </a>
+              </li>
+                  
+          <li class="nav-item" *ngIf='providers'>
+                  <a mat-button class="nav-link" 
+                 href="#myProviders" 
+                  data-toggle="tab"
+              
+                 >
+                  我的医生
+                      <div class="ripple-container"></div>
+                  </a>
+              </li>
+              <li class="nav-item">
+                            <a mat-button class="nav-link " 
+                            href="#searchProviders" 
+                            data-toggle="tab"
+                            (click)="getAllProviders();selectedProvider=null;"
+                            >
+                            搜索医生
+                                <div class="ripple-container"></div>
+                            </a>
+                </li>
+                <li class="nav-item"  [ngClass]="{'active':consult==true}"*ngIf='profile'>
+                  <a mat-button class="nav-link " 
+                  href="#profileProviders" 
+                  data-toggle="tab"
+                  >
+                  项目医生 
+                      <div class="ripple-container"></div>
+                  </a>
+      </li>
+               
+           
+             </ul>
+            </div>
+        </div>
+    </div>-->
+    <div class="main-content">
+      <div *ngIf="myOrder" [ngClass]="{'active':!consult}">
+        <div class="statusbtn">
+          <a class='btn btn-round btn-base' (click)="status='active';getAllVisits('active')"
+            *ngIf="status=='inactive'">active</a>
+          <a class='btn btn-round btn-base' (click)="status='inactive';getAllVisits(null)"
+            *ngIf="status=='active'">all</a>
+        </div>
+        <mat-tab-group>
+          <mat-tab label='图文'>
+            <div class='consult'>
+              <div class='listitem' *ngFor="let visit of allVisits|filter: 'consult'"
+                [ngClass]="{'active': ['active','reserved'].includes(visit.status)}" (click)='selectedProvider=visit.provider;
+                        activeConsultVisit=visit;
+                        selectedProfile=visit.profiles[0];
+                        chatRoom=true;isOpenChat(visit)'>
+                <div class="headerimg" *ngIf='visit.provider'><img [src]='getUrl(visit.provider)' alt="" /></div>
+                <div class="infobox">
+                  <div class="doctor-name" *ngIf='visit.provider'>{{visit.provider.name}}</div>
+                  <div class="doctor-info" *ngIf='visit.provider'>
+                    <span>{{visit.provider.specialty}}</span><span>{{visit.provider.title}}</span></div>
+                  <div class="profile-name" *ngIf='visit.profiles'>
+                    <span *ngFor='let profile of visit.profiles'><span
+                        *ngIf='profile'>{{profile.label.ch}}</span></span>
+                  </div>
+                  <div class="profile-info">
+                    <span>{{visit.type}}</span>
+                    <span class="basecolor">{{visit.status}}</span>
+                    <span>{{visit.visitDate|date: 'yyyy/MM/dd hh:mm'}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </mat-tab>
+          <!-- <mat-tab label='视频'>
+            <div class='card consult'>
+              <div class='card' *ngFor="let visit of allVisits|filter: 'vedio'"
+                [ngClass]="{'active': ['active','reserved'].includes(visit.status)}" (click)='selectedProvider=visit.provider;
+                      activeConsultVisit=visit;
+                      selectedProfile=visit.profiles[0];
+                      chatRoom=true;isOpenChat(visit)'>
+                <div class='row' style='width:95%;'>
+                  <div style='width:20%'>
+                    <img style='width:50px; border-radius: 25px; float:left; margin-right:10px;'
+                      [src]='getUrl(visit.provider)'>
+                  </div>
+                  <div style='width:20%'>{{visit.provider.name}}</div>
+                  <div style='width:30%'>{{visit.provider.specialty}}</div>
+                  <div style='width:30%'>{{visit.provider.title}}</div>
+                </div>
+                <div class='row' style='width:95%;'>
+                  <div style='width:20%'></div>
+                  <div style='width:30%' *ngIf='visit.profiles'>
+                    <span *ngFor='let profile of visit.profiles'>
+                      <span *ngIf='profile'>{{profile.label.ch}}</span>
+                    </span>
+                  </div>
+                  <div style='width:20%'>{{visit.type}}</div>
+                  <div style='width:30%'>{{visit.status}}</div>
+                </div>
+                <div class='row' style='width:95%;'>
+                  <div style='width:20%'></div>
+
+                  <div style='width:80%'>{{visit.visitDate|date: 'yyyy/MM/dd hh:mm'}}</div>
+                </div>
+              </div>
+            </div>
+          </mat-tab> -->
+          <mat-tab label='门诊'>
+            <div class='consult'>
+              <div class='listitem' *ngFor="let visit of allVisits|filter: 'visit'"
+                [ngClass]="{'active': ['active','reserved'].includes(visit.status)}" (click)='selectedProvider=visit.provider;
+                      activeConsultVisit=visit;
+                      selectedProfile=visit.profiles[0];
+                      chatRoom=true;isOpenChat(visit)'>
+                <div class="headerimg"><img [src]='getUrl(visit.provider)' alt="" /></div>
+                <div class="infobox">
+                  <div class="doctor-name">{{visit.provider.name}}</div>
+                  <div class="doctor-info">
+                    <span>{{visit.provider.specialty}}</span><span>{{visit.provider.title}}</span></div>
+                  <div class="profile-name" *ngIf='visit.profiles'>
+                    <span *ngFor='let profile of visit.profiles'>
+                      <span *ngIf='profile'>{{profile.label.ch}}</span>
+                    </span>
+                  </div>
+                  <div class="profile-info">
+                    <span>{{visit.type}}</span>
+                    <span class="basecolor">{{visit.status}}</span>
+                    <span>{{visit.visitDate|date: 'yyyy/MM/dd hh:mm'}}</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+      <mat-tab-group *ngIf='showProvider' (selectedTabChange)="tabSelectionChanged($event)"
+        [selectedIndex]="selectedIndex">
+        <mat-tab label="我的医生">
+          <span style="font-size: 0.75rem;color: #2d79e6;padding-left:1.25rem;">点击去咨询</span>
+          <div class="doclists" *ngFor='let provider of providers'>
+            <div class='card' [ngClass]="{'selected':selectedProvider&&provider._id==selectedProvider._id}" (click)='selectProvider(provider)'>
+              <div class='card-body'>
+                <div class="docinfo">
+                  <div class='photo'><img  [src]='getUrl(provider)'/></div>
+                  <div class="docname">
+                    <span>{{provider.name}}</span>
+                    <span>
+                      {{provider.title}} &nbsp;{{provider.specialty}}
+                    </span>
+                  </div>
+                </div>
+                <div class="desc" *ngFor="let item of breakLines(provider.desc)">
+                  {{item}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab label="搜索医生">
+          <div class="searchbox"><input type="text" class="form-control" [(ngModel)]="search" placeholder="search"></div>
+          <div class="doclists" *ngFor='let provider of allProviders|filter: search'>
+            <div class='card' [ngClass]="{'selected':selectedProvider&&provider._id==selectedProvider._id}" (click)='selectProvider(provider)'>
+              <div class='card-body' *ngIf='search'>
+                <div class="docinfo">
+                  <div class='photo'><img [src]='getUrl(provider)'/></div>
+                  <div class="docname">
+                    <span>{{provider.name}}</span>
+                    <span>
+                      {{provider.title}} &nbsp;{{provider.specialty}}
+                    </span>
+                  </div>
+                </div>
+                <div class="desc" *ngFor="let item of breakLines(provider.desc)">
+                  {{item}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab label="项目医生" *ngIf='profile' [ngClass]="{'active':consult==true}">
+          <span style='font-weight: 700;font-size: large;' *ngIf='profile'>{{profile.label.ch}}</span><span style="font-size: 0.75rem;color: #2d79e6;padding-left:1.25rem;">点击去咨询</span>
+          <div class="doclists" *ngFor='let provider of profileProviders'>
+            <div class='card' [ngClass]="{'selected':selectedProvider&&provider._id==selectedProvider._id}" (click)='selectProvider(provider)'>
+              <div class='card-body'>
+                <div class="docinfo">
+                  <div class='photo'><img [src]='getUrl(provider)'/></div>
+                  <div class="docname">
+                    <span>{{provider.name}}</span>
+                    <span>
+                      {{provider.title}} &nbsp;{{provider.specialty}}
+                    </span>
+                  </div>
+                </div>
+                <div class="desc" *ngFor="let item of breakLines(provider.desc)">
+                  {{item}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </div>
+  <div class="docdetailbox" *ngIf='selectedProvider'>
+    <div class='docinfo'>
+      <div class="photo"><img [src]='getUrl(selectedProvider)' /></div>
+      <div class="docname">
+        <span>{{selectedProvider.name}} <a class='btn btn-round btn-base' (click)='getDetail(this.selectedProvider)'>详细介绍</a></span>
+        <span>{{selectedProvider.title}} &nbsp;{{selectedProvider.specialty}}</span>
+      </div>
+      <div class="alldoc">
+        <a class='btn btn-round btn-default' (click)='selectedProvider=null'>所有医生</a>
+      </div>
+    </div>
+    <div class='card consult'>
+      <div class='card-header'>
+        <div class='title'>图文咨询</div>
+        <div class="costinfo">
+          <span *ngIf='!activeConsultVisit'>点击选择咨询内容, 并支付咨询费用: 20元</span>
+          <a class='btn btn-round btn-danger' (click)='cancelConsult()' *ngIf="activeConsultVisit&&activeConsultVisit.status != 'refunded'&&isRefund">申请退款</a>
+        </div>
+      </div>
+      <div class='card-body'>
+        <div *ngIf='selectedProvider'>
+          <table class='table table-striped ' *ngIf='activeConsultVisit' 
+          (click)='selectedProfile=activeConsultVisit.profiles[0];chatRoom=true;isOpenChat(activeConsultVisit)'>
+            <tr>
+              <td>
+                <span *ngFor='let profile of activeConsultVisit.profiles'>
+                  <span *ngIf='profile'>{{profile.label.ch}}</span>
+                </span>
+              </td>
+              <td style="color: #2d79e6;">{{activeConsultVisit.status}}</td>
+              <td>{{activeConsultVisit.visitDate|date: 'yyyy/MM/dd hh:mm'}}</td>
+            </tr>
+          </table>
+          <div class="btns" *ngIf='!activeConsultVisit'>
+            <div class='btn btn-round btn-base' *ngFor='let profileItem of selectedProvider.profiles'
+              (click)='selectedProfile=profileItem;chatRoom=true;isOpenChat(activeConsultVisit)'>
+              <span>{{profileItem.label.ch}}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- <div class='card consult'>
+      <div class='card-header' style='padding-top:5px;' (click)='editSchedule=true'>
+        <span class=' title' style='color:black'>视频咨询</span>
+        <span class='title' style='color:black;float:right;padding-top:5px;'>
+          预约</span>
+      </div>
+      <div class='card-body' style='padding:0px;'>
+        <div class='row' style='padding-left:20px;padding-right:15px;'>
+          <div style='width:70%'>
+            <div style='background-color: transparent;margin-top:-30px;'>
+              <schedule-patient [patient]='user' [editSchedule]='editSchedule'
+                (messageEvent)="receiveMessageFromSchedule($event)" [selectedProvider]='selectedProvider'>
+              </schedule-patient>
+            </div>
+          </div>
+          <div style='width:30%' (click)='editSchedule=true'>
+            <img class='consult-img' src='./assets/img/vedio-consult.jpg'>
+          </div>
+        </div>
+      </div>
+    </div> -->
+    <!-- <div class='card consult'>
+      <div class='card-header' style='padding-top:5px;' (click)='editSchedule=true'>
+        <span class=' title' style='color:black'>门诊咨询</span>
+        <span class='title' style='color:black;float:right;padding-top:5px;'>
+          预约
+        </span>
+      </div>
+      <div class='card-body' style='padding:0px;'>
+        <div class='row' style='padding-left:20px;padding-right:15px;'>
+          <div style='width:70%'>
+            <div style='background-color: transparent;margin-top:-30px;'>
+              <schedule-patient [patient]='user' [editSchedule]='editSchedule'
+                (messageEvent)="receiveMessageFromSchedule($event)" [selectedProvider]='selectedProvider'>
+              </schedule-patient>
+            </div>
+          </div>
+          <div style='width:30%' (click)='editSchedule=true'>
+            <img class='consult-img' src='./assets/img/office-consult.jpg'>
+          </div>
+        </div>
+      </div>
+    </div> -->
+    <div class='card consult'>
+      <div class='card-body'>
+        <div class="btns">
+          <a class='btn btn-round btn-base' (click)='getVisits()'>咨询记录</a>
+        </div>
+        <table class='table table-striped'>
+          <tr *ngFor="let visit of visits">
+            <td *ngIf='visit.profiles'>
+              <span *ngFor='let profile of visit.profiles'>
+                {{profile.label.ch}}
+              </span>
+            </td>
+            <td>{{visit.type}}</td>
+            <td style="color: #2d79e6;">{{visit.status}}</td>
+            <td>{{visit.visitDate|date: 'yyyy/MM/dd hh:mm'}}</td>
+            <!-- <td (click)='activate(visit)'>activate</td> -->
+            <td (click)='delete(visit)' *ngIf="visit.status=='prePay'">delete</td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="popping" *ngIf='chatRoom&&openWxPay'>
+  <div class='card' *ngIf='chatRoom&&openWxPay' [ngClass]="{'mail-cell':bigScreen==0,'mail-pc':bigScreen==1}">
+    <app-wx-pay [selected]='selectedProvider' [visit]='activeConsultVisit' [profile]='selectedProfile' [user]='user'
+      [language]='language' [bigScreen]='this.bigScreen' (messageEvent)="receiveMessage($event)"
+      (visitEvent)="receiveVisit($event)"></app-wx-pay>
+  </div>
+</div>
+<div class="popping" *ngIf='chatRoom&&openChat'>
+  <div *ngIf='chatRoom&&openChat' [ngClass]="{'mail-cell':bigScreen==0,'mail-pc':bigScreen==1}">
+    <chat [selected]='selectedProvider' [visit]='activeConsultVisit' [profile]='selectedProfile' [user]='user'
+      [language]='language' [bigScreen]='this.bigScreen' (messageEvent)="receiveMessage($event)"
+      (visitEvent)="receiveVisit($event)"></chat>
+  </div>
+</div>
+
+<div class="wrapper" *ngIf="loading">
+  <div class="overlay">
+    <div class="spinner-wrapper">
+      <spinner></spinner>
+    </div>
+  </div>
+</div>

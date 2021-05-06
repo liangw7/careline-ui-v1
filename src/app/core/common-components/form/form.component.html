@@ -1,0 +1,1221 @@
+<div class="overlay" *ngIf="loading">
+  <div class="spinner-wrapper">
+
+    <spinner></spinner>
+  </div>
+</div>
+
+<div >
+  <div >
+    <div *ngIf='forms&&forms.length>0' id='form'>
+      <div *ngFor="let form of forms|orderBy: 'internalName'" style='margin:0px;'>
+
+        <div style='margin:0px;padding:1px;height:100%; overflow:auto;' 
+        *ngIf="form&&form.formType=='education'">
+
+          <div *ngFor="let obSet of form.obSets|orderBy: 'index'"
+            [ngClass]="{'pc-width-education':bigScreen==1,'cell-width':bigScreen==0}" class='card'>
+            <div calss='card-header' style='margin:10px;'>
+              <div style='width:90%;margin-top:5px;
+                  margin-bottom:10px;padding:0px;
+                  border-bottom:1px  solid;
+                  border-width:small;
+                  text-align: left;' [ngClass]="{'card-rose-color':color=='purple',
+                  'card-success-color':color=='green',
+                  'card-primary-color':color!='green'
+              &&color!='purple'}">
+                <!-- <button class='btn' 
+                      [ngClass]="{'card-rose':color=='purple',
+                      'card-success':color=='green',
+                      'card-primary':color!='green'
+                  &&color!='purple'}" 
+                      style='margin:3px;padding:10px'>
+                      {{obSet.index+1}}</button>-->
+                <span *ngIf="language=='Chinese'&&obSet.label" style='font-weight: 600;font-size:larger'>{{obSet.label.ch}}</span>
+                <span *ngIf="language=='Chinese'&&obSet.desc" style='font-weight: 600;font-size:larger'> {{obSet.desc.patient}}</span>
+                <span *ngIf="language=='English'&&obSet.label" style='font-weight: 600;font-size:larger'>{{obSet.label.en}}</span>
+              </div>
+            </div>
+            <div style='text-align: left;width:100%;padding-left:15px;padding-bottom:15px;' class='row'
+              [ngClass]="{'image-position':bigScreen==1}" *ngIf="obSet.image">
+              <div class='col-sm-3'>
+                <img [src]="obSet.imageUrl" class='ob-image'>
+              </div>
+              <div class='col-sm-9'>
+                <div *ngFor="let ob of obSet.obs|orderBy: 'index'">
+
+                  <div *ngIf='showOb(ob, obSet)||!ob.addsIn'>
+
+                    <div *ngIf="language=='Chinese'&&ob.education">
+                      <div *ngFor="let item of breakLines(ob.education.ch)">
+                        {{item}}
+                      </div>
+                    </div>
+                    <div *ngIf="language=='English'&&ob.education">
+                      <div *ngFor="let item2 of breakLines(ob.education.en)">
+                        {{item2}}
+                      </div>
+                    </div>
+
+                  </div>
+
+                </div>
+              </div>
+            </div>
+            <div style='text-align: left;width:100%;padding-bottom:15px;' class='row'
+              [ngClass]="{'image-position':bigScreen==1}" *ngIf="!obSet.image">
+
+              <div class='col-sm-12'>
+                <div *ngFor="let ob of obSet.obs|orderBy: 'index'">
+
+                  <div *ngIf='showOb(ob, obSet)||!ob.addsIn'>
+                    <div *ngIf='!ob.imageUrl' style='padding:10px;'>
+
+                      <span *ngIf="language=='Chinese'&&ob.education"
+                        [ngClass]="{'large-letter':bigScreen==1,'small-letter':bigScreen==0}" style=' text-align: left; 
+                          letter-spacing: .1rem;line-break: normal;'>
+                        {{ob.education.ch}}</span>
+                      <span *ngIf="language=='English'&&ob.education"
+                        [ngClass]="{'large-letter':bigScreen==1,'small-letter':bigScreen==0}" style=' text-align: left;
+                          letter-spacing: .1rem;line-break: normal;'>{{ob.education.en}}</span>
+                      <p></p>
+
+                    </div>
+                    <div class=row *ngIf='ob.imageUrl'>
+                      <div class='col-sm-4'>
+                        <img [src]="ob.imageUrl" *ngIf='ob.imageUrl' class='ob-image'>
+                      </div>
+
+                      <div class='col-sm-8'>
+                        <div *ngIf="language=='Chinese'&&ob.education">
+                          <div *ngFor="let item of breakLines(ob.education.ch)">
+                            {{item}}
+                          </div>
+                        </div>
+                        <div *ngIf="language=='English'&&ob.education">
+                          <div *ngFor="let item2 of breakLines(ob.education.en)">
+                            {{item2}}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+
+
+
+
+          </div>
+          <!--<mat-tab-group [selectedIndex]="selectedIndex" (selectedTabChange)=" tabSelectionChanged($event,form)">
+           
+          <mat-tab  *ngFor="let obSet of form.obSets|orderBy: 'index'" label="{{obSet.label.ch}}">
+             
+            <div class='card' style='margin:0px; width:100%;overflow-y:auto;'
+          
+            [ngStyle]="{'height':screenSize.height*0.67+'px'}"
+            *ngIf="!noTitle">
+            <div calss='card-header' style='color: white'
+              [ngClass]="{'card-rose-1':color=='purple',
+                           'card-success-1':color=='green',
+                            'card-primary-1':color!='green'
+                        &&color!='purple'}" >
+                  <h4> <span *ngIf="language=='Chinese'&&obSet.label">{{obSet.label.ch}}</span>
+                       <span *ngIf="language=='Chinese'&&obSet.desc">: {{obSet.desc.patient}}</span>
+                     <span *ngIf="language=='English'&&obSet.label">{{obSet.label.en}}</span></h4>
+            </div>
+            <div class='row' style='width:98%; padding-left:10px;'>
+              <div class='col-sm-3'> 
+                <img [src]="obSet.imageUrl"  width="240px;" height="240px;" >
+              </div>
+              <div class='col-sm-9'>
+                <div *ngFor="let ob of obSet.obs|orderBy: 'index'" >
+                   
+                <div  *ngIf='showOb(ob, obSet)||!ob.addsIn'>
+                  
+                          <span *ngIf="language=='Chinese'&&ob.education" 
+                          [ngClass]="{'large-letter':bigScreen==1,'small-letter':bigScreen==0}"
+                          style=' text-align: left;
+                          letter-spacing: .1rem;line-break: normal;'>
+                            {{ob.education.ch}}</span>
+                          <span *ngIf="language=='English'&&ob.education"
+                          [ngClass]="{'large-letter':bigScreen==1,'small-letter':bigScreen==0}"
+                          style=' text-align: left;
+                          letter-spacing: .1rem;line-break: normal;'>{{ob.education.en}}</span>
+                        <p></p>
+              
+              </div>
+            </div></div>
+            </div>
+                         
+                  
+
+                  
+              
+              </div>
+              <button  mat-button class='btn pull-right' 
+                     (click)="selectedIndex=obSet.index+1;getLastObSet(form) "
+                        [ngClass]="{'card-rose-1':color=='purple',
+                        'card-success-1':color=='green',
+                        'card-primary-1':color!='green'
+                    &&color!='purple'}" 
+                    *ngIf='form.obSets[obSet.index+1]'>{{form.obSets[obSet.index+1].label.ch}}
+                  </button>
+            </mat-tab>
+        </mat-tab-group>-->
+        </div>
+        <div *ngIf="form&&form.formType=='publish'">
+          <div class='card'>
+          <div *ngFor="let obSet of form.obSets|orderBy: 'index'">
+
+            <div style='margin-top:10px; overflow-y:auto;' *ngIf="!noTitle">
+              <div *ngFor="let ob of obSet.obs|orderBy: 'index'" class='card'
+                [ngClass]="{'pc-width':bigScreen==1,'cell-width':bigScreen==0}">
+                <div calss='card-header' style='margin:10px;' *ngIf="ob.type=='instruction'||!ob.type">
+                  <h2 style='text-decoration: underline;text-align: left;font-size:larger'
+                  [ngClass]="{'card-rose-color':color=='purple',
+                    'card-success-color':color=='green',
+                    'card-primary-color':color!='green'
+                &&color!='purple'}">
+                    <span *ngIf="language=='Chinese'&&ob.label">{{ob.label.ch}}</span>
+                    <span *ngIf="language=='English'&&ob.label">{{ob.label.en}}</span>
+                  </h2>
+                </div>
+                <div *ngIf='ob.showBigPhoto' class='card' style='position:absolute;
+              z-index:5; 
+              height:80%; 
+              width:70%; 
+              top:0; 
+              margin-top:75px;
+              left:0;
+               padding:10px;
+              border:1px solid black'>
+                  <div class='card-header'>
+                    <i class='material-icons pull-right' style='padding:2px;' (click)='ob.showBigPhoto=false;'>close</i>
+                  </div>
+                  <img [src]="ob.imageUrl">
+                </div>
+                <div *ngIf="ob.type=='instruction'||!ob.type">
+                  <div *ngIf="ob.image">
+                    <div (click)='ob.showBigPhoto=true;' style='padding:50px;'>
+                      <img [src]="ob.imageUrl" width="100%;"  >
+                    </div>
+                    <div >
+                      <div *ngIf='showOb(ob, obSet)||!ob.addsIn'>
+
+                        <div *ngIf="language=='Chinese'&&ob.education">
+                          <div *ngFor="let item of breakLines(ob.education.ch)" 
+                           style='font-size: medium;'>
+                            {{item}}
+                            <p></p>
+                          </div>
+                        </div>
+                        <div *ngIf="language=='English'&&ob.education">
+                          <div *ngFor="let item2 of breakLines(ob.education.en)" 
+                          style='font-size:medium;'>
+                            {{item2}}
+                          </div>
+                        </div>
+                  
+
+                      </div>
+                    </div>
+                  </div>
+                  <div *ngIf="!ob.image">
+
+                    <div >
+                      <div *ngIf='showOb(ob, obSet)||!ob.addsIn'>
+
+                        <div *ngIf="language=='Chinese'&&ob.education">
+                          <div *ngFor="let item of breakLines(ob.education.ch)"  
+                          style='font-size: large;'>
+                            {{item}}
+                          </div>
+                        </div>
+                        <div *ngIf="language=='English'&&ob.education">
+                          <div *ngFor="let item2 of breakLines(ob.education.en)" 
+                           style='font-size: large;'>
+                            {{item2}}
+                          </div>
+                        </div>
+
+
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div *ngIf="ob.type&&ob.type!='instruction'" >
+                  <app-ob [ob]='ob' [obSet]='obSet' [form]='form' [emBed]=true>
+                  </app-ob>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        </div>
+
+        <div style='margin:0px;height:100%; overflow:auto;' *ngIf="form.formType=='break-down'">
+          <div class='row'>
+            <div class='col-sm-4'>
+              <div *ngFor="let obSet of form.obSets|orderBy: 'index'">
+                <div *ngIf='showObSet(obSet, form)||!obSet.addsIn' class='card'
+                  style='width:98%;margin:1%;padding:1%;background-color: transparent;'>
+
+                  <div class='card-header' style='padding:0px;' [ngClass]="{'card-rose-color':color=='purple',
+                        'card-success-color':color=='green',
+                        'card-primary-color':color!='green'
+                    &&color!='purple',
+                  'selected':form.selectedObSet&&form.selectedObSet._id==obSet._id}" (click)='form.selectedObSet=obSet'
+                    *ngIf='!emBed'>
+                    <button class='btn btn-base' *ngIf='obSet'>{{getIndex(obSet)}}</button>
+                    <span style='font-weight:700'>
+                      <span *ngIf="language=='English'&&obSet.label">{{obSet.label.en}}</span>
+
+                      <span *ngIf="language=='Chinese'&&obSet.label">{{obSet.label.ch}}</span>
+                    </span>
+                    <!-- <span *ngIf='obSet.value'>Score: {{obSet.value}}</span>
+                  <p *ngFor='let value of obSet.values'>
+                            
+                      <span *ngIf='value' 
+                      [ngClass]="{'levelOne':value.alertLevel==1,
+                      'levelTwo':value.alertLevel==2,
+                      'normal':value.alertLevel!=1&&value.alertLevel!=2}">
+                      {{value.text}}&nbsp;
+                    
+                </span>
+              </p>-->
+
+                    <mat-card-subtitle *ngIf='obSet.addMoreThanOnce' (click)="addObSet(obSet, form)">Add
+                    </mat-card-subtitle>
+                  </div>
+                  <div>
+
+                  </div>
+
+                </div>
+
+              </div>
+            </div>
+            <div class='col-sm-8' *ngIf='form.selectedObSet'>
+              <div class='card-header' style='width:90%;
+            margin-top:5px;
+            margin-bottom:10px;
+            padding:0px;
+            border-bottom:1px  solid;' [ngClass]="{'card-rose-color':color=='purple',
+              'card-success-color':color=='green',
+              'card-primary-color':color!='green'
+          &&color!='purple'}" *ngIf='!emBed'>
+                <button class='btn btn-base' *ngIf='form.selectedObSet'>{{getIndex(form.selectedObSet)}}</button>
+                <span style='font-weight:700'>
+                  <span *ngIf="language=='English'&&form.selectedObSet.label">{{form.selectedObSet.label.en}}</span>
+
+                  <span *ngIf="language=='Chinese'&&form.selectedObSet.label">{{form.selectedObSet.label.ch}}</span>
+                </span>
+                <!-- <span *ngIf='obSet.value'>Score: {{obSet.value}}</span>
+        <p *ngFor='let value of obSet.values'>
+                  
+            <span *ngIf='value' 
+            [ngClass]="{'levelOne':value.alertLevel==1,
+            'levelTwo':value.alertLevel==2,
+            'normal':value.alertLevel!=1&&value.alertLevel!=2}">
+            {{value.text}}&nbsp;
+          
+      </span>
+    </p>-->
+
+              </div>
+              <div *ngFor="let ob of form.selectedObSet.obs|orderBy:'index'">
+                <div [ngClass]="{'pc-width':bigScreen==1&&
+                              ob.type!='instruction','cell-width':bigScreen==0||
+                              bigScreen==1&&ob.type=='instruction'}">
+                  <div class='card' style='margin:5px; width:93%; margin-bottom:20px; box-shadow: 0 4px 20px 0px gray,
+              0 7px 10px -5px rgba(gray , 0.4);' (click)='getOb(ob, form.selectedObSet, form)'
+                    *ngIf="(showOb(ob, form.selectedObSet)||!ob.addsIn)&&ob.type=='instruction'&&showInstruction">
+                    <div class='card-body'>
+                      <div class=row *ngIf='ob.imageUrl' style='width:95%'>
+
+                        <div class='col-sm-4'>
+                          <img [src]="ob.imageUrl" *ngIf='ob.imageUrl' class='ob-image'>
+                        </div>
+
+                        <div class='col-sm-8'>
+                          <div *ngIf="bigScreen==1">
+                            <div *ngIf="language=='Chinese'&&ob.education"
+                              style='font-weight: 400; font-size: medium; margin-top:10px;'>
+                              <div *ngFor="let item of breakLines(ob.education.ch)">
+                                {{item}}
+                              </div>
+                            </div>
+                            <div *ngIf="language=='English'&&ob.education">
+                              <div *ngFor="let item2 of breakLines(ob.education.en)">
+                                {{item2}}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div *ngIf="bigScreen==0" style='padding:15px;'>
+                          <span *ngIf="language=='Chinese'&&ob.education">{{ob.label.ch}}</span>
+                          <span *ngIf="language=='English'&&ob.education">{{ob.label.en}}</span>
+                        </div>
+                      </div>
+                      <div *ngIf='!ob.imageUrl'>
+
+                        <div *ngIf="bigScreen==1">
+                          <div *ngIf="language=='Chinese'&&ob.education"
+                            style='font-weight: 400; font-size: medium; margin-top:10px;'>
+                            <div *ngFor="let item of breakLines(ob.education.ch)">
+                              {{item}}
+                            </div>
+                          </div>
+                          <div *ngIf="language=='English'&&ob.education">
+                            <div *ngFor="let item2 of breakLines(ob.education.en)">
+                              {{item2}}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div *ngIf="bigScreen==0">
+                          {{ob.label.ch}}
+                        </div>
+
+                      </div>
+                    </div>
+                    <div class='card-header' style='width:95%'>
+                      <div class='pull-right'>
+                        <div *ngIf="language=='Chinese'&&ob.education"
+                          style='font-weight: 400; font-size: medium; margin-top:10px;'>
+                          <div *ngFor="let item of breakLines(ob.education.ch)">
+                            {{item}}
+                          </div>
+                        </div>
+                        <div *ngIf="language=='English'&&ob.education">
+                          <div *ngFor="let item2 of breakLines(ob.education.en)">
+                            {{item2}}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class='table table-responsive' style='padding:0px; margin:0px;width:100%'
+                    *ngIf="(showOb(ob, form.selectedObSet)||!ob.addsIn)&&ob.type!='instruction'">
+                    <div class='card' style='margin:0px; width:93%'>
+                      <table class='table'
+                        style=' margin:0px;padding:0px;border-bottom:1px #ccc solid;'
+                        *ngIf='bigScreen==1||(bigScreen==0&&!emBed)'>
+                        <tr (click)='getOb(ob, form.selectedObSet, form)'>
+                          <td *ngIf="form.formType!='followup'">
+                            <span *ngIf="ob.required"
+                              style="color:red; font-weight: 700;text-align:left">*&nbsp;&nbsp;</span>
+
+                            <span *ngIf="language=='Chinese'&&ob.label"
+                              style='color:black;text-align:left'>{{ob.label.ch}}</span>
+                            <span *ngIf="language=='English'&&ob.label"
+                              style='color:black;text-align:left'>{{ob.label.en}}</span>
+
+                          </td>
+                          <td *ngIf="form.formType=='followup'">
+
+
+
+                            <span *ngIf="ob.required"
+                              style="color:red; font-weight: 700;text-align:left">*&nbsp;&nbsp;</span>
+
+                            <span *ngIf="language=='Chinese'&&ob.label" style='color:black;text-align:left'
+                              class='followup-ob'>{{ob.label.ch}}</span>
+                            <span *ngIf="language=='English'&&ob.label" style='color:black;text-align:left'
+                              class='followup-ob'>{{ob.label.en}}</span>
+
+                          </td>
+                          <td *ngIf='emBed' style=' padding:0px;'>
+                            <app-ob [ob]='ob' [obSet]='obSet' [form]='form' [emBed]='emBed' [noTitle]='noTitle'>
+                            </app-ob>
+                          </td>
+                          <td *ngIf='!emBed' style="text-align:right;">
+                            <img [src]="ob.url" class="thumbnail" *ngIf="ob.type=='image'&&ob.value">
+                            <div class='record-row ' style='padding: 5px;'>
+                              <div style='font-weight:700;text-align:right'
+                                *ngIf="ob.type!='date'&&ob.type!='calculation'&&ob.type!='image'">
+                                <span *ngIf="ob.type!='text'&&ob.type!='string'">{{ob.value}}{{getUom(ob)}}</span>
+                                <div *ngIf="(ob.type=='text'||ob.type=='string')&&ob.value">
+                                  <div *ngFor="let item of breakLines(ob.value)">
+                                    {{item}}
+                                  </div>
+
+                                </div>
+                              </div>
+                            </div>
+
+                            <div class='record-row' style='padding: 5px;text-align: right;' *ngIf="ob.type=='date'">
+                              {{ob.value|date: 'yyyy/MM/dd'}}
+
+                            </div>
+                            <div class='record-row' style='padding: 5px;text-align: right;'
+                              *ngIf="ob.type=='instruction'">
+                              <div *ngIf="language=='Chinese'&&ob.education"
+                                style='font-weight: 400; font-size: medium; margin-top:10px;'>
+                                <div *ngFor="let item of breakLines(ob.education.ch)">
+                                  {{item}}
+                                </div>
+                              </div>
+                              <div *ngIf="language=='English'&&ob.education">
+                                <div *ngFor="let item2 of breakLines(ob.education.en)">
+                                  {{item2}}
+                                </div>
+                              </div>
+
+                            </div>
+                            <div *ngIf="ob.values&&ob.values.length>0&&ob.type!='calculation'" class='record-row'
+                              style='margin-right:0; color:black'>
+
+                              <span *ngFor='let value of ob.values;'>
+
+                                <span *ngIf='value' [ngClass]="{'levelOne':value.alertLevel==1,
+                                      'levelTwo':value.alertLevel==2,
+                                      'normal':value.alertLevel!=1&&value.alertLevel!=2}">
+                                  <div *ngIf='value.text'>
+                                    <div *ngFor="let item of breakLines(value.text)">
+                                      {{item}}
+                                    </div>
+                                  </div>
+                                  <div *ngIf='value.comments'>
+                                    <div *ngFor="let item2 of breakLines(value.comments)">
+                                      {{item2}}
+                                    </div>
+                                  </div>
+
+
+                                </span>
+                              </span>
+                            </div>
+                            <div *ngIf="ob.type=='calculation'" class='record-row' style='margin-right:0; color:black'>
+
+                              <span *ngFor='let value of ob.values;'>
+
+                                <span *ngIf='value' [ngClass]="{'levelOne':value.alertLevel==1,
+                                              'levelTwo':value.alertLevel==2,
+                                              'normal':value.alertLevel!=1&&value.alertLevel!=2}">
+                                  {{value.text}}&nbsp;{{value.comments}}
+
+                                </span>
+                              </span>
+                            </div>
+                          </td>
+                        </tr>
+
+                      </table>
+                      <table class='table' style=' margin:0px;padding:0px;' *ngIf="emBed&&bigScreen==0">
+                        <tr (click)='getOb(ob, obSet, form)'>
+
+                          <th>
+
+                            <span *ngIf="ob.required"
+                              style="color:red; font-weight: 700;text-align:left">*&nbsp;&nbsp;</span>
+                            <span style='color:black;text-align:left'>{{ob.index+1}}.&nbsp;</span>
+                            <span *ngIf="language=='Chinese'&&ob.label" style='color:black;text-align:left'
+                              class='followup-ob'>{{ob.label.ch}}</span>
+                            <span *ngIf="language=='English'&&ob.label" style='color:black;text-align:left'
+                              class='followup-ob'>{{ob.label.en}}</span>
+
+                          </th>
+                        </tr>
+                        <tr>
+                          <td style=' padding:0px;'>
+
+                            <app-ob [ob]='ob' [obSet]='obSet' [form]='form' [emBed]='emBed' [bigScreen]='bigScreen'
+                              [noTitle]='noTitle'>
+
+                            </app-ob>
+                          </td>
+
+                        </tr>
+
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
+
+        </div>
+        <div style='padding:10px;margin:0px;text-align: left;' 
+        *ngIf="form&&form.formType=='related'">
+
+
+          <div *ngFor="let obSet of form.obSets|orderBy: 'index'">
+            <div *ngIf='showObSet(obSet, form)||!obSet.addsIn' class='card' (click)='getObSet(obSet, form)'
+              style='padding:5px;margin:10px;width:80%' [ngStyle]="{'margin-left':showObSet(obSet, form)+'px'}">
+              <ul>
+                <li [ngClass]="{'card-rose-color':color=='purple',
+                      'card-success-color':color=='green',
+                      'card-primary-color':color!='green'&&color!='purple'}">
+
+                  <a *ngIf="language=='English'&&obSet.label">
+                    {{obSet.index+1}}&nbsp;&nbsp;
+                    {{obSet.label.en}}&nbsp;&nbsp;</a>
+                  <a *ngIf="language=='Chinese'&&obSet.label">
+                    {{obSet.index+1}}&nbsp;&nbsp;
+                    {{obSet.label.ch}}&nbsp;&nbsp;</a>
+
+
+                </li>
+
+
+
+                <li *ngFor="let ob of obSet.obs|orderBy:'index'" style='width:30'>
+
+                  <a style="border-bottom:1px lightgray solid;border-width: small;"
+                    *ngIf="(showOb(ob, obSet)||!ob.addsIn)&&ob.type!='instruction'">
+                    <span *ngIf='bigScreen==1||(bigScreen==0&&!emBed)' (click)='getOb(ob, obSet, form)'>
+                      <span *ngIf="ob.required" style="color:red;">*&nbsp;&nbsp;</span>
+                      <span style='color:black;font-weight:600;'>{{ob.index+1}}.&nbsp;</span>
+                      <span *ngIf="language=='Chinese'&&ob.label"
+                        style='color:black;'>{{ob.label.ch}}:&nbsp;&nbsp;</span>
+                      <span *ngIf="language=='English'&&ob.label"
+                        style='color:black;'>{{ob.label.en}}:&nbsp;&nbsp;</span>
+                      <span style='text-align: right;'>
+                        <img [src]="ob.url" class="thumbnail" *ngIf="ob.type=='image'&&ob.value">
+                        <span>
+                          <span style='font-weight:700;color:blue;'
+                            *ngIf="ob.type!='date'&&ob.type!='calculation'">{{ob.value}}{{ob.uom}}
+                          </span>
+                        </span>
+
+                        <span style='font-weight:700;color:blue;'
+                          *ngIf="ob.type=='date'">{{ob.value|date: 'yyyy/MM/dd'}}
+
+                        </span>
+                        <span style='font-weight:700;color:blue;' *ngIf="ob.type=='instruction'">
+                          <div *ngIf="language=='Chinese'&&ob.education"
+                            style='font-weight: 400; font-size: medium; margin-top:10px;'>
+                            <div *ngFor="let item of breakLines(ob.education.ch)">
+                              {{item}}
+                            </div>
+                          </div>
+                          <div *ngIf="language=='English'&&ob.education">
+                            <div *ngFor="let item2 of breakLines(ob.education.en)">
+                              {{item2}}
+                            </div>
+                          </div>
+
+                        </span>
+                        <span *ngIf="ob.values&&ob.values.length>0&&ob.type!='calculation'">
+
+                          <span *ngFor='let value of ob.values;'>
+
+                            <span *ngIf='value' [ngClass]="{'levelOne':value.alertLevel==1,
+                                'levelTwo':value.alertLevel==2,
+                                'normal':value.alertLevel!=1&&value.alertLevel!=2}">
+                              {{value.text}}&nbsp;{{value.comments}}
+
+                            </span>
+                          </span>
+                        </span>
+                        <span *ngIf="ob.type=='calculation'">
+
+                          <span *ngFor='let value of ob.values;'>
+
+                            <span *ngIf='value' [ngClass]="{'levelOne':value.alertLevel==1,
+                                        'levelTwo':value.alertLevel==2,
+                                        'normal':value.alertLevel!=1&&value.alertLevel!=2}">
+                              {{value.text}}&nbsp;{{value.comments}}
+
+                            </span>
+                          </span>
+                        </span>
+                      </span>
+
+                    </span>
+                  </a>
+
+
+
+                </li>
+              </ul>
+
+            </div>
+
+          </div>
+
+
+        </div>
+        <div style='margin:0px;height:100%; overflow:auto; '
+          *ngIf="['user',
+          'visit',
+          'profile registry',
+          'general registry',
+          'visit', 
+          'followup',
+          'order',
+          'nursing',
+          'pt',
+          'schedule'].includes(form.formType)">
+          <div *ngIf="form&&form.formStyle!='table'">
+            <div *ngFor="let obSet of form.obSets|orderBy: 'index'">
+              <div *ngIf='!emBedSet'>
+                <div *ngIf='showObSet(obSet, form)||!obSet.addsIn' 
+                  style='background-color: transparent;'>
+                  <div calss='card-header ccc' style="width:100%;padding:10px;border-bottom: 1px solid #ccc;display: flex;justify-content: space-between;" (click)='getObSet(obSet, form)' *ngIf='!emBed'>
+                    <span style="font-size: 16px;color: #2d79e6;line-height:36px;font-weight: 600;">
+                      <span *ngIf='obSet.index&&!hideLabel'>{{obSet.index+1}}、</span>
+                      <span *ngIf="language=='English'&&obSet.label&&!hideLabel">{{obSet.label.en}}</span>
+                      <span *ngIf="language=='Chinese'&&obSet.label&&!hideLabel">{{obSet.label.ch}}</span>
+                      <span *ngIf='obSet.index&&hideLabel' style='padding:20px;'>、</span>
+                      <span *ngIf="language=='English'&&obSet.label&&hideLabel" style='padding:20px;'></span>
+                      <span *ngIf="language=='Chinese'&&obSet.label&&hideLabel" style='padding:20px;'></span>
+                    </span>
+                    <!--<span>{{getSetValue(obSet)}}</span>-->
+                    <!-- <span *ngIf='obSet.value'>Score: {{obSet.value}}</span>
+                    <p *ngFor='let value of obSet.values'>
+                              
+                        <span *ngIf='value' 
+                        [ngClass]="{'levelOne':value.alertLevel==1,
+                        'levelTwo':value.alertLevel==2,
+                        'normal':value.alertLevel!=1&&value.alertLevel!=2}">
+                        {{value.text}}&nbsp;
+                      
+                  </span>
+                </p>-->
+                    <button class='btn btn-base' style="min-width: 40px;">点击</button>
+                    <mat-card-subtitle *ngIf='obSet.addMoreThanOnce' (click)="addObSet(obSet, form)">Add
+                    </mat-card-subtitle>
+                  </div>
+                  <div >
+                    <div *ngFor="let ob of obSet.obs|orderBy:'index'">
+                      <div [ngClass]="{'pc-width':bigScreen==1&& ob.type!='instruction',
+                  'cell-width':bigScreen==0|| bigScreen==1&&ob.type=='instruction'}">
+                        <div class='card' style='margin:5px; margin-bottom:20px; box-shadow: 0 4px 20px 0px gray,
+  0 7px 10px -5px rgba(gray , 0.4);' *ngIf="(showOb(ob, obSet)||!ob.addsIn)&&ob.type=='instruction'&&showInstruction">
+                          <div class='card-body'>
+                            <div class=row *ngIf='ob.imageUrl' style='padding:5%'>
+
+                              <div class='col-sm-4'>
+                                <img [src]="ob.imageUrl" *ngIf='ob.imageUrl' class='ob-image'>
+                              </div>
+
+                              <div class='col-sm-8'>
+                                <div *ngIf="bigScreen==1">
+                                  <div *ngIf="language=='Chinese'&&ob.education"
+                                    style='font-weight: 400; font-size: medium; '>
+                                    <div *ngFor="let item of breakLines(ob.education.ch)">
+                                      {{item}}
+                                    </div>
+                                  </div>
+                                  <div *ngIf="language=='English'&&ob.education">
+                                    <div *ngFor="let item2 of breakLines(ob.education.en)">
+                                      {{item2}}
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div *ngIf="bigScreen==0&&!hideLabel" style='font-weight:600'>
+                                <span *ngIf="language=='Chinese'&&ob.education&&!hideLabel">{{ob.label.ch}}</span>
+                                <span *ngIf="language=='English'&&ob.education&&!hideLabel">{{ob.label.en}}</span>
+                              </div>
+                            </div>
+                            <div *ngIf='!ob.imageUrl'>
+
+                              <div *ngIf="bigScreen==1">
+                                <div *ngIf="language=='Chinese'&&ob.education"
+                                  style='font-weight: 400; font-size: medium; margin-top:10px;'>
+                                  <div *ngFor="let item of breakLines(ob.education.ch)">
+                                    {{item}}
+                                  </div>
+                                </div>
+                                <div *ngIf="language=='English'&&ob.education">
+                                  <div *ngFor="let item2 of breakLines(ob.education.en)">
+                                    {{item2}}
+                                  </div>
+                                </div>
+                              </div>
+
+
+                              <div *ngIf="bigScreen==0&&!hideLabel" style='font-weight:600'>
+                                {{ob.label.ch}}
+                              </div>
+
+                            </div>
+                          </div>
+                          <div style='padding:10px;' *ngIf="bigScreen==0">
+                            <div class='pull-right'>
+                              <div *ngIf="language=='Chinese'&&ob.education"
+                                style='font-weight: 400; font-size: medium; '>
+                                <div *ngFor="let item of breakLines(ob.education.ch)">
+                                  {{item}}
+                                </div>
+                              </div>
+                              <div *ngIf="language=='English'&&ob.education">
+                                <div *ngFor="let item2 of breakLines(ob.education.en)">
+                                  {{item2}}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class='table table-responsive' style='padding:0px; margin:0px;width:100%'
+                          *ngIf="(showOb(ob, obSet)||!ob.addsIn)&&ob.type!='instruction'">
+                          <div class='card' >
+                            <table class='table'
+                              style=' margin:0px;padding:0px;border-bottom:1px #d2d2d2 solid;border-width: small;'
+                              *ngIf='bigScreen==1||(bigScreen==0&&!emBed)'>
+                              <tr (click)='getOb(ob, obSet, form)'>
+                                <td *ngIf="form.formType!='followup'">
+
+
+
+                                  <span *ngIf="ob.required"
+                                    style="color:red; font-weight: 700;text-align:left">*&nbsp;&nbsp;</span>
+
+                                  <span *ngIf="language=='Chinese'&&ob.label&&!hideLabel"
+                                    style='color:black;text-align:left'>{{ob.label.ch}}</span>
+                                  <span *ngIf="language=='English'&&ob.label&&!hideLabel"
+                                    style='color:black;text-align:left'>{{ob.label.en}}</span>
+
+                                </td>
+                                <td *ngIf="form.formType=='followup'">
+
+
+
+                                  <span *ngIf="ob.required"
+                                    style="color:red; font-weight: 700;text-align:left">*&nbsp;&nbsp;</span>
+
+                                  <span *ngIf="language=='Chinese'&&ob.label&&!hideLabel" style='color:black;text-align:left'
+                                    class='followup-ob'>{{ob.label.ch}}</span>
+                                  <span *ngIf="language=='English'&&ob.label&&!hideLabel" style='color:black;text-align:left'
+                                    class='followup-ob'>{{ob.label.en}}</span>
+
+                                </td>
+                                <td *ngIf='emBed' style=' padding:0px;'>
+                                  <app-ob [ob]='ob' [obSet]='obSet' [form]='form' [forms]='forms' [emBed]='emBed'
+                                    [noTitle]='noTitle'>
+                                  </app-ob>
+                                </td>
+                                <td *ngIf='!emBed' style="text-align:right; ">
+                                  <div style='display:inline'>
+                                    <img *ngIf="ob.type=='image'&&ob.value" [src]="ob.url" class="thumbnail">
+                                    <div *ngIf="ob.type!='date'&&ob.type!='calculation'&&ob.type!='image'"
+                                      class='record-row ' style='padding: 5px;font-weight:700;float:right'>
+
+                                      <span *ngIf="ob.type!='text'&&ob.type!='string'">
+                                        <span *ngIf="ob.label&&ob.label.en!='age formula'
+                      &&(ob.value!=undefined||ob.value!='NaN')">{{ob.value}}</span>
+                                        <span *ngIf="age&&ob.label&&ob.label.en=='age formula'">
+                                          {{getAge(ob).number}}{{getAge(ob).uom}}</span>
+                                      </span>
+                                      <div *ngIf="(ob.type=='text'||ob.type=='string')&&ob.value">
+                                        <div *ngFor="let item of breakLines(ob.value)">
+                                          {{item}}
+                                        </div>
+
+                                      </div>
+                                    </div>
+
+                                    <div *ngIf="ob.type=='date'" class='record-row'
+                                      style='padding: 5px;float:right;'>{{ob.value|date: 'yyyy/MM/dd'}}
+
+                                    </div>
+                                    <div *ngIf="ob.type=='instruction'" class='record-row'
+                                      style='padding: 5px;text-align: right;'>
+                                      <div *ngIf="language=='Chinese'&&ob.education"
+                                        style='font-weight: 400; font-size: medium; margin-top:10px;'>
+                                        <div *ngFor="let item of breakLines(ob.education.ch)">
+                                          {{item}}
+                                        </div>
+                                      </div>
+                                      <div *ngIf="language=='English'&&ob.education">
+                                        <div *ngFor="let item2 of breakLines(ob.education.en)">
+                                          {{item2}}
+                                        </div>
+                                      </div>
+
+                                    </div>
+                                    <div *ngIf="ob.values&&ob.values.length>0" class='record-row'>
+
+                                      <div *ngFor='let value of ob.values;'>
+
+                                        <div *ngIf='value&&value.text' style='float:right' [ngClass]="{'levelOne':value.alertLevel==1,
+                          'levelTwo':value.alertLevel==2,
+                          'normal':value.alertLevel!=1&&value.alertLevel!=2}">
+
+                                          <div *ngFor="let item of breakLines(value.text)">
+                                            {{item}}.&nbsp;
+                                          </div>
+
+                                          <div *ngIf='value.comments'>
+                                            <div *ngFor="let item2 of breakLines(value.comments)">
+                                              {{item2}}
+                                            </div>
+                                          </div>
+
+
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <!--<div *ngIf="ob.type=='calculation'"  class='record-row'style='margin-right:0; color:black'>
+                        
+                              <span *ngFor='let value of ob.values;' >
+                            
+                                  <span *ngIf='value' 
+                                  [ngClass]="{'levelOne':value.alertLevel==1,
+                                  'levelTwo':value.alertLevel==2,
+                                  'normal':value.alertLevel!=1&&value.alertLevel!=2}">
+                                  {{value.text}}&nbsp;{{value.comments}}
+                                  
+                              </span>
+                              </span>
+                    </div>-->
+                                </td>
+                              </tr>
+
+                            </table>
+                            <table class='table' style=' margin:0px;padding:0px;' *ngIf="emBed&&bigScreen==0">
+                              <tr (click)='getOb(ob, obSet, form)'>
+
+                                <th>
+
+                                  <span *ngIf="ob.required"
+                                    style="color:red; font-weight: 700;text-align:left">*&nbsp;&nbsp;</span>
+                                  <span style='color:black;text-align:left'>{{ob.index+1}}.&nbsp;</span>
+                                  <span *ngIf="language=='Chinese'&&ob.label&&!hideLabel" style='color:black;text-align:left'
+                                    class='followup-ob'>{{ob.label.ch}}</span>
+                                  <span *ngIf="language=='English'&&ob.label&&!hideLabel" style='color:black;text-align:left'
+                                    class='followup-ob'>{{ob.label.en}}</span>
+
+                                </th>
+                              </tr>
+                              <tr>
+                                <td style=' padding:0px;'>
+
+                                  <app-ob [ob]='ob' [obSet]='obSet' [form]='form' [emBed]='emBed'
+                                    [bigScreen]='bigScreen' [noTitle]='noTitle'>
+
+                                  </app-ob>
+                                </td>
+
+                              </tr>
+
+                            </table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+              <div *ngIf='emBedSet'>
+                <div *ngIf='showObSet(obSet, form)||!obSet.addsIn'>
+                  <app-ob-set [obSet]='obSet' [form]='form' [forms]='forms' [patient]='patient' [visit]='visit'
+                    [order]='order' [visitDate]='visitDate' [emBedSet]=true [registry]='registry'></app-ob-set>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class='col-sm-10' style='margin-left:15px;' *ngIf="form.formStyle=='table'">
+            <div class='card'>
+              <div calss='card-header' style='color: white' (click)='getOb(obSet.obs[0], obSet, form)' [ngClass]="{'card-rose-1':color=='purple',
+                            'card-success-1':color=='green',
+                            'card-primary-1':color!='green'
+                            &&color!='purple'}">
+                <h4>
+
+                  <span *ngIf="language=='Chinese'&&form.label">{{form.label.ch}}</span>
+                  <span *ngIf="language=='English'&&form.label">{{form.label.en}}</span></h4>
+              </div>
+              <div class='card-body'>
+                <table class='table'>
+                  <thead *ngIf="form.obSets&&form.obSets.length>0">
+                    <tr [ngClass]="{'card-rose-color':color=='purple',
+                'card-success-color':color=='green',
+                'card-primary-color':color!='green'
+                &&color!='purple'}">
+                      <th></th>
+                      <th *ngFor="let ob of form.obSets[0].obs|orderBy:'index'">
+                        <span *ngIf="ob.required" style="color:red; font-weight: 700">*</span>
+
+                        <span *ngIf="language=='Chinese'&&ob.label">{{ob.label.ch}}</span>
+                        <span *ngIf="language=='English'&&ob.label">{{ob.label.en}}</span></th>
+                    </tr>
+                  </thead>
+                  <tr *ngFor="let obSet of form.obSets|orderBy:'index'">
+                    <td width='200px'>
+
+                      <span *ngIf="language=='Chinese'&&obSet.label">{{obSet.label.ch}}</span>
+                      <span *ngIf="language=='English'&&obSet.label">{{obSet.label.en}}</span></td>
+                    <td *ngFor="let ob of obSet.obs|orderBy:'index'" (click)='getOb(ob, obSet, form)'>
+                      <span style='font-weight:700; color: blue'>{{ob.value}}</span>
+                      <span *ngFor="let value of ob.values">
+                        <span *ngIf="!language||language!='English'">{{value.text}}</span>
+                        <span *ngIf="language&&language=='English'">{{value.enText}}</span></span></td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="{{form._id}}" style='margin:0px;height:100%; overflow:auto;' 
+        *ngIf="form.formType!='publish'
+              &&form.formType!='education'
+              &&form.formType!='break-down'
+              &&form.formType!='related'
+              &&style=='report'">
+          {{form.label.ch}}
+          <div *ngIf="form&&form.formStyle!='table'">
+            <div *ngFor="let obSet of form.obSets|orderBy: 'index'">
+              <div *ngIf='showObSet(obSet, form)||!obSet.addsIn' class='card'
+                style='width:98%;margin:1%;padding:1%;background-color: transparent;'>
+                <div calss='card-header' 
+                          style='
+                          margin-top:5px;
+                          margin-bottom:10px;
+                          padding:0px;
+                          border-bottom:1px  solid;
+                          border-width:medium;' [ngClass]="{'card-rose-color':color=='purple',
+                            'card-success-color':color=='green',
+                            'card-primary-color':color!='green'
+                        &&color!='purple'}">
+                  <span style='font-weight:700'>
+                    <span *ngIf='obSet.index'>{{obSet.index+1}}</span>
+                    <span *ngIf="language=='English'&&obSet.label">{{obSet.label.en}}</span>
+                    <span *ngIf="language=='Chinese'&&obSet.label">{{obSet.label.ch}}</span>
+                  </span>
+                </div>
+                <div>
+                  <div *ngFor="let ob of obSet.obs|orderBy:'index'">
+                    <div [ngClass]="{'pc-width':bigScreen==1&&
+                    ob.type!='instruction','cell-width':bigScreen==0||
+                    bigScreen==1&&ob.type=='instruction'}">
+                      <div style='margin:5px;  margin-bottom:20px; box-shadow: 0 4px 20px 0px gray,
+    0 7px 10px -5px rgba(gray , 0.4);'
+                        *ngIf="(showOb(ob, obSet)||!ob.addsIn)&&ob.type=='instruction'&&showInstruction">
+
+                        <div class=row *ngIf='ob.imageUrl' style='padding:5%'>
+
+                          <div class='col-sm-4'>
+                            <img [src]="ob.imageUrl" *ngIf='ob.imageUrl' class='ob-image'>
+                          </div>
+
+                          <div class='col-sm-8'>
+                            <div *ngIf="bigScreen==1">
+                              <div *ngIf="language=='Chinese'&&ob.education"
+                                style='font-weight: 400; font-size: medium; margin-top:10px;'>
+                                <div *ngFor="let item of breakLines(ob.education.ch)">
+                                  {{item}}
+                                </div>
+                              </div>
+                              <div *ngIf="language=='English'&&ob.education">
+                                <div *ngFor="let item2 of breakLines(ob.education.en)">
+                                  {{item2}}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div *ngIf="bigScreen==0" style='padding:15px;'>
+                            <span *ngIf="language=='Chinese'&&ob.education">{{ob.label.ch}}</span>
+                            <span *ngIf="language=='English'&&ob.education">{{ob.label.en}}</span>
+                          </div>
+                        </div>
+                        <div *ngIf='!ob.imageUrl'>
+
+
+                          <div *ngIf="language=='Chinese'&&ob.education"
+                            style='font-weight: 400; font-size: medium; margin-top:10px;'>
+                            <div *ngFor="let item of breakLines(ob.education.ch)">
+                              {{item}}
+                            </div>
+                          </div>
+                          <div *ngIf="language=='English'&&ob.education">
+                            <div *ngFor="let item2 of breakLines(ob.education.en)">
+                              {{item2}}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class='table table-responsive' style='padding:0px; margin:0px;'
+                        *ngIf="(showOb(ob, obSet)||!ob.addsIn)&&ob.type!='instruction'">
+                        <div style='padding:10px;'>
+                          <table class='table'
+                            style=' margin:0px;padding:0px;border-bottom:1px #ccc solid;border-width: small;'
+                            *ngIf='bigScreen==1||(bigScreen==0&&!emBed)'>
+                            <tr>
+                              <td style="text-align: left;">
+
+
+
+                                <span *ngIf="ob.required"
+                                  style="color:red; font-weight: 700;text-align:left">*&nbsp;&nbsp;</span>
+
+                                <span *ngIf="language=='Chinese'&&ob.label"
+                                  style='color:black;text-align:left'>{{ob.label.ch}}</span>
+                                <span *ngIf="language=='English'&&ob.label"
+                                  style='color:black;text-align:left'>{{ob.label.en}}</span>
+
+                              </td>
+
+
+                              <td style="text-align:right;">
+                                <img [src]="ob.url" class="thumbnail" *ngIf="ob.type=='image'&&ob.value">
+                                <div class='record-row ' style='padding: 5px;'>
+                                  <div style='font-weight:700;text-align:right'
+                                    *ngIf="ob.type!='date'&&ob.type!='calculation'&&ob.type!='image'">
+                                    <span *ngIf="ob.type!='text'&&ob.type!='string'">{{ob.value}}{{getUom(ob)}}</span>
+                                    <div *ngIf="(ob.type=='text'||ob.type=='string')&&ob.value">
+                                      <div *ngFor="let item of breakLines(ob.value)">
+                                        {{item}}
+                                      </div>
+
+                                    </div>
+                                  </div>
+                                </div>
+
+                                <div class='record-row' style='margin-left: 5px;text-align: right;'
+                                  *ngIf="ob.type=='date'">{{ob.value|date: 'yyyy/MM/dd'}}
+
+                                </div>
+                                <div class='record-row' style='margin-left: 5px;text-align: right;'
+                                  *ngIf="ob.type=='instruction'">
+                                  <div *ngIf="language=='Chinese'&&ob.education"
+                                    style='font-weight: 400; font-size: medium; margin-top:10px;'>
+                                    <div *ngFor="let item of breakLines(ob.education.ch)">
+                                      {{item}}
+                                    </div>
+                                  </div>
+                                  <div *ngIf="language=='English'&&ob.education">
+                                    <div *ngFor="let item2 of breakLines(ob.education.en)">
+                                      {{item2}}
+                                    </div>
+                                  </div>
+
+                                </div>
+                                <div *ngIf="ob.values&&ob.values.length>0&&ob.type!='calculation'" class='record-row'
+                                  style='margin-right:0; color:black'>
+
+                                  <span *ngFor='let value of ob.values;'>
+
+                                    <span *ngIf='value' [ngClass]="{'levelOne':value.alertLevel==1,
+                            'levelTwo':value.alertLevel==2,
+                            'normal':value.alertLevel!=1&&value.alertLevel!=2}">
+                                      <div *ngIf='value.text'>
+                                        <div *ngFor="let item of breakLines(value.text)">
+                                          {{item}}
+                                        </div>
+                                      </div>
+                                      <div *ngIf='value.comments'>
+                                        <div *ngFor="let item2 of breakLines(value.comments)">
+                                          {{item2}}
+                                        </div>
+                                      </div>
+
+
+                                    </span>
+                                  </span>
+                                </div>
+                                <div *ngIf="ob.type=='calculation'" class='record-row'
+                                  style='margin-right:0; color:black'>
+
+                                  <span *ngFor='let value of ob.values;'>
+
+                                    <span *ngIf='value' [ngClass]="{'levelOne':value.alertLevel==1,
+                                    'levelTwo':value.alertLevel==2,
+                                    'normal':value.alertLevel!=1&&value.alertLevel!=2}">
+                                      {{value.text}}&nbsp;{{value.comments}}
+
+                                    </span>
+                                  </span>
+                                </div>
+                              </td>
+                            </tr>
+
+                          </table>
+
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+
+          <div class='col-sm-10' style='margin-left:15px;' *ngIf="form.formStyle=='table'">
+            <div class='card'>
+              <div calss='card-header' style='color: white' [ngClass]="{'card-rose-1':color=='purple',
+                              'card-success-1':color=='green',
+                              'card-primary-1':color!='green'
+                              &&color!='purple'}">
+                <h4>
+
+                  <span *ngIf="language=='Chinese'&&form.label">{{form.label.ch}}</span>
+                  <span *ngIf="language=='English'&&form.label">{{form.label.en}}</span></h4>
+              </div>
+              <div class='card-body'>
+                <table class='table'>
+                  <thead *ngIf="form.obSets&&form.obSets.length>0">
+                    <tr [ngClass]="{'card-rose-color':color=='purple',
+                  'card-success-color':color=='green',
+                  'card-primary-color':color!='green'
+                  &&color!='purple'}">
+                      <th></th>
+                      <th *ngFor="let ob of form.obSets[0].obs|orderBy:'index'">
+                        <span *ngIf="ob.required" style="color:red; font-weight: 700">*</span>
+
+                        <span *ngIf="language=='Chinese'&&ob.label">{{ob.label.ch}}</span>
+                        <span *ngIf="language=='English'&&ob.label">{{ob.label.en}}</span></th>
+                    </tr>
+                  </thead>
+                  <tr *ngFor="let obSet of form.obSets|orderBy:'index'">
+                    <td width='200px'>
+
+                      <span *ngIf="language=='Chinese'&&obSet.label">{{obSet.label.ch}}</span>
+                      <span *ngIf="language=='English'&&obSet.label">{{obSet.label.en}}</span></td>
+                    <td *ngFor="let ob of obSet.obs|orderBy:'index'">
+                      <span style='font-weight:700; color: blue'>{{ob.value}}</span>
+                      <span *ngFor="let value of ob.values">
+                        <span *ngIf="!language||language!='English'">{{value.text}}</span>
+                        <span *ngIf="language&&language=='English'">{{value.enText}}</span></span></td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div >
+    <div class='card' id='result' style='margin-bottom:100px;padding:10px;margin-left:15px; ' *ngIf='hasResult()'>
+      <div class='card-header'><span style='font-weight:600;font-size:medium;'>测试结果及建议</span></div>
+      <div class='table'>
+        <table class='table table-striped' *ngFor="let form of forms">
+          <tBody *ngFor="let obSet of form.obSets">
+            <tr *ngIf='obSet.values&&obSet.values.length>0'>
+              <td style='font-weight:600;' [ngClass]="{'levelOne':obSet.values[0].alertLevel==1,
+                'levelTwo':obSet.values[0].alertLevel==2,
+                'normal':obSet.values[0].alertLevel!=1&&obSet.values[0].alertLevel!=2}">
+                <div class='row' >
+                  <div class='col-sm-4'>{{obSet.label.ch}}</div>
+                  <div class='col-sm-2'>得分:{{obSet.value}}</div>
+                  <div class='col-sm-6'>{{obSet.values[0].text}}</div>
+                </div>
+                <div class='row' >
+                  <div class='col-sm-12'>{{obSet.values[0].comments}}</div>
+                </div>
+              </td>
+            </tr>
+          </tBody>
+
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

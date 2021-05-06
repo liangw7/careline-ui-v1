@@ -1,0 +1,101 @@
+<div class="overlay" *ngIf="loading">
+    <div class="spinner-wrapper">
+      <spinner></spinner>
+    </div>
+  </div>
+
+  <div class='wapper'>
+      
+    <table class='table' style='display:block;margin:0px; '>
+      <thead >
+    <tr>
+
+   <!--<span>&nbsp;&nbsp;&nbsp;&nbsp;最近{{limit}}次:</span>
+ <button class='btn pull-right' (click)='limit=5'
+    style='background-color: inherit; color:white; padding:2px;margin-left:5px;'>5 </button>
+  <button class='btn pull-right' (click)='limit=10'
+    style='background-color: inherit; color:white;padding:2px;margin-left:5px;'>10 </button>
+  <button class='btn pull-right' (click)='limit=15'
+    style='background-color: inherit; color:white;padding:2px;margin-left:5px;'>15</button>
+  <button class='btn pull-right' (click)='limit=20'
+    style='background-color: inherit; color:white;padding:2px;margin-left:5px;'>20 </button>-->
+    <th  width='320px' class='time-header' >
+      <span *ngIf='profile&&profile.label'>{{profile.label.ch}}</span>
+      <span *ngIf='!profile'>{{noteType}}</span>
+    </th>
+    <td width='320px' *ngFor="let visit of visits|orderBy:'createdAt'" 
+    class='time-header'
+ >
+    {{visit.createdAt|date:"yyyy/MM/dd hh:mm "}}
+    
+    
+      </td>
+    </tr>
+  </thead>
+ 
+      <tbody style='display:block;margin:0px;background-color: transparent;height:600px; overflow: auto;'>
+  
+          <tr *ngIf='visits' style='margin:0px;padding:0px;  '>
+            <td   class='cell-header-color' 
+            style='background:white;margin:0px;padding:0px;'>
+           
+             <div  style='margin:0px;padding:0px; '>
+              <div style='margin:0px;padding:0px;  ' *ngFor= 'let form of clinicalForms'>
+                <div style='margin:0px; padding:0px; ' *ngFor='let obSet of form.obSets'>
+               
+                  <table class='table'>
+                    <tr >
+                      <td width='320px' class='set-header' >{{obSet.label.ch}}
+                    </td>
+                      <td width='320px' 
+                      *ngFor="let visitItem of visits|orderBy:'createdAt'" 
+                      class='set-header'
+                      (click)='getObSet(obSet, form, profile, visitItem)'>
+                       <i class='material-icons'>edit</i>
+                   
+                      </td>
+                    </tr>
+                  </table>
+                <div class='table' *ngFor='let ob of obSet.obs'>
+                  <table class='table'>
+                    <tr >
+                      <td width='320px' class='cell-header cell-header-color' 
+                      style='background:white;margin:0px;padding:0px;'>{{ob.label.ch}}
+                    </td>
+                      <td width='320px' *ngFor="let item of ob.visitList|orderBy:'visit.createdAt'" class='cell-header'>
+                 
+                       <span>{{item.value}}</span> 
+                       <span *ngFor='let value of item.values'>  
+                         <span [ngClass]="{'level-one':value.alertLevel==1,
+                        'level-two':value.alertLevel==2}">
+                            {{value.text}}</span>
+                        </span> 
+                      </td>
+                    </tr>
+                  </table>
+                </div>
+               
+                </div>
+              </div>
+            </div>
+         </td>
+       </tr>
+         
+       </tbody>
+      </table>
+      
+   
+         
+</div>
+
+
+
+
+    
+    
+          
+    
+   
+  
+  
+ 

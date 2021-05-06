@@ -1,0 +1,916 @@
+<div class="wrapper">
+  <div class="overlay" *ngIf="loading">
+    <div class="spinner-wrapper">
+      <spinner></spinner>
+    </div>
+  </div>
+  
+  <div class="wapper-pc" *ngIf="bigScreen==1">
+    <mat-tab-group >
+      <mat-tab label="{{getLabel('内科史', language)}}">
+        <div class="tab-pane" id="medical">
+          <div class='title' *ngIf='user'>
+            <input type='text' class='form-control' [(ngModel)]="search">
+            <span class="btn btn-base" (click)="searchProblemItem(search, 'medical')">
+              <i class='material-icons'>search</i>
+            </span>
+          </div>
+          <div *ngIf='showProblemItems' class='card search'>
+            <div class='closebtn'>
+              <i class='material-icons pull-right' (click)='showProblemItems=null'>close</i>
+            </div>
+            <div class='card-body'>
+              <table class="table table-striped">
+                <tr *ngFor='let problemItem of problemItems' (click)='selectProblem(problemItem,medicalProblems)'>
+                  <td><span *ngIf="language=='Chinese'&&problemItem.label">{{problemItem.label.ch}}</span>
+                    <span *ngIf="language=='English'&&problemItem.label">{{problemItem.label.en}}</span>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+          <div class="card-body main-body">
+            <table class="table">
+              <!-- <tr *ngIf='medicalProblems&&medicalProblems.length>0'>
+                                      <th></th>
+                                      <th>primary</th>
+                                      <th  [ngClass]="{'card-rose-font':color=='purple',
+                                      'card-success-font':color=='green',
+                                      'card-primary-font':color!='green'
+                                      &&color!='purple'}" 
+                                      *ngFor='let ob of medicalProblems[0].obs'>
+                                      <span *ngIf="language=='Chinese'&&ob.label">{{ob.label.ch}}</span>
+                                      <span *ngIf="language=='English'&&ob.label">{{ob.label.en}}</span>
+                                     </th>
+                                      <th></th></tr>-->
+              <tbody *ngFor='let problem of medicalProblems'>
+                <tr *ngIf='problem.problemItem' (mouseover)='problem.delete=true' (mouseleave)='problem.delete=false'>
+                  <td>
+                    <a href='javascript:voild();' (click)='getObSet(problem, medicalProblems)'>
+                      <span *ngIf="language=='Chinese'&&problem.label">{{problem.label.ch}}</span>
+                      <span *ngIf="language=='English'&&problem.label">{{problem.label.en}}</span>
+                    </a>
+                  </td>
+                  <td (click)='addPrimaryProblem(problem,medicalProblems)'>
+                    primary: <mat-checkbox [checked]='problem.primary' [ngModel]='problem.primary'></mat-checkbox>
+                  </td>
+                  <td *ngFor="let ob of problem.problemItem.obs|orderBy:'index'">
+                    <span> {{ob.label.ch}}: </span>
+                    <span *ngIf="ob.type!='date'"> {{ob.value}}</span>
+                    <span *ngIf="ob.type=='date'"> {{ob.value|date:"yyyy/MM/dd"}}</span>
+                    <span *ngFor='let value of ob.values'>
+                      <span *ngIf='value' [ngClass]="{'normal':value.alertLevel==0,'levelOne':value.alertLevel==1,'levelTwo':value.alertLevel==2}">
+                        <span *ngIf="language=='Chinese'">{{value.text}}</span>
+                        <span *ngIf="language=='English'">{{value.enText}}</span>
+                        <span>{{value.comments}}</span>
+                      </span>
+                    </span>
+                  </td>
+                  <td>
+                    <i class="material-icons" aria-hidden="true" (click)='delete(problem,medicalProblems )'>close</i>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </mat-tab>
+      <mat-tab label="{{getLabel('手术史', language)}}">
+        <div class="tab-pane" id="surgical">
+          <div class='title'>
+            <input type='text' class='form-control' placeholder='{{search}}'>
+            <span class="btn btn-base" (click)="searchProblemItem(search, 'surgical')">
+              <i class='material-icons'>search</i>
+            </span>
+          </div>
+          <div class='card search' *ngIf='showProblemItems'>
+            <div class='closebtn'>
+              <i class='material-icons pull-right' (click)='showProblemItems=null'>close</i>
+            </div>
+            <div class='card-body'>
+              <table class="table table-striped">
+                <tr *ngFor='let problemItem of problemItems' (click)='selectProblem(problemItem,surgicalProblems)'>
+                  <td> <span *ngIf="language=='Chinese'&&problemItem.label">{{problemItem.label.ch}}</span>
+                    <span *ngIf="language=='English'&&problemItem.label">{{problemItem.label.en}}</span>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+          <div class="card-body main-body">
+            <table class="table">
+              <tbody *ngFor='let problem of surgicalProblems'>
+                <tr *ngIf='problem.problemItem' (mouseover)='problem.delete=true' (mouseleave)='problem.delete=false'>
+                  <td>
+                    <a href='javascript:voild();' (click)='getObSet(problem, surgicalProblems)'>
+                      <span *ngIf="language=='Chinese'&&problem.label">{{problem.label.ch}}</span>
+                      <span *ngIf="language=='English'&&problem.label">{{problem.label.en}}</span>
+                    </a>
+                  </td>
+                  <td *ngFor="let ob of problem.obs|orderBy:'index'">
+                    <span> {{ob.label.ch}}: </span>
+                    <span *ngIf="ob.type!='date'"> {{ob.value}}</span>
+                    <span *ngIf="ob.type=='date'"> {{ob.value|date:"yyyy/MM/dd"}}</span>
+                    <span *ngFor='let value of ob.values'>
+                      <span [ngClass]="{'normal':value.alertLevel==0,'levelOne':value.alertLevel==1,'levelTwo':value.alertLevel==2}">
+                        <span *ngIf="language=='Chinese'">{{value.text}}</span>
+                        <span *ngIf="language=='English'">{{value.enText}}</span>
+                        <span>{{value.comments}}</span>
+                      </span>
+                    </span>
+                  </td>
+                  <td><i class="material-icons" (click)='delete(problem,surgicalProblems)'>close</i>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </mat-tab>
+      <mat-tab label="{{getLabel('家庭史', language)}}">
+        <div class="tab-pane" id="family">
+          <div class='title' *ngIf='user'>
+            <input type='text' class='form-control' placeholder='{{search}}'>
+            <span class="btn btn-base" (click)="searchProblemItem(search, 'family')">
+              <i class='material-icons'>search</i>
+            </span>
+          </div>
+          <div class='card search' *ngIf='showProblemItems'>
+            <div class='closebtn'>
+              <i class='material-icons pull-right' (click)='showProblemItems=null'>close</i>
+            </div>
+            <div class='card-body'>
+              <table class="table table-striped">
+                <tr *ngFor='let problemItem of problemItems' (click)='selectFamilyProblem(problemItem,familyProblems)'>
+                  <td>
+                    <span *ngIf="language=='Chinese'&&problemItem.label">{{problemItem.label.ch}}</span>
+                    <span *ngIf="language=='English'&&problemItem.label">{{problemItem.label.en}}</span>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+          <div class="card-body main-body">
+            <table class="table">
+  
+              <tr *ngIf='familyProblems&&familyProblems.length>0'>
+                <th></th>
+                <th *ngFor='let member of familyMembers'>
+                  <span *ngIf="language=='Chinese'">{{member.ch}}</span>
+                  <span *ngIf="language=='English'">{{member.en}}</span>
+                </th>
+                <th></th>
+              </tr>
+              <tr *ngFor='let problem of familyProblems' (mouseover)='problem.delete=true' (mouseleave)='problem.delete=false'>
+                <td>
+                  <span *ngIf="language=='Chinese'&&problem.label">{{problem.label.ch}}</span>
+                  <span *ngIf="language=='English'&&problem.label">{{problem.label.en}}</span>
+                </td>
+                <td *ngFor='let member of familyMembers' (mouseover)='setMemberProblem(member,problem)'
+                  (mouseleave)='removeMemberProblem(member,problem)' (click)='editFamily(problem, member)'>
+                  <span *ngIf='problem.showFamilyMembers[this.familyMembers.indexOf(member)]==true;'>
+                    <mat-checkbox [checked]='findMember(problem, member)' [ngModel]='findMember(problem, member)'>
+                    </mat-checkbox>
+                  </span>
+                </td>
+                <td><span>
+                    <i class="material-icons" (click)='deleteFamily(problem, familyProblems)'>close</i>
+                  </span>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </mat-tab>
+      <mat-tab label="{{getLabel('社会史', language)}}">
+        <div class="tab-pane" id="social">
+          <div class='title' *ngIf='user'>
+            <input type='text' class='form-control' placeholder='{{search}}'>
+            <span class="btn btn-base" (click)="searchProblemItem(search, 'social')">
+              <i class='material-icons'>search</i>
+            </span>
+          </div>
+          <div class='card search' *ngIf='showProblemItems'>
+            <div class='closebtn'>
+              <i class='material-icons pull-right' (click)='showProblemItems=null'>close</i>
+            </div>
+            <div class='card-body'>
+              <table class="table table-striped">
+                <tr *ngFor='let problemItem of problemItems' (click)='selectProblem(problemItem,socialProblems)'>
+                  <td>
+                    <span *ngIf="language=='Chinese'&&problemItem.label">{{problemItem.label.ch}}</span>
+                    <span *ngIf="language=='English'&&problemItem.label">{{problemItem.label.en}}</span>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+          <div class="card-body main-body">
+            <table class="table">
+              <tbody *ngFor='let problem of socialProblems'>
+                <tr *ngIf='problem.problemItem' (mouseover)='problem.delete=true' (mouseleave)='problem.delete=false'>
+                  <td>
+                    <span *ngIf="language=='Chinese'&&problem.label">{{problem.label.ch}}</span>
+                    <span *ngIf="language=='English'&&problem.label">{{problem.label.en}}</span>
+                  </td>
+                  <td *ngFor='let ob of problem.obs' (click)='getOb(ob, problem)'>
+                    <span *ngIf="ob.type!='date'"> {{ob.value}}</span>
+                    <span *ngIf="ob.type=='date'"> {{ob.value|date:"yyyy/MM/dd"}}</span>
+                    <span *ngFor='let value of ob.values'>
+                      <span *ngIf="language=='Chinese'">{{value.text}}</span>
+                      <span *ngIf="language=='English'">{{value.enText}}</span>
+                    </span>
+                  </td>
+                  <td *ngIf='problem.delete'>
+                    <i class="material-icons" (click)='delete(problem, socialProblems)'>close</i>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+
+  <div class="card" *ngIf='bigScreen==0'>
+    <div>
+      <div class="nav-tabs-navigation">
+        <div class="nav-tabs-wrapper">
+
+          <ul class="nav nav-tabs" data-tabs="tabs">
+            <li class="nav-item">
+              <a mat-button class="nav-link active" href="#medical" data-toggle="tab">
+                <span *ngIf="language=='Chinese'">内科史</span>
+                <span *ngIf="language=='English'">Medical History</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a mat-button class="nav-link" href="#surgical" data-toggle="tab">
+                <span *ngIf="language=='Chinese'">手术史</span>
+                <span *ngIf="language=='English'">Surgical History</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a mat-button class="nav-link" href="#family" data-toggle="tab">
+                <span *ngIf="language=='Chinese'">家庭史</span>
+                <span *ngIf="language=='English'">Family History</span>
+              </a>
+            </li>
+            <li class="nav-item">
+              <a mat-button class="nav-link" href="#social" data-toggle="tab">
+                <span *ngIf="language=='Chinese'">社会史</span>
+                <span *ngIf="language=='English'">Social History</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="tab-content">
+      <div class="tab-pane active" id="medical">
+        <div calss='card-header'></div>
+        <div class='title' *ngIf='user'>
+          <input type='text' class='form-control' [(ngModel)]="search">
+          <i class='material-icons' (click)="searchProblemItem(search, 'medical')">search</i>
+        </div>
+        <div *ngIf='showProblemItems' class='card search'>
+          <div class='card-header'>
+            <i class='material-icons pull-right' (click)='showProblemItems=null'>close</i>
+          </div>
+          <div class='card-body'>
+            <table class="table table-striped">
+              <tr *ngFor='let problemItem of problemItems' (click)='selectProblem(problemItem,medicalProblems)'>
+                <td><span *ngIf="language=='Chinese'&&problemItem.label">{{problemItem.label.ch}}</span>
+                  <span *ngIf="language=='English'&&problemItem.label">{{problemItem.label.en}}</span>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div class="card-body">
+          <table class="table" style='margin:0px; padding:0px;'>
+            <!-- <tr *ngIf='medicalProblems&&medicalProblems.length>0'>
+                                    <th></th>
+                                    <th>primary</th>
+                                    <th  [ngClass]="{'card-rose-font':color=='purple',
+                                    'card-success-font':color=='green',
+                                    'card-primary-font':color!='green'
+                                    &&color!='purple'}" 
+                                    *ngFor='let ob of medicalProblems[0].obs'>
+                                    <span *ngIf="language=='Chinese'&&ob.label">{{ob.label.ch}}</span>
+                                    <span *ngIf="language=='English'&&ob.label">{{ob.label.en}}</span>
+                                   </th>
+                                    <th></th></tr>-->
+            <tbody *ngFor='let problem of medicalProblems'>
+              <tr height="20" *ngIf='problem.problemItem' style='margin:-5px; padding: -5px;'
+                (mouseover)='problem.delete=true' (mouseleave)='problem.delete=false'>
+                <td height="50" style='margin:-5px; padding: -5px;'>
+                  <a href='javascript:voild();' (click)='getObSet(problem, medicalProblems)'>
+                    <span *ngIf="language=='Chinese'&&problem.label">{{problem.label.ch}}</span>
+                    <span *ngIf="language=='English'&&problem.label">{{problem.label.en}}</span>
+                  </a>
+                </td>
+                <td (click)='addPrimaryProblem(problem,medicalProblems)'>
+
+                  primary: <mat-checkbox [checked]='problem.primary' [ngModel]='problem.primary'>
+                  </mat-checkbox>
+
+                </td>
+                <td *ngFor="let ob of problem.problemItem.obs|orderBy:'index'">
+                  <span> {{ob.label.ch}}: </span>
+                  <span *ngIf="ob.type!='date'"> {{ob.value}}</span>
+                  <span *ngIf="ob.type=='date'"> {{ob.value|date:"yyyy/MM/dd"}}</span>
+                  <span *ngFor='let value of ob.values'>
+                    <span *ngIf='value' [ngClass]="{'normal':value.alertLevel==0,
+                                                                    'levelOne':value.alertLevel==1,
+                                                                    'levelTwo':value.alertLevel==2}"
+                      style='font-weight: 600'>
+                      <span *ngIf="language=='Chinese'">{{value.text}}</span>
+                      <span *ngIf="language=='English'">{{value.enText}}</span>
+                      <span>{{value.comments}}</span>
+                    </span>
+                  </span>
+                </td>
+                <td>
+                  <i class="material-icons" aria-hidden="true" (click)='delete(problem,medicalProblems )'>close</i>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="tab-pane" id="surgical">
+
+        <div calss='card-header' [ngClass]="{'card-rose-bottom':color=='purple',
+                            'card-success-bottom':color=='green',
+                            'card-primary-bottom':color!='green'
+                            &&color!='purple'}"> </div>
+        <div class='title'>
+          <input type='text' class='form-control' placeholder='{{search}}'>
+          <i class='material-icons' (click)="searchProblemItem(search, 'surgical')">search</i>
+        </div>
+        <div class='card search' *ngIf='showProblemItems'>
+          <div class='card-header'>
+            <i class='material-icons pull-right' (click)='showProblemItems=null'>close</i>
+          </div>
+          <div class='card-body'>
+            <table class="table table-striped">
+              <tr *ngFor='let problemItem of problemItems' (click)='selectProblem(problemItem,surgicalProblems)'>
+                <td> <span *ngIf="language=='Chinese'&&problemItem.label">{{problemItem.label.ch}}</span>
+                  <span *ngIf="language=='English'&&problemItem.label">{{problemItem.label.en}}</span>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div class="card-body">
+          <table class="table" style='margin:0px; padding:0px;'>
+            <tbody *ngFor='let problem of surgicalProblems'>
+              <tr height="20" *ngIf='problem.problemItem'>
+                style='margin:-5px; padding: -5px;'
+                (mouseover)='problem.delete=true'
+                (mouseleave)='problem.delete=false'>
+                <td height="50" style='margin:-5px; padding: -5px;'>
+                  <a href='javascript:voild();' (click)='getObSet(problem, surgicalProblems)'>
+                    <span *ngIf="language=='Chinese'&&problem.label">{{problem.label.ch}}</span>
+                    <span *ngIf="language=='English'&&problem.label">{{problem.label.en}}</span>
+                  </a>
+                </td>
+                <td *ngFor="let ob of problem.obs|orderBy:'index'">
+                  <span> {{ob.label.ch}}: </span>
+                  <span *ngIf="ob.type!='date'"> {{ob.value}}</span>
+                  <span *ngIf="ob.type=='date'"> {{ob.value|date:"yyyy/MM/dd"}}</span>
+                  <span *ngFor='let value of ob.values'>
+                    <span [ngClass]="{'normal':value.alertLevel==0,
+                                                                            'levelOne':value.alertLevel==1,
+                                                                            'levelTwo':value.alertLevel==2}"
+                      style='font-weight: 600'>
+                      <span *ngIf="language=='Chinese'">{{value.text}}</span>
+                      <span *ngIf="language=='English'">{{value.enText}}</span>
+                      <span>{{value.comments}}</span>
+                    </span>
+                  </span>
+                </td>
+                <td><i class="material-icons" (click)='delete(problem,surgicalProblems)'>close</i>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="tab-pane" id="family">
+
+        <div calss='card-header' [ngClass]="{'card-rose-bottom':color=='purple',
+                            'card-success-bottom':color=='green',
+                            'card-primary-bottom':color!='green'
+                            &&color!='purple'}"> </div>
+        <div class='title' *ngIf='user'>
+          <input type='text' class='form-control' placeholder='{{search}}'>
+          <i class='material-icons' (click)="searchProblemItem(search, 'family')">search</i>
+        </div>
+        <div class='card search' *ngIf='showProblemItems'>
+          <div class='card-header'>
+            <i class='material-icons pull-right' (click)='showProblemItems=null'>close</i>
+          </div>
+          <div class='card-body'>
+            <table class="table table-striped">
+              <tr *ngFor='let problemItem of problemItems' (click)='selectFamilyProblem(problemItem,familyProblems)'>
+                <td>
+                  <span *ngIf="language=='Chinese'&&problemItem.label">{{problemItem.label.ch}}</span>
+                  <span *ngIf="language=='English'&&problemItem.label">{{problemItem.label.en}}</span>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div class="card-body">
+          <table class="table" style='margin:0px; padding:0px;'>
+
+            <tr *ngIf='familyProblems&&familyProblems.length>0'>
+              <th></th>
+              <th [ngClass]="{'card-rose-font':color=='purple',
+                                            'card-success-font':color=='green',
+                                            'card-primary-font':color!='green'
+                                            &&color!='purple'}" *ngFor='let member of familyMembers'>
+                <span *ngIf="language=='Chinese'">{{member.ch}}</span>
+                <span *ngIf="language=='English'">{{member.en}}</span>
+              </th>
+              <th></th>
+            </tr>
+            <tr height="20" *ngFor='let problem of familyProblems' style='margin:-5px; padding: -5px;'
+              (mouseover)='problem.delete=true' (mouseleave)='problem.delete=false'>
+
+              <td height="50" style='margin:-5px; padding: -5px;'>
+                <span *ngIf="language=='Chinese'&&problem.label">{{problem.label.ch}}</span>
+                <span *ngIf="language=='English'&&problem.label">{{problem.label.en}}</span>
+              </td>
+
+              <td *ngFor='let member of familyMembers' (mouseover)='setMemberProblem(member,problem)'
+                (mouseleave)='removeMemberProblem(member,problem)' (click)='editFamily(problem, member)'>
+                <span *ngIf='problem.showFamilyMembers[this.familyMembers.indexOf(member)]==true;'>
+                  <mat-checkbox [checked]='findMember(problem, member)' [ngModel]='findMember(problem, member)'>
+                  </mat-checkbox>
+                </span>
+              </td>
+              <td><span>
+                  <i class="material-icons" (click)='deleteFamily(problem, familyProblems)'>close</i>
+                </span>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="tab-pane" id="social">
+
+        <div calss='card-header' [ngClass]="{'card-rose-bottom':color=='purple',
+                            'card-success-bottom':color=='green',
+                            'card-primary-bottom':color!='green'
+                            &&color!='purple'}"> </div>
+        <div class='title' *ngIf='user'>
+          <input type='text' class='form-control' placeholder='{{search}}'>
+          <i class='material-icons' (click)="searchProblemItem(search, 'social')">search</i>
+        </div>
+        <div class='card search' *ngIf='showProblemItems'>
+          <div class='card-header'>
+            <i class='material-icons pull-right' (click)='showProblemItems=null'>close</i>
+          </div>
+          <div class='card-body'>
+            <table class="table table-striped">
+
+              <tr *ngFor='let problemItem of problemItems' (click)='selectProblem(problemItem,socialProblems)'>
+                <td>
+                  <span *ngIf="language=='Chinese'&&problemItem.label">{{problemItem.label.ch}}</span>
+                  <span *ngIf="language=='English'&&problemItem.label">{{problemItem.label.en}}</span>
+                </td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div class="card-body">
+          <table class="table" style='margin:0px; padding:0px;'>
+
+            <tbody *ngFor='let problem of socialProblems'>
+
+              <tr height="20" *ngIf='problem.problemItem'>
+                style='margin:-5px; padding: -5px;'
+                (mouseover)='problem.delete=true'
+                (mouseleave)='problem.delete=false'>
+                <td height="50" style='margin:-5px; padding: -5px;'>
+                  <span *ngIf="language=='Chinese'&&problem.label">{{problem.label.ch}}</span>
+                  <span *ngIf="language=='English'&&problem.label">{{problem.label.en}}</span>
+                </td>
+                <td *ngFor='let ob of problem.obs' (click)='getOb(ob, problem)'>
+
+                  <span *ngIf="ob.type!='date'"> {{ob.value}}</span>
+                  <span *ngIf="ob.type=='date'"> {{ob.value|date:"yyyy/MM/dd"}}</span>
+                  <span *ngFor='let value of ob.values'>
+                    <span *ngIf="language=='Chinese'">{{value.text}}</span>
+                    <span *ngIf="language=='English'">{{value.enText}}</span>
+                  </span>
+                </td>
+                <td *ngIf='problem.delete'>
+                  <i class="material-icons" (click)='delete(problem, socialProblems)'>close</i>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--   <div  *ngIf='bigScreen==0'>
+            <div class="card card-stats"  (click)='showMedicalProblem=true;'>
+              <div class="card-header  card-header-icon">
+                  
+                  <p class="card-title"  style=' font-weight: 700;'>
+                    <span *ngIf="language=='Chinese'">内科史</span>
+                    <span *ngIf="language=='English'">Medical History</span>
+                  </p>
+                  
+              </div>
+            </div>
+            <div class='card problem' *ngIf='showMedicalProblem'>
+                <div calss='card-header' style='font-weight: 700;font-size: medium;'  
+                [ngClass]="{'card-rose-bottom':color=='purple',
+                'card-success-bottom':color=='green',
+                'card-primary-bottom':color!='green'
+                &&color!='purple'}" >  
+                 <span *ngIf="language=='Chinese'">内科史</span>
+                 <span *ngIf="language=='English'">Medical History</span>
+                 <i class='material-icons pull-right' 
+                    (click)='showMedicalProblem=false;'>close</i>
+                </div>
+                <div class='card-body'>
+                        <div class='title'>
+                           <input type='text'  class='form-control' 
+                           [(ngModel)]="search" >
+                                <i class='material-icons' 
+                                (click)="searchProblemItem(search, 'medical')">search</i>
+                        </div>
+                       <div  *ngIf='showProblemItems' class='card search'>
+                           <div class='card-header'>
+                                <i class='material-icons pull-right' 
+                                (click)='showProblemItems=null'>close</i>
+                          </div>
+                          <div class='card-body'>
+                                <table class="table table-striped">
+                                    <tr *ngFor='let problemItem of problemItems'
+                                    (click)='selectProblem(problemItem,medicalProblems)'>
+                                        <td><span *ngIf="language=='Chinese'&&problemItem.label">{{problemItem.label.ch}}</span>
+                                            <span *ngIf="language=='English'&&problemItem.label">{{problemItem.label.en}}</span></td>
+                                    </tr>
+                            
+                            </table></div>
+                        </div>
+                        <div class="card-body" >
+                                <table class="table" style='margin:0px; padding:0px;'>
+    
+                                    <tr *ngIf='medicalProblems&&medicalProblems.length>0'>
+                                        <th></th>
+                                        <th>primary</th>
+                                        <th  [ngClass]="{'card-rose-font':color=='purple',
+                                        'card-success-font':color=='green',
+                                        'card-primary-font':color!='green'
+                                        &&color!='purple'}" 
+                                        *ngFor='let ob of medicalProblems[0].obs'>
+                                        <span *ngIf="language=='Chinese'&&ob.label">{{ob.label.ch}}</span>
+                                        <span *ngIf="language=='English'&&ob.label">{{ob.label.en}}</span></th>
+                                        <th></th></tr>
+                                    
+                                        <tr height="20" *ngFor='let problem of medicalProblems' 
+                                        style='margin:-5px; padding: -5px;'
+                                        (mouseover)='problem.delete=true'
+                                        (mouseleave)='problem.delete=false'>
+                                                <td height="50" style='margin:-5px; padding: -5px;'> 
+                                                  
+                                                <span *ngIf="language=='Chinese'&&problem.label">{{problem.label.ch}}</span>
+                                                <span *ngIf="language=='English'&&problem.label">{{problem.label.en}}</span></td>
+                                                <td (click)='addPrimaryProblem(problem,medicalProblems)'>
+                                                    
+                                                    <mat-checkbox
+                                                [checked]='problem.primary'
+                                                [ngModel]='problem.primary'
+                                                    ></mat-checkbox>
+    
+                                                </td>
+                                                <td  *ngFor='let ob of problem.obs'(click)='getOb(ob, problem)' >  
+                                                
+                                                    <span *ngIf="ob.type!='date'"> {{ob.value}}</span>
+                                                    <span *ngIf="ob.type=='date'"> {{ob.value|date:"yyyy/MM/dd"}}</span>
+                                                        <span *ngFor='let value of ob.values'><span *ngIf="language=='Chinese'">{{value.text}}</span>
+                                                        <span *ngIf="language=='English'">{{value.enText}}</span></span>
+                                                
+                                                </td>
+                                            <td>
+                                                <i class="material-icons" aria-hidden="true" style='color:red'
+                                                   
+                                                    (click)='delete(problem,medicalProblems )'>delete</i> 
+                                                </td>
+                                                
+                                            
+    
+                                        </tr>
+                                
+                                </table>
+                            
+                        </div>
+                </div>
+            </div>
+            <div class="card card-stats"  (click)='showSurgicalProblem=true;'>
+                <div class="card-header  card-header-icon">
+                    
+                    <p class="card-title" style=' font-weight: 700;'>
+                        <span *ngIf="language=='Chinese'">手术史</span>
+                        <span *ngIf="language=='English'">Surgical History</span>
+                    </p>
+                    
+                </div>
+            </div>
+            <div class='card problem' *ngIf='showSurgicalProblem'>
+                <div calss='card-header' style='font-weight: 700;font-size: medium;'  
+                [ngClass]="{'card-rose-bottom':color=='purple',
+                'card-success-bottom':color=='green',
+                'card-primary-bottom':color!='green'
+                &&color!='purple'}" >  
+                <span *ngIf="language=='Chinese'">手术史</span>
+                <span *ngIf="language=='English'">Surgical History</span>
+                    <i class='material-icons pull-right' 
+                    (click)='showSurgicalProblem=false;'>close</i>
+                </div>
+                <div class='card-body'>
+
+                       
+                        <div class='title'>
+                           <input type='text'  class='form-control' 
+                           [(ngModel)]="search" >
+                                <i class='material-icons' 
+                                (click)="searchProblemItem(search, 'surgical')">search</i>
+                        </div>
+                       <div  *ngIf='showProblemItems' class='card search'>
+                           <div class='card-header'>
+                                <i class='material-icons pull-right' 
+                                (click)='showProblemItems=null'>close</i>
+                          </div>
+                          <div class='card-body'>
+                                <table class="table table-striped">
+                                    <tr *ngFor='let problemItem of problemItems'
+                                    (click)='selectProblem(problemItem,surgicalProblems)'>
+                                        <td><span *ngIf="language=='Chinese'&&problemItem.label">{{problemItem.label.ch}}</span>
+                                            <span *ngIf="language=='English'&&problemItem.label">{{problemItem.label.en}}</span></td>
+                                    </tr>
+                            
+                            </table></div>
+                        </div>
+                        <div class="card-body" >
+                           <table class="table" style='margin:0px; padding:0px;'>
+
+                                <tr *ngIf='surgicalProblems&&surgicalProblems.length>0'>
+                                    <th></th>
+                                    <th  [ngClass]="{'card-rose-font':color=='purple',
+                                    'card-success-font':color=='green',
+                                    'card-primary-font':color!='green'
+                                    &&color!='purple'}" *ngFor='let ob of surgicalProblems[0].obs'>
+                                    <span *ngIf="language=='Chinese'&&ob.label">{{ob.label.ch}}</span>
+                                    <span *ngIf="language=='English'&&ob.label">{{ob.label.en}}</span>
+                                </th><th></th></tr>
+                               
+                                    <tr height="20" *ngFor='let problem of surgicalProblems' 
+                                    style='margin:-5px; padding: -5px;'
+                                    (mouseover)='problem.delete=true'
+                                    (mouseleave)='problem.delete=false'>
+                                         <td height="50" style='margin:-5px; padding: -5px;'>  
+                                         <span *ngIf="language=='Chinese'&&problem.label">{{problem.label.ch}}</span>
+                                         <span *ngIf="language=='English'&&problem.label">{{problem.label.en}}</span>
+                                        </td>
+                                         
+                                         <td  *ngFor='let ob of problem.obs'(click)='getOb(ob, problem)' >  
+                                           
+                                                <span *ngIf="ob.type!='date'"> {{ob.value}}</span>
+                                                <span *ngIf="ob.type=='date'"> {{ob.value|date:"yyyy/MM/dd"}}</span>
+                                                 <span *ngFor='let value of ob.values'>
+                                                        <span *ngIf="language=='Chinese'">{{value.text}}</span>
+                                                        <span *ngIf="language=='English'">{{value.enText}}</span>
+                                                    </span>
+                                            
+                                         </td>
+                                         <td><i class="material-icons" 
+                                        
+                                            (click)='delete(problem,surgicalProblems)'>close</i>
+                                         </td>
+                                        
+
+                                    </tr>
+                            
+                            </table>
+                        
+                    </div>
+                    </div>
+               
+
+             </div>
+             <div class="card card-stats"  (click)='showFamilyProblem=true;'>
+                <div class="card-header  card-header-icon">
+                    
+                    <p class="card-title" style=' font-weight: 700;'>
+                    <span *ngIf="language=='Chinese'">家庭史</span>
+                    <span *ngIf="language=='English'">Family History</span>
+                    </p>
+                </div>
+            </div>
+             <div class='card problem' *ngIf='showFamilyProblem'>
+                    <div calss='card-header' style='font-weight: 700;font-size: medium;'  
+                    [ngClass]="{'card-rose-bottom':color=='purple',
+                    'card-success-bottom':color=='green',
+                    'card-primary-bottom':color!='green'
+                    &&color!='purple'}" >  
+                    <span *ngIf="language=='Chinese'">家庭史</span>
+                    <span *ngIf="language=='English'">Family History</span>
+                        <i class='material-icons pull-right' 
+                        (click)='showFamilyProblem=false;'>close</i>
+                    </div>
+                    <div class='card-body'>
+                        <div class='title'>
+                            <input type='text' 
+                            class='form-control' 
+                            placeholder='{{search}}'
+                            >
+                            <i class='material-icons' 
+                            (click)="searchProblemItem(search, 'family')">search</i>
+                        </div>
+                    <div class='card search' *ngIf='showProblemItems'>
+                        <div class='card-header'>
+                            <i class='material-icons pull-right' 
+                            (click)='showProblemItems=null'>close</i>
+                      </div>
+                      <div class='card-body'>
+                        <table class="table table-striped">
+                               
+                          
+                                    <tr *ngFor='let problemItem of problemItems'
+                                    (click)='selectFamilyProblem(problemItem,familyProblems)'>
+                                        <td>
+                                            <span *ngIf="language=='Chinese'&&problemItem.label">{{problemItem.label.ch}}</span>
+                                            <span *ngIf="language=='English'&&problemItem.label">{{problemItem.label.en}}</span>
+                                        </td>
+                                    </tr>
+                           
+                            </table></div></div>
+                        <div class="card-body" >
+                               
+                        
+                                <table class="table" style='margin:0px; padding:0px;'>
+
+                                    <tr *ngIf='familyProblems&&familyProblems.length>0'>
+                                        <th></th>
+                                        <th  [ngClass]="{'card-rose-font':color=='purple',
+                                        'card-success-font':color=='green',
+                                        'card-primary-font':color!='green'
+                                        &&color!='purple'}" 
+                                        *ngFor='let member of familyMembers'>       
+                                        <span *ngIf="language=='Chinese'">{{member.ch}}</span>
+                                        <span *ngIf="language=='English'">{{member.en}}</span>
+                                  </th><th></th></tr>
+                                   
+                                        <tr height="20" *ngFor='let problem of familyProblems'
+                                         style='margin:-5px; padding: -5px;'
+                                         (mouseover)='problem.delete=true'
+                                         (mouseleave)='problem.delete=false'>
+
+                                             <td height="50" style='margin:-5px; padding: -5px;'>  
+                                                <span *ngIf="language=='Chinese'&&problem.label">{{problem.label.ch}}</span>
+                                                <span *ngIf="language=='English'&&problem.label">{{problem.label.en}}</span>
+                                            </td>
+                                             
+                                             <td  
+                                             *ngFor='let member of familyMembers' 
+                                             (mouseover)='setMemberProblem(member,problem)'
+                                             (mouseleave)='removeMemberProblem(member,problem)'
+                                             (click)='editFamily(problem, member)'>
+                                               
+                                                 
+                                            <span 
+                                            *ngIf='problem.showFamilyMembers[this.familyMembers.indexOf(member)]==true;'>
+                                                <mat-checkbox
+                                                [checked]='findMember(problem, member)'
+                                                [ngModel]='findMember(problem, member)'
+                                                   ></mat-checkbox>
+                                            </span>
+                                                   
+                                                
+                                             </td>
+                                             <td><span >
+                                                 <i class="material-icons" style='color:red'
+                                              
+                                                (click)='deleteFamily(problem, familyProblems)'>delete</i>
+                                                </span>
+                                             </td>
+
+                                        </tr>
+                                
+                                </table>
+                            
+                        </div>
+                    </div>
+                   
+    
+            </div>
+           
+            <div class="card card-stats"  (click)='showSocialProblem=true;'>
+                <div class="card-header  card-header-icon">
+                    
+                    <p class="card-title" style=' font-weight: 700;'>
+                    <span *ngIf="language=='Chinese'">社会史</span>
+                    <span *ngIf="language=='English'">Social History</span>
+                </p>
+              </div>
+          </div>
+          <div class='card problem' *ngIf='showSocialProblem'>
+            <div calss='card-header' style='font-weight: 700;font-size: medium;'  
+            [ngClass]="{'card-rose-bottom':color=='purple',
+            'card-success-bottom':color=='green',
+            'card-primary-bottom':color!='green'
+            &&color!='purple'}" >  
+            <span *ngIf="language=='Chinese'">社会史</span>
+            <span *ngIf="language=='English'">Social History</span>
+                <i class='material-icons pull-right' 
+                (click)='showSocialProblem=false;'>close</i>
+            </div>
+             <div class="card-body" >
+                       
+                    <div class='title'>
+                        <input type='text' 
+                            class='form-control' 
+                            placeholder='{{search}}'
+                         >
+                        <i class='material-icons' 
+                           (click)="searchProblemItem(search, 'social')">search</i>
+                        </div>        
+                        <div class='card search' *ngIf='showProblemItems'>
+                            <div class='card-header'>
+                                <i class='material-icons pull-right' 
+                                (click)='showProblemItems=null'>close</i>
+                          </div>
+                          <div class='card-body'>
+                        <table class="table table-striped" >
+                               
+                          
+                                    <tr *ngFor='let problemItem of problemItems'
+                                    (click)='selectProblem(problemItem,socialProblems)'>
+                                        <td>  
+                                            <span *ngIf="language=='Chinese'&&problemItem.label">{{problemItem.label.ch}}</span>
+                                            <span *ngIf="language=='English'&&problemItem.label">{{problemItem.label.en}}</span>
+                                        </td>
+                                    </tr>
+                           
+                            </table></div></div>
+                        <div class="card-body" >
+                                
+                        
+                                <table class="table" style='margin:0px; padding:0px;'>
+
+                                    <tr *ngIf='socialProblems&&socialProblems.length>0'>
+                                        <th></th>
+                                        <th  [ngClass]="{'card-rose-font':color=='purple',
+                                        'card-success-font':color=='green',
+                                        'card-primary-font':color!='green'
+                                        &&color!='purple'}" *ngFor='let ob of socialProblems[0].obs'>  
+                                        <span *ngIf="ob.type!='date'"> {{ob.value}}</span>
+                                        <span *ngIf="ob.type=='date'"> {{ob.value|date:"yyyy/MM/dd"}}</span>
+                                    </th>
+                                    <th></th></tr>
+                                   
+                                        <tr height="20" *ngFor='let problem of socialProblems' 
+                                        style='margin:-5px; padding: -5px;'
+                                        (mouseover)='problem.delete=true'
+                                        (mouseleave)='problem.delete=false'>
+                                             <td height="50" style='margin:-5px; padding: -5px;'>
+                                                    <span *ngIf="language=='Chinese'&&problem.label">{{problem.label.ch}}</span>
+                                                    <span *ngIf="language=='English'&&problem.label">{{problem.label.en}}</span>
+                                            </td>
+                                             
+                                             <td  *ngFor='let ob of problem.obs' (click)='getOb(ob, problem)'>  
+                                               
+                                                <span *ngIf="ob.type!='date'"> {{ob.value}}</span>
+                                                <span *ngIf="ob.type=='date'"> {{ob.value|date:"yyyy/MM/dd"}}</span>
+                                                 <span *ngFor='let value of ob.values'>
+                                                        <span *ngIf="language=='Chinese'">{{value.text}}</span>
+                                                        <span *ngIf="language=='English'">{{value.enText}}</span>
+                                                </span>
+                                            
+                                             </td>
+                                             <td *ngIf='problem.delete'>
+                                                 <i class="material-icons" style='color:red'
+                                                (click)='delete(problem, socialProblems)'>delete</i>
+                                             </td>
+
+                                        </tr>
+                                
+                                </table>
+                            
+                        </div>
+                    
+                </div>
+           </div>
+        </div>-->

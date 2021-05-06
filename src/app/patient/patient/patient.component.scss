@@ -1,0 +1,216 @@
+@import 'src/assets/scss/base.scss';
+
+//改版后的样式
+.main-layout {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    padding: 0 0 50px 50px;
+    background: $grey-background;
+    box-sizing: border-box;
+    overflow: auto;
+    .sidebar-container {
+        transition: width .28s;
+        width: 300px!important;
+        padding: 0 20px;
+        height: calc(100vh - 130px);
+        position: fixed;
+        font-size: 0;
+        top: 80px;
+        bottom: 0;
+        left: 50px;
+        z-index: 990;
+        overflow: hidden;
+        background-color: $white;
+        border-radius: 20px;
+        box-shadow: 0px 9px 29px 0px rgba(0, 0, 0, 0.09);
+    }
+    .main-container {
+        width: 100%;
+        min-width: 1000px;
+        padding-right: 50px;
+        padding-left: 345px;
+        height: calc(100vh - 50px);
+        transition: margin-left .28s;
+        margin-left: 0;
+        margin-right: 0px;
+        .navbar {
+            height: 60px;
+            padding: 0;
+            margin-bottom: 20px;
+            border-radius: 0;
+            box-shadow: none;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: space-between;
+            background: transparent!important;
+            .navbar-left {
+                span:nth-child(1) {
+                    display: inline-block;
+                    width: 30px;
+                    height: 25px;
+                    margin-right: 24px;
+                    cursor: pointer;
+                    img {
+                        width: 100%;
+                        vertical-align: top;
+                    }
+                }
+                span:nth-child(2) {
+                    font-size: $fontSize24;
+                    font-family: PingFangSC, PingFangSC-Semibold;
+                    font-weight: 600;
+                    color: $darkfontColor;
+                    line-height: 36px;
+                }
+            }
+            .navbar-right {
+                width: 190px;
+                padding: 8px 15px;
+                background: $white;
+                border-radius: 10px;
+                box-sizing: border-box;
+                display: flex;
+                justify-content: space-between;
+                cursor: pointer;
+                .heard {
+                    width: 35px;
+                    height: 32px;
+                    background: linear-gradient(240deg,#0b3691 9%, #7886f0 80%);
+                    margin-top: 2px;
+                }
+                .txt {
+                    span:nth-child(1) {
+                        display: block;
+                        font-size: $fontSize14;
+                        font-family: PingFangSC, PingFangSC-Medium;
+                        font-weight: 500;
+                        text-align: left;
+                        color: $darkfontColor;
+                        line-height: 20px;
+                    }
+                    span:nth-child(2) {
+                        display: block;
+                        font-size: $fontSize12;
+                        font-family: PingFangSC, PingFangSC-Medium;
+                        font-weight: 500;
+                        text-align: left;
+                        color: $lightfontColor;
+                        line-height: 16px;
+                    }
+                }
+                .arrow-down {
+                    width: 24px;
+                    height: 24px;
+                    margin-top: 6px;
+                    img {
+                        width: 100%;
+                        vertical-align: top;
+                    }
+                }
+            }
+        }
+        .app-main {
+            width: 100%;
+            height: calc(100vh - 130px);
+            box-sizing: border-box;
+            position: relative;
+            margin-right:0;
+        }
+    }
+    &.sidbarhidden {
+        .sidebar-container {
+            width: 80px!important;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+        .main-container {
+            padding-left: 120px!important;
+        }
+    }
+}
+
+//phone style
+.cell-layout{
+    background: $grey-background;
+    padding-bottom: 4.5rem;
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+
+.footer-nav-bar {
+    padding: 13rem/$base 0 8rem/$base;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 991;
+    background: #fff;
+    box-shadow: 0px 0px 6px 0px rgba(121, 161, 161, 0.2);
+    .bignav {
+        display: inline-block;
+        width: 22.4%;
+        position: absolute;
+        bottom: 23rem/$base;
+        img {
+            width: 100%;
+            vertical-align: top;
+        }
+    }
+    .kong {
+        display: inline-block;
+        width: 22.4%;
+    }
+    .nav {
+        width: 19.4%;
+        display: inline-block;
+        dt {
+            width: 21rem/$base;
+            height:  21rem/$base;
+            margin: 0 auto;
+            img {
+                width: 100%;
+                vertical-align: top;
+            }
+            &.home-icon {
+                background: url('../../../assets/images/core/home.png') no-repeat center center /100% 100%;
+            }
+            &.yy-icon {
+                background: url('../../../assets/images/core/calendar.png') no-repeat center center /100% 100%;
+            }
+            &.article-icon {
+                background: url('../../../assets/images/core/article.png') no-repeat center center /100% 100%;
+            }
+            &.my-icon {
+                background: url('../../../assets/images/core/my.png') no-repeat center center /100% 100%;
+            }
+        }
+        dd {
+            font-family: PingFangSC-Semibold;
+            font-size: 12rem/$base;  
+            color: #B0BED4;
+            line-height: 17rem/$base;  
+            text-align: center;
+            margin-top: 5rem/$base;  
+        }
+    }
+    .sel {
+        dd {
+            color: #1B69C7;
+        }
+        dt {
+            &.home-icon {
+                background: url('../../../assets/images/core/home-sel.png') no-repeat center center /100% 100%;
+            }
+            &.yy-icon {
+                background: url('../../../assets/images/core/calendar-sel.png') no-repeat center center /100% 100%;
+            }
+            &.article-icon {
+                background: url('../../../assets/images/core/article-sel.png') no-repeat center center /100% 100%;
+            }
+            &.my-icon {
+                background: url('../../../assets/images/core/my-sel.png') no-repeat center center /100% 100%;
+            }
+        }
+    } 
+}

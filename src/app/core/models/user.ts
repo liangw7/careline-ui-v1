@@ -1,0 +1,54 @@
+export class User {
+    // 根据方法需要增加参数
+    _id!: String;
+    // 家庭成员管理绑定的父id
+    father_id!: String;
+    relationship!: String;
+    email!: String;
+    weChatID!: String;
+    openID!: String;
+    weChatNickname!: String;
+    deviceUserID!: String;
+    userName!: String;
+    password!: String;
+    sortNumber!: Number;
+    role!: String;
+    name!: String;
+    enName!: String;
+    phone!: String;
+    ssn!: String;
+    city!: String;
+    gender!: String;
+    age!: Number;
+    ageObj!: Object;
+    birthday!: String;
+    photo!: String;
+    specialty!: String;
+    color!: String;
+    desc!: String;
+    procedureDate!: Date;
+    createdBy!: Object;
+    modifiedBy!: Object;
+    activity!: Object;
+    profiles: any[] = [];
+    service!: Object;
+    marketPlace!: Object;
+    providers: any[] = [];
+    introForms: any[] = [];
+    labs: any[] = [];
+    followups: any[] = [];
+    serviceList: any[] = [];
+    marketList: any[] = [];
+    allergyList: any[] = [];
+    primaryProblem!: Object;
+    userID!: String;
+    status!: String;
+    title!: String;
+    enTitle!: String;
+    enDesc!: String;
+    follow!: String;
+    patientLists: any[] = [];
+    screeningList: any[] = [];
+    educations: any[] = [];
+    carePlans: any[] = [];
+}

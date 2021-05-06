@@ -1,0 +1,213 @@
+<div class="overlay" *ngIf="loading">
+  <div class="spinner-wrapper" >
+   
+    <spinner></spinner>
+  </div>
+</div>  
+  
+<div> 
+  <div class='card formbox' [ngClass]="{'wap-wapper': bigScreen == 0}" *ngIf='obSet'>
+      <div *ngIf='!emBedSet' class="closebtn" (click)='close()'>
+        <i class='material-icons pull-right'>close</i>
+      </div>
+      <div class='card-header'> 
+        <button class='btn pull-left'*ngIf='obSet.index'>{{obSet.index+1}}</button>
+        <span class="title">
+            <span *ngIf="language=='English'">{{obSet.label.en}}</span>
+            <span *ngIf="language=='Chinese'">{{obSet.label.ch}}</span>
+        </span>
+        <span *ngIf="obSet.values&&obSet.values.length>0"
+        [ngClass]="{'levelOne':obSet.values[0].alertLevel==1,
+        'levelTwo':obSet.values[0].alertLevel==2,
+        'normal':obSet.values[0].alertLevel!=1&&obSet.values[0].alertLevel!=2}">
+        &nbsp;&nbsp;{{obSet.value}} &nbsp;&nbsp;{{obSet.values[0].text}}
+        </span>
+        <a class='btn btn-round btn-base' *ngIf='obSet.desc&&obSet.desc.selectAll&&!negative' (click)='getNegative()'>全部阴性</a>
+        <a class='btn btn-round btn-default'  *ngIf='obSet.desc&&obSet.desc.selectAll&&negative' (click)='cancelNegative()'>取消阴性</a>
+        <a class='btn btn-round btn-base' 
+        *ngIf="obSet.desc&&obSet.desc.educationObs&&user&&user.role!='patient'" (click)='getEducation()'>临床信息</a>
+        <a class='btn btn-round btn-base' 
+        *ngIf="obSet.desc&&obSet.desc.educationObs&&user&&user.role=='patient'" (click)='getEducation()'>信息</a>
+        <button *ngIf='patient&&changed' class='btn btn-round btn-base pull-right' (click)='save()'> 提交</button>
+      </div>
+    
+ 
+      <!-- [ngStyle]="{'height':screenSize.height*0.8+'px'}" -->
+      <div #obSetElem class='card-body'  id="{{set}}" style='overflow:auto'
+            [ngClass]="{'card-body':!emBedSet,'card-body-2':emBedSet }">
+          <div *ngFor="let ob of obSet.obs|orderBy:'index'; " >              
+         <div class='table table-responsive' *ngIf="(showOb(ob, obSet)||!ob.addsIn)&&ob.type=='instruction'" >
+          <span>{{ob.index+1}}.&nbsp;
+            <span *ngIf="ob.label">{{ob.label.ch}}</span>
+          </span>
+            <table class='table'>
+              <tr>
+                  <td>
+                  <div class=row *ngIf='ob.imageUrl' style='width:95%'>
+                    <div class='col-sm-4'>
+                      <img [src]="ob.imageUrl" *ngIf='ob.imageUrl'  class='ob-image' >
+                    </div>
+                    <div class='col-sm-8'>  
+                      <div *ngIf="language=='Chinese'&&ob.education">
+                      <div *ngFor="let item of breakLines(ob.education.ch)">
+                        {{item}}
+                      </div>
+                    </div>
+                      <div *ngIf="language=='English'&&ob.education">
+                        <div *ngFor="let item2 of breakLines(ob.education.en)">
+                          {{item2}}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div *ngIf='!ob.imageUrl'>
+                  
+                    <div *ngIf="language=='Chinese'&&ob.education">
+                    <div *ngFor="let item of breakLines(ob.education.ch)">
+   
+                      {{item}}
+                    </div>
+                  </div>
+                    <div *ngIf="language=='English'&&ob.education">
+                      <div *ngFor="let item2 of breakLines(ob.education.en)">
+   
+                        {{item2}}
+                      </div>
+                    </div>
+                  </div>  
+                    </td>
+                </tr>
+            </table>
+          </div>
+          <div class='table table-responsive' *ngIf="(showOb(ob, obSet)||!ob.addsIn)&&ob.type!='instruction'">
+            <table class='table' *ngIf='bigScreen==1||(bigScreen==0&&!emBed)'>
+             <!-- <tr (click)='getOb(ob, obSet, form)'>-->
+              <!---  <tr>
+               <td *ngIf="form&&form.formType!='followup'">                  
+                  
+                        
+                  <div style=' width:60%;
+                  margin:0px;
+                  padding:0px;
+                  border-bottom:1px black solid;
+                  border-width: medium;'>
+                              <span *ngIf="ob.required" 
+                              style="color:red; font-weight: 700;text-align:left" >*&nbsp;&nbsp;</span>
+                            
+                              <span *ngIf="language=='Chinese'&&ob.label"
+                              style='color:black;text-align:left'
+                              >{{ob.label.ch}}</span>
+                              <span *ngIf="language=='English'&&ob.label"
+                              style='color:black;text-align:left'
+                              >{{ob.label.en}}</span>
+                    </div>
+                </td>
+                <td *ngIf="form&&form.formType=='followup'">                  
+                  
+                        
+                
+                  <span *ngIf="ob.required" 
+                  style="color:red; font-weight: 700;text-align:left" >*&nbsp;&nbsp;</span>
+                
+                  <span *ngIf="language=='Chinese'&&ob.label"
+                  style='color:black;text-align:left'
+                  class='followup-ob'>{{ob.label.ch}}</span>
+                  <span *ngIf="language=='English'&&ob.label"
+                  style='color:black;text-align:left'
+                  class='followup-ob'>{{ob.label.en}}</span>
+          
+                </td>
+              </tr>-->
+              <tr>
+                <td  style=' padding-left:20px;'>
+                  <div style='width:98%'>
+                  <app-ob  
+                  [ob]='ob' 
+                  [currentOb]='currentOb'
+                  [obSet]='obSet'
+                  [forms]='forms'
+                  [form]='form'
+                  [emBed]=true
+                  [visit]='visit'
+                  [noTitle]=true
+                  (messageEvent)="receiveMessage($event)"
+                  (obEvent)="receiveOb($event)">
+                </app-ob>
+              </div>
+                </td>
+              </tr>
+                
+                
+            
+            </table> 
+            <table class='table' style=' margin:0px;padding:0px;'*ngIf="emBed&&bigScreen==0">
+            <tr 
+            (click)='getOb(ob, obSet, form)'>
+            
+              <th style='text-align: left;'>
+          
+                <span *ngIf="ob.required" 
+                style="color:red; font-weight: 700;text-align:left" >*&nbsp;&nbsp;</span>
+                <span  style='color:black;text-align:left'>{{ob.index+1}}.&nbsp;</span>
+                <span *ngIf="language=='Chinese'&&ob.label"
+                style='color:black;text-align:left'
+                class='followup-ob'>{{ob.label.ch}}</span>
+                <span *ngIf="language=='English'&&ob.label"
+                style='color:black;text-align:left'
+                class='followup-ob'>{{ob.label.en}}</span>
+          
+              </th>
+            </tr>
+              <tr>
+              <td  style=' padding:0px;'>
+              
+                <app-ob [ob]='ob' 
+                [obSet]='obSet' 
+                [forms]='forms'
+                [form]='form'
+                [visit]='visit'
+                [emBed]=true
+                [bigScreen]='bigScreen'
+                [noTitle]='noTitle'
+                (messageEvent)="receiveMessage($event)">
+              
+              </app-ob>
+              </td>
+            
+              </tr>
+          
+          </table>
+              
+          </div>
+          </div>  
+          </div>
+    <div *ngIf='!emBedSet' class="nextbox">
+      <a class=' btn btn-base' href='javascript:void();' *ngIf='nextSet' (click)='saveAndNext()'>
+        <span>下一组:</span>
+        <span>{{nextSet.label.ch}}</span>
+        <i class='fa fa-arrow-right pull-right' style='font-size:36;margin-top:0px;'></i>
+      </a>
+      <a class=' btn btn-round btn-base' href='javascript:void();' 
+      *ngIf="!nextSet&&obSet.values&&form.label&&form.label.en!='CDSS'" (click)='save()'>
+        <span> 检查结果</span>
+        <i class='fa fa-arrow-right pull-right' style='font-size:36;margin-top:0px;'></i>
+      </a>
+      <a class=' btn btn-round btn-base' href='javascript:void();' 
+      *ngIf="!nextSet" (click)='save()'>
+        <span> 关闭</span>
+        <i class='fa fa-arrow-right pull-right' style='font-size:36;margin-top:0px;'></i>
+      </a>
+      <a class=' btn btn-round btn-base' href='javascript:void();' *ngIf="form.label&&form.label.en=='CDSS'" (click)='follow()'>
+        <span *ngIf="language=='Chinese'">关注领取免费门票</span>
+        <span *ngIf="language=='English'">follow</span>
+      </a>
+    </div>
+    </div>
+</div>
+  
+
+
+
+
+
+

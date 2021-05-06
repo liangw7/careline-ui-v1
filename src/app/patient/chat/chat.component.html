@@ -1,0 +1,407 @@
+<div class="overlay" *ngIf="loading">
+  <div class="spinner-wrapper">
+    <spinner></spinner>
+  </div>
+</div>
+
+<div class="chatwapper" [ngClass]="{'wap-wapper':bigScreen==0}">
+  <div class="closebtn" (click)='close()'>
+    <i class='material-icons pull-right'>close</i>
+  </div>
+  <div class="pc-native-pay" *ngIf="code_url && bigScreen == 1 && !isPaySuccess">
+    <ngx-qrcode [elementType]="elementType" [errorCorrectionLevel]="correctionLevel" [value]="code_url"
+      cssClass="bshadow"></ngx-qrcode>
+    <img src="assets/images/login/weixin_logo.png" alt=""><span>微信支付</span>
+  </div>
+  <ul class='nav'>
+    <li *ngIf="visit&&visit.status=='active'">
+      <a class="nav-link btn-selected">
+        <span *ngIf="bigScreen==1 &&selected" >{{selected.name}}的</span>咨询室
+      </a>
+    </li>
+    <li *ngIf="visit">
+      <a class="nav-link" href="javascript:void(0)" (click)='consultForm=true;getForm(profile)'>
+        咨询表
+      </a>
+    </li>
+    <!-- <li *ngIf="visit&&visit.status=='active'&&bigScreen == 0">
+      <a class="nav-link" href="javascript:void(0)" (click)="showVideo=true;connectVideo();">
+        视频
+      </a>
+    </li> -->
+    <li *ngIf="user.role=='provider'">
+      <a class="nav-link" href="javascript:void(0)" (click)='getTransfer()'>咨询完毕
+      </a>
+    </li>
+    <!-- <li>
+      <a class="nav-link" (click)='close()'>关闭 </a>
+    </li> -->
+  </ul>
+  <span>{{connectionMessage}}</span>
+  <span *ngIf='gettingNewMessage&&isText==true'> 对方正在输入...</span>
+  <div *ngIf='consultForm' class="consultform" [ngClass]="{'video-pc':bigScreen==1, 'video-cell':bigScreen==0}">
+    <div class="closebtn" *ngIf='!visit' (click)='closeConsultForm()'>
+      <i class='material-icons pull-right'>close</i>
+    </div>
+    <div class="closebtn" *ngIf='visit' (click)='consultForm=false'>
+      <i class='material-icons pull-right'>close</i>
+    </div>
+    <div class="form-content">
+      <div class='card-header' *ngIf='!visit'>
+        <!-- <a class="btn btn-round btn-base" (click)='payment()'>咨询付费：20元</a> -->
+        <a class="btn btn-round btn-base">咨询付费：20元</a>
+      </div>
+      <div class='card-body' [ngClass]="{'special': visit }" [ngStyle]="{'height':outerHeight+'px'}">
+        <div class="warntxt">***请先填写咨询表格，以便医生在咨询开始之前收集您的健康信息
+        </div>
+        <app-form [forms]='forms' [language]='language' [visit]='visit' [patient]='patient' [showInstruction]=false>
+        </app-form>
+      </div>
+    </div>
+  </div>
+  <div *ngIf='chatRoom' style="overflow: auto;width:100%;" [ngStyle]="{'height':outerHeight+'px'}">
+    <div [ngClass]="{'video-pc':bigScreen==1, 'video-cell':bigScreen==0}" *ngIf='showVideo'>
+      <div class='card'>
+        <div class='card-header'>
+          <button class='btn btn-round pull-right' (click)="showVideo=false;"
+            style=' background: linear-gradient(to bottom, #19498d 0%, #a8c5ec 50%);'>
+            关闭</button>
+        </div>
+        <video #myCallVideo class="call__preview" [ngStyle]="{'height':innerHeight+'px'}" autoplay="autoplay">
+        </video>
+        <div class='video call__stream' style=' background: linear-gradient(to bottom, #19498d 0%, #a8c5ec 50%);'
+          [ngStyle]="{'height':(screenSize.height*0.9)+'px'}">
+          <video *ngIf='!videoComing' #myAnswerVideo autoplay="autoplay">
+          </video>
+          <div class="card card-profile" style=' background: transparent;'>
+            <div class="card-avatar" *ngIf='videoComing||!remoteStream'>
+              <img [src]='getUrl(selected.photo)' />
+            </div>
+            <div class="card-body">
+              <p *ngIf='videoComing'>vedio Coming</p>
+              <img *ngIf='!remoteStream' src="./assets/img/phone-call.jpg" class='photo'>
+              <p *ngIf='!localStream&&(isVideo==true||isAudio==true)'> 正在联系对方...</p>
+              <p *ngIf='myPeer.disconnected'>No answer! please call later</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="call__messages" *ngIf="!videoComing&&isText == true &&! isCapture">
+      <div #messageBox id="outer" class="call__messages___list" [ngClass]="{'spe': optionSelected}"  [ngClass]="{'newheight':optionSelected && bigScreen==0 && visit&&visit.status == 'active'}">
+        <div *ngFor="let m of messages">
+          <div class='row'>
+            <img class='photo my-photo' [src]='getUrl(user.photo)' *ngIf="m.userID==myPeerId">
+            <img class='photo' [src]='getUrl(selected.photo)' *ngIf="m.userID==selected._id">
+            <div class='call__messages___message' [ngClass]="{'my-message':m.userID==myPeerId,
+                            'card-chat':m.userID==myPeerId,'message-left':m.userID==selected._id,'message-right':m.userID==myPeerId}">
+              <div *ngFor='let content of m.contentList'>
+                <div *ngIf='content&&!content.component' class="txt" [ngClass]="{'card-chat':m.userID==myPeerId}">
+                  <span>{{content.message}}</span>
+                </div>
+                <div *ngIf='content&&content.component' [ngClass]="{'card-chat':m.userID==myPeerId}">
+                   <lab *ngIf="content&&content.component=='lab'" [patient]='patient' [selectedLabSet]='content.message'>
+                  </lab>
+                  <summary *ngIf="content&&content.component=='summary'" [patient]='patient'
+                    [selectedObSet]='content.message'>
+                  </summary>
+
+                  <image *ngIf="content&&content.component=='image'" [patient]='patient'
+                    [selectedImage]='content.message'>
+                  </image>
+
+                  <lab *ngIf="content&&content.component=='labImage'" [patient]='patient'
+                    [selectedLabImage]='content.message'>
+                  </lab>
+
+                  <health-file *ngIf="content&&content.component=='medical file'" [patient]='patient'
+                    [selectedImage]='content.message'></health-file> 
+                  <div *ngIf="content&&content.component=='article'" class='card articlebox' (click)="getArticle(content.article)">
+                    <div style=' display: flex;justify-content: space-between;'>
+                      <div>
+                        <img [src]='getUrl(content.article.image)' class='photo'>
+                        <span *ngIf="language=='Chinese'&&content.article">{{content.article.label.ch}}</span>
+                        <span *ngIf="language=='English'&&content.article">{{content.article.label.en}}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div *ngIf="content&&content.component=='visit'" class='card visitbox'>
+                    <div class="visit-in">
+                      <div class="card-header">
+                        <span>就诊</span>
+                      </div>
+                      <ul class="card-body" *ngIf='content.visit'>
+                        <li (click)="getVisit(content.visit)">
+                          <div class="label" *ngIf="content.visit.profiles">
+                            <span *ngIf="content.visit.profiles.length>0">
+                              <span *ngFor='let profile of content.visit.profiles'>
+                                <span *ngIf="language=='Chinese'&&profile&&profile.label">{{profile.label.ch}}</span>
+                                <span *ngIf="language=='English'&&profile&&profile.label">{{profile.label.en}}</span>
+                              </span>
+                            </span>
+                          </div>
+                          <div class="type">
+                            <span *ngIf="language=='Chinese'">{{content.visit.type}}</span>
+                            <span *ngIf="language=='English'">{{content.visit.enType}}</span>
+                          </div>
+                          <div class="visitdate">{{content.visit.visitDate| date: "yyyy/MM/dd HH:mm"}}</div>
+                          <!-- <div class="visitdate">{{content.visit.createdAt| date: "yyyy/MM/dd HH:mm"}}</div> -->
+                        </li>
+                      </ul>
+                      <!-- <table class='table table-responsive table-hover' *ngIf='content.visit'>
+                        <tr (click)="getVisit(content.visit)">
+                          <td *ngIf="content.visit.profiles">
+                            <span *ngIf="content.visit.profiles.length>0">
+                              <span *ngFor='let profile of content.visit.profiles'>
+                                <span *ngIf="language=='Chinese'&&profile&&profile.label">{{profile.label.ch}}</span>
+                                <span *ngIf="language=='English'&&profile&&profile.label">{{profile.label.en}}</span>
+                              </span>
+                            </span>
+                          </td>
+                          <td> <span *ngIf="language=='Chinese'">{{content.visit.type}}</span>
+                            <span *ngIf="language=='English'">{{content.visit.enType}}</span>
+                          </td>
+                          <td>{{content.visit.visitDate| date: "yyyy/MM/dd HH:mm"}}</td>
+                          <td>{{content.visit.createdAt| date: "yyyy/MM/dd HH:mm"}}</td>
+                        </tr>
+                      </table> -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <!-- <div *ngIf='m.messageObj&&m.messageObj.filetype' (click)='openFile(m.messageObj)'>
+                   
+                    <img *ngIf="findMsg(m.messageObj)" 
+                          [src]='m.messageObj.url' 
+                          alt="untitled" 
+                          height="80" 
+                          width="80">
+                  </div>-->
+              <!--   {{ m.message }} -->
+            </div>
+          </div>
+        </div>
+        <div>&nbsp; </div>
+        <div>&nbsp;</div>
+        <div id='bottom'>&nbsp;</div>
+      </div>
+      <div *ngIf='bigScreen==1'>
+        <div *ngIf="visit&&visit.status == 'active'" class="call__messages___form">
+          <button *ngIf="isClosed" class="btn big" (click)="closeVisit()">关闭咨询</button>
+          <button class='btn' (click)="uploadLab();optionSelected=false;">实验室</button>
+          <button class='btn' (click)="uploadImage();optionSelected=false;">影像</button>
+          <button class='btn' (click)="uploadMedicalFile();optionSelected=false;">病历</button>
+          <button class='btn' (click)="addFiles=true;getSummaryObSets();optionSelected=false;">文档 </button>
+          
+          <!-- <span class="addmore" (click)="optionSelected=!optionSelected"><span *ngIf="optionSelected">-</span><span *ngIf="!optionSelected">+</span></span> -->
+          <input #messageInput id='messageInput' class="form-control" [ngClass]="{'spe': isClosed}" placeholder="message" [(ngModel)]="message">
+          <button class="btn" (click)="sendMessage(); scrollToBottom();">发送</button>
+        </div>
+        <div *ngIf="visit&&visit.status == 'reserved'" class="call__messages___form">
+          <span style="font-size:16px;line-height: 40px;">咨询已经关闭,无法继续对话</span>
+          <!-- <input #messageInput id='messageInput' class="form-control" readonly placeholder="咨询已经关闭,无法继续对话" [(ngModel)]="message"> -->
+        </div>
+      </div>
+      <div *ngIf='bigScreen==0'>
+        <div *ngIf="visit&&visit.status == 'active'" class="call__messages___form" style="padding-bottom: 0.75rem;">
+          <button *ngIf="isClosed" class="btn big" (click)="closeVisit()">关闭咨询</button>
+          <span class="addmore" (click)="optionSelected=!optionSelected"><span *ngIf="optionSelected">-</span><span *ngIf="!optionSelected">+</span></span>
+          <input #messageInput id='messageInput' class="form-control" [ngClass]="{'spe': isClosed}" placeholder="message" [(ngModel)]="message">
+          <button class="btn" (click)="sendMessage(); scrollToBottom();">发送</button>
+        </div>
+        <div *ngIf="visit&&visit.status == 'reserved'" class="call__messages___form">
+          <span style="font-size:16px;line-height: 40px;">咨询已经关闭,无法继续对话</span>
+          <!-- <input #messageInput id='messageInput' class="form-control" readonly placeholder="咨询已经关闭,无法继续对话" [(ngModel)]="message"> -->
+        </div>
+      </div>
+    </div>
+    <div class='tool' *ngIf="optionSelected && bigScreen==0 && visit&&visit.status == 'active'">
+      <div class='card-body'>
+        <!-- <button class='btn btn-round'
+                (click)="startCapture()"
+              ><i class="fa fa-camera" aria-hidden="true"></i></button>
+              <button class='btn btn-round' (click)="capture();optionSelected=false;">
+                  <i class="fa fa-crop" aria-hidden="true"></i>
+              </button>
+              <button
+                class='btn btn-round'
+                (click)="sendCapture();optionSelected=false;"
+              > <i class="fa fa-upload" aria-hidden="true"></i>
+             </button>
+              <button
+              class='btn btn-round'
+                (click)="stopCapture();optionSelected=false;"
+              ><i class="fa fa-close" aria-hidden="true"></i></button>
+              <button
+              class='btn btn-round'
+              [ngClass]="{
+                'card-rose':color=='purple',
+                'card-success':color=='green',
+                'card-primary':color!='purple'&&color!='green'}"
+                (click)="connectVideo();optionSelected=false;"
+              >
+              <i class="fa fa-video-camera" aria-hidden="true"></i>
+              </button>
+              <button
+                class='btn btn-round'
+                [ngClass]="{
+                  'card-rose':color=='purple',
+                  'card-success':color=='green',
+                  'card-primary':color!='purple'&&color!='green'}"
+                (click)="connectAudio();optionSelected=false;"
+              ><i class="fa fa-phone" aria-hidden="true"></i></button>
+             <button
+              class='btn btn-round'
+              [ngClass]="{
+                'card-rose':color=='purple',
+                'card-success':color=='green',
+                'card-primary':color!='purple'&&color!='green'}"
+                (click)="connectCamera();optionSelected=false;"
+              ><i class="fa fa-camera" aria-hidden="true"></i>
+               </button>-->
+        <button class='btn btn-round' (click)="uploadLab();optionSelected=false;">实验室</button>
+        <button class='btn btn-round' (click)="uploadImage();optionSelected=false;">影像</button>
+        <button class='btn btn-round' (click)="uploadMedicalFile();optionSelected=false;">病历</button>
+        <button class='btn btn-round' (click)="addFiles=true;getSummaryObSets();optionSelected=false;">文档 </button>
+      </div>
+      <!-- <div class='card-header'>
+        <a class='btn btn-round pull-right' (click)="optionSelected=false;" href='javascript:void();'>close</a>
+      </div> -->
+    </div>
+
+    <div class='col-sm-12' *ngIf='addFiles'>
+      <div class='card documenttabs cdkDrag'>
+        <div class="closebtn" (click)='addFiles=false;'>
+          <i class='material-icons'>close</i>
+        </div>
+        <div class="card-header">
+          <ul class="nav" >
+            <li class="nav-item" [ngClass]="{'active':summaryShow}" (click)="documentTabFn('summary')">
+              <a mat-button class="nav-link">
+                <span *ngIf="language=='Chinese'">临床总结 </span>
+                <span *ngIf="language=='English'">Summary</span>
+              </a>
+            </li>
+            <li class="nav-item" [ngClass]="{'active':imageShow}" (click)="documentTabFn('image')">
+              <!-- (click)='getImageSets()' -->
+              <a mat-button class="nav-link">
+                <span *ngIf="language=='Chinese'"> 影像</span>
+                <span *ngIf="language=='English'">image</span>
+              </a>
+            </li>
+            <li class="nav-item" [ngClass]="{'active':labShow}" (click)="documentTabFn('lab')">
+              <!-- (click)=' getLabSets();' -->
+              <a mat-button class="nav-link">
+                <span *ngIf="language=='Chinese'"> 实验室</span>
+                <span *ngIf="language=='English'">lab</span>
+              </a>
+            </li>
+            <li class="nav-item" [ngClass]="{'active':reportShow}" (click)="documentTabFn('report')">
+              <!-- (click)='getVisits()' -->
+              <a mat-button class="nav-link">
+                <span *ngIf="language=='Chinese'">门诊</span>
+                <span *ngIf="language=='English'">report</span>
+              </a>
+            </li>
+            <li class="nav-item" [ngClass]="{'active':articleShow}" (click)="documentTabFn('article')">
+              <!-- (click)='getArticles()' -->
+              <a mat-button class="nav-link">
+                <span *ngIf="language=='Chinese'">文章</span>
+                <span *ngIf="language=='English'">article</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class='card-body'>
+          <div class="tab-content">
+            <div class="tab-pane" [ngClass]="{'active':summaryShow}"  id="summary">
+              <table class='table table-hover'>
+                <tr *ngFor="let obSet of summaryObSets" (click)='addSummary(obSet)'>
+                  <td> {{obSet.label.ch}}</td>
+                </tr>
+              </table>
+            </div>
+            <div class="tab-pane" [ngClass]="{'active':labShow}" id="lab">
+              <table class='table table-hover'>
+                <tr *ngFor="let labSet of labSets" (click)='addLab(labSet)'>
+                  <td> {{labSet.label.ch}}
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <div class="tab-pane" [ngClass]="{'active':imageShow}" id="image">
+              <table class='table table-hover'>
+                <tr *ngFor="let image of images" (click)='addImage(image)'>
+                  <td><img [src]="image.url" class="thumbnail"></td>
+                  <td style="line-height: 75px;">{{image.createdAt| date: "yyyy/MM/dd HH:mm"}}</td>
+                </tr>
+              </table>
+            </div>
+            <div class="tab-pane" [ngClass]="{'active':reportShow}" id="report">
+              <table class='table table-hover'>
+                <tr (click)="addVisit(visit)" *ngFor="let visit of visits">
+                  <td>
+                    <span *ngIf="visit.profile">
+                      <span *ngIf="!visit.profile.label">{{visit.profile.name}}</span>
+                      <span *ngIf="language=='Chinese'&&visit.profile.label">{{visit.profile.label.ch}}</span>
+                      <span *ngIf="language=='English'&&visit.profile.label">{{visit.profile.label.en}}</span>
+                      /{{visit.profile.visitType}}</span>
+                  </td>
+                  <td> <span *ngIf="language=='Chinese'">{{visit.type}}</span>
+                    <span *ngIf="language=='English'">{{visit.entype}}</span>
+                  </td>
+                  <td>{{visit.visitDate| date: "yyyy/MM/dd HH:mm"}}</td>
+                  <td>{{visit.createdAt| date: "yyyy/MM/dd HH:mm"}}</td>
+                  <td><span *ngIf='visit.createdBy'>
+                      {{visit.createdBy.name}},&nbsp;{{visit.createdBy.title}},&nbsp;{{visit.createdBy.service}}
+                    </span></td>
+                  <td><span *ngIf='visit.modifiedBy'>
+                      {{visit.modifiedBy.name}},&nbsp;{{visit.modifiedBy.title}},&nbsp;{{visit.modifiedBy.service}}
+                    </span></td>
+                </tr>
+              </table>
+            </div>
+            <div class="tab-pane" [ngClass]="{'active':articleShow}" id="article">
+              <table class='table table-hover'>
+                <tr *ngFor="let article of articles" (click)='addArticle(article)'>
+                  <td>
+                    <span *ngIf="language=='Chinese'">{{article.label.ch}}</span>
+                    <span *ngIf="language=='English'">{{article.label.en}}</span>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="filelist">
+      <div class="sendfile">
+        <input #fileInput type="file" name="file" id="file" class="call__messages___send" ng2FileSelect
+          [uploader]="uploader" (input)="sendFile($event)" [hidden]=true>
+        <label [hidden]=true htmlFor="file" class="mui-btn mui-btn--small mui-btn--primary mui-btn--fab">+</label>
+      </div>
+      <div>
+        <hr />
+        <div id="file_list" *ngIf="files&&files.length">
+          <table class="mui-table mui-table--bordered">
+            <thead>
+              <tr>
+                <th>Files shared to you:</th>
+              </tr>
+            </thead>
+            <tbody *ngFor="let f of files">
+              <tr key="f.id">
+                <td>
+                  <a :href="f.url" :download="f.name">{{ f.name }}</a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div class="progress-bar progress-bar-success" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }">
+      {{uploader.progress}}%</div>
+  </div>
+</div>

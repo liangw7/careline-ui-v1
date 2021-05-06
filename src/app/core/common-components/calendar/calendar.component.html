@@ -1,0 +1,266 @@
+<!-- wap端 -->
+<div class="wap-wapper" [ngClass]="{'hidden': role == 'pcyy'}">
+  <div class="header">
+      <div class="arrow-left"></div>
+      <div class="calendar">
+          <div class="left">
+              <span class="pre" *ngIf='monthView' (click)="goToLastMonth()"><span></span></span>
+              <span class="pre" *ngIf='weekView' (click)="goToLastWeek()"><span></span></span>
+              <span class="txt">{{currentMonth}}</span>
+              <span class="next" *ngIf='monthView' (click)="goToNextMonth()"><span></span></span>
+              <span class="next" *ngIf='weekView' (click)="goToNextWeek()"><span></span></span>
+          </div>
+          <div class="right">
+              <span [ngClass]="{'active':monthView}" (click)='monthView=true;weekView=false;getDaysOfMonth();'>月</span>
+              <span [ngClass]="{'active':weekView}" (click)='monthView=false;weekView=true;'>周</span>
+          </div>
+      </div>
+  </div>
+  <div class="appoint" *ngIf='allWeek'>
+   <!-- <span class="txt">预约日程</span>
+    <div class="radiobox" (click)="getSelectedWeek(currentWeek)">
+      <i class='material-icons check-icon' *ngIf="showWeek.checked">
+        check_circle</i>
+      <i class='material-icons check-icon' *ngIf="!showWeek.checked">
+        radio_button_unchecked</i> All Week
+    </div>-->
+  </div>
+  <div class="calendarbox" *ngIf='monthView'>
+    <div *ngFor='let week of weeks'>
+      <ul class="week-txt" *ngIf='weeks.indexOf(week)==0'>
+          <li>日</li>
+          <li>一</li>
+          <li>二</li>
+          <li>三</li>
+          <li>四</li>
+          <li>五</li>
+          <li>六</li>
+      </ul>
+      <ul class="calendar-num clearfix">
+          <li *ngFor='let day of week' [ngClass]="{'selected-1':day==selectedDate.getDate()&&date.getMonth()==currentDay.getMonth(),
+          'selected-3':(day>week[6]&&weeks.indexOf(week)==0)||(day<week[0]&&weeks.indexOf(week)>1)}"
+(click)='getSelectedDate(day,week);'><span>{{day}}</span></li>
+      </ul>
+    </div>
+  </div>
+  <div class="calendarbox" *ngIf='weekView'>
+      <ul class="week-txt">
+          <li>日</li>
+          <li>一</li>
+          <li>二</li>
+          <li>三</li>
+          <li>四</li>
+          <li>五</li>
+          <li>六</li>
+      </ul>
+      <ul class="calendar-num clearfix">
+          <li *ngFor='let day of currentWeek'
+          [ngClass]="{'selected-1':day==selectedDate.getDate()&&date.getMonth()==currentDay.getMonth(),
+                            'selected-3':(day>currentWeek[6]&&weeks.indexOf(currentWeek)==0)||(day<currentWeek[0]&&weeks.indexOf(currentWeek)>1)}"
+          (click)='getSelectedDate(day,currentWeek);'><span>{{day}}</span></li>
+      </ul>
+  </div>
+  
+</div>
+<!--
+
+<div class="pc-calendar" [ngClass]="{'hidden': role != 'pcyy'}">
+  <div class="pc-header">
+    <div class="header-left"><span></span><span>预约记录</span></div>
+    <div class="header-right">
+      <div class="left" (click)="getSelectedWeek(currentWeek)" *ngIf='allWeek'>
+          <span class='material-icons'><span [ngClass] ="{'in':!showWeek.checked}"></span></span>All Week
+      </div>
+      <div class="center">
+          <span class="pre" *ngIf='monthView' (click)="goToLastMonth()"><span></span></span>
+          <span class="pre" *ngIf='weekView' (click)="goToLastWeek()"><span></span></span>
+          <span class="txt">{{currentMonth}}</span>
+          <span class="next" *ngIf='monthView' (click)="goToNextMonth()"><span></span></span>
+          <span class="next" *ngIf='weekView' (click)="goToNextWeek()"><span></span></span>
+      </div>
+      <div class="right">
+          <span [ngClass]="{'active':monthView}" (click)='monthView=true;weekView=false;getDaysOfMonth();'>月</span>
+          <span [ngClass]="{'active':weekView}" (click)='monthView=false;weekView=true;'>周</span>
+      </div>
+    </div>
+  </div>
+  <div class="pc-content">
+    <div class="pc-main">
+      <div class="calendarbox" *ngIf='monthView'>
+        <div *ngFor='let week of weeks'>
+          <ul class="week-txt" *ngIf='weeks.indexOf(week)==0'>
+              <li>日</li>
+              <li>一</li>
+              <li>二</li>
+              <li>三</li>
+              <li>四</li>
+              <li>五</li>
+              <li>六</li>
+          </ul>
+          <ul class="calendar-num clearfix">
+              <li *ngFor='let day of week' [ngClass]="{'selected-1':day==selectedDate.getDate()&&date.getMonth()==currentDay.getMonth(),
+              'selected-3':(day>week[6]&&weeks.indexOf(week)==0)||(day<week[0]&&weeks.indexOf(week)>1)}"
+    (click)='getSelectedDate(day,week);'><span>{{day}}</span></li>
+          </ul>
+        </div>
+      </div>
+      <div class="calendarbox" *ngIf='weekView'>
+          <ul class="week-txt">
+              <li>日</li>
+              <li>一</li>
+              <li>二</li>
+              <li>三</li>
+              <li>四</li>
+              <li>五</li>
+              <li>六</li>
+          </ul>
+          <ul class="calendar-num clearfix">
+              <li *ngFor='let day of currentWeek'
+              [ngClass]="{'selected-1':day==selectedDate.getDate()&&date.getMonth()==currentDay.getMonth(),
+                                'selected-3':(day>currentWeek[6]&&weeks.indexOf(currentWeek)==0)||(day<currentWeek[0]&&weeks.indexOf(currentWeek)>1)}"
+              (click)='getSelectedDate(day,currentWeek);'><span>{{day}}</span></li>
+          </ul>
+      </div>
+      <div class="appoint">
+        <ul>
+          <li class="all">全天</li>
+          <li class="active">8:00</li>
+          <li class="active">8:30</li>
+          <li class="active">9:00</li>
+          <li>9:30</li>
+          <li>10:00</li>
+          <li>10:30</li>
+          <li>11:00</li>
+          <li>11:30</li>
+          <li>13:00</li>
+          <li>13:30</li>
+          <li>14:00</li>
+          <li>14:30</li>
+          <li>15:00</li>
+          <li>15:30</li>
+          <li>16:00</li>
+          <li>16:30</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+  
+
+<div class=" card" style='margin:0px; padding:0px;border-radius:15px;display: none;'>
+  <div class="card-header card-header-tabs " style='margin:0px; padding:0px;' [ngClass]="{'card-header-rose':color=='purple'&&!followup,
+            'card-header-success':color=='green'&&!followup,
+            'card-header-primary':color!='green'&&color!='purple'&&!followup,
+            'followup':'followup'}">
+    <div class="nav-tabs-navigation">
+      <div class="nav-tabs-wrapper">
+        <ul class="nav nav-tabs" data-tabs="tabs">
+          <li class="nav-item">
+            <a mat-button class="nav-link " [ngClass]="{'active':monthView}"
+              (click)='monthView=true;weekView=false;getDaysOfMonth();'>
+              月
+              <div class="ripple-container"></div>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a mat-button class="nav-link" [ngClass]="{'active':weekView}" (click)='monthView=false;weekView=true;'>
+              周
+              <div class="ripple-container"></div>
+            </a>
+          </li>
+
+          <li class="nav-item">
+            <a mat-button class="nav-link">
+              <label style=' font-weight: 700;color:white'>
+                {{currentMonth}}</label>
+            </a>
+          </li>
+          <li class="nav-item pull-right" *ngIf='monthView' (click)="goToLastMonth()">
+            <a mat-button class="nav-link">
+              <label style=' font-weight: 700;color:white'>
+                << </label>
+            </a>
+          </li>
+          <li class="nav-item pull-right" *ngIf='monthView' (click)="goToNextMonth()">
+            <a mat-button class="nav-link">
+              <label style=' font-weight: 700;color:white'>>></label>
+            </a>
+          </li>
+          <li class="nav-item pull-right" *ngIf='weekView' (click)="goToLastWeek()">
+            <a mat-button class="nav-link">
+              <label style=' font-weight: 700;color:white'>
+                << </label>
+            </a>
+          </li>
+          <li class="nav-item pull-right" *ngIf='weekView' (click)="goToNextWeek()">
+            <a mat-button class="nav-link">
+              <label style=' font-weight: 700;color:white'>>></label>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="card-body" style='padding:0px;margin:0px;' [ngClass]="{'followup-calendar':'followup'}">
+    <a class='btn btn-round' style=' background-color:white' (click)="getSelectedWeek(currentWeek)" *ngIf='allWeek'>
+      <i class='material-icons' *ngIf="showWeek.checked" style="color:#3f51b5;">
+        check_circle</i>
+      <i class='material-icons' *ngIf="!showWeek.checked" style="color:#3f51b5;">
+        radio_button_unchecked</i> All Week
+    </a>
+
+    <div class="tab-content">
+      <div *ngIf='monthView' class='table table-responsive'>
+
+        <table class='table' *ngFor='let week of weeks' style='text-align: center;'>
+          <tr *ngIf='weeks.indexOf(week)==0' [ngClass]="{'card-rose-color':color=='purple',
+                          'card-success-color':color=='green',
+                          'card-primary-color':color!='green'
+                          &&color!='purple'}">
+
+            <th>七</th>
+            <th>一</th>
+            <th>二</th>
+            <th>三</th>
+            <th>四</th>
+            <th>五</th>
+            <th>六</th>
+          </tr>
+          <tr style='border-width: thin;'>
+
+            <th *ngFor='let day of week' [ngClass]="{'selected-1':day==selectedDate.getDate()&&date.getMonth()==currentDay.getMonth(),
+                          'selected-3':(day>week[6]&&weeks.indexOf(week)==0)||(day<week[0]&&weeks.indexOf(week)>1)}"
+              (click)='getSelectedDate(day,week);'>{{day}}</th>
+          </tr>
+
+        </table>
+      </div>
+      <div *ngIf=weekView class='table table-responsive'>
+
+        <table class='table' style='text-align: center;'>
+          <tr [ngClass]="{'card-rose-color':color=='purple',
+                'card-success-color':color=='green',
+                'card-primary-color':color!='green'
+                &&color!='purple'}">
+
+            <th>七</th>
+
+            <th>一</th>
+            <th>二</th>
+            <th>三</th>
+            <th>四</th>
+            <th>五</th>
+            <th>六</th>
+          </tr>
+          <tr style=' padding: 0px; margin: 0px;'>
+
+            <th *ngFor='let day of currentWeek'
+              [ngClass]="{'selected-1':day==selectedDate.getDate()&&date.getMonth()==currentDay.getMonth(),
+                                'selected-3':(day>currentWeek[6]&&weeks.indexOf(currentWeek)==0)||(day<currentWeek[0]&&weeks.indexOf(currentWeek)>1)}"
+              (click)='getSelectedDate(day,currentWeek);'>{{day}}</th>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>-->

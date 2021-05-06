@@ -1,0 +1,33 @@
+export class Visit {
+    desc!: Object;
+    patientID!: String;
+    providerID!: String;
+    provider!: Object;
+    patient!: Object;
+    patientName!: String;
+    providerName!: String;
+    patientEmail!: String;
+    providerEmail!: String;
+    patientGender!: String; 
+    patientBirthday!: Date;
+    providerGender!: String;
+    providerSpecialty!: String;
+    orderID!: String;
+    type!: String;
+    followupType!: String;
+    profile!: Object;
+    profiles!: [];
+    forms!: [];
+    status!: String; 
+    availableAtYear!: Number;
+    availableAtMonth!: Number;
+    availableAtDate!: Number;
+    availableAtHours!: Number;
+    availableAtMinutes!: Number;
+    reservedAt!: Date;
+    visitDate!: Date;
+    createdBy!: Object;
+    modifiedBy!: Object;
+    // 根据业务后加参数,待验证
+    enType!: String;
+}

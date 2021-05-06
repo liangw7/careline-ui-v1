@@ -1,0 +1,123 @@
+$darkBlue: #093d87;
+$baseBlue: #0c4492;
+$lightBlue: #2d79e6;
+$lightGray: #f8fbff;
+$darkGray: #e2e9f9;
+$white: #fff;
+$grey-background: linear-gradient(to left top,  #f8fbff, #e2e9f5);
+$fontSize32: 32px;
+$fontSize24: 24px;
+$fontSize22: 22px;
+$fontSize20: 20px;
+$fontSize18: 18px;
+$fontSize16: 16px;
+$fontSize14: 14px;
+$fontSize12: 12px;
+
+$darkfontColor: #313131;
+$basefontColor: #606060;
+$lightfontColor: #A9A9B0;
+$baseBluefontColor: #0c4492;
+$lightBluefontColor: #2d79e6;
+$lightBluefontColor-2: #77abf5;
+$whitefontColor: #fff;
+
+//移动端rem换算
+$base: 16;
+
+
+ul,ol,li {
+    list-style: none;
+}
+.form-control {
+    background-image: none!important;
+    padding-left: 20px;
+}
+.btn-base {
+    color: #fff;
+    background-color: $lightBlue;
+    border-color: $lightBlue;
+    margin: 0;
+}
+.btn-default {
+    color: $darkfontColor;
+    background-color: #fff;
+    border-color: #ccc;
+    margin: 0;
+}
+.btn-default:hover {
+    color: $darkfontColor;
+    background-color: #e6e6e6;
+    border-color: #adadad;
+}
+
+//弹框样式
+::ng-deep .mat-dialog-container {
+    padding: 0!important;
+    border-radius: 10px!important;
+    overflow: visible!important;
+}
+
+//弹框上悬浮的关闭按钮
+.closebtn {
+    width: 40px;
+    height: 40px;
+    padding: 8px;
+    border-radius: 50%;
+    position: absolute;
+    top: -15px;
+    right: -15px;
+    z-index: 10;
+    background: $white;
+    box-shadow: 0 0 4px rgba(0,0,0,.2);
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
+//手机端返回上一页
+.backbox {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9;
+    width: 100vw;
+    height: 42rem/$base;
+    padding: 5rem/$base 10rem/$base;
+    background: $lightGray;
+    .material-icons {
+        font-size: 32px;
+    }
+}
+
+//时间插件的index
+::ng-deep .cdk-overlay-container {
+    z-index: 999;
+}
+
+//清除浮动
+.clearfix { zoom:1; }
+.clearfix:after {
+    content:" ";
+    display:block; 
+    height:0;
+    visibility:hidden; 
+    clear:both; 
+}
+
+//省略图
+.emptybox {
+    padding-top: 80rem/$base;
+    .imgbox {
+        text-align: center;
+        margin-bottom: 20rem/$base;
+        .material-icons {
+            font-size: 100rem/$base;
+            color:$basefontColor;
+            opacity: 0.2;
+        }
+    }
+    p {
+        font-size: $fontSize14;
+        text-align: center;
+    }
+}

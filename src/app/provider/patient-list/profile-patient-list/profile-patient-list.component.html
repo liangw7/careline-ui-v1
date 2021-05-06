@@ -1,0 +1,184 @@
+<div class="overlay" *ngIf="loading">
+  <div class="spinner-wrapper">
+    <spinner></spinner>
+  </div>
+</div>
+<div class="card wapper">
+  <div *ngIf="content=='list'">
+  <div class="card-header titlebox" >
+    <div class="header-left">
+      <span>{{profile.label.ch}}</span>
+      <span *ngIf='profile.patients'>当前病人数: {{profile.patients.length}}</span>
+    </div>
+    <div class="header-right" data-tabs="tabs">
+      
+        <a mat-button class="btn btn-round"
+          [ngClass]="{'btn-base':profile.list,
+                      'active':profile.list}" href="#allPatients" data-toggle="tab"
+          (click)='getTotalPatients();profile.filter=false;profile.list=true;profile.device=false;'>
+          <span *ngIf="language=='Chinese'">所有</span>
+          <span *ngIf="language=='English'">All Patient</span>
+          <div class="ripple-container"></div>
+        </a>
+        <a class="btn btn-round" 
+        [ngClass]="{'active':profile.filter,
+                    'btn-base':profile.filter}"
+          href="#filter" data-toggle="tab"
+          (click)='initFilter();profile.filter=true;profile.list=false;profile.device=false;'>
+          <span *ngIf="language=='Chinese'"> 筛选</span>
+          <span *ngIf="language=='English'">Filter</span>
+          <div class="ripple-container"></div>
+        </a>
+      <div *ngIf="profile.profileUrl&&profile.profileUrl.deviceUrl">
+        <a mat-button class="btn btn-round" 
+        [ngClass]="{'btn-base':profile.device,
+                    'active':profile.device}" 
+        href="#allPatients" data-toggle="tab"
+          (click)='getDevicePatients();profile.chart=false;profile.filter=false;profile.list=false;profile.device=true;'>
+          <span *ngIf="language=='Chinese'">device</span>
+          <span *ngIf="language=='English'">device</span>
+          <div class="ripple-container"></div>
+        </a>
+      </div>
+    </div>
+    <div  style='width:60%' *ngIf='profile.list||(profile.filter&&!selectedPatientList)' ></div>
+    <mat-form-field *ngIf='profile.filter&&selectedPatientList' 
+    style='width:60%'>
+      <mat-select [value]='selectedPatientList.label.ch' 
+      (selectionChange)="onOptionChange($event)"
+     >
+        <mat-option 
+        *ngFor="let patientList of profile.patientLists" 
+        [value]="patientList.label.ch">
+          {{patientList.label.ch}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+    <div class="tab-content" >
+      <div class="tab-pane" id="filter" [ngClass]="{'active':profile.filter}">
+        <!-- <a mat-button class="nav-link" 
+                          href="javascript:void(0)"
+                          (click)='addToMyList()' >
+                          <span *ngIf="language=='Chinese'"> 放入我的病人</span>
+                          <span *ngIf="language=='English'">Add to My patients</span>
+                          </a>-->
+        <div *ngIf='bigScreen==1&&profile.filter&&selectedPatientList'>
+         
+            <child-patient-list 
+              [patients]='profile.patients' 
+              [profile]='profile'
+              [selectedObs]='selectedPatientList.selectedObs' 
+              [listName]='selectedPatientList.name' 
+              [language]='language'>
+            </child-patient-list>
+         
+          </div>
+       
+        <div *ngIf='bigScreen==0&&profile.filter'>
+          <div *ngIf='profile.showList&&showFilter'>
+            <button class='btn' *ngFor='let patientList of profile.patientLists'
+              (click)='getPatientsByFilter(patientList);profile.showList=false'>
+              {{patientList.label.ch}}
+            </button>
+          </div>
+          <div *ngIf='profile.selectedPatientList&&!profile.showList'>
+            <div class='card-header' (click)='profile.showList=true;'>
+              <i class='material-icons pull-left'>arrow_back</i>
+              <H4 class='pull-right'>{{profile.selectedPatientList.name}}</H4>
+            </div>
+
+            <child-patient-list [patients]='profile.patients' [profile]='profile'
+              [selectedObs]='profile.selectedPatientList.selectedObs' [listName]='profile.selectedPatientList.name'
+              [language]='language'>
+            </child-patient-list>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="tab-pane" id="profile">
+                        
+                        <div *ngIf='profilePatients' >
+                          <mat-tab-group   (selectedTabChange)=" getPatientByProfile($event)">
+                              <mat-tab label='{{consultProfile.name}}' 
+                                          *ngFor='let consultProfile of consultProfiles'>
+                                          
+                              </mat-tab>
+                          </mat-tab-group>
+                      </div>      
+      
+                      </div>-->
+      <div class="tab-pane" id='allPatients'
+        [ngClass]="{'active':profile.list}">
+        <!-- <a mat-button class="nav-link" 
+                              href="javascript:void(0)"
+                              (click)='addToMyList()' >
+                          
+                              <span *ngIf="language=='Chinese'"> 放入我的病人</span>
+                          <span *ngIf="language=='English'">Add to My patients</span>
+                              </a>-->
+        <div *ngIf='profile.list'>
+          <child-patient-list [patients]='profile.totalPatients' [profile]='profile'></child-patient-list>
+        </div>
+      </div>
+     
+      <div class="tab-pane" id='device'       [ngClass]="{'active':profile.device}">
+
+        <div *ngIf='profile.device'>
+          <child-patient-list [devicePatients]='devicePatients' [profile]='profile'></child-patient-list>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="content=='chart'">
+    <div class="card-header titlebox" >
+      <div class="header-left">
+        <span>{{profile.label.ch}}</span>
+        <span *ngIf='profile.patients'>当前病人数: {{profile.patients.length}}</span>
+      </div>
+  
+    </div>
+    <mat-tab-group *ngIf='profile&&profile.report'>
+
+          <mat-tab label="{{getObSetLabel(language,obSet)}}" *ngFor='let obSet of profile.report.obSets'>
+           <div class='row' style="margin: 0;overflow-x: hidden;">
+              <div class="charttable" [ngClass]="{'col-sm-3':bigScreen==1,'col-sm-12':bigScreen==0}">
+                <div class='tabel-responsive'>
+                  <table class='table'>
+                    <tr *ngFor="let ob of obSet.obs|orderBy:'index'" (click)='selectedOb=ob;'
+                      [ngClass]="{'selected':selectedOb&& selectedOb._id==ob._id}">
+                      <td> {{ob.label.ch}}</td>
+                    </tr>
+                  </table>
+                </div>
+              </div>
+              <div class='col-sm-9' *ngIf='selectedOb&&bigScreen==1'>
+                <div class="card">
+                  <div class="card-body" *ngIf='selectedOb'>
+                    <graph-report [isReport]='profile.isReport' [profile]='profile' [language]='language'
+                      [patients]=' profile.totalPatients' [obSet]='obSet' [limit]='limit' [ob]='selectedOb'>
+                    </graph-report>
+                  </div>
+                </div>
+              </div>
+            </div>
+           <!--<div class='row' style="padding:1px">
+                
+            <div class='col-sm-4' *ngFor="let ob of obSet.obs">
+            <div class="card" >
+              
+                <div class="card-body" style='padding-top:0' >
+                  <div style='padding-top:0'>
+                    <span *ngIf="language=='English'">{{ob.label.en}}</span>
+                    <span *ngIf="language=='Chinese'">{{ob.label.ch}}</span>
+                    
+                  </div>
+                  <graph-report [isReport]='profile.isReport' [profile]='profile' [language]='language'
+                  [patients]=' profile.totalPatients' [obSet]='obSet' [limit]='limit' [ob]='selectedOb'>
+                </graph-report>
+                    </div>
+                </div>
+            </div>
+        </div>-->
+          </mat-tab>
+    </mat-tab-group>
+</div>

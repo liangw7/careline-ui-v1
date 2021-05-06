@@ -1,0 +1,434 @@
+a {
+    text-decoration: none;
+}
+.pc-container {
+    display: flex;
+    display: -webkit-box;
+    display: -webkit-flex;
+    flex-direction: column;
+    -ms-flex-direction: column;
+  //  background: #e2e9f9;
+    background: url('/assets/images/home/pc/blue-3.jpg');
+    body {
+        color: #333;
+        font-weight: 600;
+        font-size: 16px;
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        text-align: center;
+    }
+    header {
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background: #07244d;
+        text-align: center;
+        a {
+            text-decoration: none;
+            opacity: 1;
+            font-size: 16px;
+            font-family: SourceHanSansSC, SourceHanSansSC-Regular;
+            font-weight: 400;
+            text-align: left;
+            color: #ffffff;
+            line-height: 32px;
+            margin: 0 8px;
+        }
+        button {
+            width: 170px;
+            height: 48px;
+            background: linear-gradient(240deg, #376cde 9%, #2cc9ff 80%);
+            border-radius: 8px;
+            span {
+                width: 78px;
+                height: 24px;
+                opacity: 1;
+                font-size: 16px;
+                font-family: SourceHanSansSC, SourceHanSansSC-Normal;
+                font-weight: Normal;
+                text-align: center;
+                color: #ffffff;
+                line-height: 24px;
+            }
+        }
+    }
+    footer {
+        height: 284px;
+        opacity: 1;
+        background: #07244d;
+        span {
+            height: 24px;
+            opacity: 0.99;
+            font-size: 16px;
+            font-family: SourceHanSansSC, SourceHanSansSC-Regular;
+            font-weight: 400;
+            text-align: left;
+            color: #ffffff;
+            line-height: 24px;
+        }
+        div {
+            margin-top: 10px;
+            margin-left: 80px;
+            text-align: left;
+        }
+    }
+    .language {
+        width: 67px;
+        height: 32px;
+        opacity: 1;
+        font-size: 16px;
+        font-family: SourceHanSansSC, SourceHanSansSC-Regular;
+        font-weight: 400;
+        text-align: right;
+        color: #5781ed;
+        line-height: 32px;
+    }
+    .public-img {
+        vertical-align: middle;
+    }
+    #public-select-img {
+        margin-right: 120px;
+    }
+    #public-footer-top {
+        margin-top: 82px;
+        margin-left: 10%;
+    }
+}
+
+.phone-container {
+    //background-color:  #e2e9f5 ;
+    height:100%;
+    background-color: linear-gradient(to bottom,#f8fbff 0%, #e2e9f5  50%);
+    .phone-top{
+        height:300px;
+        width:100%;
+        
+        background:linear-gradient(to left top,  rgba(5,52,118,1), rgba(45,121,230,1));
+    
+        
+        margin-top:0px;
+        .phone-public-p2{
+            font-size:large;
+            font-weight: 500;
+            text-align: left;
+           color:white;
+            margin:15px;
+            
+        }
+    }
+    .phone-body{
+       // margin-top:-130px;
+        background:linear-gradient(to left top,  #f8fbff, #e2e9f5);
+
+    }
+    padding:0px;
+    a {
+        text-decoration: none;
+    }
+    display: flex;
+    display: -webkit-box;
+    display: -webkit-flex;
+    flex-direction: column;
+    -ms-flex-direction: column;
+ 
+    body {
+        color: #333;
+        font-weight: 600;
+        font-size: 16px;
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        text-align: center;
+    }
+    footer {
+        position: fixed;
+        z-index: 1;
+        bottom: 0;
+        width: 100%;
+        background: #ffffff;
+        text-align: center;
+        .public-phone-main-footer {
+            float: left;
+         
+            width: 20%;
+            a{
+                p {
+                    opacity: 1;
+                    font-size: 15px;
+                    font-family: SourceHanSansSC, SourceHanSansSC-Regular;
+                    font-weight: 600;
+                    text-align: center;
+                    color: #5781ed;
+                    padding-left: 15px;
+                    padding-right: 15px;
+                    padding-top: 11px;
+                    padding-bottom:11px;
+                    margin:0px;
+                }
+                img {
+                    width: 50%;
+                }
+            }
+            .link-cell-active{
+                
+                p {
+                    opacity: 1;
+                    font-size: 15px;
+                    font-family: SourceHanSansSC, SourceHanSansSC-Regular;
+                    font-weight: 600;
+                    text-align: center;
+                    color: white;
+                    padding-left: 15px;
+                    padding-right: 15px;
+                    padding-top: 11px;
+                    padding-bottom: 11px;
+                    background:linear-gradient(to left top,  rgba(5,52,118,1), rgba(45,121,230,1));
+                   // background:linear-gradient(90deg, rgba(45,121,230,1) 0%, rgba(5,52,118,1) 50%);
+                    margin:0px;
+                }
+                img {
+                    width: 50%;
+                }
+            }
+ 
+        }
+        // .link-cell-active{
+        //     img{
+        //         fill:red;
+        //     }
+        //     p{
+        //         color: black;
+        //     }
+        // }
+    }
+    /* 父元素设置flex，然后布局方向为主轴从上到下，那么header和footer就会在最上边和最下边 */
+    html,
+    body {
+        height: 100%;
+        margin: 0;
+        /* 不设置100%，高度撑不开 */
+    }
+    img {
+        height: 100%;
+        width: 100%;
+    }
+    .public-phone-main-bottom {
+        height: 284px;
+        opacity: 1;
+        background: #07244d;
+        text-align: left;
+        span {
+            height: 24px;
+            opacity: 0.99;
+            font-size: 16px;
+            font-family: SourceHanSansSC, SourceHanSansSC-Regular;
+            font-weight: 400;
+            color: #ffffff;
+            line-height: 24px;
+        }
+        #public-phone-main-bottom-top {
+            margin-top: 5%;
+            margin-left: 10%;
+        }
+    }
+    .public-phone-img {
+        vertical-align: middle;
+        width: 45px;
+        height: 45px;
+    }
+    #public-phone-select-img {
+        margin-right: 120px;
+    }
+
+    .public-phone-main {
+        margin-top: 20px;
+    }
+    .public-phone-main p {
+        text-align: center;
+    }
+    .public-phone-p1 {
+        height: 32px;
+        opacity: 1;
+        font-size: 18px;
+        font-family: SourceHanSansSC, SourceHanSansSC-Regular;
+        font-weight: 400;
+        text-align: left;
+        color: #5781ed;
+        line-height: 32px;
+        margin: 0px 6px;
+    }
+    .public-phone-p2 {
+        opacity: 1;
+        font-size: 48px;
+        font-family: SourceHanSansSC, SourceHanSansSC-Bold;
+        font-weight: 700;
+        text-align: left;
+        color: #333333;
+        line-height: 48px;
+        margin: 0px 6px;
+    }
+    .public-phone-p3 {
+        height: 36px;
+        opacity: 0.2;
+        font-size: 36px;
+        font-family: SourceHanSansSC, SourceHanSansSC-Bold;
+        font-weight: 700;
+        text-align: left;
+        color: #333333;
+        line-height: 36px;
+        margin-top: -10px;
+        margin-left: 6px;
+    }
+    .public-phone-p4 {
+        height: 16px;
+        opacity: 1;
+        font-size: 16px;
+        font-family: SourceHanSansSC, SourceHanSansSC-Normal;
+        font-weight: Normal;
+        text-align: left;
+        color: #686868;
+        line-height: 16px;
+        margin: 0px 6px;
+    }
+}
+
+.login {
+    margin: 20px 10px;
+}
+.my-card {
+    padding: 40px;
+    border-radius: 10px;
+    background-color: transparent;
+    color: white;
+    font-weight: 900;
+}
+.active {
+    color: black;
+    font-weight: 900;
+}
+.align-center {
+    text-align: center;
+    margin-top: -20px;
+    margin-left: 40%;
+    width: 700px;
+    padding: 50px;
+}
+.align-left {
+    text-align: center;
+    margin-top: 10%;
+    padding: 20px;
+    //width: 550px;
+}
+.my-form {
+    min-width: 150px;
+    max-width: 600px;
+    width: 100%;
+    padding: 20px;
+}
+.my-small-form {
+    min-width: 150px;
+    padding: 20px;
+}
+.full-width {
+    width: 100%;
+}
+.nav {
+  //  background-color: white;
+    height: 70px;
+    padding-top: 8px;
+    font-weight: 900;
+    font-style: inherit;
+    font-feature-settings: "blwf";
+    font-size-adjust: inherit;
+}
+
+.login-main {
+    margin-top: 10%;
+    width: 550px;
+}
+mat-card {
+    min-width: 40%;
+}
+.image {
+    background-size: cover;
+    background-position: 100% 100%;
+    background-color: white;
+}
+.photo {
+    height: 150px;
+    width: 100%;
+}
+.logo-image {
+    height: 25px;
+    width: 100%;
+}
+.top {
+    position: fixed;
+    right: 0;
+    left: 0;
+    top: 0;
+    clear: both;
+}
+::ng-deep .mat-checkbox-checked .mat-checkbox-background {
+    background-color: blue !important;
+}
+.tool-bar {
+   
+    position: fixed;
+    text-align: center;
+    left: 0px;
+    margin-top: 0px;
+    top: 0px;
+    z-index: 5;
+    font-weight: 700;
+     background:transparent; 
+     color: #0b3691;
+    //background: url('/assets/images/home/pc/background-blue.jpg');
+ 
+}
+.home {
+    margin-top: 0px;
+    bottom: 0;
+    margin-bottom: 0px;
+    top: 0;
+}
+.main-sheet {
+    padding: 5%;
+    margin-right: 0px;
+    background: linear-gradient(to bottom, #cbdaf0 0%, white 50%);
+}
+.main-sheet-cell {
+    width: 100%;
+    position: relative;
+    padding: 0px;
+    margin: 0px;
+}
+.link-cell {
+    padding: 10px;
+    background-color: transparent;
+    color: #0b3691;
+}
+.link-cell p {
+    font-weight: 500;
+    font-size: x-small;
+}
+.link-active {
+   
+    p {
+   
+        color: #78a0f5;
+        font-weight: 700;
+    }
+   
+}
+
+
+
+
+.card-bottom {
+    bottom: 0;
+    margin-bottom: 0;
+    position: fixed;
+    z-index: 5;
+    width: 100%;
+    text-align: center;
+}

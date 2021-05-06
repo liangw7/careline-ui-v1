@@ -1,0 +1,63 @@
+<div *ngIf="bigScreen==1">
+  <!-- <button (click)="areaFn()">选址组件</button> -->
+  <div class='row-pc clearfix'>
+    <div class='col-sm-3 col-xs-6' *ngFor='let menuItem of menuItems'>
+      <div class='rowitem infobox' (click)='getLink(menuItem)' *ngIf="menuItem.title =='个人信息'">
+        <div class="title">{{menuItem.title}}</div>
+        <i class='material-icons'></i>
+        <div class="headerimg"><img [src]="user.photo" /></div>
+        <div class="info" *ngIf="language=='Chinese'">
+          <div class="name">{{user.name}}</div>
+          <p class="title">{{user.title}}</p>
+        </div>
+        <div class="info" *ngIf="language=='English'">
+          <div class="name">Logging user: {{user.name}}</div>
+          <p class="title">{{user.enTitle}}</p>
+        </div>
+        <p class="link">See More</p>
+      </div>
+      <div class='rowitem' (click)='getLink(menuItem)' *ngIf="menuItem.title !='个人信息'">
+        <div class="title">{{menuItem.title}}</div>
+        <p class="link">See More</p>
+        <div class="pic"><img [src]="menuItem.img" alt=""></div>
+        <!-- <i class="{{menuItem.icon}}"></i> -->
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="bigScreen==0" class='wap-wapper'>
+  <div class='phone-top'>
+    <!-- <div class="quit" (click)='logout()'>
+      <img src="../../../../assets/images/core/quit.png" alt="" />
+    </div> -->
+    <div class="user-container">
+      <div class="headerimg"><img [src]="user.photo" /></div>
+      <div class="info" *ngIf="language=='Chinese'">
+        <span class='name'>{{user.name}}</span>
+        <p class='title'>{{user.title}}</p>
+        <a class='btn btn-round btn-blue' (click)=" getPersonInfo() ">档案</a>
+      </div>
+    </div>
+  </div>
+  <div class='row-cell clearfix'>
+    <div class="rowitem" [routerLink]="['/provider-platform/homepage/main']">
+        <div class="pic"><img src="" alt=""></div>
+        <div class="title">官网</div>
+    </div>
+    <div class="rowitem" *ngFor='let menuItem of menuItems' (click)='getItem(menuItem)'>
+      <div class="pic"><img [src]="menuItem.img" alt=""></div>
+      <div class="title">{{menuItem.title}}</div>
+    </div>
+  </div>
+</div>
+<div *ngIf='selectedItem' class='card block'>
+  <div class='card-header'>
+    <div>{{selectedItem.title}}</div>
+    <div class='pull-right' (click)='selectedItem=null'><i class='material-icons'>close</i></div>
+  </div>
+  <div class='card-body'>
+    <div *ngIf="selectedItem.enTitle=='profile'">
+      <profile (patient)=[user]></profile>
+    </div>
+  </div>
+</div>

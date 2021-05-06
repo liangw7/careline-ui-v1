@@ -1,0 +1,70 @@
+@import 'src/assets/scss/base.scss';
+.wapper {
+    width: 100%;
+    height: calc(100vh - 130px);
+    padding: 20px;
+    background: $white;
+    border-radius: 20px;
+    box-sizing: border-box;
+    overflow: hidden;
+    .form-inline {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+        .form-control {
+            width: 400px;
+            border-radius: 4px;
+        }
+        .btn {
+            margin: 0;
+            border-radius: 4px;
+            padding: 0 20px;
+            height: 40px;
+        }
+    }
+    .table {
+        tr {
+            font-size: $fontSize16;
+            font-family: PingFangSC;
+            text-align: center;
+            color: $basefontColor;
+            line-height: 30px;
+            &.header {
+                font-size: $fontSize16;
+                line-height: 32px;
+                background: $darkGray;
+                td {
+                    padding: 12px!important;
+                }
+            }
+            th, td {
+                border-top: none;
+                border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+                vertical-align: middle;
+                .tablebtn {
+                    display: inline-block;
+                    padding: 0 12px;
+                    height: 28px;
+                    color: #fff;
+                    background: $lightBlue;
+                    border-radius: 4px;
+                    cursor: pointer;
+                    margin: 0 8px;
+                }
+                .thumbnail {
+                    height: 40px;
+                    width: 40px;
+                    vertical-align: top;
+                    margin: 0 auto;
+                    img {
+                        width: 100%;
+                        vertical-align: top;
+                    }
+                }
+            }
+            td {
+                padding: 8px;
+            }
+        }
+    }
+}
