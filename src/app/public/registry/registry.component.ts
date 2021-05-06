@@ -320,7 +320,14 @@ getUserTypes(){
                          if (ob._id==item.obID){
                            ob.dataID=item._id;
                            ob.value=item.value;
-                           ob.values=item.values;
+                           ob.values=[];
+                       
+                           for (let option of ob.options){
+                              if (this.findValue(option, item.values)){
+                                ob.values.push(option)
+                              }
+                           }
+                           
                          }
                      }
                        
@@ -337,7 +344,14 @@ getUserTypes(){
   close(){
     this.dialogRef.close();
   }
-
+  findValue(option:any, values:any){
+  for (let value of values){
+    if (option.text==value){
+      return true
+    }
+  }
+  return false
+  }
   save(){
     this.loading=true;
     //create/update clinical user

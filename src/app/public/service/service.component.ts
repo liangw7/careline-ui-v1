@@ -66,6 +66,7 @@ export class ServiceComponent implements OnInit, AfterViewInit, OnDestroy {
   photo: any;
   @ViewChild('textInput', { read: ElementRef })
   textInput!: ElementRef;
+  background:any;
 
   constructor(
     private entity: ApiUrl,
@@ -120,14 +121,11 @@ export class ServiceComponent implements OnInit, AfterViewInit, OnDestroy {
 
       console.log('this.service', this.service)
       this.descSelected = true;
-      var image: any;
-      if (this.service.photo.slice(0, 4) != 'http')
-        image = this.entity.setFormUploadPhoto + String(this.service.photo) + '.png';
-      else if (this.service.photo.slice(0, 4) == 'http')
-        image = this.service.photo;
-      this.photo = this.getUrl(image);
-      //console.log ('image', image)
+
+   //console.log ('image', image)
       this.introForms = [];
+      this.getBackground();
+      this.getPhoto();
       // console.log ('this.service.introForms[0]._id',this.service.introForms[0]._id)
       if (this.service.introForms.length > 0) {
         var formID = this.service.introForms[0]._id;
@@ -152,13 +150,13 @@ export class ServiceComponent implements OnInit, AfterViewInit, OnDestroy {
           console.log('this.introForms', this.introForms);
           this.getProviders();
           if (this.isWeixin) {
-            this.getSignature(this.service.desc, this.service.name, image);
+            this.getSignature(this.service.desc, this.service.name, this.photo);
           }
         })
       } else {
         this.getProviders();
         if (this.isWeixin) {
-          this.getSignature(this.service.desc, this.service.name, image);
+          this.getSignature(this.service.desc, this.service.name, this.photo);
         }
       }
     })
@@ -167,6 +165,26 @@ export class ServiceComponent implements OnInit, AfterViewInit, OnDestroy {
   ngAfterViewInit() {
 
     //setTimeout(() => this.textInput.nativeElement.focus(), 10); 
+  }
+
+  getBackground(){
+    if (this.service.activity){
+        
+      var image = this.entity.setFormUploadPhoto 
+            + String(this.service.activity.backgroundImage) 
+            + '.png';
+  
+      this.background = this.getUrl(image);
+    }
+  }
+
+  getPhoto(){
+    var image: any;
+    if (this.service.photo.slice(0, 4) != 'http')
+      image = this.entity.setFormUploadPhoto + String(this.service.photo) + '.png';
+    else if (this.service.photo.slice(0, 4) == 'http')
+      image = this.service.photo;
+    this.photo = this.getUrl(image);
   }
 
   goToLogin() {

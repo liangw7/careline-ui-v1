@@ -16,8 +16,8 @@ import { HomePageComponent } from './homepage/homepage.component';
 import { ForgetPasswordComponent } from './forget-password/forget-password.component';
 import { ResetPasswordComponent } from './reset-password/reset-password.component';
 const routes: Routes = [
-  {
-    path: "service/:serviceID", component: ServiceComponent },
+      {path: "service/:serviceID", component: ServiceComponent },
+      {path: "provider/:providerID", component: ProviderComponent },
       {path: '', component: HomeComponent, children: [
       { path: "main", component: HomePageComponent },// 首页
       { path: "login", component: LoginComponent },// 登录

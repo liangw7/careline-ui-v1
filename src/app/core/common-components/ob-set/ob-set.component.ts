@@ -123,14 +123,14 @@ export class ObSetComponent implements OnInit, OnChanges {
     this.bigScreen = this.storage.get('bigScreen');
     this.screenSize = this.storage.get('screenSize');
     this.language = this.storage.get('language');
-    console.log('data', data)
+   // console.log('data', data)
     if (data.form)
       this.form = data.form;
     if (data.forms)
       this.forms = data.forms;
     if (data.obSet)
       this.obSet = data.obSet;
-    console.log('this.obSet', this.obSet)
+   // console.log('this.obSet', this.obSet)
     if (data.registryUser)
       this.registryUser = data.registryUser
     if (data.visit)
@@ -149,7 +149,7 @@ export class ObSetComponent implements OnInit, OnChanges {
       this.visitDate = data.visitDate
     if (data.registry)
       this.registry = data.registry;
-    console.log('form', this.form)
+    //console.log('form', this.form)
   }
 
 
@@ -185,7 +185,7 @@ export class ObSetComponent implements OnInit, OnChanges {
     this.set = this.obSet._id;
     // this.getScreenSize();
     this.startTab = true;
-    console.log('this.emBed', this.emBed)
+  //  console.log('this.emBed', this.emBed)
     this.getNext(this.obSet);
     this.obSet.registry = this.registry;
     this.showCh = true;
@@ -400,7 +400,7 @@ export class ObSetComponent implements OnInit, OnChanges {
       if (obSet.label.ch == selectedTab.textLabel || obSet.label.en == selectedTab.textLabel) {
         this.lastObSet = 'lastObSet'
         this.messageEvent.emit(this.lastObSet);
-        console.log('this.lastObSet sent', this.lastObSet)
+   //     console.log('this.lastObSet sent', this.lastObSet)
       } else {
         this.lastObSet = ''
         this.messageEvent.emit(this.lastObSet);
@@ -414,7 +414,7 @@ export class ObSetComponent implements OnInit, OnChanges {
     if (this.selectedIndex == form.obSets.length - 1) {
       this.lastObSet = 'lastObSet'
       this.messageEvent.emit(this.lastObSet);
-      console.log('this.lastObSet sent', this.lastObSet)
+   //   console.log('this.lastObSet sent', this.lastObSet)
     } else {
       this.lastObSet = ''
       this.messageEvent.emit(this.lastObSet);
@@ -445,7 +445,7 @@ export class ObSetComponent implements OnInit, OnChanges {
 
 
   saveObData(ob: any) {
-    console.log('save ob', ob)
+ //   console.log('save ob', ob)
     ob.valueList = [];
     if (ob.values && ob.values.length > 0) {
       for (let value of ob.values) {
@@ -474,11 +474,11 @@ export class ObSetComponent implements OnInit, OnChanges {
           ob.dataID = this.temp[0]._id;
           params._id = ob.dataID;
           this.allService.datasService.update(params).then((data: any) => {
-            console.log('update patient data', data);
+        //    console.log('update patient data', data);
           });
         } else if ((ob.values && ob.values.length > 0) || ob.value) {
           this.allService.datasService.create(params).then((data: any) => {
-            console.log('create patient data', data);
+        //    console.log('create patient data', data);
           });
         }
       });
@@ -501,11 +501,11 @@ export class ObSetComponent implements OnInit, OnChanges {
           ob.dataID = this.temp[0]._id;
           params._id = ob.dataID;
           this.allService.datasService.update(params).then((data: any) => {
-            console.log('updated visit data', data);
+         //   console.log('updated visit data', data);
           });
         } else if ((ob.values && ob.values.length > 0) || ob.value) {
           this.allService.datasService.create(params).then((data: any) => {
-            console.log('create visit data', data);
+         //   console.log('create visit data', data);
           });
         }
       });
@@ -523,7 +523,7 @@ export class ObSetComponent implements OnInit, OnChanges {
 
     this.allService.datasService.getDatasByFilter2({ patientID: this.patient._id, orderID: order._id, obID: ob._id }).then((obData: any) => {
       this.temp = obData;
-      console.log('obData', obData);
+    //  console.log('obData', obData);
       let params: any = {
         orderID: order._id,
         patientID: this.patient._id,
@@ -540,11 +540,11 @@ export class ObSetComponent implements OnInit, OnChanges {
         ob.dataID = this.temp[0]._id;
         params._id = ob.dataID;
         this.allService.datasService.update(params).then((data: any) => {
-          console.log('updated data', data);
+      //    console.log('updated data', data);
         });
       } else if ((ob.values && ob.values.length > 0) || ob.value) {
         this.allService.datasService.create(params).then((data: any) => {
-          console.log('created data', data);
+      //    console.log('created data', data);
         });
       }
     });
@@ -564,7 +564,7 @@ export class ObSetComponent implements OnInit, OnChanges {
     this.allService.datasService.getDatasByFilter2
       ({ patientID: this.patient._id, problemItemID: obSet._id, obID: ob._id, familyMember: 'self' }).then((obData: any) => {
         this.temp = obData;
-        console.log('obData', obData);
+     //   console.log('obData', obData);
         let params: any = {
           patientID: this.patient._id,
           problemItemID: obSet._id,
@@ -580,11 +580,11 @@ export class ObSetComponent implements OnInit, OnChanges {
           ob.dataID = this.temp[0]._id;
           params._id = ob.dataID;
           this.allService.datasService.update(params).then((data: any) => {
-            console.log('updated data', data);
+         //   console.log('updated data', data);
           });
         } else if ((ob.values && ob.values.length > 0) || ob.value) {
           this.allService.datasService.create(params).then((data: any) => {
-            console.log('created data', data);
+         //   console.log('created data', data);
           });
         }
       });
@@ -604,7 +604,7 @@ export class ObSetComponent implements OnInit, OnChanges {
     this.allService.datasService.getDatasByFilter2
       ({ patientID: this.patient._id, problemItemID: obSet._id, obID: ob._id }).then((obData: any) => {
         this.temp = obData;
-        console.log('obData', obData);
+      //  console.log('obData', obData);
         let params: any = {
           patientID: this.patient._id,
           medicationItemID: obSet._id,
@@ -619,11 +619,11 @@ export class ObSetComponent implements OnInit, OnChanges {
           ob.dataID = this.temp[0]._id;
           params._id = ob.dataID;
           this.allService.datasService.update(params).then((data: any) => {
-            console.log('updated med data', data);
+          //  console.log('updated med data', data);
           });
         } else if ((ob.values && ob.values.length > 0) || ob.value) {
           this.allService.datasService.create(params).then((data: any) => {
-            console.log('created meds data', data);
+         //   console.log('created meds data', data);
           });
         }
       });
@@ -659,7 +659,7 @@ export class ObSetComponent implements OnInit, OnChanges {
                       familyMember: familyMember,
                       name: problem.name
                     }).then((data: any) => {
-                      console.log('problem created', data)
+                  //    console.log('problem created', data)
                     })
                   }
                 })
@@ -792,8 +792,8 @@ export class ObSetComponent implements OnInit, OnChanges {
                 this.messageEvent.emit('submit')
               }
               if (result.next == true) {
-                console.log('index', index)
-                console.log('obSet.obs.length', obSet.obs.length)
+            //    console.log('index', index)
+            //    console.log('obSet.obs.length', obSet.obs.length)
                 if (index < obSet.obs.length - 1) {
                   index++;
                   ob = obSet.obs[index];
@@ -804,11 +804,11 @@ export class ObSetComponent implements OnInit, OnChanges {
 
                   index = 0;
                   setIndex++;
-                  console.log('setIndex', setIndex)
+             //     console.log('setIndex', setIndex)
                   if (setIndex < form.obSets.length) {
                     obSet = form.obSets[setIndex];
                     ob = obSet.obs[0];
-                    console.log('next ob', ob)
+                //    console.log('next ob', ob)
                     this.getOb(ob, obSet, form);
                   }
                 }
@@ -835,11 +835,11 @@ export class ObSetComponent implements OnInit, OnChanges {
       } else if (obSet.addsIn && !this.showObSet(obSet, form)) {
         index = 0;
         setIndex++;
-        console.log('setIndex', setIndex)
+     //   console.log('setIndex', setIndex)
         if (setIndex < form.obSets.length) {
           obSet = form.obSets[setIndex];
           ob = obSet.obs[0];
-          console.log('next ob', ob)
+      //    console.log('next ob', ob)
           this.getOb(ob, obSet, form);
         }
       }
@@ -882,7 +882,7 @@ export class ObSetComponent implements OnInit, OnChanges {
     };
 
     for (let ob of obSet.obs) {
-      console.log(' ob', ob)
+  //    console.log(' ob', ob)
       let temp = {
         _id: ob._id,
         name: ob.name,
@@ -895,14 +895,14 @@ export class ObSetComponent implements OnInit, OnChanges {
 
     newObSet.added = true;
 
-    console.log('newObSet', newObSet);
+//    console.log('newObSet', newObSet);
 
     const index1 = form.obSets.indexOf(obSet)
     form.obSets.splice(index1 + 1, 0, newObSet);
   }
 
   getObSet(obSet: any) {
-    console.log('obSet', obSet)
+ //   console.log('obSet', obSet)
     const dialogConfig = new MatDialogConfig();
 
     dialogConfig.disableClose = true;
@@ -913,7 +913,7 @@ export class ObSetComponent implements OnInit, OnChanges {
       dialogConfig);
     dialogRef.afterClosed().subscribe((result: any) => {
       if (result) {
-        console.log('data', result)
+   //     console.log('data', result)
         obSet = result;
       }
     });
@@ -989,7 +989,7 @@ export class ObSetComponent implements OnInit, OnChanges {
   }
 
   next2() {
-    console.log('this.form', this.form)
+ //   console.log('this.form', this.form)
     for (let obSet of this.form.obSets) {
       if (this.obSet._id == obSet._id) {
         var index = this.form.obSets.indexOf(obSet);
@@ -1003,7 +1003,7 @@ export class ObSetComponent implements OnInit, OnChanges {
       this.getNext(this.obSet);
 
     }
-    console.log('this.obSet', this.obSet)
+ //   console.log('this.obSet', this.obSet)
     //  this.dialogRef.close();
   }
 
@@ -1049,21 +1049,21 @@ export class ObSetComponent implements OnInit, OnChanges {
 
 
   getNext(set: any) {
-    console.log ('form=============1', this.form)
+   // console.log ('form=============1', this.form)
     if (this.form && this.form.obSets) {
-      console.log ('form=============2', this.form)
+   //   console.log ('form=============2', this.form)
       for (let obSet of this.form.obSets) {
         if (set._id == obSet._id) {
-          console.log('index-1', index)
+        //  console.log('index-1', index)
 
           var index = this.form.obSets.indexOf(obSet);
           index++;
-          console.log('index-2', index)
+       //   console.log('index-2', index)
           if (index < this.form.obSets.length) {
-            console.log('next set', this.form.obSets[index])
+        //    console.log('next set', this.form.obSets[index])
             if (this.showObSet(this.form.obSets[index], this.form)) {
               this.nextSet = this.form.obSets[index];
-              console.log('this.nextSet', this.nextSet)
+           //   console.log('this.nextSet', this.nextSet)
             } else {
               this.getNext(this.form.obSets[index])
             }
@@ -1191,7 +1191,7 @@ export class ObSetComponent implements OnInit, OnChanges {
     this.changed = true;
     if ($event >= 200) {
       this.currentOb = $event;
-      console.log('index now======', this.currentOb - 200)
+   //   console.log('index now======', this.currentOb - 200)
 
     } else if ($event == 'add form') {
       // alert($event)
@@ -1205,7 +1205,7 @@ export class ObSetComponent implements OnInit, OnChanges {
       this.changed = true;
       if (this.obSet._id) {
         var myDiv = this.obSetElem.nativeElement.children[$event];
-        console.log ('myDiv', myDiv)
+      //  console.log ('myDiv', myDiv)
         if (myDiv)
           myDiv.scrollIntoView(false);
       }

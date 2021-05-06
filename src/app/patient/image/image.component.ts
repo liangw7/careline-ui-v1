@@ -104,7 +104,7 @@ export class ImageComponent implements OnInit, OnChanges {
   }
 
 
-  reNameFile() {
+ /* reNameFile() {
     //  console.log ('upload onafteraddingfile-1')
     this.uploader.onAfterAddingFile = (file) => {
       //     console.log ('upload onafteraddingfile-2')
@@ -130,7 +130,47 @@ export class ImageComponent implements OnInit, OnChanges {
       this.allServices.alertDialogService.alert('文件上传成功');
     };
   }
+*/
+reNameFile(){
 
+
+  //  console.log ('upload onafteraddingfile-1')
+    this.uploader.onAfterAddingFile = (file) => { 
+  //     console.log ('upload onafteraddingfile-2')
+      if (this.fileType=='image'&&file){
+    //      console.log ('upload onafteraddingfile-3')
+        this.allServices.imagesService.create({patientID: this.patient._id, uploaded: 'true'}).then((data)=>{
+          
+          this.file=data;
+        
+          file.file.name=this.file._id+'.png';
+          file.withCredentials = false; 
+          this.uploader.uploadAll();
+        })
+        
+      }
+  
+      
+          
+      };
+    }
+  
+uploadFile(){
+    
+    this.uploader.progress=0;
+    this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+     
+      console.log('ImageUpload:uploaded:', item, status, response);
+      this.images.push(this.file)
+      console.log ('photo',  response)
+      
+      alert('文件上传成功');
+      
+      
+  };
+  
+  }
+  
 
   moreFile() {
     let fileLoad = this.myFileInput.nativeElement;
@@ -143,7 +183,7 @@ export class ImageComponent implements OnInit, OnChanges {
   }
 
 
-  deleteUploadedImage(image: any) {
+  deleteUploadedImagevoid(image: any) {
     console.log('image',image)
     this.allServices.imagesService.delete(image._id).then((data) => {
       this.temp = data;
@@ -153,7 +193,15 @@ export class ImageComponent implements OnInit, OnChanges {
     })
   }
 
-
+  deleteUploadedImage(image:any){
+  
+    this.allServices.imagesService.delete(image._id).then((data)=>{
+      this.temp=data;
+      var index=this.images.indexOf(image);
+      this.images.splice(index,1)
+      alert('deleted'+this.temp.name)
+    })
+  }
   openFile(item: any) {
     if (this.bigScreen == 1) {
       const dialogRef = this.dialog.open(PatientFileComponent, {

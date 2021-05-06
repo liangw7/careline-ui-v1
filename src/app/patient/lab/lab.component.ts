@@ -169,53 +169,66 @@ export class LabComponent implements OnInit, OnChanges {
   }
 
 
-  reNameFile() {
+  reNameFile(){
+
+
     //  console.log ('upload onafteraddingfile-1')
-    this.uploader.onAfterAddingFile = (file) => {
-      //     console.log ('upload onafteraddingfile-2')
-      if (this.fileType == 'lab' && file) {
-        //      console.log ('upload onafteraddingfile-3')
-        this.allServices.labsService.create({ patientID: this.patient._id, uploaded: 'true' }).then((data) => {
-          this.file = data;
-          file.file.name = this.file._id + '.png';
-          file.withCredentials = false;
-          this.uploader.uploadAll();
-        })
+      this.uploader.onAfterAddingFile = (file) => { 
+    //     console.log ('upload onafteraddingfile-2')
+        if (this.fileType=='lab'&&file){
+      //      console.log ('upload onafteraddingfile-3')
+          this.allServices.labsService.create({patientID: this.patient._id, uploaded: 'true'}).then((data)=>{
+            
+            this.file=data;
+          
+            file.file.name=this.file._id+'.png';
+            file.withCredentials = false; 
+            this.uploader.uploadAll();
+          })
+          
+        }
+    
+        
+            
+        };
       }
+    
+    uploadFile(){
+      
+      this.uploader.progress=0;
+      this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+       
+        console.log('ImageUpload:uploaded:', item, status, response);
+        this.uploadedLabs.push(this.file)
+        console.log ('photo',  response)
+        
+        alert('文件上传成功');
+        
+        
     };
-  }
-
-
-  uploadFile() {
-    this.uploader.progress = 0;
-    this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-      console.log('ImageUpload:uploaded:', item, status, response);
-      this.uploadedLabs.push(this.file)
-      console.log('photo', response)
-      this.allServices.alertDialogService.alert('文件上传成功');
-    };
-  }
-
-
-  moreFile() {
-    let fileLoad = this.myFileInput.nativeElement;
-    fileLoad.click();
-  }
+    
+    } 
+    
+    moreFile(){
+      let fileLoad=this.myFileInput.nativeElement;
+       fileLoad.click();
+    }
+    
 
 
   openFile(item: any) {
     if (this.bigScreen == 1) {
       const dialogRef = this.dialog.open(PatientFileComponent, {
-        width: '1000px',
-        height: '100%',
+        width: '700px',
+        height: '80%',
         data: { item: item, createdAt: item.createdAt }
       });
     } else if (this.bigScreen == 0) {
       const dialogRef = this.dialog.open(PatientFileComponent, {
-        maxWidth: '70vw',
-        maxHeight: '80vh',
-        height: '80%',
-        width: '70%',
+        maxWidth: '100vw',
+        maxHeight: '100vh',
+        height: '100%',
+        width: '100%',
         data: { item: item, createdAt: item.createdAt }
       });
     }

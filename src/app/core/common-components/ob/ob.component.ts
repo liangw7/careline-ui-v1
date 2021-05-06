@@ -10,7 +10,7 @@ import { FileUploader } from 'ng2-file-upload';
 import { SESSION_STORAGE, StorageService } from 'ngx-webstorage-service';
 import { AllServices } from '../../common-services';
 import { ApiUrl } from '../../models/api-url';
-
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-ob',
@@ -99,6 +99,7 @@ export class ObComponent implements OnInit, OnChanges, AfterViewInit {
     private allService: AllServices,
     private apiUrl: ApiUrl,
     private dialog: MatDialog,
+    public sanitizer: DomSanitizer,
     private dialogRef: MatDialogRef<ObComponent>,
     private adapter: DateAdapter<any>,
     @Inject(MAT_DIALOG_DATA) public data: any,
@@ -170,7 +171,7 @@ export class ObComponent implements OnInit, OnChanges, AfterViewInit {
   }
 
   getMappingValue() {
-  console.log ('this.ob', this.ob)
+
     if (!this.ob.value||(!this.ob.values||this.ob.values&&this.ob.values.length==0)) {
       if (this.ob.type == 'mapping lab' && this.ob.mappingLab) {
         console.log ('got lab', this.ob.value)
@@ -437,7 +438,292 @@ export class ObComponent implements OnInit, OnChanges, AfterViewInit {
     fileLoad.click();
     // }
   }
+  reNameFile(){
+    if (!this.ob.value){
+        this.uploader.onAfterAddingFile = (file) => { 
+        if (this.ob.context=='image'){
+              this.createImage(file);
+        }
+        else if (this.ob.context=='lab'){
+          this.createLab(file);
+        }
+        else if (this.ob.context=='record'){
+          this.createRecord(file);
+        }
+        else {
+          this.createFileImage(file);
+        }
+      }
+    }
+    else if (this.ob.value){
+      this.uploader.onAfterAddingFile = (file) => { 
+      if (this.ob.context=='image'){
+            this.updateImage(file);
+      }
+      else if (this.ob.context=='lab'){
+        this.updateLab(file);
+      }
+      else if (this.ob.context=='record'){
+        this.updateRecord(file);
+      }
+      else {
+        this.updateFileImage(file);
+      }
+    }
+  }
+  }
+  deleteImageFile(ob:any){
+    if (ob.value){
+      if (ob.context=='lab'){
+        //delete from lab table
+        this.loading=true;
+        this.allService.labsService.delete(ob.value).then((data)=>{
+          console.log ('delete'+ob.label.ch);
+          ob.value=null;
+          this.loading=false;
+        })
+      }
+      else if (ob.context=='image'){
+        //delete from lab table
+        this.loading=true;
+        this.allService.imagesService.delete(ob.value).then((data)=>{
+          console.log ('delete'+ob.label.ch);
+          ob.value=null;
+          this.loading=false;
+        })
+      }
+      else if (ob.context=='lab'){
+        //delete from lab table
+        this.loading=true;
+        this.allService.labsService.delete(ob.value).then((data)=>{
+          console.log ('delete'+ob.label.ch);
+          ob.value=null;
+          this.loading=false;
+        })
+      }
+      else if (ob.context=='record'){
+        //delete from lab table
+        this.loading=true;
+        this.allService.labsService.delete(ob.value).then((data)=>{
+          console.log ('delete'+ob.label.ch);
+          ob.value=null;
+          this.loading=false;
+        })
+      }
+      else{
+        this.loading=true;
+        this.allService.uploadService.delete(ob.value).then((data)=>{
+          console.log ('delete'+ob.label.ch);
+          ob.value=null;
+          this.loading=false;
+      })
+    }
+    this.getChange(ob);
+  }
+  
 
+  }
+  createImage(file:any){
+    if (this.patient){
+      this.uploadFilter={
+        patientID:this.patient._id,
+        obID:this.ob._id, 
+        uploaded:'true'
+      }
+    }
+    else if (!this.patient){
+      this.uploadFilter={
+       
+        obID:this.ob._id,
+        uploaded:'true'
+      }
+    }
+    this.allService.imagesService.create(this.uploadFilter).then((data)=>{
+      this.temp=data;
+      file.file.name=this.temp._id+'.png';
+      file.withCredentials = false; 
+      this.imageCode=this.temp._id;
+      this.url  = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(file._file)));
+      this.uploader.uploadAll();
+
+    })
+  }
+  updateImage(file:any){
+    this.allService.imagesService.delete(this.ob.value).then((data)=>{
+      if (this.patient){
+        this.uploadFilter={
+          patientID:this.patient._id,
+          obID:this.ob._id, 
+          uploaded:'true'
+        }
+      }
+      else if (!this.patient){
+        this.uploadFilter={
+         
+          obID:this.ob._id,
+          uploaded:'true'
+        }
+      }
+      this.allService.imagesService.create(this.uploadFilter).then((data)=>{
+        this.temp=data;
+        file.file.name=this.temp._id+'.png';
+        file.withCredentials = false; 
+        this.imageCode=this.temp._id;
+        this.url  = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(file._file)));
+        this.uploader.uploadAll();
+  
+      })
+    })
+  }
+  createRecord(file:any){
+    if (this.patient){
+      this.uploadFilter={
+        patientID:this.patient._id,
+        obID:this.ob._id, 
+        uploaded:'true',
+        about:'medical file'
+      }
+    }
+    else if (!this.patient){
+      this.uploadFilter={
+       
+        obID:this.ob._id,
+        uploaded:'true',
+        about:'medical file'
+      }
+    }
+    this.allService.imagesService.create(this.uploadFilter).then((data)=>{
+      this.temp=data;
+      file.file.name=this.temp._id+'.png';
+      file.withCredentials = false; 
+      this.imageCode=this.temp._id;
+      this.url  = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(file._file)));
+      this.uploader.uploadAll();
+
+    })
+  }
+  updateRecord(file:any){
+    this.allService.imagesService.delete(this.ob.value).then((data)=>{
+      if (this.patient){
+        this.uploadFilter={
+          patientID:this.patient._id,
+          obID:this.ob._id, 
+          uploaded:'true',
+          about:'medical file'
+        }
+      }
+      else if (!this.patient){
+        this.uploadFilter={
+         
+          obID:this.ob._id,
+          uploaded:'true',
+          about:'medical file'
+        }
+      }
+      this.allService.imagesService.create(this.uploadFile).then((data)=>{
+        this.temp=data;
+        file.file.name=this.temp._id+'.png';
+        file.withCredentials = false; 
+        this.imageCode=this.temp._id;
+        this.url  = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(file._file)));
+        this.uploader.uploadAll();
+  
+      })
+    })
+  }
+  createLab(file:any){
+    if (this.patient){
+      this.uploadFilter={
+        patientID:this.patient._id,
+        obID:this.ob._id, 
+        uploaded:'true'
+       
+      }
+    }
+    else if (!this.patient){
+      this.uploadFilter={
+       
+        obID:this.ob._id,
+        uploaded:'true'
+     
+      }
+    }
+    this.allService.labsService.create(this.uploadFilter).then((data)=>{
+      this.temp=data;
+      file.file.name=this.temp._id+'.png';
+      file.withCredentials = false; 
+      this.imageCode=this.temp._id;
+      this.url  = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(file._file)));
+      this.uploader.uploadAll();
+
+    })
+  }
+  updateLab(file:any){
+    this.allService.labsService.delete(this.ob.value).then((data)=>{
+      if (this.patient){
+        this.uploadFilter={
+          patientID:this.patient._id,
+          obID:this.ob._id, 
+          uploaded:'true'
+         
+        }
+      }
+      else if (!this.patient){
+        this.uploadFilter={
+         
+          obID:this.ob._id,
+          uploaded:'true'
+       
+        }
+      }
+      this.allService.labsService.create(this.uploadFilter).then((data)=>{
+        this.temp=data;
+        file.file.name=this.temp._id+'.png';
+        file.withCredentials = false; 
+        this.imageCode=this.temp._id;
+        this.url  = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(file._file)));
+        this.uploader.uploadAll();
+  
+      })
+    })
+  }
+  createFileImage(file:any){
+    this.allService.uploadService.create({obID:this.ob._id}).then((data)=>{
+      this.temp=data;
+      file.file.name=this.temp._id+'.png';
+      file.withCredentials = false; 
+      this.imageCode=this.temp._id;
+      this.url  = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(file._file)));
+      this.uploader.uploadAll();
+
+    })
+  }
+  updateFileImage(file:any){
+    this.allService.uploadService.delete(this.ob.value).then((data)=>{
+      this.allService.uploadService.create({obID:this.ob._id}).then((data)=>{
+        this.temp=data;
+        file.file.name=this.temp._id+'.png';
+        file.withCredentials = false; 
+        this.imageCode=this.temp._id;
+        this.url  = this.sanitizer.bypassSecurityTrustUrl((window.URL.createObjectURL(file._file)));
+        this.uploader.uploadAll();
+  
+      })
+    })
+  }
+
+  uploadFile(){
+      this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
+        console.log('ImageUpload:uploaded:', item, status, response);
+     
+        console.log ('photo',  response)
+        alert('上传成功!');
+        this.ob.value=String(this.imageCode);
+       // this.saveAfterClose(this.ob, this.obSet,this.form);
+  // this.dialogRef.close(this.ob);
+    };
+   
+    }
 
   breakLines(str: any) {
     var temp = [];
@@ -927,238 +1213,6 @@ export class ObComponent implements OnInit, OnChanges, AfterViewInit {
     return this.allService.utilService.getImageUrl(String(this.ob.value));
   }
 
-  reNameFileVoid() {
-
-    console.log('this.source file', this.source)
-
-    if (this.registryUser || this.source == 'user') {
-      var param: any = {
-        obID: this.ob._id,
-        source: 'user'
-      };
-      this.onAfterAddingFileMethod(param);
-    } else {
-      if (!this.patient && this.ob && !this.visit && !this.followup) {
-        var param: any = {
-          obID: this.ob._id,
-        };
-        this.onAfterAddingFileMethod(param);
-      } else if (this.patient && this.ob && !this.visit && !this.followup) {
-        var param: any = {
-          patientID: this.patientId,
-          obID: this.ob._id,
-          source: 'patient'
-        };
-        this.onAfterAddingFileMethod(param);
-      } else if (this.patient && this.ob && this.visit && !this.followup) {
-        var param: any = {
-          patientID: this.patientId,
-          obID: this.ob._id,
-          visitID: this.visitId,
-          source: 'visit'
-        };
-        this.onAfterAddingFileMethod(param);
-      } else if (this.patient && this.ob && !this.visit && this.followup) {
-        var param: any = {
-          patientID: this.patientId,
-          obID: this.ob._id,
-          visitID: this.visitId,
-          followupID: this.followupId,
-          source: 'followup'
-        };
-        this.onAfterAddingFileMethod(param);
-      }
-    }
-  }
-  /**
-   * 公共方法提取
-   * @param param 
-   */
-  onAfterAddingFileMethod(param: any) {
-    this.uploader.onAfterAddingFile = (file: any) => {
-      if (this.ob.value) {
-        this.allService.uploadService.delete(this.ob.value).then((data: any) => {
-          this.fileUploadMethod(param, file);
-        })
-      } else {
-        this.fileUploadMethod(param, file);
-      }
-    }
-  }
-  /**
-   * 公共方法提取
-   * @param param 
-   * @param file 
-   */
-  fileUploadMethod(param: any, file: any) {
-    this.allService.uploadService.create(param).then((data: any) => {
-      this.temp = data;
-      file.file.name = this.temp._id + '.png';
-      file.withCredentials = false;
-      this.imageCode = this.temp._id;
-      this.url = this.allService.utilService.getUrl((window.URL.createObjectURL(file._file)));
-      this.uploader.uploadAll();
-    })
-  }
-
-  reNameFile() {
-    if (!this.ob.value) {
-      this.uploader.onAfterAddingFile = (file: any) => {
-        if (this.ob.context == 'image') {
-          this.uploadFilter = {
-            obID: this.ob._id,
-            uploaded: 'true'
-          }
-          this.createRecordOrImage(file, this.uploadFilter);
-        } else if (this.ob.context == 'lab') {
-          this.createLab(file);
-        } else if (this.ob.context == 'record') {
-          this.uploadFilter = {
-            obID: this.ob._id,
-            uploaded: 'true',
-            about: 'medical file'
-          }
-          this.createRecordOrImage(file, this.uploadFilter);
-        } else {
-          this.createFileImage(file);
-        }
-      }
-    } else {
-      this.uploader.onAfterAddingFile = (file: any) => {
-        if (this.ob.context == 'image') {
-          this.uploadFilter = {
-            patientID: this.patient._id,
-            obID: this.ob._id,
-            uploaded: 'true'
-          }
-          this.updateRecordOrImage(file, this.uploadFilter);
-        } else if (this.ob.context == 'lab') {
-          this.updateLab(file);
-        } else if (this.ob.context == 'record') {
-          this.uploadFilter = {
-            obID: this.ob._id,
-            uploaded: 'true',
-            about: 'medical file'
-          }
-          this.updateRecordOrImage(file, this.uploadFilter);
-        } else {
-          this.updateFileImage(file);
-        }
-      }
-    }
-  }
-
-
-  createRecordOrImage(file: any, uploadFilter: any) {// sch update
-    if (this.patient) {
-      uploadFilter.patientID = this.patient._id;
-    }
-    this.allService.imagesService.create(uploadFilter).then((data: any) => {
-      this.temp = data;
-      file.file.name = this.temp._id + '.png';
-      file.withCredentials = false;
-      this.imageCode = this.temp._id;
-      this.url = this.allService.utilService.getUrl((window.URL.createObjectURL(file._file)));
-      this.uploader.uploadAll();
-    })
-  }
-
-
-  updateRecordOrImage(file: any, uploadFilter: any) {// sch update
-    this.allService.imagesService.delete(this.ob.value).then((data: any) => {
-      if (this.patient) {
-        uploadFilter.patientID = this.patient._id;
-      }// sch update
-      this.allService.imagesService.create(uploadFilter).then((data: any) => {
-        this.temp = data;
-        file.file.name = this.temp._id + '.png';
-        file.withCredentials = false;
-        this.imageCode = this.temp._id;
-        this.url = this.allService.utilService.getUrl((window.URL.createObjectURL(file._file)));
-        this.uploader.uploadAll();
-      })
-    })
-  }
-
-
-  createLab(file: any) {// sch update
-    this.uploadFilter = {
-      obID: this.ob._id,
-      uploaded: 'true'
-    }
-    if (this.patient) {
-      this.uploadFilter.patientID = this.patient._id;
-    }
-    this.allService.labsService.create(this.uploadFilter).then((data: any) => {
-      this.temp = data;
-      file.file.name = this.temp._id + '.png';
-      file.withCredentials = false;
-      this.imageCode = this.temp._id;
-      this.url = this.allService.utilService.getUrl((window.URL.createObjectURL(file._file)));
-      this.uploader.uploadAll();
-    })
-  }
-
-
-  updateLab(file: any) {// sch update
-    this.allService.labsService.delete(this.ob.value).then((data: any) => {
-      this.uploadFilter = {
-        obID: this.ob._id,
-        uploaded: 'true'
-      }
-      if (this.patient) {
-        this.uploadFilter.patientID = this.patient._id;
-      }
-      this.allService.labsService.create(this.uploadFilter).then((data: any) => {
-        this.temp = data;
-        file.file.name = this.temp._id + '.png';
-        file.withCredentials = false;
-        this.imageCode = this.temp._id;
-        this.url = this.allService.utilService.getUrl((window.URL.createObjectURL(file._file)));
-        this.uploader.uploadAll();
-      })
-    })
-  }
-
-
-  createFileImage(file: any) {
-    this.allService.uploadService.create({ obID: this.ob._id }).then((data: any) => {
-      this.temp = data;
-      file.file.name = this.temp._id + '.png';
-      file.withCredentials = false;
-      this.imageCode = this.temp._id;
-      this.url = this.allService.utilService.getUrl((window.URL.createObjectURL(file._file)));
-      this.uploader.uploadAll();
-    })
-  }
-
-
-  updateFileImage(file: any) {
-    this.allService.uploadService.delete(this.ob.value).then((data: any) => {
-      this.allService.uploadService.create({ obID: this.ob._id }).then((data: any) => {
-        this.temp = data;
-        file.file.name = this.temp._id + '.png';
-        file.withCredentials = false;
-        this.imageCode = this.temp._id;
-        this.url = this.allService.utilService.getUrl((window.URL.createObjectURL(file._file)));
-        this.uploader.uploadAll();
-
-      })
-    })
-  }
-
-  uploadFile() {
-    this.uploader.onCompleteItem = (item: any, response: any, status: any, headers: any) => {
-      console.log('ImageUpload:uploaded:', item, status, response);
-
-      console.log('photo', response)
-      this.allService.alertDialogService.success('上传成功!');
-      this.ob.value = String(this.imageCode);
-      // this.saveAfterClose(this.ob, this.obSet,this.form);
-      // this.dialogRef.close(this.ob);
-    };
-
-  }
 
   findRange(ob: any) {
     //ob.values=[];

@@ -33,7 +33,7 @@
         <td>{{image.createdAt| date: "yyyy/MM/dd HH:mm"}}</td>
         <td>
           <div (click)='deleteUploadedImage(image)'>
-            <i class='material-icons'>delete</i>
+            <i class='material-icons' style='color:red'>delete</i>
           </div>
         </td>
       </tr>
@@ -54,7 +54,22 @@
 </div>
 
 
-<input #fileInput type="file" name="file" id="file" class="call__messages___send" ng2FileSelect [uploader]="uploader"
-  [hidden]=true>
+<!--<input #fileInput type="file" 
+name="file" id="file" 
+class="call__messages___send" 
+ng2FileSelect [uploader]="uploader"
+[hidden]=true>
 <div  *ngIf="uploader && uploader.progress != 100" class="progress-bar progress-bar-success" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }" style="margin-top: 15px;border-radius: 10px;">
-  {{uploader.progress}}%</div>
+  {{uploader.progress}}%</div>-->
+
+  <input #fileInput
+  type="file"
+  name="file"
+  id="file"
+  class="call__messages___send"
+  ng2FileSelect [uploader]="uploader" 
+ 
+  [hidden]=true
+>
+<div class="progress-bar progress-bar-success" role="progressbar" 
+[ngStyle]="{ 'width': uploader.progress + '%' }">{{uploader.progress}}%</div> 

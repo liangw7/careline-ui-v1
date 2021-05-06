@@ -10,6 +10,7 @@ import { LabsService } from './labs.service';
 import { MedsService } from './meds.service';
 import { SESSION_STORAGE, StorageService } from 'ngx-webstorage-service';
 import { Router } from '@angular/router';
+import { observable } from 'rxjs';
 
 
 
@@ -2298,22 +2299,22 @@ saveUserForm(form:any,user:any){
     this.obs=[];
     this.dataObs=[];
     this.valueList=[];
-    console.log ('form.obSets[0].changeObs',form.obSets[0].changeObs);
+ 
     if (user._id){
         this.updateUser(form.obSets[0], user).then((data)=>{
             this.temp=data;
             user=this.temp;
             for (let ob of form.obSets[0].obs){
-                if (ob.values){
-                    this.valueList=[];
-                    for (let  value of ob.values){
-                        if(value&&value.text)
-                        this.valueList.push(value.text);
-                     }
-                 }
-                
-                console.log ('ob', ob.label.ch,ob.changed)
-                if (ob.changed||(form.obSets[0].changeObs&&form.obSets[0].changeObs.indexOf(ob._id)>-1)){
+            
+              
+    if (ob.changed||(form.obSets[0].changeObs&&form.obSets[0].changeObs.indexOf(ob._id)>-1)){
+        if (ob.values){
+            this.valueList=[];
+            for (let value of ob.values){
+                if(value&&value.text)
+                this.valueList.push(value.text);
+             }
+         }
               //  if (ob.changed){
                     ob.changed=false;
                     if (!ob.dataID){
@@ -2432,67 +2433,11 @@ updateUserObValue(obs:any){
 updateUser(obSet:any, user:any){
     return new Promise((resolve, reject) => {
         
-        for (let ob of obSet.obs){
-      //  if (ob.changed||(obSet.changeObs&&obSet.changeObs.indexOf(ob._id)>-1)){
-            
-              if (ob.label.en=='birthday'&&ob.value){
-                user.birthday=ob.value;
-                
-                }
-                
-        else  if (ob.label.en=='name'&&ob.value){
-            user.name=ob.value;
-            
-              }
-            
-        else if (ob.label.en=='gender'&&ob.values&&ob.values.length>0){
-            for (let value of ob.values){
-                if (value&&value.text){
-                    user.gender=value.text;
-                }
-            }
-           
-            
-              }
-              
-        else if (ob.label.en=='ssn'&&ob.value){
-            user.ssn=ob.value;
-            
-              }
-                
-        else if (ob.label.en=='phone'&&ob.value){
-            user.phone=ob.value;
-            
-                
-              }
-              
-        else if (ob.label.en=='photo'&&ob.value){
-            user.photo=ob.value;  
-            
-              
-              }
-              
-        else if (ob.label.en=='city'&&ob.value){
-            user.city=ob.value;  
-            
-              
-              }   
-        else if (ob.label.en=='title'&&ob.value){
-                user.title=ob.value; 
-                
-            //    alert('got device id')
-                  }    
-        else if (ob.label.en=='specialty'&&ob.value){
-          //alert('ob.label.en'+ob.label.en)
-          user.specialty=ob.value; 
-        
-               
-              }
-     //       }
-        }
-        
+    this.saveUserOb(obSet, user);
+        console.log ('updated user=========', user)
         this.userService.updateUser(user).then((data)=>{
                                         resolve(data);
+                                        console.log ('user updated====', data)
                                         reject(new Error('error'));
                                     })
                                 
@@ -2503,67 +2448,15 @@ updateUser(obSet:any, user:any){
 createUser(obSet:any, user:any){
     return new Promise((resolve, reject) => {
         
-        for (let ob of obSet.obs){
-      //  if (ob.changed||(obSet.changeObs&&obSet.changeObs.indexOf(ob._id)>-1)){
-            
-        if (ob.label.en=='birthday'&&ob.value){
-                user.birthday=ob.value;
-                
-                }
-                
-        else  if (ob.label.en=='name'&&ob.value){
-            user.name=ob.value;
-            
-              }
-            
-        else if (ob.label.en=='gender'&&ob.values&&ob.values.length>0){
-            for (let value of ob.values){
-                if (value&&value.text){
-                    user.gender=value.text;
-                }
-            }
-           
-            
-            
-              }
-              
-        else if (ob.label.en=='ssn'&&ob.value){
-            user.ssn=ob.value;
-            
-              }
-                
-        else if (ob.label.en=='phone'&&ob.value){
-            user.phone=ob.value;
-            
-                
-              }
-              
-        else if (ob.label.en=='photo'&&ob.value){
-            user.photo=ob.value;  
-            
-              
-              }
-              
-        else if (ob.label.en=='city'&&ob.value){
-            user.city=ob.value;  
-            
-              
-              }   
-        else if (ob.label.en=='title'&&ob.value){
-                user.title=ob.value; 
-                
-            //    alert('got device id')
-                  }    
-        else if (ob.label.en=='specialty'&&ob.value){
-          //alert('ob.label.en'+ob.label.en)
-          user.specialty=ob.value; 
-        
-               
-              }
-     //       }
+       
+       this.saveUserOb(obSet, user);
+        if (! user.password){
+            user.password='1a2b3c';
         }
-        user.password='1a2b3c';
+       if (! user.email){
         user.email=user.name+'@db.com';
+         }
+       
         this.userService.createUser(user).then((data)=>{
             console.log ('created user', data)
             resolve(data);
@@ -2577,63 +2470,7 @@ createUser(obSet:any, user:any){
 registryUser(obSet:any, user:any){
     return new Promise((resolve, reject) => {
         
-        for (let ob of obSet.obs){
-      //  if (ob.changed||(obSet.changeObs&&obSet.changeObs.indexOf(ob._id)>-1)){
-            
-        if (ob.label.en=='birthday'&&ob.value){
-                user.birthday=ob.value;
-                
-                }
-                
-        else  if (ob.label.en=='name'&&ob.value){
-            user.name=ob.value;
-            
-              }
-            
-        else if (ob.label.en=='gender'&&ob.values&&ob.values.length>0){
-            for (let value of ob.values){
-                if (value&&value.text){
-                    user.gender=value.text;
-                }
-            }
-            
-              }
-              
-        else if (ob.label.en=='ssn'&&ob.value){
-            user.ssn=ob.value;
-            
-              }
-                
-        else if (ob.label.en=='phone'&&ob.value){
-            user.phone=ob.value;
-            
-                
-              }
-              
-        else if (ob.label.en=='photo'&&ob.value){
-            user.photo=ob.value;  
-            
-              
-              }
-              
-        else if (ob.label.en=='city'&&ob.value){
-            user.city=ob.value;  
-            
-              
-              }   
-        else if (ob.label.en=='title'&&ob.value){
-                user.title=ob.value; 
-                
-            //    alert('got device id')
-                  }    
-        else if (ob.label.en=='specialty'&&ob.value){
-          //alert('ob.label.en'+ob.label.en)
-          user.specialty=ob.value; 
-        
-               
-              }
-     //       }
-        }
+        this.saveUserOb(obSet, user);
         if (!user.password){
             user.password='1a2b3c';
         }
@@ -2757,5 +2594,124 @@ registryPatientForm(form:any,user:any){
     
   
 })
+}
+saveUserOb(obSet:any, user:any){
+    for (let ob of obSet.obs){
+        //  if (ob.changed||(obSet.changeObs&&obSet.changeObs.indexOf(ob._id)>-1)){
+              
+          if (ob.label.en=='birthday'&&ob.value){
+                  user.birthday=ob.value;
+                  
+                  }
+                  
+          else  if (ob.label.en=='name'&&ob.value){
+              user.name=ob.value;
+              
+                }
+         else  if (ob.label.en=='title description'&&ob.value){
+                    user.desc=ob.value;
+                    
+                      }
+              
+          else if (ob.label.en=='gender'&&ob.values&&ob.values.length>0){
+              for (let value of ob.values){
+                  if (value.text){
+                    user.gender=value.text
+                  }
+              }
+           
+              }
+                
+          else if (ob.label.en=='ssn'&&ob.value){
+              user.ssn=ob.value;
+              
+                }
+                  
+          else if (ob.label.en=='phone'&&ob.value){
+              user.phone=ob.value;
+              
+                  
+                }
+                
+          else if (ob.label.en=='photo'&&ob.value){
+              user.photo=ob.value;  
+              
+                
+                }
+                
+          else if (ob.label.en=='city'&&ob.values&&ob.values.length>0){
+            for (let value of ob.values){
+                if (value.text){
+                  user.city=value.text
+                }
+            }
+              
+                
+                }   
+       else if (ob.label.en=='background image'&&ob.value){
+                if (!user.activity){
+                  user.activity={backgroundImage:ob.value};
+                }
+                else{
+                  user.activity.backgroundImage=ob.value;
+                }
+                 
+                    
+                }
+        else if (ob.label.en=='text color'&&ob.value){
+                    if (!user.activity){
+                      user.activity={testColor:ob.value};
+                    }
+                    else{
+                      user.activity.textColor=ob.value;
+                    }
+                     
+                        
+                    }
+       else if (ob.label.en=='consult charge'&&ob.value){
+                    if (!user.activity){
+                      user.activity={consultCharge:ob.value};
+                    }
+                    else{
+                      user.activity.consultCharge=ob.value;
+                    }
+                     
+                        
+                    }
+
+        //user's consult charge fee is from the setting of title
+          else if (ob.label.en=='title'&&ob.values&&ob.values.length>0){
+              
+              for (let option of ob.options){
+                  for (let value of ob.values){
+                    if (option.text==value.text){
+                        user.title=value.text;
+                       if (!user.activiy||!user.activiy.consultCharge){
+                           if (!user.activity){
+                               user.activity={consultCharge:option.number};
+                             }
+                             else{
+                               user.activity.consultCharge=option.number;
+                             }
+                       }
+                   }
+                  }
+               
+              }
+          }    
+       
+            
+          else if (ob.label.en=='specialty'&&ob.value){
+            for (let value of ob.values){
+                if (value.text){
+                  user.specialty=value.text
+                }
+            }
+          
+                 
+      }
+       //       }
+          }
+
 }
 }

@@ -1,7 +1,8 @@
 <div class="spinner-wrapper" *ngIf='loading'>
   <spinner></spinner>
 </div>
-<div *ngIf='!selectedLabSet&&!selectedLabImage' [ngClass]="{'pc-wapper':bigScreen==1,'wap-wapper':bigScreen==0}">
+<div *ngIf='!selectedLabSet&&!selectedLabImage' 
+[ngClass]="{'pc-wapper':bigScreen==1,'wap-wapper':bigScreen==0}">
   <div *ngIf='bigScreen==0&&labSets'>
     <div class="card card-stats" *ngFor="let labSet of labSets" (click)='showLabSet(labSet)'>
       <div class="card-header  card-header-icon">
@@ -17,6 +18,47 @@
     </div>
   </div>
   <mat-tab-group>
+    <mat-tab label='上传报告'>
+      <div class=" card active" [ngClass]="{'lab': bigScreen==0,'tab-pane':bigScreen==1}">
+        <div class=" card-header" >
+        <button mat-button (click)='moreFile()' class='btn btn-round btn-primary pull-right'*ngIf='user'
+       >
+        <span *ngIf="language=='Chinese'">上传报告</span>
+        <span *ngIf="language=='English'">add labs</span>
+        </button></div>
+      
+      <div *ngIf='bigScreen==1'>
+          <div class='card-body'>
+            <table class='table'>
+              <tr *ngFor="let lab of uploadedLabs" (click)='openFile(lab)'>
+                <td>
+                  <img [src]="getUrl(lab)" class="thumbnail" *ngIf="lab.uploaded"></td>
+                <td>{{lab.createdAt| date: "yyyy/MM/dd HH:mm"}}</td>
+                <td (click)='deleteUploadedLab(lab)'>
+                  <i class="fa fa-remove" aria-hidden="true" style="font-size:24px; color: red"></i></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        <div class='lab' *ngIf='bigScreen==0'>
+          <div class='card-header'>
+            <i class='material-icons pull-right' (click)='showFile=false;'>close</i>
+          </div>
+          <div class='card-body'>
+            <table class='table'>
+              <tr *ngFor="let lab of uploadedLabs" (click)='openFile(lab)'>
+                <td>
+                  <img [src]="getUrl(lab)" class="thumbnail" *ngIf="lab.uploaded"></td>
+                <td>{{lab.createdAt| date: "yyyy/MM/dd HH:mm"}}</td>
+                <td (click)='deleteUploadedLab(lab)'>
+                  <i class="fa fa-remove" aria-hidden="true" style="font-size:24px; color: red"></i></td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      
+      </div>
+    </mat-tab>
     <mat-tab *ngFor="let labSet of labSets" label='{{labSet.label.ch}}'>
       <div *ngIf='bigScreen==1'>
         <div class="table-responsive">
@@ -126,56 +168,20 @@
       <div class="scrollheight">
       </div>
     </mat-tab>
-    <mat-tab label='上传报告' *ngIf='labSets'>
-      <div class="active" [ngClass]="{'lab': bigScreen==0,'tab-pane':bigScreen==1}">
-        <div class='card'>
-          <div class='card-header'>
-            <h5> 实验室报告</h5>
-          </div>
-          <table class='table' (click)='openFile(selectedLabImage)'>
-            <tr>
-              <td><img [src]="getUrl(selectedLabImage)" class="thumbnail"></td>
-              <td *ngIf='selectedLabImage'>{{selectedLabImage.createdAt| date: "yyyy/MM/dd HH:mm"}}</td>
-            </tr>
-          </table>
-        </div>
-        <div class='card' *ngIf='bigScreen==1'>
-          <div class='card-body'>
-            <table class='table'>
-              <tr *ngFor="let lab of uploadedLabs" (click)='openFile(lab)'>
-                <td>
-                  <img [src]="getUrl(lab)" class="thumbnail" *ngIf="lab.uploaded"></td>
-                <td>{{lab.createdAt| date: "yyyy/MM/dd HH:mm"}}</td>
-                <td (click)='deleteUploadedLab(lab)'>
-                  <i class="fa fa-remove" aria-hidden="true" style="font-size:24px; color: red"></i></td>
-              </tr>
-            </table>
-          </div>
-        </div>
-        <div class='card lab' *ngIf='bigScreen==0'>
-          <div class='card-header'>
-            <i class='material-icons pull-right' (click)='showFile=false;'>close</i>
-          </div>
-          <div class='card-body'>
-            <table class='table'>
-              <tr *ngFor="let lab of uploadedLabs" (click)='openFile(lab)'>
-                <td>
-                  <img [src]="getUrl(lab)" class="thumbnail" *ngIf="lab.uploaded"></td>
-                <td>{{lab.createdAt| date: "yyyy/MM/dd HH:mm"}}</td>
-                <td (click)='deleteUploadedLab(lab)'>
-                  <i class="fa fa-remove" aria-hidden="true" style="font-size:24px; color: red"></i></td>
-              </tr>
-            </table>
-          </div>
-        </div>
-      </div>
-    </mat-tab>
+  
   </mat-tab-group>
 </div>
-<input #fileInput type="file" name="file" id="file" class="call__messages___send" ng2FileSelect [uploader]="uploader"
-  [hidden]=true>
-<div class="progress-bar progress-bar-success" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }">
-  {{uploader.progress}}%</div>
+<input #fileInput
+type="file"
+name="file"
+id="file"
+class="call__messages___send"
+ng2FileSelect [uploader]="uploader" 
+
+[hidden]=true
+>
+<div class="progress-bar progress-bar-success" role="progressbar" 
+[ngStyle]="{ 'width': uploader.progress + '%' }">{{uploader.progress}}%</div> 
 <div class='card' style="padding:0;margin:0" *ngIf='selectedLabSet'>
   <div class="card-header card-header-tabs ">
     <h4 *ngIf="language=='Chinese'||!language">{{selectedLabSet.label.ch}}</h4>

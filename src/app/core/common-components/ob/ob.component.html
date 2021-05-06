@@ -344,16 +344,31 @@
     (click)="cancel(); ">取消</button>
 
 </div>
+
+
 <div *ngIf="ob.type=='image'">
-
-
-  <button class="btn btn-round btn-primary pull-right" (click)="uploadImage();" *ngIf="ob.type=='image'">上传文件</button>
-  <button class="btn btn-round btn-primary pull-right" (click)="ob.value=null" *ngIf="ob.type=='image'">删除文件</button>
-
-  <input #fileInput [hidden]=true type="file" name="photo" (change)="getChange(ob);reNameFile()" ng2FileSelect
-    [uploader]="uploader" />
-
-  <div class="progress-bar progress-bar-success" role="progressbar" [ngStyle]="{ 'width': uploader.progress + '%' }"
-    *ngIf="uploader.progress>0">
-    {{uploader.progress}}%</div>
-</div>
+ 
+ 
+  <button   class="btn btn-round btn-primary pull-right" (click)="uploadImage();" *ngIf="ob.type=='image'">上传文件</button>
+  <button   class="btn btn-round btn-primary pull-right" (click)="deleteImageFile(ob);" *ngIf="ob.type=='image'">删除文件</button>
+  
+  <input #fileInput [hidden]=true 
+  type="file" 
+  name="photo"  
+  (change)="getChange(ob);reNameFile()" 
+  ng2FileSelect [uploader]="uploader" />
+  
+  <div class="progress-bar progress-bar-success" role="progressbar" 
+  [ngStyle]="{ 'width': uploader.progress + '%' }" *ngIf="uploader.progress>0">
+  {{uploader.progress}}%</div> 
+  </div>
+  <div *ngIf="ob.type=='color'">
+    <span>单击选择</span>{{ob.value}}
+    <input  
+     [(ngModel)]="ob.value" 
+    type="color" 
+    class="form-control"
+    value="{{ob.value}}"
+    (change)="getChange(ob)">
+ 
+  </div>

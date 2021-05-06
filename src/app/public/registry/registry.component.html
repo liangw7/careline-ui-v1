@@ -1,3 +1,10 @@
+
+<div class="wrapper">
+  <div class="overlay" *ngIf="loading">
+    <div class="spinner-wrapper" >
+      <spinner></spinner>
+    </div>
+    </div>
 <div [ngClass]="{'registry-1':!popOut, 'registry-2':popOut}">
     <div class='row'>
       <div class='col-sm-4'>
@@ -28,5 +35,5 @@
       <app-form [forms]='forms' [emBedSet]=true [registry]=true>
       </app-form>
     </div>
-   
+  </div>
   </div>

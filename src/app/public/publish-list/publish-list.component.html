@@ -1,7 +1,12 @@
 
 
     
-
+<div class="wrapper">
+  <div class="overlay" *ngIf="loading">
+    <div class="spinner-wrapper" >
+      <spinner></spinner>
+    </div>
+    </div>
   <div [ngClass]="{'publish':bigScreen==1,'cell-publish':bigScreen==0}"
   [ngStyle]="{'height':scrollSize+'px'}"
   style='overflow: auto; padding:15px; '>
@@ -62,9 +67,6 @@
 </div>
 </div>
 </div>
-<div class="wrapper">
-   <div class="overlay" *ngIf="loading">
-     <div class="spinner-wrapper" >
-       <spinner></spinner>
-     </div>
+
+   
    </div>

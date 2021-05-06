@@ -1,7 +1,8 @@
-<div *ngIf='service'>
-    <img [src]="photo" alt=""  
+<div *ngIf='service' >
+    <img [src]="background" alt=""  
     [ngStyle]="{'height':screenHeight!=undefined?screenHeight:'800px',
                 'width':screenWidth}">
+
     <div class="pc-provider-item" 
     [ngStyle]="{'height':screenHeight!=undefined?screenHeight:'800px'}"
     [style.background]="photo"
@@ -70,15 +71,20 @@
       <div class="pc-provider-item-desc" *ngIf="descSelected">
         
       
-        <div class="pc-provider-item-right">
-          <p class="pc-provider-item-right-p1">{{service.desc}}</p>
-          <br>
       
-        </div>
-        <div class="pc-provider-item-left">
+        <div class="pc-provider-item-left" 
+        [ngStyle]="{'color':service.activity.textColor}">
           <p class="pc-provider-item-left-p1">{{service.name}}</p>
-          <br>
-      
+          <p class="pc-provider-item-left-p2">{{service.desc}}</p>
+        
+          <div class='pc-provider-item-left-p3'>
+          <a class='btn btn-round ' [ngStyle]="{'background-color':service.activity.textColor}">登录</a>
+          <a class='btn btn-round' [ngStyle]="{'background-color':service.activity.textColor}">医生加盟</a>
+        </div>
+        </div>
+        <div class="pc-provider-item-right">
+          <img [src]="photo"  >
+         
         </div>
       
       </div>
