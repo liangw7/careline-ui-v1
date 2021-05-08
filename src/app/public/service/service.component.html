@@ -1,20 +1,14 @@
-<div *ngIf='service' >
+<div *ngIf='service&&bigScreen==1'>
     <img [src]="background" alt=""  
     [ngStyle]="{'height':screenHeight!=undefined?screenHeight:'800px',
                 'width':screenWidth}">
 
-    <div class="pc-provider-item" 
-    [ngStyle]="{'height':screenHeight!=undefined?screenHeight:'800px'}"
-    [style.background]="photo"
-      *ngIf="bigScreen==1">
-  
-       
-  
+    <div class="pc-provider-item" >
       <div class="pc-provider-item-header">
         <mat-toolbar class='nav'>
           <div class="pc-provider-item-header-outter"></div>
           <div class="pc-provider-item-header-outter"
-            (click)="profileSelected=false;descSelected=true;mapSelected=false;providerSelected=false;articleSelected=false;"
+            (click)="search='';profileSelected=false;descSelected=true;mapSelected=false;providerSelected=false;articleSelected=false;"
            >
             <div  [ngClass]="{'active':descSelected,'non-active':!descSelected}">
               <a href="javascript:void(0);">
@@ -23,7 +17,7 @@
             </div>
           </div>
           <div class="pc-provider-item-header-outter"
-            (click)="profileSelected=true;descSelected=false;mapSelected=false;getProfiles();articleSelected=false;providerSelected=false;"
+            (click)="search='';profileSelected=true;descSelected=false;mapSelected=false;getProfiles();articleSelected=false;providerSelected=false;"
            >
             <div  [ngClass]="{'active':profileSelected,'non-active':!profileSelected}">
               <a href="javascript:void(0);">
@@ -32,7 +26,7 @@
             </div>
           </div>
           <div class="pc-provider-item-header-outter"
-            (click)="profileSelected=false;descSelected=false;mapSelected=false;articleSelected=false;providerSelected=true;getProviders();"
+            (click)="search='';profileSelected=false;descSelected=false;mapSelected=false;articleSelected=false;providerSelected=true;getProviders();"
           >
             <div   [ngClass]="{'active':providerSelected,'non-active':!providerSelected}">
               <a href="javascript:void(0);">
@@ -40,7 +34,8 @@
               </a>
             </div>
           </div>
-          <div class="pc-provider-item-header-outter" (click)="profileSelected=false;descSelected=false;mapSelected=false;providerSelected=false;articleSelected=true;
+          <div class="pc-provider-item-header-outter" 
+          (click)="search='';profileSelected=false;descSelected=false;mapSelected=false;providerSelected=false;articleSelected=true;
           getArticles();">
             <div  [ngClass]="{'active':articleSelected,'non-active':!articleSelected}">
               <a href="javascript:void(0);">
@@ -68,6 +63,9 @@
           </div>--> 
         </mat-toolbar>
       </div>
+      <div class='input-item' *ngIf='!descSelected'>
+        <input class='form-control'  [(ngModel)]="search"><i class="material-icons">search</i>
+       </div>
       <div class="pc-provider-item-desc" *ngIf="descSelected">
         
       
@@ -88,11 +86,17 @@
         </div>
       
       </div>
-      <div class="pc-provider-item-bottom-heathy" *ngIf="profileSelected">
-        <div class="pc-provider-item-bottom-heathy-div" *ngFor='let profile of profiles|filter:search'
+      <div class="pc-provider-item-bottom-heathy" 
+      [ngStyle]="{'background-image':'-webkit-gradient(linear, left top, right top, 
+      color-stop(0%,'+ getBackgroundColor(service.activity.textColor,0.9)+'), 
+      color-stop(100%,rgba(125,185,232,0)))'}"
+       *ngIf="profileSelected">
+        <div class="card pc-provider-item-bottom-heathy-div" 
+        *ngFor='let profile of profiles|filter:search'
           [routerLink]="['/public-platform/homepage/registry/', profile._id,undefined,undefined, profile.image]">
-          <img [src]="getUrl(profile.image)" alt="" class="pc-provider-item-bottom-heathy-main-img">
-          <p class="pc-provider-item-bottom-heathy-describe" *ngIf='!profile.label'>{{profile.name}}</p>
+          <img [src]="getUrl(profile.image)" alt="" 
+          class="pc-provider-item-bottom-heathy-main-img">
+         
           <p class="pc-provider-item-bottom-heathy-describe" *ngIf='profile.label'>{{profile.label.ch}}</p>
           <div class="pc-provider-item-bottom-heathy-down">
             <!-- <img src="assets/images/provider/item/Ellipse.png" alt=""> -->
@@ -101,18 +105,33 @@
         </div>
       </div>
   
-      <div class="pc-provider-item-bottom-doctor" *ngIf="providerSelected">
-        <div class="pc-provider-item-bottom-doctor-div" *ngFor='let provider of providers|filter:search'
-          [routerLink]="['/public-platform/homepage/provider-card/', provider._id]">
-          <img [src]="getUrl(provider.photo)" alt="" class="pc-provider-item-bottom-doctor-main-img">
-          <p class="pc-provider-item-bottom-doctor-1">{{provider.name}}</p>
-          <p class="pc-provider-item-bottom-doctor-2">{{provider.title}}</p>
-          <p class="pc-provider-item-bottom-doctor-3">{{provider.desc}}</p>
+      <div class="pc-provider-item-bottom-doctor" 
+          [ngStyle]="{'background-image':'-webkit-gradient(linear, left top, right top, 
+          color-stop(0%,'+ getBackgroundColor(service.activity.textColor,0.9)+'), 
+          color-stop(100%,rgba(125,185,232,0)))'}" 
+          *ngIf="providerSelected">
+          <div class="pc-provider-item-div " *ngFor='let provider of providers|filter:search'
+             [routerLink]="['/public-platform/homepage/provider-card/', provider._id]">
+                <img [src]="getUrl(provider.photo)" alt="" class="pc-provider-item-main-img">
+                
+              <div class='pc-provider-item-main-content'>
+                <p class="pc-provider-item-title-1" >{{provider.name}}</p>
+                <p class="pc-provider-item-title-2" >{{provider.title}}</p>
+                <p class="pc-provider-item-describe">{{provider.desc}}</p>
+              </div>
+            
         </div>
+       
       </div>
+    
   
-      <div class="pc-provider-item-bottom-office" *ngIf="articleSelected&&!selectedArticle">
-        <div class="pc-provider-item-bottom-office-div" *ngFor='let article of articles|filter:search'
+      <div class="pc-provider-item-bottom-office"     
+      [ngStyle]="{'background-image':'-webkit-gradient(linear, left top, right top, 
+      color-stop(0%,'+ getBackgroundColor(service.activity.textColor,0.9)+'), 
+      color-stop(100%,rgba(125,185,232,0)))'}" 
+      *ngIf="articleSelected&&!selectedArticle">
+        <div class="pc-provider-item-bottom-office-div" 
+        *ngFor='let article of articles|filter:search'
           (click)='selectedArticle=article; selectArticle(article);'>
           <img [src]="getUrl(article.image)" alt="" class="pc-provider-item-bottom-office-main-img">
           <div class="pc-provider-item-bottom-office-down">
@@ -134,117 +153,163 @@
         </div>
       </div>
     </div>
-    <br><br>
-    <div class="phone-provider-item" *ngIf="bigScreen==0"
-      [ngStyle]="{'height':screenHeight!=undefined?screenHeight:'800px'}">
-      <div class="phone-provider-item-header">
-        <div class="phone-provider-item-header-outter"
+    </div>
+    <div *ngIf='service&&bigScreen==0'>
+      <div class='phone-heathy-header ' 
+      [ngStyle]="{'background-color':service.activity.textColor}"*ngIf="!descSelected">
+        
+      </div>
+      <img [src]="background" alt=""  style='margin-top:-100px;'
+      [ngStyle]="{'height':screenHeight!=undefined?screenHeight:'800px',
+                  'width':screenWidth}">
+    <div class="phone-service" >
+      <div class="phone-service-desc" *ngIf="descSelected">
+        <div class="phone-item" 
+        [ngStyle]="{'color':service.activity.textColor}">
+          <p class="phone-item-p1">{{service.name}}</p>
+        
+          <img [src]="photo"  >
+       
+          <a class='btn btn-round ' [ngStyle]="{'background-color':service.activity.textColor}">登录</a>
+          <a class='btn btn-round' [ngStyle]="{'background-color':service.activity.textColor}">医生加盟</a>
+       
+        </div>
+        
+      </div>
+      <div class='phone-profile-item' *ngIf="profileSelected">
+          <div style='display:inline'>
+          <input class='form-control'  [(ngModel)]="search"><i class="material-icons">search</i>
+        </div>
+          <div class="phone-heathy-bottom-div" *ngFor='let profile of profiles|filter:search'
+          [routerLink]="['/public-platform/homepage/registry/', profile._id,undefined,undefined, profile.image]">
+          <img [src]="getUrl(profile.image)" alt=""  
+          class="phone-heathy-bottom-main-img">
+          <div class='phone-heathy-bottom-main-content'>
+         
+          <p class="phone-heathy-bottom-title" *ngIf='profile.label'>{{profile.label.ch}}</p>
+          <div class="phone-heathy-bottom-describe">
+            <!-- <img src="assets/images/provider/item/Ellipse.png" alt=""> -->
+            <p>{{profile.desc.patient}}</p>
+          </div>
+         </div>
+        </div>
+       
+       </div>
+    
+  
+      <div class="phone-provider-item" *ngIf="providerSelected">
+        <div style='display:inline'>
+          <input class='form-control'  [(ngModel)]="search"><i class="material-icons">search</i>
+        </div>
+       
+        <div class="phone-provider-div" *ngFor='let provider of providers|filter:search'
+          [routerLink]="['/public-platform/homepage/provider-card/', provider._id]">
+          <img [src]="getUrl(provider.photo)" alt="" 
+          class="phone-provider-div-img">
+          <div class='phone-provider-div-content'>
+          <p class="phone-provider-div-title">{{provider.name}}</p>
+          <p class="phone-provider-div-desc-2">{{provider.title}}</p>
+          <p class="phone-provider-div-desc-3">{{provider.desc}}</p>
+        </div>
+      </div>
+      </div>
+  
+      <div class="phone-article-item" *ngIf="articleSelected">
+        <div style='display:inline'>
+          <input class='form-control'  [(ngModel)]="search"><i class="material-icons">search</i>
+        </div>
+        
+        <div class="phone-article-div" *ngFor='let article of articles|filter:search'
+          (click)='selectedArticle=article; selectArticle(article);'>
+          <div class="phone-article-div-img">
+            <img [src]="getUrl(article.image)" alt="" >
+          </div>
+          <div class="phone-article-div-content">
+         
+              <!-- <img src="assets/images/office/Bitmap.png" alt="" class="phone-provider-item-bottom-office-headImg"> -->
+             
+                <p class="phone-article-div-title">{{article.label.ch}}</p>
+                <div class="phone-article-div-author">
+                  <span class="phone-article-office">
+                    {{article.createdBy.name}},{{article.createdBy.title}}
+                  </span>
+                  <span class="phone-article-office">
+                    {{article.createdAt|date: 'yyyy/MM/dd hh:mm'}}
+                  </span>
+                </div>
+             
+             
+          </div>
+          <div style='padding:15px; 
+          font-size:smaller; 
+          font-weight:400px;  
+          color: #7e7575;
+          overflow: hidden;'>
+            {{article.desc.patient}}
+        </div>
+        </div>
+       
+      </div>
+      <mat-toolbar class="footer">
+        <div class="footer-item"
           (click)="profileSelected=false;descSelected=true;mapSelected=false;providerSelected=false;articleSelected=false;"
-          [ngClass]="{'active':descSelected,'non-active':!descSelected}">
-          <div>
+          [ngClass]="{'active':descSelected}">
+         
             <a href="javascript:void(0);">
               <p>主页</p>
             </a>
-          </div>
+         
         </div>
-        <div class="phone-provider-item-header-outter"
+        <div class="footer-item"
           (click)="profileSelected=true;descSelected=false;mapSelected=false;getProfiles();articleSelected=false;providerSelected=false;"
           [ngClass]="{'active':profileSelected,'non-active':!profileSelected}">
           <div>
             <a href="javascript:void(0);">
-              <p>调研项目</p>
+              <p>项目</p>
             </a>
           </div>
         </div>
-        <div class="phone-provider-item-header-outter"
+        <div class="footer-item"
           (click)="profileSelected=false;descSelected=false;mapSelected=false;articleSelected=false;providerSelected=true;getProviders();"
           [ngClass]="{'active':providerSelected,'non-active':!providerSelected}">
           <div>
             <a href="javascript:void(0);">
-              <p>职业医师</p>
+              <p>医师</p>
             </a>
           </div>
         </div>
-        <div class="phone-provider-item-header-outter" (click)="profileSelected=false;descSelected=false;mapSelected=false;providerSelected=false;articleSelected=true;
+        <div class="footer-item" 
+        (click)="profileSelected=false;descSelected=false;mapSelected=false;providerSelected=false;articleSelected=true;
       getArticles();" [ngClass]="{'active':articleSelected,'non-active':!articleSelected}">
           <div>
             <a href="javascript:void(0);">
-              <p>科研文章</p>
+              <p>文章</p>
             </a>
           </div>
         </div>
-        <div class="phone-provider-item-header-outter" (click)='providerRegister()'>
+        <div class="footer-item" 
+       >
+          <div>
+            <a href="javascript:void(0);">
+              <p>我</p>
+            </a>
+          </div>
+        </div>
+       <!-- <div class="footer-item" (click)='providerRegister()'>
           <div>
             <a href="javascript:void(0);">
               <p>医生加盟</p>
             </a>
           </div>
-        </div>
-      </div>
-      <div class="phone-provider-item-header-outter1">
-        <input type="text" placeholder="输入关键字">
-        <img src="assets/images/provider/item/Light_Button_Primary_Text.png" alt="">
-      </div>
-      <div class="phone-provider-main" *ngIf="descSelected">
-        <div class="phone-provider-main-left">
-          <p class="phone-provider-main-left-p1">{{service.name}}</p>
-        </div>
-        <div class="phone-provider-main-right">
-          <img [src]="getUrl(service.photo)" alt="">
-        </div>
-      </div>
-      <p class="phone-provider-main-left-p2" *ngIf="descSelected">
-        {{service.desc}}
-      </p>
-      <div class="phone-provider-item-bottom-heathy" *ngIf="profileSelected">
-        <div class="phone-provider-item-bottom-heathy-div" *ngFor='let profile of profiles|filter:search'
-          [routerLink]="['/public-platform/homepage/registry/', profile._id,undefined,undefined, profile.image]">
-          <img [src]="getUrl(profile.image)" alt="" class="phone-provider-item-bottom-heathy-main-img">
-          <p class="phone-provider-item-bottom-heathy-describe" *ngIf='!profile.label'>{{profile.name}}</p>
-          <p class="phone-provider-item-bottom-heathy-describe" *ngIf='profile.label'>{{profile.label.ch}}</p>
-          <div class="phone-provider-item-bottom-heathy-down">
-            <!-- <img src="assets/images/provider/item/Ellipse.png" alt=""> -->
-            <p>{{profile.desc.patient}}</p>
-          </div>
-        </div>
-      </div>
-  
-      <div class="phone-provider-item-bottom-doctor" *ngIf="providerSelected">
-        <div class="phone-provider-item-bottom-doctor-div" *ngFor='let provider of providers|filter:search'
-          [routerLink]="['/public-platform/homepage/provider-card/', provider._id]">
-          <img [src]="getUrl(provider.photo)" alt="" class="phone-provider-item-bottom-doctor-main-img">
-          <p class="phone-provider-item-bottom-doctor-1">{{provider.name}}</p>
-          <p class="phone-provider-item-bottom-doctor-2">{{provider.title}}</p>
-          <p class="phone-provider-item-bottom-doctor-3">{{provider.desc}}</p>
-        </div>
-      </div>
-  
-      <div class="phone-provider-item-bottom-office" *ngIf="articleSelected&&!selectedArticle">
-        <div class="phone-provider-item-bottom-office-div" *ngFor='let article of articles|filter:search'
-          (click)='selectedArticle=article; selectArticle(article);'>
-          <div class="phone-provider-item-bottom-office-main-img">
-            <img [src]="getUrl(article.image)" alt="">
-          </div>
-          <div class="phone-provider-item-bottom-office-down">
-            <div class="phone-provider-item-bottom-office-down-up">
-              <!-- <img src="assets/images/office/Bitmap.png" alt="" class="phone-provider-item-bottom-office-headImg"> -->
-              <div class="phone-provider-item-bottom-office-down-main">
-                <p>{{article.label.ch}}</p>
-                <div class="phone-provider-item-bottom-office-down-main-bottom">
-                  <span id="phone-office-1">{{article.createdBy.name}},
-                    {{article.createdBy.title}}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <span id="phone-office-1">{{article.createdAt|date: 'yyyy/MM/dd hh:mm'}}</span>
-                </div>
-              </div>
-            </div>
-            <p class="phone-provider-item-bottom-office-down-p">
-              {{article.desc.patient}}
-            </p>
-          </div>
-        </div>
-      </div>
+        </div>-->
+      </mat-toolbar>
     </div>
-    <br><br>
+    </div>
+  
+  <div class="spinner-wrapper" *ngIf='loading'>
+    <spinner></spinner>
+  </div>
+  
     <!-- <div *ngIf="bigScreen==0">
       <div style="height:400px;background: linear-gradient(to bottom, #19498d 0%, white 50%);">
         <div style='margin-top:0px;'>
@@ -414,7 +479,4 @@
         </div>
       </div>
     </div> -->
-  </div>
-  <div class="spinner-wrapper" *ngIf='loading'>
-    <app-spinner></app-spinner>
-  </div>
+ 

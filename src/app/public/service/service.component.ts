@@ -81,8 +81,7 @@ export class ServiceComponent implements OnInit, AfterViewInit, OnDestroy {
     @Inject(MAT_DIALOG_DATA) public data: any) {
     this.language = this.storage.get('language');
     this.isWeixin = this.storage.get('isWeixin');
-    this.screenHeight = window.screen.height * 1.2 + "px";
-
+    this.screenHeight = window.screen.height * 1.2  + "px";
     this.screenWidth = window.screen.width * 1.48 + "px";
     this.subscription = allService.sharedDataService.dataSent$.subscribe(
       (language: any) => {
@@ -99,11 +98,12 @@ export class ServiceComponent implements OnInit, AfterViewInit, OnDestroy {
   getScreenSize(event?: any) {
 
     var screenWidth = window.innerWidth;
+    
     if (screenWidth <= 992)
       this.bigScreen = 0;
     else
       this.bigScreen = 1;
-    this.scrollSize = window.innerHeight * 0.9;
+  
 
   }
 
@@ -180,9 +180,9 @@ export class ServiceComponent implements OnInit, AfterViewInit, OnDestroy {
 
   getPhoto(){
     var image: any;
-    if (this.service.photo.slice(0, 4) != 'http')
+    if (this.service.photo&&this.service.photo.slice(0, 4) != 'http')
       image = this.entity.setFormUploadPhoto + String(this.service.photo) + '.png';
-    else if (this.service.photo.slice(0, 4) == 'http')
+    else if (this.service.photo&&this.service.photo.slice(0, 4) == 'http')
       image = this.service.photo;
     this.photo = this.getUrl(image);
   }
@@ -201,14 +201,17 @@ export class ServiceComponent implements OnInit, AfterViewInit, OnDestroy {
 
 
   getProfiles() {
-    debugger;
+   
     var profileIDs = [];
     for (let profile of this.service.profiles) {
       profileIDs.push(profile._id)
     }
     if (!this.profiles) {
       this.loading = true;
-      this.allService.categoryService.getCategoriesByFilter({ _id: { '$in': profileIDs } }).then((data: any) => {
+      //for testing, will change back
+     // this.allService.categoryService.getCategoriesByFilter({ _id: { '$in': profileIDs } }).then((data: any) => {
+        this.allService.categoryService.getCategoriesByFilter({ field: 'profile', status:'active' }).then((data: any) => {
+    
         this.temp = data;
         this.profiles = this.temp;
 
@@ -217,6 +220,33 @@ export class ServiceComponent implements OnInit, AfterViewInit, OnDestroy {
       })
     }
   }
+  getBackgroundColor(hex:String, lum:any){
+
+    var color=this.getLighter(hex, lum);
+    return this.getLighter(color, lum);
+    
+  }
+
+  getLighter(hex:any, lum:any){
+
+    // validate hex string
+    hex = String(hex).replace(/[^0-9a-f]/gi, '');
+    if (hex.length < 6) {
+      hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
+    }
+    lum = lum*2 || 0;
+  
+    // convert to decimal and change luminosity
+    var rgb = "#", c, i;
+    for (i = 0; i < 3; i++) {
+      c = parseInt(hex.substr(i*2,2), 16);
+      c = Math.round(Math.min(Math.max(0, c + (c * lum)), 255)).toString(16);
+      rgb += ("00"+c).substr(c.length);
+    }
+  
+    return rgb;
+  
+}
 
   getProviders() {
     if (!this.providers) {
@@ -226,7 +256,10 @@ export class ServiceComponent implements OnInit, AfterViewInit, OnDestroy {
       }
 
       this.loading = true;
-      this.allService.usersService.getByFilter({ _id: { '$in': providerIDs }, status: '2' }).then((data: any) => {
+      //for teesting will change back
+      this.allService.usersService.getByFilter({role:'provider' }).then((data: any) => {
+      
+    //  this.allService.usersService.getByFilter({ _id: { '$in': providerIDs }, status: '2' }).then((data: any) => {
         this.temp = data;
         this.providers = this.temp;
 

@@ -76,7 +76,7 @@
     <div class="phone-heathy-middle">
        <p>慢病管理项目</p>
        <div style='display:inline; margin:20px;'>
-       <input class='form-control' ><i class="material-icons">search</i>
+       <input class='form-control' [(ngModel)]="search" ><i class="material-icons">search</i>
       </div>
     </div>
     <div class="phone-heathy-bottom">
@@ -90,10 +90,6 @@
                 <p class="phone-heathy-bottom-title" *ngIf='profile.label'>{{profile.label.ch}}</p>
                 <p class="phone-heathy-bottom-describe">{{profile.desc.patient}}</p>
               </div>
-                <!-- <div class="phone-heathy-bottom-down">
-                <img src="assets/images/heathy/Ellipse.png" alt="">
-                <p>张美丽 2021-02-15</p>
-            </div> -->
             </a>
         </div>
     </div>
