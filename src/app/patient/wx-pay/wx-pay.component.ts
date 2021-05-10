@@ -8,6 +8,7 @@ import wx from 'weixin-jsapi';
 import { Title } from '@angular/platform-browser';
 import { ApiUrl } from 'src/app/core/models';
 import { AllServices } from 'src/app/core/common-services';
+import { environment } from '../../../environments/environment';
 
 @Component({
   selector: 'app-wx-pay',
@@ -28,10 +29,16 @@ export class WxPayComponent implements OnInit, OnChanges, AfterViewInit {
   isClosed: any;
   // 是否支付成功
   isPaySuccess: any;
+  // 手机端/微信端是否支付成功
+  isPhonePaySuccess: any;
   // 是否可以退款标识符
   isRefund: any;
   // 是否同意支付协议
   isAgree: any;
+  // 是否隐藏免责声明并开始支付
+  isGoToPay = true;
+  // 是否是重定向到该页面的H5支付
+  isH5Pay: any;
   orderId: any;
   visitId: any;
   isPc: any;
@@ -104,7 +111,7 @@ export class WxPayComponent implements OnInit, OnChanges, AfterViewInit {
       }
       if (!this.visit) {
         this.consultForm = false;
-        this.payment();
+
       } else {
         this.consultForm = false;
         if (this.user.role == 'provider') {
@@ -127,6 +134,7 @@ export class WxPayComponent implements OnInit, OnChanges, AfterViewInit {
     this.orderId = this.route.snapshot.paramMap.get('orderId');
     this.visitId = this.route.snapshot.paramMap.get('visitId');
     if (this.orderId && this.visitId) {
+      this.isH5Pay = true;
       if (!this.selected) {
         this.selected = this.storage.get('h5-selected');
       }
@@ -180,12 +188,19 @@ export class WxPayComponent implements OnInit, OnChanges, AfterViewInit {
 
   selectedIsAgree(completed: boolean) {
     this.isAgree = completed;
+    this.payment();
+    this.isGoToPay = false;
   }
 
 
   close() {
     var chatRoom = false
     this.messageEvent.emit(chatRoom);
+    if (this.isPhonePaySuccess == true) {
+      this.visitEvent.emit(this.visit._id);
+    } else {
+      this.visitEvent.emit('selectProvider');
+    }
     // this.dialogRef.close({visit:this.visit});
   }
 
@@ -193,18 +208,21 @@ export class WxPayComponent implements OnInit, OnChanges, AfterViewInit {
    * 支付入口,根据浏览器类型判断用哪种支付方式
    */
   payment() {
-    if (this.isWeixin) {
-      // 微信JSAPI支付方式
-      alert('微信JSAPI支付方式');
-      this.paymentJsapi();
-    } else {
-      if (this.isPc) {
-        // 微信Native支付
-        this.paymentNative();
+    if (this.isAgree) {
+      if (this.isWeixin) {
+        // 微信JSAPI支付方式
+        this.paymentJsapi();
       } else {
-        // 微信H5支付
-        this.paymentH5();
+        if (this.isPc) {
+          // 微信Native支付
+          this.paymentNative();
+        } else {
+          // 微信H5支付
+          this.paymentH5();
+        }
       }
+    } else {
+      this.allService.alertDialogService.error('未勾选支付免责声明,不能进行支付');
     }
   }
 
@@ -213,7 +231,6 @@ export class WxPayComponent implements OnInit, OnChanges, AfterViewInit {
    */
   paymentNative() {
     console.log('开始顶用微信NATIVE支付');
-    //debugger;
     console.log('this.visit', this.visit)
     //create visit
     if (!this.visit) {
@@ -241,7 +258,6 @@ export class WxPayComponent implements OnInit, OnChanges, AfterViewInit {
    */
   paymentH5() {
     console.log('开始顶用微信H5支付');
-    //debugger;
     console.log('this.visit', this.visit)
     //create visit
     if (!this.visit) {
@@ -270,7 +286,6 @@ export class WxPayComponent implements OnInit, OnChanges, AfterViewInit {
    */
   paymentJsapi() {
     console.log('开始顶用微信Jsapi支付');
-    //debugger;
     console.log('this.visit', this.visit)
     //create visit
     if (!this.visit) {
@@ -343,8 +358,16 @@ export class WxPayComponent implements OnInit, OnChanges, AfterViewInit {
       this.allService.paymentService.createInvoice(invoice).then((data: any) => {
         console.log('创建订单返回data:' + data);
         resolve(data);
-      })
+      }, (err: any) => {
+        reject(err);
+      });
     });
+  }
+
+  async getConfig() {
+    var link = location.href.split('#')[0];
+    var jsApiList: string[] = ['chooseWXPay'];
+    await this.allService.weixinJsapiService.getJsapiConfig(link, jsApiList);
   }
 
 
@@ -353,71 +376,112 @@ export class WxPayComponent implements OnInit, OnChanges, AfterViewInit {
    * @param desc 商品描述
    */
   jsapiPay(desc: any) {
-    const self = this;
-    var openID = this.user.openID;
-    console.log('openID', openID);
-    var filter = {
-      "amount": 0.01,
-      "desc": desc,
-      "openId": openID,
-      "trade_type": 'JSAPI'
-    }
-    console.log('filter============', filter)
-    this.allService.paymentService.reservePayment(filter).then((data: any) => {
-      this.receipt = data;
-      alert('out_trade_no' + this.receipt.out_trade_no);
-      console.log('this.receipt', this.receipt);
-      if (this.receipt.data) {
-        // 创建订单
-        this.createInvoice().then((data: any) => {
-          var response = this.receipt.data;
-          this.allService.alertDialogService.alert('开始支付');
-          wx.ready(function () {
-            console.log('response', response);
-            wx.chooseWXPay({
-              // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。
-              // 但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
-              timestamp: response.timeStamp,
-              // 支付签名随机串，不长于 32 位
-              nonceStr: response.nonceStr,
-              // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=\*\*\*）
-              package: response.package,
-              // this.receipt.data.signType, // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
-              signType: response.signType,
-              // 支付签名
-              paySign: response.paySign,
-              success: function (res: any) {
-                //跳转到支付成功页面有这个页面
-                self.allService.visitsService.update({ _id: self.visit._id, status: 'active' }).then((data: any) => {
-                  self.allService.alertDialogService.alert('支付成功');
-                  self.visit.status = 'active';
-                  self.consultForm = false;
-                  self.addVisit(self.visit);
-                })
-                console.log(res);
-              },
-              cancel: function (res: any) {//提示引用的是mint-UI里toast
-                self.allService.visitsService.update({ _id: self.visit._id, status: 'canceled' }).then((data: any) => {
-                  self.allService.alertDialogService.alert('已取消支付');
-                  self.visit.status = 'canceled'
-                })
-              },
-              fail: function (res: any) {
-                self.allService.visitsService.update({ _id: self.visit._id, status: 'canceled' }).then(((data: any) => {
-                  self.allService.alertDialogService.alert('支付失败，请重试');
-                  self.visit.status = 'canceled'
-                }))
-              }
-            });
-          })
-        })
-      } else {
-        this.allService.visitsService.update({ _id: this.visit._id, status: 'canceled' }).then((data: any) => {
-          this.allService.alertDialogService.alert('支付失败，请重试');
-          this.visit.status = 'canceled'
-        })
+    this.getConfig().then((res: any) => {
+      const self = this;
+      var openID = this.user.openID;
+      console.log('openID', openID);
+      var filter = {
+        "amount": 0.01,
+        "desc": desc,
+        "openId": openID,
+        "trade_type": 'JSAPI'
       }
-    })
+      console.log('filter============', filter)
+      this.allService.paymentService.reservePayment(filter).then((data: any) => {
+        this.receipt = data;
+        console.log('this.receipt', this.receipt);
+        if (this.receipt.data) {
+          // 创建订单
+          this.createInvoice().then((data: any) => {
+            var response = this.receipt.data;
+            wx.ready(function () {
+              console.log('response', response);
+              wx.chooseWXPay({
+                // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。
+                // 但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
+                timestamp: response.timeStamp,
+                // 支付签名随机串，不长于 32 位
+                nonceStr: response.nonceStr,
+                // 统一支付接口返回的prepay_id参数值，提交格式如：prepay_id=\*\*\*）
+                package: response.package,
+                // this.receipt.data.signType, // 签名方式，默认为'SHA1'，使用新版支付需传入'MD5'
+                signType: response.signType,
+                // 支付签名
+                paySign: response.paySign,
+                success: function (res: any) {
+                  //跳转到支付成功页面有这个页面
+                  self.allService.visitsService.update({ _id: self.visit._id, status: 'active', out_trade_no: self.receipt.out_trade_no }).then((data: any) => {
+                    let filter = {
+                      out_trade_no: self.receipt.out_trade_no,
+                      status: environment.STATUS.paid,
+                      code: environment.CODE.paid,
+                      time_end: new Date(),
+                    }
+                    self.allService.paymentService.updateInvoice(filter).then((data: any) => {
+                      if (data.code == 200) {
+                        // alert('支付成功');
+                        self.visit.status = 'active';
+                        self.isPhonePaySuccess = true;
+                        self.consultForm = false;
+                        self.close();
+                        // 暂时注释,不发送消息给医生
+                        self.addVisit(self.visit);
+                      } else {
+                        self.allService.alertDialogService.err(data.message);
+                      }
+                    })
+                  })
+                  console.log(res);
+                },
+                cancel: function (res: any) {//提示引用的是mint-UI里toast
+                  self.allService.visitsService.update({ _id: self.visit._id, status: 'canceled', out_trade_no: self.receipt.out_trade_no }).then((data: any) => {
+                    let filter = {
+                      out_trade_no: self.receipt.out_trade_no,
+                      status: environment.STATUS.reverse,
+                      code: environment.CODE.reverse,
+                      time_end: new Date(),
+                    }
+                    self.allService.paymentService.updateInvoice(filter).then((data: any) => {
+                      if (data.code == 200) {
+                        alert('已取消支付');
+                        self.visit.status = 'canceled';
+                        self.close();
+                      } else {
+                        self.allService.alertDialogService.err(data.message);
+                      }
+                    })
+                  })
+                },
+                fail: function (res: any) {
+                  self.allService.visitsService.update({ _id: self.visit._id, status: 'canceled', out_trade_no: self.receipt.out_trade_no }).then(((data: any) => {
+                    let filter = {
+                      out_trade_no: self.receipt.out_trade_no,
+                      status: environment.STATUS.err_pay,
+                      code: environment.CODE.err_pay,
+                      time_end: new Date(),
+                    }
+                    self.allService.paymentService.updateInvoice(filter).then((data: any) => {
+                      if (data.code == 200) {
+                        alert('支付失败，请重试');
+                        self.visit.status = 'canceled';
+                        self.close();
+                      } else {
+                        self.allService.alertDialogService.err(data.message);
+                      }
+                    })
+                  }))
+                }
+              });
+            })
+          })
+        } else {
+          this.allService.visitsService.update({ _id: this.visit._id, status: 'canceled' }).then((data: any) => {
+            this.visit.status = 'canceled'
+            this.allService.alertDialogService.alert('支付失败，请重试');
+          })
+        }
+      })
+    });
   }
 
   /** 
@@ -463,7 +527,6 @@ export class WxPayComponent implements OnInit, OnChanges, AfterViewInit {
    * @param desc 商品描述
    */
   h5Pay(desc: any) {
-    //debugger;
     var filter = {
       amount: 0.01,
       desc: desc,
@@ -485,7 +548,6 @@ export class WxPayComponent implements OnInit, OnChanges, AfterViewInit {
           let orderId = this.receipt.out_trade_no;
           let visitId = this.visit._id;
           let redirect_url = encodeURIComponent('https://www.digitalbaseas.com/provider-platform/patient/h5-pay-redirect/' + visitId + '/' + orderId);
-          debugger
           window.location.href = this.mweb_url + "&redirect_url=" + redirect_url;
           // 生成二维码后定时主动查询订单状态
           // let info = {
@@ -540,8 +602,15 @@ export class WxPayComponent implements OnInit, OnChanges, AfterViewInit {
               // 更新为active
               that.allService.visitsService.update({ _id: visitId, status: 'active' }).then((data: any) => {
                 that.visit.status = 'active';
-                that.isPaySuccess = true;
-                that.consultForm = false;
+                if (that.bigScreen == 0) {
+                  that.isPhonePaySuccess = true;
+                  that.consultForm = false;
+                  that.close();
+                }else{
+                  that.isPaySuccess = true;
+                  that.consultForm = false;
+                }
+                // 暂时注释
                 that.addVisit(that.visit);
                 // 以上状态则说明执行完毕,无需再继续查询
                 console.log('定时任务查询微信支付订单状态----关闭定时任务----');
@@ -554,7 +623,7 @@ export class WxPayComponent implements OnInit, OnChanges, AfterViewInit {
               that.allService.visitsService.update({ _id: visitId, status: 'refund' }).then((data: any) => {
                 that.visit.status = 'refund';
                 that.consultForm = false;
-                that.addVisit(that.visit);
+                // that.addVisit(that.visit);
                 // 以上状态则说明执行完毕,无需再继续查询
                 console.log('定时任务查询微信支付订单状态----关闭定时任务----');
                 clearInterval(that.interval);
@@ -618,7 +687,6 @@ export class WxPayComponent implements OnInit, OnChanges, AfterViewInit {
 
 
   sendMail(receiver: any, message: any) {
-    //debugger;
     console.log(receiver);
     if (receiver && receiver.openID) {// 如果有openid,优先公众号推送
       var image = this.apiUrl.setFormUploadPhoto + String(this.user.photo) + '.png';
@@ -695,7 +763,6 @@ export class WxPayComponent implements OnInit, OnChanges, AfterViewInit {
           this.allService.invoiceService.getByOutTradeNo(this.visit.out_trade_no).then((data) => {
             this.temp = data;
             console.log('-----getMessages----根据订单号获取支付成功的订单信息 data', data);
-            //debugger;
             if (this.temp && this.temp.code) {
               if (this.temp.code == 2) {// 支付成功状态
                 let startDate = this.temp.time_end;
@@ -733,7 +800,12 @@ export class WxPayComponent implements OnInit, OnChanges, AfterViewInit {
 
   receiveMessage($event: any) {
     if ($event == false) {
-      this.isPaySuccess = false;
+      // this.isPaySuccess = false;
+      if (this.isH5Pay) {
+        this.router.navigate(['/provider-platform/patient/provider-list']);
+      } else {
+        this.close();
+      }
     }
   }
 

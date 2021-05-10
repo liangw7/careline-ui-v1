@@ -56,29 +56,25 @@
       <div class="card followup-type" *ngFor='let followupType of  followupTypeList'
         (click)='showFollowup=true;selectedForms=followupType.forms'>
         <div class="card-header">
-          <div class='row'>
-            <div style='width:30%;text-align: center;'>
-              <img src="{{getImage(followupType)}}" class='photo'>
-              <div style='font-weight: 800; color:#313131;margin-top: 2px;'>{{ getLabel(followupType)}}</div>
-            </div>
-            <div style='padding-left:10px; width:70%'>
-              <table class='table table-striped' *ngFor="let form of followupType.forms">
-                <tBody *ngFor="let obSet of form.obSets">
-                  <tr *ngIf='getValue(obSet)'>
-                    <td style='font-weight:600;' [ngClass]="{'levelOne':getValue(obSet).alertLevel==1,
-                      'levelTwo':getValue(obSet).alertLevel==2,
-                      'normal':getValue(obSet).alertLevel!=1&&getValue(obSet)[0].alertLevel!=2}">
-                      <div class='row' style='width:98%'>
-                        <div class='col-sm-4'>{{obSet.label.ch}}</div>
-                        <div class='col-sm-6'>{{getValue(obSet)[0].text}}</div>
-                      </div>
-                      <div class='row' style='width:98%'>
-                        <div class='col-sm-12'>{{getValue(obSet).comments}}</div>
-                      </div>
-                    </td>
-                  </tr>
-                </tBody>
-              </table>
+          <div style='width:30%;text-align: center;'>
+            <img src="{{getImage(followupType)}}" class='photo'>
+            <div style='font-weight: 800; color:#313131;margin-top: 2px;'>{{ getLabel(followupType)}}</div>
+          </div>
+          <div class="fromboxs">
+            <div class="frombox" *ngFor="let form of followupType.forms">
+              <div *ngFor="let obSet of form.obSets">
+                <div *ngIf='getValue(obSet)'>
+                  <div [ngClass]="{'levelOne':getValue(obSet).alertLevel==1,
+                    'levelTwo':getValue(obSet).alertLevel==2,
+                    'normal':getValue(obSet).alertLevel!=1&&getValue(obSet)[0].alertLevel!=2}">
+                    <div class='labelbox'>
+                      <span>{{obSet.label.ch}}</span>
+                      <span>{{getValue(obSet)[0].text}}</span>
+                    </div>
+                    <div class="commentbox">{{getValue(obSet).comments}}</div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -86,11 +82,9 @@
     </div>
   </div>
   <div class='followup-pop' *ngIf="showFollowup">
-    <div class="backbox" (click)='showFollowup=false;'><span class="material-icons">chevron_left</span></div>
-    <div class='card-header'>
-      <span style='font-weight: 600;'>
-        病人日志：{{selectedDate|date:'yyyy/MM/dd'}}
-      </span>
+    <div class="backbox">
+      <span (click)='showFollowup=false;' class="material-icons">chevron_left</span>
+      <div class="txt">病人日志：{{selectedDate|date:'yyyy/MM/dd'}}</div>
     </div>
     <div *ngIf='showFollowup&&!showMonitor'>
       <app-form *ngIf='selectedForms' [forms]='selectedForms' [patient]='patient' [visit]='followup'

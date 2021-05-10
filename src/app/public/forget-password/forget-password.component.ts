@@ -45,7 +45,6 @@ export class ForgetPasswordComponent implements OnInit {
    * 发送验证码方法
    */
   sendMessage() {
-    debugger;
     console.log(this.shortMessage);
     if (!this.shortMessage.mobile) {
       this.allService.alertDialogService.warn('请输入手机号');
@@ -66,7 +65,6 @@ export class ForgetPasswordComponent implements OnInit {
           if (data.code == 1) {// 返回code=1则说明发送成功
             this.countDown = true;
             this.showButtonText = '验证码已发送(' + 300 + 's)';
-            debugger;
             console.log(data);
             const start = setInterval(() => { //间歇调用计时器，间隔为1000ms
               if (this.countDownTime >= 0) {

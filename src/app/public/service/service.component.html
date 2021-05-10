@@ -26,7 +26,14 @@
             </div>
           </div>
           <div class="pc-provider-item-header-outter"
-            (click)="search='';profileSelected=false;descSelected=false;mapSelected=false;articleSelected=false;providerSelected=true;getProviders();"
+            (click)="search='';
+            profileSelected=false;
+            descSelected=false;
+            fromService=false;
+            selectedProvider=null;
+            articleSelected=false;
+            providerSelected=true;
+            getProviders();"
           >
             <div   [ngClass]="{'active':providerSelected,'non-active':!providerSelected}">
               <a href="javascript:void(0);">
@@ -35,7 +42,12 @@
             </div>
           </div>
           <div class="pc-provider-item-header-outter" 
-          (click)="search='';profileSelected=false;descSelected=false;mapSelected=false;providerSelected=false;articleSelected=true;
+          (click)="search='';
+          profileSelected=false;
+          descSelected=false;
+          selectedArticle=false;
+          providerSelected=false;
+          articleSelected=true;
           getArticles();">
             <div  [ngClass]="{'active':articleSelected,'non-active':!articleSelected}">
               <a href="javascript:void(0);">
@@ -90,10 +102,11 @@
       [ngStyle]="{'background-image':'-webkit-gradient(linear, left top, right top, 
       color-stop(0%,'+ getBackgroundColor(service.activity.textColor,0.9)+'), 
       color-stop(100%,rgba(125,185,232,0)))'}"
-       *ngIf="profileSelected">
+       *ngIf="profileSelected;">
+       <div *ngIf='!selectedProfile' style='overflow-y: auto;height: 75vh;'>
         <div class="card pc-provider-item-bottom-heathy-div" 
-        *ngFor='let profile of profiles|filter:search'
-          [routerLink]="['/public-platform/homepage/registry/', profile._id,undefined,undefined, profile.image]">
+        (click)=' getForms(profile)'
+        *ngFor='let profile of profiles|filter:search'>
           <img [src]="getUrl(profile.image)" alt="" 
           class="pc-provider-item-bottom-heathy-main-img">
          
@@ -104,14 +117,39 @@
           </div>
         </div>
       </div>
-  
+      <div *ngIf='selectedProfile' style='overflow-y: auto;height: 75vh;overflow:hidden;'>
+        <div class='row' style='width:98%; padding:0; margin:0'>
+          <div class='col-sm-9'> 
+            <span  style='font-weight:800; font-size:20px;'
+            [ngStyle]="{'color':service.activity.textColor}"
+            >{{selectedProfile.label.ch}}</span>
+          </div>
+          <div class='col-sm-3'>
+        <a class='btn btn-round btn-primary'  
+        [ngStyle]="{'background-color':service.activity.textColor}"
+        (click)='selectedProfile=null'>返回</a>
+        <a class='btn btn-round btn-primary'  
+        [ngStyle]="{'background-color':service.activity.textColor}">去咨询</a>
+      </div>
+    </div>
+      <div style='overflow-y: auto;
+      height: 70vh;'>
+        <app-form [forms]='forms'  [showInstruction]=true
+        ></app-form>
+      </div>
+      
+      </div>
+    </div>
       <div class="pc-provider-item-bottom-doctor" 
           [ngStyle]="{'background-image':'-webkit-gradient(linear, left top, right top, 
           color-stop(0%,'+ getBackgroundColor(service.activity.textColor,0.9)+'), 
-          color-stop(100%,rgba(125,185,232,0)))'}" 
-          *ngIf="providerSelected">
-          <div class="pc-provider-item-div " *ngFor='let provider of providers|filter:search'
-             [routerLink]="['/public-platform/homepage/provider-card/', provider._id]">
+          color-stop(100%,rgba(125,185,232,0)))'}"  *ngIf="providerSelected"
+         >
+          <div  *ngIf='!selectedProvider' style='overflow-y: auto;
+          height:75vh;'>
+          <div class="pc-provider-item-div " 
+          *ngFor='let provider of providers|filter:search'
+          (click)='selectedProvider=provider; fromService=true;'>
                 <img [src]="getUrl(provider.photo)" alt="" class="pc-provider-item-main-img">
                 
               <div class='pc-provider-item-main-content'>
@@ -119,20 +157,39 @@
                 <p class="pc-provider-item-title-2" >{{provider.title}}</p>
                 <p class="pc-provider-item-describe">{{provider.desc}}</p>
               </div>
-            
+            </div>
         </div>
-       
+        <div *ngIf='selectedProvider'>
+          
+          <div class='row' style='width:98%;'>
+            <div class='col-sm-9'> 
+            
+            </div>
+            <div class='col-sm-3'>
+          <a class='btn btn-round btn-primary'  
+          [ngStyle]="{'background-color':service.activity.textColor}"
+          (click)='selectedProvider=null'>所有医生</a>
+          <a class='btn btn-round btn-primary'  
+          [ngStyle]="{'background-color':service.activity.textColor}">去咨询</a>
+        </div>
       </div>
+        <div style='overflow-y: auto; height: 70vh;'>
+          <provider [providerID]='selectedProvider._id'  [fromService]='fromService'
+          ></provider>
+        </div>
+        
+        </div>
     
-  
-      <div class="pc-provider-item-bottom-office"     
+      </div>
+    <div class="pc-provider-item-bottom-office"     
       [ngStyle]="{'background-image':'-webkit-gradient(linear, left top, right top, 
       color-stop(0%,'+ getBackgroundColor(service.activity.textColor,0.9)+'), 
       color-stop(100%,rgba(125,185,232,0)))'}" 
-      *ngIf="articleSelected&&!selectedArticle">
+      *ngIf="articleSelected">
+        <div class='article'  *ngIf='!selectedArticle'>
         <div class="pc-provider-item-bottom-office-div" 
         *ngFor='let article of articles|filter:search'
-          (click)='selectedArticle=article; selectArticle(article);'>
+          (click)='selectedArticle=article;selectArticle(article)'>
           <img [src]="getUrl(article.image)" alt="" class="pc-provider-item-bottom-office-main-img">
           <div class="pc-provider-item-bottom-office-down">
             <div class="pc-provider-item-bottom-office-down-up">
@@ -140,8 +197,10 @@
               <div class="pc-provider-item-bottom-office-down-main">
                 <p>{{article.label.ch}}</p>
                 <div class="pc-provider-item-bottom-office-down-main-bottom">
-                  <span id="pc-office-1">{{article.createdBy.name}},
-                    {{article.createdBy.title}}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <span id="pc-office-1" *ngIf='article.createdBy'>
+                    {{article.createdBy.name}},
+                    {{article.createdBy.title}}
+                  </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   <span id="pc-office-1">{{article.createdAt|date: 'yyyy/MM/dd hh:mm'}}</span>
                 </div>
               </div>
@@ -150,6 +209,35 @@
               {{article.desc.patient}}
             </p>
           </div>
+        </div>
+        </div>
+        <div class='article' *ngIf='selectedArticle'>
+          <div class='row' style='width:98%;padding:0; margin:0px;'>
+            <div class='col-sm-9'> 
+              <div style='font-size:20px; font-weight:600'
+              [ngStyle]="{'color':service.activity.textColor}">
+                {{selectedArticle.label.ch}}
+                <div style='font-size:16px; font-weight:500'
+                [ngStyle]="{'color':service.activity.textColor}">
+                  <span id="pc-office-1" *ngIf='selectedArticle.createdBy'>
+                    {{selectedArticle.createdBy.name}},
+                    {{selectedArticle.createdBy.title}}
+                  </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <span id="pc-office-1">
+                    {{selectedArticle.createdAt|date: 'yyyy/MM/dd hh:mm'}}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div class='col-sm-3'>
+          <a class='btn btn-round btn-primary'  
+          [ngStyle]="{'background-color':service.activity.textColor}"
+          (click)='selectedArticle=null'>所有</a>
+        </div>
+        </div>
+        <div style='height:70vh; overflow-y: auto;'>
+          <app-form [forms]='articleForms'></app-form>
+        </div>
         </div>
       </div>
     </div>
@@ -180,8 +268,10 @@
           <div style='display:inline'>
           <input class='form-control'  [(ngModel)]="search"><i class="material-icons">search</i>
         </div>
-          <div class="phone-heathy-bottom-div" *ngFor='let profile of profiles|filter:search'
-          [routerLink]="['/public-platform/homepage/registry/', profile._id,undefined,undefined, profile.image]">
+        <div *ngIf='!selectedProfile'>
+          <div class="phone-heathy-bottom-div" 
+          *ngFor='let profile of profiles|filter:search'
+          (click)='getForms(profile)'>
           <img [src]="getUrl(profile.image)" alt=""  
           class="phone-heathy-bottom-main-img">
           <div class='phone-heathy-bottom-main-content'>
@@ -193,7 +283,29 @@
           </div>
          </div>
         </div>
+      </div>
+      <div *ngIf='selectedProfile' class='pop-out'
+    >
        
+
+        <div style='font-size: 20px;font-weight: 600;text-align:center'
+        [ngStyle]="{'color':service.activity.textColor}">{{profile.label.ch}}
+        </div>
+        <div    style=' text-align:right'>
+        <a class='btn btn-round btn-primary'  
+        style='font-size:12px;'
+        [ngStyle]="{'background-color':service.activity.textColor}"
+        (click)='selectedProfile=null'>返回</a>
+        <a class='btn btn-round btn-primary'  
+        style='font-size:12px;'
+        [ngStyle]="{'background-color':service.activity.textColor}">去咨询</a>
+         </div>
+         <div style='height:80vh; overflow:auto'>
+        <app-form [forms]='forms'  [showInstruction]=true
+        ></app-form>
+      </div>
+      
+      </div>
        </div>
     
   
@@ -201,9 +313,9 @@
         <div style='display:inline'>
           <input class='form-control'  [(ngModel)]="search"><i class="material-icons">search</i>
         </div>
-       
+       <div *ngIf='!selectedProvider'>
         <div class="phone-provider-div" *ngFor='let provider of providers|filter:search'
-          [routerLink]="['/public-platform/homepage/provider-card/', provider._id]">
+          (click)='selectedProvider=provider; fromService=true;'>
           <img [src]="getUrl(provider.photo)" alt="" 
           class="phone-provider-div-img">
           <div class='phone-provider-div-content'>
@@ -212,13 +324,34 @@
           <p class="phone-provider-div-desc-3">{{provider.desc}}</p>
         </div>
       </div>
+    </div>
+      <div *ngIf='selectedProvider' class='pop-out' 
+      >
+          
+        <div style='text-align:right; font-size:14px'>
+           <a class='btn btn-round btn-primary'  
+           style='font-size:12px'
+           [ngStyle]="{'background-color':service.activity.textColor}"
+           (click)='selectedProvider=null'>所有医生</a>
+           <a class='btn btn-round btn-primary'  
+           style='font-size:12px'
+           [ngStyle]="{'background-color':service.activity.textColor}">去咨询</a>
+         </div>
+     
+        <div>
+          <div style='height:80vh; overflow:auto'>
+           <provider [providerID]='selectedProvider._id'  [fromService]='fromService'
+           ></provider></div>
+        
+          </div>
+         </div>
       </div>
   
       <div class="phone-article-item" *ngIf="articleSelected">
         <div style='display:inline'>
           <input class='form-control'  [(ngModel)]="search"><i class="material-icons">search</i>
         </div>
-        
+        <div *ngIf='!selectedArticle'>
         <div class="phone-article-div" *ngFor='let article of articles|filter:search'
           (click)='selectedArticle=article; selectArticle(article);'>
           <div class="phone-article-div-img">
@@ -248,7 +381,38 @@
             {{article.desc.patient}}
         </div>
         </div>
-       
+      </div>
+      <div class='pop-out' *ngIf='selectedArticle'>
+     
+          <div class='row' style='width:98%;padding:0; margin:0px;'>
+            <div style='width: 100%; margin-top:5%;'> 
+              <div style='font-size:20px; font-weight:600'
+              [ngStyle]="{'color':service.activity.textColor}">
+                {{selectedArticle.label.ch}}
+                <div style='font-size:16px; font-weight:500'
+                [ngStyle]="{'color':service.activity.textColor}">
+                  <span id="pc-office-1" *ngIf='selectedArticle.createdBy'>
+                    {{selectedArticle.createdBy.name}},
+                    {{selectedArticle.createdBy.title}}
+                  </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <span id="pc-office-1">
+                    {{selectedArticle.createdAt|date: 'yyyy/MM/dd hh:mm'}}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div style='width: 100%'>
+          <a class='btn btn-round btn-primary'  
+          style='font-size:12px; margin-left:70%'
+          [ngStyle]="{'background-color':service.activity.textColor}"
+          (click)='selectedArticle=null'>所有文章</a>
+        </div>
+        </div>
+        <div style='height:80vh; overflow-y: auto;'>
+          <app-form [forms]='articleForms'></app-form>
+        </div>
+        
+      </div>
       </div>
       <mat-toolbar class="footer">
         <div class="footer-item"

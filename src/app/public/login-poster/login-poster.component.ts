@@ -10,6 +10,7 @@ import { SESSION_STORAGE, StorageService } from 'ngx-webstorage-service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { AllServices, WechatJssdkConfig } from 'src/app/core/common-services';
+import { MessageBoxComponent } from 'src/app/core/common-components/message-box/message-box.component';
 import { ShortMessageModel } from 'src/app/core/models/shortMessage';
 import { User } from 'src/app/core/models';
 import { environment } from '../../../environments/environment';
@@ -152,10 +153,21 @@ export class LoginPosterComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.titleService.setTitle('数基健康');
     this.user = this.storage.get('user');
+    var token = this.storage.get('token');
+    if (token != null && token != '' && token != undefined &&
+      this.user != null && this.user != '' && this.user != undefined) {
+      if (this.user.role != 'patient') {
+        this.router.navigate(['provider']);
+      } else {
+        this.storage.set('patient', this.user);
+        this.router.navigate(['patient']);
+      }
+      return;
+    }
     if (this.user) {
-      this.user = undefined;
-      this.storage.set('user', undefined);
-      this.storage.remove('user')
+      // this.user = undefined;
+      // this.storage.set('user', undefined);
+      // this.storage.remove('user');
     }
     console.log('this.user', this.user);
     // 根据校验code是否存在,判断用户是否确认授权登录
@@ -167,7 +179,7 @@ export class LoginPosterComponent implements OnInit, OnDestroy {
       this.checkRole();
     } else {
       // 如果没有同意授权登录,则需要提示用户,不授权登录无法执行后续操作;
-      if (this.bigScreen && this.bigScreen == 0) {
+      if (this.bigScreen == 0) {
         this.mailRole = this.route.snapshot.paramMap.get('role');// 项目类别公众号推送消息,信息接收者的角色
         this.storage.set('mailRole', this.mailRole);
         this.senderID = this.route.snapshot.paramMap.get('senderID');// 发消息人员的user._id
@@ -181,7 +193,7 @@ export class LoginPosterComponent implements OnInit, OnDestroy {
           if (res) {// 确定调用方法
             window.location.href = this.wechatJssdkConfig.wxAuthUrl0;
           } else {// 取消调用方法
-            this.router.navigate(['/public-platform/homepage/login'])
+            this.router.navigate(['homepage/main']);
           }
         });
       }
@@ -208,141 +220,148 @@ export class LoginPosterComponent implements OnInit, OnDestroy {
           console.log('this.wechat access', this.weChatAccess);
           this.storage.set('openID', this.weChatAccess);
         }
-        let weChatID: string | null = null;
-        if (this.weChatAccess.unionid) {
-          weChatID = this.weChatAccess.unionid;
-        } else {
-          weChatID = this.weChatAccess.openid;
-        }
-        // 根据weChatID去user信息中查询是否存在对应用户信息
-        if (weChatID) {
-          this.allService.usersService.getWithDetailByFilter({ weChatID: weChatID }).then((data: any) => {
-            this.access = data;
-            console.log('this.access', this.access);
-            // 如果可以查询到信息,说明已经通过微信在平台注册过了
-            if (this.access.length > 0) {
-              /**
-               * this.profileRole = patient/child
-               * 患者咨询绑定项目标识
-               * this.profileRole = provider
-               * 医生加盟绑定项目标识
-               */
-              if (this.profileRole) {
-                if (this.profileRole == 'patient') {
-                  if (this.findRole(this.profileRole, this.access)) {
-                    // 如果已经注册过,直接修改用户信息即可;
-                    this.login(this.getUserByRole(this.access, 'patient'), true);
-                  } else {
-                    // 如果没有注册过,需要携带所有需要的参数路由跳转到登录页面注册部分
-                    const content = '您还未在本平台注册用户,是否前往注册?'
-                    this.goToRegistryKnowRole(content, 0);
-                  }
-                }
-
-                if (this.profileRole == 'child') {
-                  this.getUserRoleState(this.access);
-                  if (this.childrenMembers) {
-                    // 如果该账号及其家庭成员账号中存在儿童,这绑定到该儿童下;
-
-                    // 如果是多条数据,需要用户选择对应人员后进行绑定
-                    // 通过调用组件将多条用户信息展示出来,由用户选择后进行登录操作
-                    let dialogConfig = new MatDialogConfig();
-                    dialogConfig.autoFocus = true;
-                    if (this.bigScreen == 1) {
-                      dialogConfig.data = {
-                        'users': this.childrenMembers,
-                        'language': this.language
-                      }
-                      dialogConfig.position = { top: '5%', left: '60%' };
-                    } else {
-                      dialogConfig = {
-                        data: {
-                          'users': this.childrenMembers,
-                          'language': this.language
-                        },
-                        maxWidth: '100vw',
-                        maxHeight: '100vh',
-                        height: '100%',
-                        width: '100%'
-                      }
-                    }
-
-                    this.loading = false;
-                   /* const dialogRef = this.dialog.open(MessageBoxComponent, dialogConfig);
-                    dialogRef.afterClosed().subscribe((result: { user: { email: string | string[]; sortNumber: string; }; }) => {
-                      if (result) {
-                        console.log('result.user', result.user)
-                        this.loadWords = '开始登录';
-                        this.login(result.user, false);
-                      }
-                    })*/
-                  } else {
-                    // 如果没有儿童,需要登录后跳转到添加家庭成员功能出进行绑定
-                    this.isCreateFamilyMember = true;
-                    this.login(this.getUserByRole(this.access, 'patient'), false);
-                  }
-                }
-
-                if (this.profileRole == 'provider') {
-                  if (this.findRole(this.profileRole, this.access)) {
-                    // 如果已经注册过,直接修改医护工作者信息即可;
-                    this.login(this.getUserByRole(this.access, 'provider'), true);
-                  } else {
-                    // 如果没有注册过,需要携带所有需要的参数路由跳转到登录页面注册部分
-                    const content = '您还未在本平台注册过医护工作者,是否前往注册?'
-                    this.goToRegistryKnowRole(content, 1);
-                  }
-                }
-              } else {//directly scan
-                if (this.access.length == 1) {
-                  this.loading = false;
-                  this.login(this.access, false);
-                } else if (this.access.length > 1) {
-
-                  // 通过调用组件将多条用户信息展示出来,由用户选择后进行登录操作
-                  let dialogConfig = new MatDialogConfig();
-                  dialogConfig.autoFocus = true;
-                  if (this.bigScreen == 1) {
-                    dialogConfig.data = {
-                      'users': this.access,
-                      'language': this.language
-                    }
-                    dialogConfig.position = { top: '5%', left: '60%' };
-                  } else {
-                    dialogConfig = {
-                      data: {
-                        'users': this.access,
-                        'language': this.language
-                      },
-                      maxWidth: '100vw',
-                      maxHeight: '100vh',
-                      height: '100%',
-                      width: '100%'
-                    }
-                  }
-
-                  this.loading = false;
-                /*  const dialogRef = this.dialog.open(MessageBoxComponent, dialogConfig);
-                  dialogRef.afterClosed().subscribe((result: { user: { email: string | string[]; sortNumber: string; }; }) => {
-                    if (result) {
-                      console.log('result.user', result.user)
-                      this.loadWords = '开始登录';
-                      this.login(result.user, false);
-                    }
-                  })*/
-                }
-              }
-            } else {// 没有在平台绑定过微信或者从未在平台注册过
-              // 弹窗提示用户是否在平台注册过
-              this.goToRegistryUnknowRole();
-            }
-          })
-        }
+        this.goToLogin();
       }
     }, (err: any) => {
       console.log('not login we wechat')
       this.allService.alertDialogService.warn('请登录微信')
     })
+  }
+
+  /**
+   * 去登陆前需要校验的逻辑
+   */
+  goToLogin() {
+    let weChatID: string | null = null;
+    if (this.weChatAccess.unionid) {
+      weChatID = this.weChatAccess.unionid;
+    } else {
+      weChatID = this.weChatAccess.openid;
+    }
+    // 根据weChatID去user信息中查询是否存在对应用户信息
+    if (weChatID) {
+      this.allService.usersService.getWithDetailByFilter({ weChatID: weChatID }).then((data: any) => {
+        this.access = data;
+        console.log('this.access', this.access);
+        // 如果可以查询到信息,说明已经通过微信在平台注册过了
+        if (this.access.length > 0) {
+          /**
+           * this.profileRole = patient/child
+           * 患者咨询绑定项目标识
+           * this.profileRole = provider
+           * 医生加盟绑定项目标识
+           */
+          if (this.profileRole) {
+            if (this.profileRole == 'patient') {
+              if (this.findRole(this.profileRole, this.access)) {
+                // 如果已经注册过,直接修改用户信息即可;
+                this.login(this.getUserByRole(this.access, 'patient'), true);
+              } else {
+                // 如果没有注册过,需要携带所有需要的参数路由跳转到登录页面注册部分
+                const content = '您还未在本平台注册用户,是否前往注册?'
+                this.goToRegistryKnowRole(content, 0);
+              }
+            }
+
+            if (this.profileRole == 'child') {
+              this.getUserRoleState(this.access);
+              if (this.childrenMembers) {
+                // 如果该账号及其家庭成员账号中存在儿童,这绑定到该儿童下;
+
+                // 如果是多条数据,需要用户选择对应人员后进行绑定
+                // 通过调用组件将多条用户信息展示出来,由用户选择后进行登录操作
+                let dialogConfig = new MatDialogConfig();
+                dialogConfig.autoFocus = true;
+                if (this.bigScreen == 1) {
+                  dialogConfig.data = {
+                    'users': this.childrenMembers,
+                    'language': this.language
+                  }
+                  dialogConfig.position = { top: '5%', left: '60%' };
+                } else {
+                  dialogConfig = {
+                    data: {
+                      'users': this.childrenMembers,
+                      'language': this.language
+                    },
+                    maxWidth: '100vw',
+                    maxHeight: '100vh',
+                    height: '100%',
+                    width: '100%'
+                  }
+                }
+
+                this.loading = false;
+                const dialogRef = this.dialog.open(MessageBoxComponent, dialogConfig);
+                dialogRef.afterClosed().subscribe((result: { user: { email: string | string[]; sortNumber: string; }; }) => {
+                  if (result) {
+                    console.log('result.user', result.user)
+                    this.loadWords = '开始登录';
+                    this.login(result.user, false);
+                  }
+                })
+              } else {
+                // 如果没有儿童,需要登录后跳转到添加家庭成员功能出进行绑定
+                this.isCreateFamilyMember = true;
+                this.login(this.getUserByRole(this.access, 'patient'), false);
+              }
+            }
+
+            if (this.profileRole == 'provider') {
+              if (this.findRole(this.profileRole, this.access)) {
+                // 如果已经注册过,直接修改医护工作者信息即可;
+                this.login(this.getUserByRole(this.access, 'provider'), true);
+              } else {
+                // 如果没有注册过,需要携带所有需要的参数路由跳转到登录页面注册部分
+                const content = '您还未在本平台注册过医护工作者,是否前往注册?'
+                this.goToRegistryKnowRole(content, 1);
+              }
+            }
+          } else {//directly scan
+            if (this.access.length == 1) {
+              this.loading = false;
+              this.login(this.access, false);
+            } else if (this.access.length > 1) {
+
+              // 通过调用组件将多条用户信息展示出来,由用户选择后进行登录操作
+              let dialogConfig = new MatDialogConfig();
+              dialogConfig.autoFocus = true;
+              if (this.bigScreen == 1) {
+                dialogConfig.data = {
+                  'users': this.access,
+                  'language': this.language
+                }
+                dialogConfig.position = { top: '5%', left: '60%' };
+              } else {
+                dialogConfig = {
+                  data: {
+                    'users': this.access,
+                    'language': this.language
+                  },
+                  maxWidth: '100vw',
+                  maxHeight: '100vh',
+                  height: '100%',
+                  width: '100%'
+                }
+              }
+
+              this.loading = false;
+              const dialogRef = this.dialog.open(MessageBoxComponent, dialogConfig);
+              dialogRef.afterClosed().subscribe((result: { user: { email: string | string[]; sortNumber: string; }; }) => {
+                if (result) {
+                  console.log('result.user', result.user)
+                  this.loadWords = '开始登录';
+                  this.login(result.user, false);
+                }
+              })
+            }
+          }
+        } else {// 没有在平台绑定过微信或者从未在平台注册过
+          // 弹窗提示用户是否在平台注册过
+          this.goToRegistryUnknowRole();
+        }
+      })
+    }
   }
 
   goToRegistryUnknowRole() {
@@ -356,6 +375,7 @@ export class LoginPosterComponent implements OnInit, OnDestroy {
       if (res) {//确定调用方法
         // 将已经注册过的账号与微信账号进行绑定
         this.bindUser = true;
+        this.loading = false;
       } else {// 取消调用方法
         // 新注册账号
         // 弹窗提示用户是否在平台注册过
@@ -371,6 +391,7 @@ export class LoginPosterComponent implements OnInit, OnDestroy {
           registryUserInfo.weChatID = this.weChatAccess.unionid;
           registryUserInfo.openID = this.weChatAccess.openid;
           let queryParams = {
+            posterIn: true,
             userType: 1,
             isRegister: true,
             isShowPhone: false,
@@ -383,13 +404,13 @@ export class LoginPosterComponent implements OnInit, OnDestroy {
           if (res) {// 确定调用方法
             // 医护工作中注册
             queryParams.userType = 1;
-            this.router.navigate(['/public-platform/homepage/login'], {
+            this.router.navigate(['public/login'], {
               queryParams
             })
           } else {// 取消调用方法
             // 普通用户注册
             queryParams.userType = 0;
-            this.router.navigate(['/public-platform/homepage/login'], {
+            this.router.navigate(['public/login'], {
               queryParams
             })
           }
@@ -448,11 +469,11 @@ export class LoginPosterComponent implements OnInit, OnDestroy {
             if (res) {// 确定调用方法
               // 医护工作中注册
               queryParams.userType = userType;
-              this.router.navigate(['/public-platform/homepage/login'], {
+              this.router.navigate(['public/login'], {
                 queryParams
               })
             } else {// 取消调用方法
-              this.router.navigate(['/public-platform/homepage/main'])
+              this.router.navigate(['public/main'])
             }
           }
         }, (err: any) => {
@@ -584,7 +605,7 @@ export class LoginPosterComponent implements OnInit, OnDestroy {
           this.allService.sharedRoleService.sendUserRole('provider');
           this.redirectRoute(user);
         })
-      }else{
+      } else {
         // 跳转路由方法
         this.loading = false;
         this.redirectRoute(user);
@@ -606,13 +627,13 @@ export class LoginPosterComponent implements OnInit, OnDestroy {
       if (this.bigScreen == 0) {
         if (this.consult == true || this.mailRole) {
           this.loadWords = '登录成功!!正在打开咨询室 请稍等...';
-          this.router.navigate(['/provider-platform/provider/consult-list']);
+          this.router.navigate(['provider/consult-list']);
         } else {
           this.loadWords = '登录成功!';
-          this.router.navigate(['/provider-platform/provider/provider-folder']);
+          this.router.navigate(['provider/provider-folder']);
         }
       } else if (this.bigScreen == 1) {
-        this.router.navigate(['/provider-platform/provider/dashboard']);
+        this.router.navigate(['provider/dashboard']);
       }
     } else {
       this.storage.set('patient', user);
@@ -631,26 +652,26 @@ export class LoginPosterComponent implements OnInit, OnDestroy {
           userToProfile: userToProfile,
         }
         // 跳转到个人信息页面,添加家庭成员
-        this.router.navigate(['/provider-platform/patient/profile'], {
+        this.router.navigate(['patient/profile'], {
           queryParams
         })
       } else {
         if (this.bigScreen == 1) {
           this.allService.sharedRoleService.sendUserRole('patient')
-          this.router.navigate(['/provider-platform/patient/provider-list']);
+          this.router.navigate(['patient/provider-list']);
         } else if (this.bigScreen == 0) {
           this.allService.sharedRoleService.sendUserRole('patient');
           this.consult = this.storage.get('consult');
           this.followup = this.storage.get('followup');
           if (this.consult == true || this.mailRole) {
             this.loadWords = '登录成功!!正在打开咨询室 请稍等...';
-            this.router.navigate(['/provider-platform/patient/provider-list']);
+            this.router.navigate(['patient/provider-list']);
           } else if (this.followup == true || this.mailRole) {
             this.loadWords = '登录成功!!正在打开每日日志 请稍等...';
-            this.router.navigate(['/provider-platform/patient/followups']);
+            this.router.navigate(['patient/followups']);
           } else {
             this.loadWords = '登录成功!';
-            this.router.navigate(['/provider-platform/patient/patient-story']);
+            this.router.navigate(['patient/patient-story']);
           }
         }
       }
@@ -720,7 +741,6 @@ export class LoginPosterComponent implements OnInit, OnDestroy {
    * 发送验证码方法
    */
   sendMessage() {
-    debugger;
     console.log(this.shortMessage);
     if (!this.phone) {
       this.allService.alertDialogService.warn('请输入手机号');
@@ -744,7 +764,6 @@ export class LoginPosterComponent implements OnInit, OnDestroy {
             this.allService.alertDialogService.alert('验证码已发送');
             this.countDown = true;
             this.showButtonText = '验证码已发送(' + 300 + 's)';
-            debugger;
             console.log(data);
             const start = setInterval(() => { //间歇调用计时器，间隔为1000ms
               if (this.countDownTime >= 0) {
@@ -798,19 +817,22 @@ export class LoginPosterComponent implements OnInit, OnDestroy {
     this.shortMessage.num = this.verificationCode;
     this.allService.shortMessageService.checkShortMessage(this.shortMessage).then((data: any) => {
       if (data.code == 1) {// 返回code=1则说明发送成功
-        this.allService.usersService.getUsersByPhone(this.phone).then((data: any) => {
-          if (data.length > 0) {
-            if (data.length > 1) {
-              for (let index = 0; index < data.length; index++) {
-                const user = data[index];
+        this.allService.usersService.getUsersByPhone(this.phone).then(async (users: any) => {
+          if (users.res.length > 0) {
+            if (users.res.length > 1) {
+              for (let index = 0; index < users.res.length; index++) {
+                const user = users.res[index];
                 user.openID = this.weChatAccess.openid;
                 user.weChatID = this.weChatAccess.unionid;
-                this.updateUserAndLogin(user);
+                await this.updateUser1(user);
               }
+              this.goToLogin();
             } else {
-              data.openID = this.weChatAccess.openid;
-              data.weChatID = this.weChatAccess.unionid;
-              this.updateUserAndLogin(data);
+              let user = users.res[0];
+              user.openID = this.weChatAccess.openid;
+              user.weChatID = this.weChatAccess.unionid;
+              this.updateUser1(user);
+              this.goToLogin();
             }
           }
         });
@@ -823,7 +845,7 @@ export class LoginPosterComponent implements OnInit, OnDestroy {
 
   updateUserAndLogin(user: any) {
     return new Promise((resolve, reject) => {
-      this.allService.usersService.updateUser(user).then((res: any) => {
+      this.allService.usersService.updateUser1(user).then((res: any) => {
         this.loadWords = '绑定成功!正在登录中,请稍后...';
         let params = {
           email: user.weChatID,
@@ -836,6 +858,19 @@ export class LoginPosterComponent implements OnInit, OnDestroy {
         }, (err: any) => {
           reject(err);
         });
+      }, (err: any) => {
+        reject(err);
+      });
+    });
+  }
+
+  /**
+   * 绑定原有账号后,更新即可
+   */
+  updateUser1(user: any) {
+    return new Promise((resolve, reject) => {
+      this.allService.usersService.updateUser1(user).then((res: any) => {
+        resolve(res);
       }, (err: any) => {
         reject(err);
       });

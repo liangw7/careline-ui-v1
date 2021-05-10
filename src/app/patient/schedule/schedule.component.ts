@@ -6,6 +6,7 @@ import { AllServices, WechatJssdkConfig } from '../../core/common-services';
 import { ScheduleDetailComponent } from '../../core/common-components/schedule-detail/schedule-detail.component';
 import { environment } from '../../../environments/environment';
 import { DomSanitizer } from '@angular/platform-browser';
+import { MessageBoxComponent } from '../../core/common-components/message-box/message-box.component';
 
 var URL: string = environment.apiUrl + 'upload/';
 @Component({
@@ -66,6 +67,10 @@ export class PatientScheduleComponent implements OnInit {
   showProfileProviders:any;
   showAllProviders:any;
   search:any;
+  //我的日程安排显示
+  mySchedule:any;
+  //找医生显示
+  showDoctor:any;
 
   constructor(
     private wechatJssdkConfig: WechatJssdkConfig,
@@ -77,10 +82,11 @@ export class PatientScheduleComponent implements OnInit {
     @Inject(SESSION_STORAGE) private storage: StorageService,
   ) {
 
-    if(!this.editSchedule) {
-      this.editSchedule = true
-    }
-
+    // if(!this.editSchedule) {
+    //   this.editSchedule = true
+    // }
+    this.mySchedule = true;
+    this.showDoctor = false;
     this.bigScreen = this.storage.get('bigScreen');
     this.allWeek = true;
     this.dayView = true;
@@ -132,7 +138,8 @@ export class PatientScheduleComponent implements OnInit {
     this.showMyProviders=true;
     this.getMyProviders();
     this.getPatientSchedules();
-    
+    this.getAllProviders();
+    this.getProfileProviders();
   }
 
   getDaySchedule() {
@@ -233,14 +240,45 @@ return null;
       this.allServices.usersService.findUserById(provider._id).then((data) => {
         this.temp = data;
         if (this.temp) {
-         
           this.selectedProvider = this.temp;
-          
+          this.editSchedule = true;
           this.getDaySchedule();
-       
         }
       })
     }
+  }
+
+  getDetail(provider: any) {
+    var selected = false;
+    if (this.selectedProvider && this.selectedProvider._id == provider._id) {
+      selected = true;
+    }
+    var data = {
+      provider: provider,
+      selected: selected,
+      language: this.language
+    }
+    let dialogConfig = new MatDialogConfig();
+    dialogConfig.autoFocus = true;
+    if (this.bigScreen == 1) {
+      dialogConfig = {
+        data: data,
+        maxWidth: '50vw',
+        maxHeight: '50vh',
+        height: '50%',
+        width: '50%'
+      }
+    } else {
+      dialogConfig = {
+        data: data,
+        maxWidth: '90vw',
+        maxHeight: '90vh',
+        width: '90%'
+      }
+    }
+    const dialogRef = this.dialog.open(MessageBoxComponent,
+      dialogConfig);
+    dialogRef.afterClosed().subscribe(result => {});
   }
 
   

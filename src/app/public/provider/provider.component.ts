@@ -1,6 +1,6 @@
 import {
-  Component, OnInit, Inject, HostListener, ViewChild,
-  AfterViewInit, OnDestroy, ElementRef
+  Component, OnInit, OnChanges, Inject, HostListener, ViewChild,
+  AfterViewInit, OnDestroy, ElementRef, Input
 } from '@angular/core';
 import { Title } from "@angular/platform-browser";
 import { MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef } from '@angular/material/dialog';
@@ -19,7 +19,7 @@ const WechatJSSDK = require('wechat-jssdk');
   templateUrl: './provider.component.html',
   styleUrls: ['./provider.component.scss']
 })
-export class ProviderComponent implements OnInit, AfterViewInit, OnDestroy {
+export class ProviderComponent implements OnInit, AfterViewInit, OnDestroy, OnChanges {
   isWeixin: any;
   serviceList: any;
   marketPlace: any;
@@ -54,7 +54,8 @@ export class ProviderComponent implements OnInit, AfterViewInit, OnDestroy {
   articleSelected: any;
   services: any;
   providers: any;
-  provider: any;
+   provider: any;
+  
   forms: any;
   educations: any;
   oneProfile: any;
@@ -77,6 +78,14 @@ export class ProviderComponent implements OnInit, AfterViewInit, OnDestroy {
   followup: any;
   consult: any;
   popOut: any;
+  background:any;
+  photo:any;
+  screenHeight:any;
+  screenWidth:any;
+  @Input() providerID:any;
+  @Input()  fromService:any;
+  profileID:any;
+  introSelected:any;
   @ViewChild('textInput', { read: ElementRef })
   textInput!: ElementRef;
 
@@ -100,64 +109,97 @@ export class ProviderComponent implements OnInit, AfterViewInit, OnDestroy {
       });
     this.getScreenSize();
     this.bigScreen = this.storage.get('bigScreen');
+    this.language = this.storage.get('language');
+    this.isWeixin = this.storage.get('isWeixin');
+ 
+   
+
+
     // this.storage.set('bigScreen', this.bigScreen);
   }
 
-
+  
   @HostListener('window:resize', ['$event'])
   getScreenSize(event?: any) {
 
+ 
+  }
+
+  ngOnInit() {
+    this.getprovider()
+  }
+  ngOnChanges() {
+    this.getprovider()
+  }
+  getprovider(){
     var screenWidth = window.innerWidth;
     if (screenWidth <= 992) {
       // this.bigScreen = 0;
       this.scrollSize = window.innerHeight * 0.88;
-    } else {
+      if (!this.fromService){
+        this.screenHeight = window.screen.height   + "px";
+    
+      }
+      else{
+      
+        this.screenHeight = window.screen.height*0.8 + "px";
+      }
+    } 
+    else {
       // this.bigScreen = 1;
       this.scrollSize = window.innerHeight * 0.6;
+      if (!this.fromService){
+        this.screenHeight = window.screen.height * 1.2  + "px";
+        this.screenWidth = window.screen.width * 1.48 + "px";
+      }
+      else{
+        this.screenWidth = window.screen.width + "px";
+        this.screenHeight = window.screen.height*0.8 + "px";
+      }
     }
-  }
-
-  ngOnInit() {
+   
+    console.log ('this.fromService', this.fromService)
+    console.log ('screenWidth', this.screenWidth)
     var loc = location.href;
     this.storage.set('location', loc);
     this.allService.sharedPageTypeService.sendPageType('patient');
 
     this.titleService.setTitle("数基健康")
-    var providerID = this.route.snapshot.paramMap.get('providerID');
-    var profileID = this.route.snapshot.paramMap.get('profileID');
+    if (! this.providerID){
+      this.providerID = this.route.snapshot.paramMap.get('providerID');
+    }
+ 
+    this.profileID = this.route.snapshot.paramMap.get('profileID');
 
 
     //var articleID=this.route.snapshot.paramMap.get('articleID');
-    if (providerID && profileID) {
+    if (this.providerID && this.profileID) {
       this.profileSelected = false;
-      this.allService.categoryService.getCategory(profileID).then((data: any) => {
+      this.allService.categoryService.getCategory(this.profileID).then((data: any) => {
         this.temp = data;
-        if (!this.temp && providerID) {
-          this.allService.usersService.findUserById(providerID).then((data: any) => {
+        if (!this.temp && this.providerID) {
+          this.allService.usersService.findUserById(this.providerID).then((data: any) => {
             this.provider = data;
             this.storage.set('profiles', this.provider.profiles)
             this.storage.set('provider', this.provider);
             console.log('provider', this.provider);
-            if (this.bigScreen == 1)
+            //if (this.bigScreen == 1)
               this.descSelected = true;
-            else
-              this.homePage = true;
+           // else
+           //   this.homePage = true;
 
-            var image: any;
-            if (this.provider.photo.slice(0, 4) != 'http')
-              image = this.apiUrl.setFormUploadPhoto + String(this.provider.photo) + '.png';
-            else if (this.provider.photo.slice(0, 4) == 'http')
-              image = this.provider.photo;
+              this.getPhoto();
+              this.getBackground();
             this.storage.set('color', this.provider.color)
             var link = location.href.split('#')[0];
             if (this.isWeixin) {
-              this.getSignature(this.provider.desc, this.provider.name + ', ' + this.provider.title, image, link);
+              this.getSignature(this.provider.desc, this.provider.name + ', ' + this.provider.title,this.photo, link);
             }
           })
         }
-        else if (this.temp && providerID) {
+        else if (this.temp && this.providerID) {
           if (this.temp.field == 'profile') {
-            this.allService.usersService.findUserById(providerID).then((data: any) => {
+            this.allService.usersService.findUserById(this.providerID).then((data: any) => {
               this.provider = data;
               this.selectedProfile = this.temp;
               this.storage.set('provider', this.provider)
@@ -175,20 +217,17 @@ export class ProviderComponent implements OnInit, AfterViewInit, OnDestroy {
 
               this.profileSelected = true;
 
-              var image: any;
-              if (this.provider.photo.slice(0, 4) != 'http')
-                image = this.apiUrl.setFormUploadPhoto + String(this.provider.photo) + '.png';
-              else if (this.provider.photo.slice(0, 4) == 'http')
-                image = this.provider.photo;
+              this.getPhoto();
+              this.getBackground();
               this.storage.set('color', this.provider.color)
               var title = this.provider.name + ', ' + this.provider.title + '|' + this.selectedProfile.label.ch;
               var link = location.href.split('#')[0];
               if (this.isWeixin) {
-                this.getSignature(this.profile.desc.patient, title, image, link);
+                this.getSignature(this.profile.desc.patient, title, this.photo, link);
               }
             })
           } else if (this.temp.field == 'form') {
-            this.allService.usersService.findUserById(providerID).then((data: any) => {
+            this.allService.usersService.findUserById(this.providerID).then((data: any) => {
               this.provider = data;
               console.log('provider', this.provider)
 
@@ -197,45 +236,40 @@ export class ProviderComponent implements OnInit, AfterViewInit, OnDestroy {
               this.selectArticle(this.selectedArticle);
 
               this.articleSelected = true;
-              var image: any;
-              if (this.provider.photo.slice(0, 4) != 'http')
-                image = this.apiUrl.setFormUploadPhoto + String(this.provider.photo) + '.png';
-              else if (this.provider.photo.slice(0, 4) == 'http')
-                image = this.provider.photo;
+              this.getPhoto();
+              this.getBackground();
               this.storage.set('color', this.provider.color)
               var title = this.provider.name + ', ' + this.provider.title + '|' + this.selectedArticle.label.ch;
               var link = location.href.split('#')[0];
               if (this.isWeixin) {
-                this.getSignature(this.selectedArticle.desc.patient, title, image, link);
+                this.getSignature(this.selectedArticle.desc.patient, title,this.photo, link);
               }
             })
           }
         }
       })
-    } else if (providerID && !profileID) {
-      this.allService.usersService.findUserById(providerID).then((data: any) => {
+    } else if (this.providerID && !this.profileID) {
+      this.allService.usersService.findUserById(this.providerID).then((data: any) => {
         this.provider = data;
+        if (this.provider.profiles&&this.provider.profiles.length>0)
+        this.getForms(this.provider.profiles[0]);
         console.log('provider', this.provider)
         this.storage.set('provider', this.provider);
         // this.descSelected=true;
-        if (this.bigScreen == 1)
+       // if (this.bigScreen == 1)
           this.descSelected = true;
-        else
-          this.homePage = true;
-        var image: any;
-        if (this.provider.photo.slice(0, 4) != 'http')
-          image = this.apiUrl.setFormUploadPhoto + String(this.provider.photo) + '.png';
-        else if (this.provider.photo.slice(0, 4) == 'http')
-          image = this.provider.photo;
+       // else
+       //   this.homePage = true;
+       this.getPhoto();
+       this.getBackground();
         this.storage.set('color', this.provider.color)
         var link = location.href.split('#')[0];
         if (this.isWeixin) {
-          this.getSignature(this.provider.desc, this.provider.name + ', ' + this.provider.title, image, link);
+          this.getSignature(this.provider.desc, this.provider.name + ', ' + this.provider.title,this.photo, link);
         }
       })
     }
   }
-
   receiveMessage($event: any) {
     if ($event == 'popOut') {
       // alert("got pop")
@@ -243,6 +277,14 @@ export class ProviderComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+ breakLines(str: any) {
+    var temp = [];
+    //temp=str.match(/\n/g);
+    temp = str.split(/\n/g);
+    // console.log('temp===========',temp)
+    // temp=str.split('/n');
+    return temp;
+  }
 
   ngAfterViewInit() {
 
@@ -284,9 +326,9 @@ export class ProviderComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  selectArticle(article: any) {
+  selectArticleVoid(article: any) {
     this.articleForms = [];
-    this.allService.categoryService.getFormById({ formIDs: [article._id] }).then((data: any) => {
+    this.allService.categoryService.getCategoriesByFilter({_id: article._id}).then((data: any) => {
       this.articleForms = data;
       var image: any;
       if (this.provider.photo.slice(0, 4) != 'http') {
@@ -302,6 +344,23 @@ export class ProviderComponent implements OnInit, AfterViewInit, OnDestroy {
         this.getSignature(article.desc.patient, title, image, link);
       }
     })
+  }
+  selectArticle(article:any){
+    this.allService.formService.getForm(article, null, null, null).then((data: any) => {
+     
+      var image: any;
+      if (this.provider.photo.slice(0, 4) != 'http') {
+        image = this.apiUrl.setFormUploadPhoto + String(this.provider.photo) + '.png';
+      } else if (this.provider.photo.slice(0, 4) == 'http') {
+        image = this.provider.photo;
+      }
+      var title = this.provider.name + ', ' + this.provider.title + '|' + article.label.ch;
+      var link = 'https://www.digitalbaseas.com/public-platform/homepage/provider-card/' + this.provider._id + '/' + article._id;
+      if (this.isWeixin) {
+        this.getSignature(article.desc.patient, title, image, link);
+      }
+    })
+
   }
 
   reserve() {
@@ -463,12 +522,7 @@ export class ProviderComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  breakLines(str: any) {
-    console.log(str);
-    var temp = [];
-    temp = str.split('/n');
-    return temp;
-  }
+
 
   save() {
     this.loading = true;
@@ -585,7 +639,33 @@ export class ProviderComponent implements OnInit, AfterViewInit, OnDestroy {
     })
   }
 
+  getBackgroundColor(hex:String, lum:any){
 
+    var color=this.getLighter(hex, lum);
+    return this.getLighter(color, lum);
+    
+  }
+
+  getLighter(hex:any, lum:any){
+
+    // validate hex string
+    hex = String(hex).replace(/[^0-9a-f]/gi, '');
+    if (hex.length < 6) {
+      hex = hex[0]+hex[0]+hex[1]+hex[1]+hex[2]+hex[2];
+    }
+    lum = lum*2 || 0;
+  
+    // convert to decimal and change luminosity
+    var rgb = "#", c, i;
+    for (i = 0; i < 3; i++) {
+      c = parseInt(hex.substr(i*2,2), 16);
+      c = Math.round(Math.min(Math.max(0, c + (c * lum)), 255)).toString(16);
+      rgb += ("00"+c).substr(c.length);
+    }
+  
+    return rgb;
+  
+}
   getSignature(desc: any, title: any, image: any, link: any) {
     var jsApiList: [] = [];
     return this.allService.wechatJssdkService.getSignature(desc, title, title, image, link, jsApiList, 0);
@@ -622,9 +702,10 @@ export class ProviderComponent implements OnInit, AfterViewInit, OnDestroy {
           }
         }
       }
+      this.loading = false;
       this.allService.categoryService.getCategoriesByFilter({ '_id': { '$in': obIDs } }).then((data: any) => {
         this.temp = data;
-        this.loading = false;
+       
         for (let item of this.temp) {
           for (let form of this.forms) {
             for (let obSet of form.obSets) {
@@ -706,7 +787,24 @@ export class ProviderComponent implements OnInit, AfterViewInit, OnDestroy {
   getUrl(image: any) {
     return this.allService.utilService.getHttpUrl(image);
   }
-
+  getBackground(){
+    if (this.provider.activity){
+        
+      var image = this.apiUrl.setFormUploadPhoto 
+            + String(this.provider.activity.backgroundImage) 
+            + '.png';
+  
+      this.background = this.getUrl(image);
+    }
+  }
+  getPhoto(){
+    var image: any;
+    if (this.provider.photo&&this.provider.photo.slice(0, 4) != 'http')
+      image = this.apiUrl.setFormUploadPhoto + String(this.provider.photo) + '.png';
+    else if (this.provider.photo&&this.provider.photo.slice(0, 4) == 'http')
+      image = this.provider.photo;
+    this.photo = this.getUrl(image);
+  }
 
   registryService(service: any, profile: any) {
 

@@ -37,7 +37,7 @@ export class PublishComponent implements OnInit, AfterViewInit, OnDestroy {
   loading: any;
   language: any;
   subscription: Subscription;
-  publishID: any;
+  
   forms: any;
   bigScreen: any;
   registryForm: any;
@@ -80,6 +80,7 @@ export class PublishComponent implements OnInit, AfterViewInit, OnDestroy {
   consult: any;
   popOut: any;
   isWeixin: any;
+  @Input() publishID:any;
 
   constructor(
     private wechatJssdkConfig: WechatJssdkConfig,
@@ -103,8 +104,11 @@ export class PublishComponent implements OnInit, AfterViewInit, OnDestroy {
 
       });
     //form
-    this.publishID = this.route.snapshot.paramMap.get('publishID');
     if (!this.publishID) {
+    this.publishID = this.route.snapshot.paramMap.get('publishID');
+    }
+    if (!this.publishID) {
+      
       this.publishID = this.storage.get('publishID')
       if (!this.publishID && data && data.form) {
         this.publishID = data.form._id;

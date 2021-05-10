@@ -9,8 +9,8 @@ import { MAT_DIALOG_DATA, MatDialog, MatDialogConfig, MatDialogRef } from '@angu
 import { AllServices } from '../../core/common-services';
 import { environment } from '../../../environments/environment';
 import { MessageBoxComponent } from '../../core/common-components/message-box/message-box.component';
-import { FamilyFormComponent } from '../../core/common-components/family-form/family-form.component';
-import { LoginComponent } from '../../core/common-components/login/login.component';
+import { FamilyFormComponent } from 'src/app/core/common-components/family-form/family-form.component';
+import { LoginComponent } from 'src/app/core/common-components/login/login.component';
 var URL: string = environment.apiUrl + 'upload/';
 
 @Component({

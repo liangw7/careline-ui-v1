@@ -51,6 +51,11 @@ export class VisitsService {
     return this.httpservice.postAuthParam(this.entity.visitFilter, filter);
   }
 
+  getVisitsForProviderList(filter: any) {
+    console.log('--visitsService--getVisitsByFilter--start--');
+    return this.httpservice.postAuthParam(this.entity.getVisitsForProviderList, filter);
+  }
+
   getVisitListByFilter(filter: any) {
     console.log('--visitsService--getVisitListByFilter--start--');
     return this.httpservice.postAuthParam(this.entity.getVisitListByFilter, filter);

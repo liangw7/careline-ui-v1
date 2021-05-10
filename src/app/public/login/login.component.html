@@ -81,38 +81,149 @@
 </div> -->
 
 <div class="container-login-pc" *ngIf='bigScreen==1 && !code'>
-    <div class="overlay" *ngIf="loading">
-      <div class="spinner-wrapper">
-        <img src="./assets/img/poster-3.png">
-        <app-spinner></app-spinner>
+  <div class="overlay" *ngIf="loading">
+    <div class="spinner-wrapper">
+      <img src="./assets/img/poster-3.png">
+      <app-spinner></app-spinner>
+    </div>
+  </div>
+
+  <div class="public-main">
+    <div class="public-main-right1" style='border-radius:20px; overflow-x:hidden;overflow-y: auto;'>
+      <div class="pc-login-main-left">
+        <span id="pc-login-main-message" *ngIf='!isRegister'>{{viewName}}登录</span>
+        <span id="pc-login-main-message" *ngIf='isRegister'>{{viewName}}注册</span>
+        <mat-card-content *ngIf='!isRegister'>
+          <!-- <div class="pc-login-main-select">
+            <mat-form-field appearance="fill">
+              <mat-label>请选择登录方式</mat-label>
+              <mat-select [(value)]="loginType" (selectionChange)="changeLoginType()" disableRipple>
+                <mat-option value="phoneLogin">手机号登录</mat-option>
+                <mat-option value="mailLogin">邮箱登录</mat-option>
+                <mat-option value="wxLogin">微信扫码登录</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div> -->
+          <div class="loginways" *ngIf="IsLoginWays">
+            <div class="way" (click)="PhoneLogin()">手机号登录</div>
+            <div class="way" (click)="AccountLogin()">邮箱登录</div>
+            <div class="way" (click)="WxLogin()">微信扫码登录</div>
+          </div>
+          <ul class="loginways2" *ngIf="!IsLoginWays">
+            <li [ngClass]="{'active':isShowPhone }" (click)="PhoneLogin()">手机号登录</li>
+            <li [ngClass]="{'active':isShowEmail }" (click)="AccountLogin()">邮箱登录</li>
+            <li [ngClass]="{'active':isShowWeixinQrcode }" (click)="WxLogin()">微信扫码登录</li>
+          </ul>
+          <div class="pc-login-main-input" *ngIf="isShowEmail||isShowPhone" style='margin-top:60px;'>
+            <mat-form-field class="full-width" *ngIf="isShowEmail">
+              <mat-label>
+                <span>邮箱</span>
+              </mat-label>
+              <input matInput name="email" [(ngModel)]="email" type='email'>
+            </mat-form-field>
+            <mat-form-field class="full-width" *ngIf="isShowPhone">
+              <mat-label>
+                <span>手机号</span>
+              </mat-label>
+              <input matInput name="phone" [(ngModel)]="phone" type='text'>
+            </mat-form-field>
+            <mat-form-field class="full-width">
+              <mat-label>
+                <span>密码</span>
+              </mat-label>
+              <input matInput name="password" [(ngModel)]="password" type='password'>
+            </mat-form-field>
+            <div class="pc-login-bottom" *ngIf="isShowEmail||isShowPhone">
+              <a class="btn btn-round btn-base btn-block" (click)="login()">登录</a>
+            </div>
+          </div>
+          <div class="pc-login-main-right" *ngIf="isShowWeixinQrcode">
+            <div>
+              <iframe [src]="wxQrcodeUrl"></iframe>
+            </div>
+          </div>
+          <div class="questionbtns">
+            <a *ngIf="userType == 0 " [routerLink]="['/public-platform/homepage/forget-password']"
+              [queryParams]="{userType:0}">忘记密码?</a>
+            <a *ngIf="userType == 1 " [routerLink]="['/public-platform/homepage/forget-password']"
+              [queryParams]="{userType:1}">忘记密码?</a>
+            <div class="pc-login-registry" style="margin-top: 10px;">
+              <span style="margin-right: 10px;">还没有账号?</span> <a href='javascript:void();'
+                (click)='isRegister=true;isShowPhone=false;isShowEmail=false;'>注册</a>
+            </div>
+          </div>
+        </mat-card-content>
+        <div *ngIf='isRegister' class="pc-login-main-input" style='margin-top:0px;'>
+          <mat-form-field class="full-width">
+            <mat-label>
+              <span>邮箱</span>
+            </mat-label>
+            <input matInput name="email" [(ngModel)]="email" type='email'>
+          </mat-form-field>
+          <mat-form-field class="full-width">
+            <mat-label>
+              <span>密码</span>
+            </mat-label>
+            <input matInput name="password" [(ngModel)]="password" type='password'>
+          </mat-form-field>
+          <mat-form-field class="full-width">
+            <mat-label>
+              <span>确认密码</span>
+            </mat-label>
+            <input matInput name="password-2" [(ngModel)]="passwordSecond" type='password'>
+          </mat-form-field>
+          <mat-form-field class="full-width">
+            <mat-label>
+              <span>手机号</span>
+            </mat-label>
+            <input matInput name="phone" [(ngModel)]="phone" type='tel'>
+          </mat-form-field>
+          <a class="btn btn-round btn-primary btn-block" (click)="verify()">手机验证 </a>
+          <mat-form-field class="full-width" *ngIf='sentVerify'>
+            <mat-label>
+              <span>验证码</span>
+            </mat-label>
+            <input matInput name="verificationCode" [(ngModel)]="verificationCode" type='tel'>
+            <button nz-button [disabled]="countDown" (click)="sendMessage()" class="pc-login-sendMessage">
+              {{showButtonText}}</button>
+          </mat-form-field>
+          <a class="btn btn-round btn-primary btn-block" *ngIf='sentVerify' (click)="goToRegistry()"> 填写注册信息</a>
+          <div><a href='javascript:void();' style="margin-top: 5px;display: inline-block;text-decoration: underline;"
+              (click)='isRegister=false'>
+              < 返回</a>
+          </div>
+        </div>
       </div>
     </div>
-  
-    <div class="public-main">
-      <div class="public-main-right1" style='border-radius:20px; overflow-x:hidden;overflow-y: auto;'>
-        <div class="pc-login-main-left">
-          <span id="pc-login-main-message" *ngIf='!isRegister'>{{viewName}}登录</span>
-          <span id="pc-login-main-message" *ngIf='isRegister'>{{viewName}}注册</span>
+  </div>
+</div>
+
+
+
+<div class="container-login-phone" *ngIf='bigScreen==0'>
+  <div class="public-main">
+    <!-- [ngStyle]="{'height':screenHeight!=undefined?screenHeight:'800px'}" -->
+    <div class="public-main-right1">
+      <div>
+        <div class="phone-login-main">
+          <span class="main-title" *ngIf='!isRegister&&!loginRoleSelect'>{{viewName}}登录</span>
+          <span class="main-title" *ngIf='isRegister&&!loginRoleSelect'>{{viewName}}注册</span>
           <mat-card-content *ngIf='!isRegister'>
-            <!-- <div class="pc-login-main-select">
-              <mat-form-field appearance="fill">
-                <mat-label>请选择登录方式</mat-label>
-                <mat-select [(value)]="loginType" (selectionChange)="changeLoginType()" disableRipple>
-                  <mat-option value="phoneLogin">手机号登录</mat-option>
-                  <mat-option value="mailLogin">邮箱登录</mat-option>
-                  <mat-option value="wxLogin">微信扫码登录</mat-option>
-                </mat-select>
-              </mat-form-field>
-            </div> -->
-            <div class="loginways" *ngIf="IsLoginWays">
+            <div class="loginways" *ngIf="loginRoleSelect">
+              <div class="way" (click)="userType = 1;loginRoleSelect=false;IsLoginWays=true;viewName='医生'">医生登录</div>
+              <div class="way" (click)="userType = 0;loginRoleSelect=false;IsLoginWays=true;viewName='用户'">用户登录</div>
+            </div>
+            <div class="loginways" *ngIf="IsLoginWays&&!loginRoleSelect">
               <div class="way" (click)="PhoneLogin()">手机号登录</div>
               <div class="way" (click)="AccountLogin()">邮箱登录</div>
-              <div class="way" (click)="WxLogin()">微信扫码登录</div>
+              <div><a href='javascript:void();'
+                style="display: inline-block;text-decoration: underline;" 
+                (click)='isRegister=false;IsLoginWays=false;loginRoleSelect=true;'>
+                < 返回</a></div>
             </div>
-            <ul class="loginways2" *ngIf="!IsLoginWays">
+            <ul class="loginways2" *ngIf="!IsLoginWays&&!loginRoleSelect">
               <li [ngClass]="{'active':isShowPhone }" (click)="PhoneLogin()">手机号登录</li>
               <li [ngClass]="{'active':isShowEmail }" (click)="AccountLogin()">邮箱登录</li>
-              <li [ngClass]="{'active':isShowWeixinQrcode }" (click)="WxLogin()">微信扫码登录</li>
             </ul>
             <div class="pc-login-main-input" *ngIf="isShowEmail||isShowPhone" style='margin-top:60px;'>
               <mat-form-field class="full-width" *ngIf="isShowEmail">
@@ -135,11 +246,11 @@
               </mat-form-field>
               <div class="pc-login-bottom" *ngIf="isShowEmail||isShowPhone">
                 <a class="btn btn-round btn-base btn-block" (click)="login()">登录</a>
-              </div>
-            </div>
-            <div class="pc-login-main-right" *ngIf="isShowWeixinQrcode">
-              <div>
-                <iframe [src]="wxQrcodeUrl"></iframe>
+                <div style="margin-top: 10px;"><a href='javascript:void();'
+                  style="display: inline-block;text-decoration: underline;" 
+                  (click)='isRegister=false;IsLoginWays=false;loginRoleSelect=true;isShowEmail=false;isShowPhone=false'>
+                  < 返回</a>
+                </div>
               </div>
             </div>
             <div class="questionbtns">
@@ -188,7 +299,7 @@
                 {{showButtonText}}</button>
             </mat-form-field>
             <a class="btn btn-round btn-primary btn-block" *ngIf='sentVerify' (click)="goToRegistry()"> 填写注册信息</a>
-            <div><a href='javascript:void();' style="margin-top: 5px;display: inline-block;text-decoration: underline;"
+            <div *ngIf="!isLoginPosterIn"><a href='javascript:void();' style="margin-top: 5px;display: inline-block;text-decoration: underline;"
                 (click)='isRegister=false'>
                 < 返回</a>
             </div>
@@ -197,115 +308,4 @@
       </div>
     </div>
   </div>
-  
-  
-  
-  <div class="container-login-phone" *ngIf='bigScreen==0'>
-    <div class="public-main">
-      <!-- [ngStyle]="{'height':screenHeight!=undefined?screenHeight:'800px'}" -->
-      <div class="public-main-right1">
-        <div>
-          <div class="phone-login-main">
-            <span class="main-title" *ngIf='!isRegister&&!loginRoleSelect'>{{viewName}}登录</span>
-            <span class="main-title" *ngIf='isRegister&&!loginRoleSelect'>{{viewName}}注册</span>
-            <mat-card-content *ngIf='!isRegister'>
-              <div class="loginways" *ngIf="loginRoleSelect">
-                <div class="way" (click)="userType = 1;loginRoleSelect=false;IsLoginWays=true;viewName='医生'">医生登录</div>
-                <div class="way" (click)="userType = 0;loginRoleSelect=false;IsLoginWays=true;viewName='用户'">用户登录</div>
-              </div>
-              <div class="loginways" *ngIf="IsLoginWays&&!loginRoleSelect">
-                <div class="way" (click)="PhoneLogin()">手机号登录</div>
-                <div class="way" (click)="AccountLogin()">邮箱登录</div>
-                <div><a href='javascript:void();'
-                  style="display: inline-block;text-decoration: underline;" 
-                  (click)='isRegister=false;IsLoginWays=false;loginRoleSelect=true;'>
-                  < 返回</a></div>
-              </div>
-              <ul class="loginways2" *ngIf="!IsLoginWays&&!loginRoleSelect">
-                <li [ngClass]="{'active':isShowPhone }" (click)="PhoneLogin()">手机号登录</li>
-                <li [ngClass]="{'active':isShowEmail }" (click)="AccountLogin()">邮箱登录</li>
-              </ul>
-              <div class="pc-login-main-input" *ngIf="isShowEmail||isShowPhone" style='margin-top:60px;'>
-                <mat-form-field class="full-width" *ngIf="isShowEmail">
-                  <mat-label>
-                    <span>邮箱</span>
-                  </mat-label>
-                  <input matInput name="email" [(ngModel)]="email" type='email'>
-                </mat-form-field>
-                <mat-form-field class="full-width" *ngIf="isShowPhone">
-                  <mat-label>
-                    <span>手机号</span>
-                  </mat-label>
-                  <input matInput name="phone" [(ngModel)]="phone" type='text'>
-                </mat-form-field>
-                <mat-form-field class="full-width">
-                  <mat-label>
-                    <span>密码</span>
-                  </mat-label>
-                  <input matInput name="password" [(ngModel)]="password" type='password'>
-                </mat-form-field>
-                <div class="pc-login-bottom" *ngIf="isShowEmail||isShowPhone">
-                  <a class="btn btn-round btn-base btn-block" (click)="login()">登录</a>
-                  <div style="margin-top: 10px;"><a href='javascript:void();'
-                    style="display: inline-block;text-decoration: underline;" 
-                    (click)='isRegister=false;IsLoginWays=false;loginRoleSelect=true;isShowEmail=false;isShowPhone=false'>
-                    < 返回</a>
-                  </div>
-                </div>
-              </div>
-              <div class="questionbtns">
-                <a *ngIf="userType == 0 " [routerLink]="['/public-platform/homepage/forget-password']"
-                  [queryParams]="{userType:0}">忘记密码?</a>
-                <a *ngIf="userType == 1 " [routerLink]="['/public-platform/homepage/forget-password']"
-                  [queryParams]="{userType:1}">忘记密码?</a>
-                <div class="pc-login-registry" style="margin-top: 10px;">
-                  <span style="margin-right: 10px;">还没有账号?</span> <a href='javascript:void();'
-                    (click)='isRegister=true;isShowPhone=false;isShowEmail=false;'>注册</a>
-                </div>
-              </div>
-            </mat-card-content>
-            <div *ngIf='isRegister' class="pc-login-main-input" style='margin-top:0px;'>
-              <mat-form-field class="full-width">
-                <mat-label>
-                  <span>邮箱</span>
-                </mat-label>
-                <input matInput name="email" [(ngModel)]="email" type='email'>
-              </mat-form-field>
-              <mat-form-field class="full-width">
-                <mat-label>
-                  <span>密码</span>
-                </mat-label>
-                <input matInput name="password" [(ngModel)]="password" type='password'>
-              </mat-form-field>
-              <mat-form-field class="full-width">
-                <mat-label>
-                  <span>确认密码</span>
-                </mat-label>
-                <input matInput name="password-2" [(ngModel)]="passwordSecond" type='password'>
-              </mat-form-field>
-              <mat-form-field class="full-width">
-                <mat-label>
-                  <span>手机号</span>
-                </mat-label>
-                <input matInput name="phone" [(ngModel)]="phone" type='tel'>
-              </mat-form-field>
-              <a class="btn btn-round btn-primary btn-block" (click)="verify()">手机验证 </a>
-              <mat-form-field class="full-width" *ngIf='sentVerify'>
-                <mat-label>
-                  <span>验证码</span>
-                </mat-label>
-                <input matInput name="verificationCode" [(ngModel)]="verificationCode" type='tel'>
-                <button nz-button [disabled]="countDown" (click)="sendMessage()" class="pc-login-sendMessage">
-                  {{showButtonText}}</button>
-              </mat-form-field>
-              <a class="btn btn-round btn-primary btn-block" *ngIf='sentVerify' (click)="goToRegistry()"> 填写注册信息</a>
-              <div *ngIf="!isLoginPosterIn"><a href='javascript:void();' style="margin-top: 5px;display: inline-block;text-decoration: underline;"
-                  (click)='isRegister=false'>
-                  < 返回</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+</div>

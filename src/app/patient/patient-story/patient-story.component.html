@@ -35,7 +35,7 @@
       <div class="info" *ngIf="language=='Chinese'">
         <span class='name'>{{user.name}}</span>
         <p class='title'>{{user.title}}</p>
-        <a class='btn btn-round btn-blue' (click)=" getPersonInfo() ">档案</a>
+        <a class='btn btn-round btn-blue' [routerLink]="['/provider-platform/patient/profile']">档案</a>
       </div>
     </div>
   </div>
@@ -44,7 +44,7 @@
         <div class="pic"><img src="" alt=""></div>
         <div class="title">官网</div>
     </div>
-    <div class="rowitem" *ngFor='let menuItem of menuItems' (click)='getItem(menuItem)'>
+    <div class="rowitem" *ngFor='let menuItem of wapMenuItems' (click)='getItem(menuItem)'>
       <div class="pic"><img [src]="menuItem.img" alt=""></div>
       <div class="title">{{menuItem.title}}</div>
     </div>

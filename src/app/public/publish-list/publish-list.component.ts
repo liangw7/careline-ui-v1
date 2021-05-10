@@ -72,7 +72,7 @@ export class PublishListComponent implements OnInit, OnDestroy {
     // this.getScreenSize();
     this.loading = true;
     this.allService.categoryService.getInternalByFilter({
-      formType: { '$in': ['publish', 'education', 'followup'] },
+      formType: { '$in': ['publish'] },
       status: { '$in': ['active'] }
     }).then((data:any) => {
       this.temp = data;

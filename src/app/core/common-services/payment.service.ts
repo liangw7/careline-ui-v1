@@ -84,6 +84,11 @@ export class PaymentService {
     return this.httpservice.postAuthParam(this.entity.createInvoice, filter);
   }
 
+  updateInvoice(filter: any){
+    console.log('--paymentService--updateInvoice--start--');
+    return this.httpservice.postAuthParam(this.entity.updateInvoice, filter);
+  }
+
   /**
    * 待处理...
    * @param link 

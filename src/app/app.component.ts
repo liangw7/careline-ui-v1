@@ -121,7 +121,7 @@ export class AppComponent implements AfterViewInit {
     }
   }
 
-  isLogin() {
+  isLogin() { 
     console.log('--原请求地址--');
     var url = location.pathname + location.search + location.hash;
     console.log(url);

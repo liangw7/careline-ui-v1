@@ -7,179 +7,157 @@
   <div class="row">
     <div class="col-sm-4">
       <div class="rightcontent" style='border-radius:15px;'>
-       
-            <div class="nav-tabs-wrapper">
-           <ul class='nav nav-tabs' data-tabs='tabs'>
-            <li class="nav-item" 
-            [ngClass]="{'active':showMyProviders,
-                        'non-active':!showMyProviders}" 
-                        >
-              <a mat-button class="nav-link" 
-              (click)=" showMyProviders=true;
+        <div class="nav-tabs-wrapper">
+          <ul class='nav nav-tabs' data-tabs='tabs'>
+            <li class="nav-item" [ngClass]="{'active':showMyProviders,
+                        'non-active':!showMyProviders}">
+              <a mat-button class="nav-link" (click)=" showMyProviders=true;
                         showAllProviders=false;
                         showProfileProviders=false;
                         getMyProviders();
-                        selectedProvider=null;"
-                data-toggle="tab" >
+                        selectedProvider=null;" data-toggle="tab">
                 我的医生
                 <div class="ripple-container"></div>
               </a>
             </li>
-            <li class="nav-item" 
-               [ngClass]="{'active':showAllProviders,
-                           'non-active':!showAllProviders}" 
-               >
-              <a mat-button class="nav-link " 
-              (click)="showMyProviders=false;
+            <li class="nav-item" [ngClass]="{'active':showAllProviders,
+                           'non-active':!showAllProviders}">
+              <a mat-button class="nav-link " (click)="showMyProviders=false;
                        showAllProviders=true;
                        showProfileProviders=false;
                        getAllProviders();
-                       selectedProvider=null;"
-                data-toggle="tab" >
+                       selectedProvider=null;" data-toggle="tab">
                 搜索医生
                 <div class="ripple-container"></div>
               </a>
             </li>
-            <li class="nav-item"
-            [ngClass]="{'active':showProfileProviders,
-            'non-active':!showProfileProviders}" 
-             >
-              <a mat-button class="nav-link " 
-              (click)="showMyProviders=false;
+            <li class="nav-item" [ngClass]="{'active':showProfileProviders,
+            'non-active':!showProfileProviders}">
+              <a mat-button class="nav-link " (click)="showMyProviders=false;
                       showAllProviders=false;
                       showProfileProviders=true;
                       getProfileProviders();
-                      selectedProvider=null;"
-              data-toggle="tab" >
+                      selectedProvider=null;" data-toggle="tab">
                 项目医生
                 <div class="ripple-container"></div>
               </a>
             </li>
-           </ul>
-           </div>
-            <div class="tab-content">
-            <div class="tab-pane" 
-            *ngIf="showMyProviders" 
-            [ngClass]="{'active':showMyProviders}"
-         >
-              <div class="tabcard">
-              
-                  <div class='providerlists'>
-                    <div *ngFor='let provider of myProviders'>
-                      <div class='card' [ngClass]="{'selected':selectedProvider&&provider._id==selectedProvider._id}" (click)='selectProvider(provider)'>
-                        <div class='card-body'>
-                          <div class="headerimg">
-                            <img [src]='getUrl(provider)'></div>
-                          <div class="info">
-                            <div class="main-info">
-                              <span>{{provider.name}}</span>
-                              <span>{{provider.title}}</span>
-                            </div>
-                            <div class="specialty">{{provider.specialty}}</div>
-                          </div>
-                          <div *ngFor="let item of breakLines(provider.desc)">
-                            {{item}}
-                          </div>
+          </ul>
+        </div>
+        <div class="tab-content">
+          <div class="tab-pane" *ngIf="showMyProviders" [ngClass]="{'active':showMyProviders}">
+            <div class="tabcard">
+
+              <div class='providerlists'>
+                <div *ngFor='let provider of myProviders'>
+                  <div class='card' [ngClass]="{'selected':selectedProvider&&provider._id==selectedProvider._id}"
+                    (click)='selectProvider(provider)'>
+                    <div class='card-body'>
+                      <div class="headerimg">
+                        <img [src]='getUrl(provider)'></div>
+                      <div class="info">
+                        <div class="main-info">
+                          <span>{{provider.name}}</span>
+                          <span>{{provider.title}}</span>
                         </div>
+                        <div class="specialty">{{provider.specialty}}</div>
+                      </div>
+                      <div *ngFor="let item of breakLines(provider.desc)">
+                        {{item}}
                       </div>
                     </div>
                   </div>
-                
-              </div>
-            </div>
-            <div class="tab-pane" *ngIf=" showAllProviders" 
-            [ngClass]="{'active':showAllProviders}">
-              <div class="tabcard">
-               
-                  <div class='providerlists'>
-                    <div class="form-group">
-                      <input class="form-control" type="text" [(ngModel)]="search" placeholder="search">
-                    </div>
-                    <div class="providerbox">
-                      <div *ngFor='let provider of allProviders|filter: search'>
-                        <div class='card' [ngClass]="{'selected':selectedProvider&&provider._id==selectedProvider._id}" (click)='selectProvider(provider)'>
-                          <div class='card-body' *ngIf='search'>
-                            <div class="headerimg"><img [src]='getUrl(provider)'></div>
-                            <div class="info">
-                              <div class="main-info"><span>{{provider.name}}</span><span>{{provider.title}}</span></div>
-                              <div class="specialty">{{provider.specialty}}</div>
-                            </div>
-                            <div class="desc" *ngFor="let item of breakLines(provider.desc)">
-                              {{item}}
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  
-               
-              </div>
-            </div>
-            <div class="tab-pane" *ngIf="showProfileProviders" 
-            [ngClass]="{'active':showProfileProviders}">
-              <div class="tabcard">
-                <div >
-                  <div class='providerlists'>
-                    <div *ngFor='let provider of profileProviders'>
-                      <div class='card' 
-                      [ngClass]="{'selected':selectedProvider&&provider._id==selectedProvider._id}"
-                        style='margin:15px; width:95%' (click)='selectProvider(provider)'>
-      
-                        <div class='card-body'>
-                          <img class='photo' style=' float:left; margin-right:10px; border-radius:50px;'
-                            [src]='getUrl(provider)'>
-      
-                          <span style='font-weight: 700;font-size: medium;'>
-                            {{provider.name}},{{provider.title}} &nbsp;{{provider.specialty}}&nbsp;
-                          </span>
-                          <div *ngFor="let item of breakLines(provider.desc)">
-                            {{item}}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  
                 </div>
+              </div>
+
+            </div>
+          </div>
+          <div class="tab-pane" *ngIf=" showAllProviders" [ngClass]="{'active':showAllProviders}">
+            <div class="tabcard">
+
+              <div class='providerlists'>
+                <div class="form-group">
+                  <input class="form-control" type="text" [(ngModel)]="search" placeholder="search">
+                </div>
+                <div class="providerbox">
+                  <div *ngFor='let provider of allProviders|filter: search'>
+                    <div class='card' [ngClass]="{'selected':selectedProvider&&provider._id==selectedProvider._id}"
+                      (click)='selectProvider(provider)'>
+                      <div class='card-body' *ngIf='search'>
+                        <div class="headerimg"><img [src]='getUrl(provider)'></div>
+                        <div class="info">
+                          <div class="main-info"><span>{{provider.name}}</span><span>{{provider.title}}</span></div>
+                          <div class="specialty">{{provider.specialty}}</div>
+                        </div>
+                        <div class="desc" *ngFor="let item of breakLines(provider.desc)">
+                          {{item}}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+
+            </div>
+          </div>
+          <div class="tab-pane" *ngIf="showProfileProviders" [ngClass]="{'active':showProfileProviders}">
+            <div class="tabcard">
+              <div>
+                <div class='providerlists'>
+                  <div *ngFor='let provider of profileProviders'>
+                    <div class='card' [ngClass]="{'selected':selectedProvider&&provider._id==selectedProvider._id}"
+                      style='margin:15px; width:95%' (click)='selectProvider(provider)'>
+
+                      <div class='card-body'>
+                        <img class='photo' style=' float:left; margin-right:10px; border-radius:50px;'
+                          [src]='getUrl(provider)'>
+
+                        <span style='font-weight: 700;font-size: medium;'>
+                          {{provider.name}},{{provider.title}} &nbsp;{{provider.specialty}}&nbsp;
+                        </span>
+                        <div *ngFor="let item of breakLines(provider.desc)">
+                          {{item}}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
               </div>
             </div>
           </div>
-          
-      
+        </div>
       </div>
     </div>
-    <div class="col-sm-5" >
+    <div class="col-sm-5">
       <div class='rightcontent' style='border-radius:15px'>
-      <calendar [allWeek]='allWeek' 
-    (messageDateEvent)="receiveDateMessage($event)"
-    (messageWeekEvent)="receiveWeekMessage($event)" 
-    (messageMonthEvent)="receiveMonthMessage($event)"
-    (messageShowWeekEvent)="receiveShowWeekMessage($event)" 
-    ></calendar>
-  
-  <div class="checkdate">{{selectedDate|date: "yyyy/MM/dd"}}</div>
-  <div class='calendar'>
-    <div *ngIf='dayView&&currentWeek'>
-      <div class="appoint">
-        <ul>
-       
-          <li *ngFor='let time of timeList' (click)=getScheduleForm(time)>
-            <span>{{time.time}}</span>
-            
-                 <span *ngIf='getSchedule(time)'>
+        <calendar [allWeek]='allWeek' (messageDateEvent)="receiveDateMessage($event)"
+          (messageWeekEvent)="receiveWeekMessage($event)" (messageMonthEvent)="receiveMonthMessage($event)"
+          (messageShowWeekEvent)="receiveShowWeekMessage($event)"></calendar>
+
+        <div class="checkdate">{{selectedDate|date: "yyyy/MM/dd"}}</div>
+        <div class='calendar'>
+          <div *ngIf='dayView&&currentWeek'>
+            <div class="appoint">
+              <ul>
+
+                <li *ngFor='let time of timeList' (click)=getScheduleForm(time)>
+                  <span>{{time.time}}</span>
+
+                  <span *ngIf='getSchedule(time)'>
                     <i class='material-icons' *ngIf="!getSchedule(time).patient" style="color:#26ab56;">check_circle</i>
                     <i class='material-icons' *ngIf="getSchedule(time).patient" style="color:red;">check_circle</i>
                   </span>
-          </li>
-        </ul>
+                </li>
+              </ul>
+            </div>
+          </div>
+
+        </div>
       </div>
     </div>
-
-</div>
-</div>
-    </div>
-    <div class="col-sm-3" >
+    <div class="col-sm-3">
       <div class="rightcontent">
         <div class="card-header">My schedule</div>
         <div class='btn btn-round' *ngFor='let schedule of mySchedules' (click)='getScheduleForm(schedule)'
@@ -201,11 +179,120 @@
 </div>
 
 <div class="wap-wapper" *ngIf='bigScreen==0'>
-  <div class='card schedule' *ngIf='editSchedule'>
-    <!-- <div class='card-header'>
-      <i class='material-icons pull-right' (click)='editSchedule=false;sendMessageToPatientStory();'>close</i>
-    </div> -->
-    <calendar (messageDateEvent)="receiveDateMessage($event)"></calendar>
+  <div class="header">
+    <div class="topbarbox">
+      <span [ngClass]="{'active': mySchedule}" (click)='mySchedule=true;showDoctor=false;'>我的日程安排</span>
+      <span [ngClass]="{'active': showDoctor}" (click)='mySchedule=false;showDoctor=true;'>找医生</span>
+    </div>
+  </div>
+  <div *ngIf="mySchedule">
+    <div class="rightcontent">
+      <div class='btn btn-round' *ngFor='let schedule of mySchedules' (click)='getScheduleForm(schedule)'
+        style='background-color: white;color:black'>
+        <img class='photo' style=' float:left' [src]='getUrl(schedule.provider.photo)'>
+        <span style='font-weight: 700;font-size: medium; float:left'>
+          {{schedule.provider.name}},{{schedule.provider.title}}
+        </span>
+        <span style='float:right'>
+          {{ getVisitDate(schedule) |date:"yyyy/MM/dd hh:mm"}}
+        </span>
+      </div>
+      <div class="card-body">
+        <div> {{selectedDate|date: "yyyy/MM/dd"}}</div>
+      </div>
+    </div>
+  </div>
+  <mat-tab-group *ngIf="showDoctor">
+    <mat-tab label='我的医生'>
+      <div class="docbox">
+        <div class="doclists" *ngFor='let provider of myProviders'>
+          <div class='card' [ngClass]="{'selected':selectedProvider&&provider._id==selectedProvider._id}">
+            <div class='card-body'>
+              <div class="docinfo">
+                <div class='photo'><img [src]='getUrl(provider)' /></div>
+                <div class="docname">
+                  <span>{{provider.name}}</span>
+                  <span>
+                    {{provider.title}} &nbsp;{{provider.specialty}}
+                  </span>
+                </div>
+              </div>
+              <div class="doc-btns">
+                <button class="btn btn-default" (click)='getDetail(provider)'>介绍</button>
+                <button class="btn btn-base" (click)='selectProvider(provider)'>去咨询</button>
+              </div>
+              <div class="descbox">
+                <div class="desc" *ngFor="let item of breakLines(provider.desc)">
+                  {{item}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-tab>
+    <mat-tab label='搜索医生'>
+      <div class="searchbox"><input type="text" class="form-control" [(ngModel)]="search" placeholder="search">
+      </div>
+      <div class="docbox searchdoc">
+        <div class="doclists" *ngFor='let provider of allProviders|filter: search'>
+          <div class='card' [ngClass]="{'selected':selectedProvider&&provider._id==selectedProvider._id}">
+            <div class='card-body' *ngIf='search'>
+              <div class="docinfo">
+                <div class='photo'><img [src]='getUrl(provider)' /></div>
+                <div class="docname">
+                  <span>{{provider.name}}</span>
+                  <span>
+                    {{provider.title}} &nbsp;{{provider.specialty}}
+                  </span>
+                </div>
+              </div>
+              <div class="doc-btns">
+                <button class="btn btn-default" (click)='getDetail(provider)'>介绍</button>
+                <button class="btn btn-base" (click)='selectProvider(provider)'>去咨询</button>
+              </div>
+              <div class="descbox">
+                <div class="desc" *ngFor="let item of breakLines(provider.desc)">
+                  {{item}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-tab>
+    <mat-tab label='项目医生'>
+      <div class="docbox">
+        <div class="doclists" *ngFor='let provider of profileProviders'>
+          <div class='card' [ngClass]="{'selected':selectedProvider&&provider._id==selectedProvider._id}">
+            <div class='card-body'>
+              <div class="docinfo">
+                <div class='photo'><img [src]='getUrl(provider)' /></div>
+                <div class="docname">
+                  <span>{{provider.name}}</span>
+                  <span>
+                    {{provider.title}} &nbsp;{{provider.specialty}}
+                  </span>
+                </div>
+              </div>
+              <div class="doc-btns">
+                <button class="btn btn-default" (click)='getDetail(provider)'>介绍</button>
+                <button class="btn btn-base" (click)='selectProvider(provider)'>去咨询</button>
+              </div>
+              <div class="descbox">
+                <div class="desc" *ngFor="let item of breakLines(provider.desc)">
+                  {{item}}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+  <div class='card schedulebox' *ngIf='editSchedule'>
+    <div class="goback" (click)='editSchedule=false;sendMessageToPatientStory();'><span class="material-icons">chevron_left</span></div>
+    <calendar class="calendarbox" (messageDateEvent)="receiveDateMessage($event)"></calendar>
     <div class="checkdatebox">
       <div class='date'>{{selectedDate|date: "yyyy/MM/dd"}}</div>
     </div>

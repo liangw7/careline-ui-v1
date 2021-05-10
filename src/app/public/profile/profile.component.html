@@ -1,110 +1,69 @@
 <div class="wrapper">
-    <div class="overlay" *ngIf="loading">
-      <div class="spinner-wrapper">
-        <app-spinner></app-spinner>
+  <div class="overlay" *ngIf="loading">
+    <div class="spinner-wrapper">
+      <app-spinner></app-spinner>
+    </div>
+  </div>
+
+  <div class='pc-wapper' *ngIf='profile&&bigScreen==1'>
+    <div class="card">
+      <div class="top-content-box">
+        <div class="picbox">
+          <img [src]="getUrl(profile.image)" />
+        </div>
+        <div class="top-content">
+          <h3>{{profile.label.ch}}</h3>
+          <ul class="clearfix">
+            <li (click)='education=false;expert=false;registry=true;' *ngIf="forms&&forms.length>0">
+              <span *ngIf="language=='Chinese'">{{forms[0].label.ch}}</span>
+              <span *ngIf="language=='English'">{{forms[0].label.en}}</span>
+            </li>
+            <li (click)='submit()'>
+              <span *ngIf="language=='Chinese'">咨询</span>
+              <span *ngIf="language=='English'">Specialist</span>
+            </li>
+            <li (click)='providerRegister()'>
+              <span *ngIf="language=='Chinese'">医生加盟</span>
+              <span *ngIf="language=='English'">physician register</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div *ngIf='forms'>
+        <app-form [forms]='forms' [profile]='profile' [color]='color' [language]='language' [popOut]='popOut'
+          [emBedSet]=false [showInstruction]=true (messageEvent)="receiveMessage($event)">
+        </app-form>
       </div>
     </div>
-  
-    <div class='registry-pc' *ngIf='profile&&bigScreen==1'>
-      <div style='margin-top:50px; '>
-        <img [src]="getUrl(profile.image)" [ngStyle]="{'width':screenWidth*1.5+'px'}" class='photo'>
-      </div>
-     <div class='row'  >
-          <div class='col-sm-6' style='margin-top:20px;'>
-            <span style="font-size:x-large; font-weight:800;" class='text-center'> {{profile.label.ch}}</span>
-          </div>
-  
-          <div class='col-sm-1' [ngClass]="{'button-location-pc':bigScreen==1,'button-location-cell':bigScreen==0 }">
-            <a href="javascript:void(0);" (click)='education=false;expert=false;registry=true;'>
-  
-              <p style="font-weight: 700;" *ngIf="language=='Chinese'&&forms&&forms.length>0">{{forms[0].label.ch}}</p>
-              <p style="font-weight: 700;" *ngIf="language=='English'&&forms&&forms.length>0">{{forms[0].label.en}}</p>
-            </a>
-          </div>
-  
-          <div class='col-sm-1' [ngClass]="{'button-location-pc':bigScreen==1,'button-location-cell':bigScreen==0 }">
-            <a href="javascript:void(0);" (click)='submit()'>
-  
-              <p style="font-weight: 700;" *ngIf="language=='Chinese'">咨询</p>
-              <p style="font-weight: 700;" *ngIf="language=='English'">Specialist</p>
-            </a>
-          </div>
-  
-          <div class='col-sm-1' [ngClass]="{'button-location-pc':bigScreen==1,'button-location-cell':bigScreen==0 }">
-            <a href="javascript:void(0);" (click)='providerRegister()' [ngClass]="{'active':education}">
-  
-              <p style="font-weight: 700;" *ngIf="language=='Chinese'">医生加盟</p>
-              <p style="font-weight: 700;" *ngIf="language=='English'">physician register</p>
-            </a>
-          </div>
-        </div>
-    <div [ngStyle]="{'height':scrollSize+'px'}" style='overflow: auto;'>
-  
-  
-        <div *ngIf='forms' style='padding-bottom:50px;padding-top:20px;'>
-  
-          <app-form [forms]='forms' [profile]='profile' [color]='color' [language]='language' [popOut]='popOut'
-            [emBedSet]=false [showInstruction]=true (messageEvent)="receiveMessage($event)">
-          </app-form>
-        </div>
-      </div>
+  </div>
+
+
+  <div class='wap-wapper' *ngIf='bigScreen==0&&profile'>
+    <div class='cell-title'>
+      <span *ngIf="language=='Chinese'&&forms">{{forms[0].label.ch}}</span>
+      <span *ngIf="language=='English'&&forms">{{forms[0].label.en}}</span>
     </div>
-    <div class='registry-cell'*ngIf='bigScreen==0&&profile'>
-      
-      <div  style='padding:15px;'>
-       
-        <span class='cell-title'>
-          <p *ngIf="language=='Chinese'&&forms">{{forms[0].label.ch}}</p>
-          <p *ngIf="language=='English'&&forms">{{forms[0].label.en}}</p>
-        </span>
-        <img [src]="getUrl(profile.image)"  class='photo-cell'>
-       
-      </div>
-   
-      
-      <div [ngStyle]="{'height':scrollSize+'px'}" style='overflow: auto;'>
-  
-  
-        <div *ngIf='forms' style='padding:20px 10px 50px 20px;'>
-  
-          <app-form [forms]='forms' [profile]='profile' [color]='color' [language]='language' [popOut]='popOut'
-            [emBedSet]=false [showInstruction]=true (messageEvent)="receiveMessage($event)">
-          </app-form>
-        </div>
-      </div>
-      <div   style='
-          bottom:0px;
-          margin-bottom:0px;
-          padding-left:5px;
-          padding-right:5px;
-       
-          position:fixed;
-          z-index:5;
-          
-          width:100%;
-          text-align: center;'>
-        <div   class='row' >
-        <div style='width:33%'>
-        <a class='btn btn-block blue-btn'  (click)='goToHome()' 
-      >
-        <span>所有项目</span>
+    <div class="picbox card"><img [src]="getUrl(profile.image)" /></div>
+    <div class="formbox" *ngIf='forms'>
+      <app-form [forms]='forms' [profile]='profile' [color]='color' [language]='language' [popOut]='popOut'
+        [emBedSet]=false [showInstruction]=true (messageEvent)="receiveMessage($event)">
+      </app-form>
+    </div>
+    <div class='profile-bottom'>
+      <div class="item">
+        <a class='btn btn-block btn-base' (click)='goToHome()'>
+          <span>所有项目</span>
         </a>
-        </div>
-        <div style='width:33%'>
-          <a class='btn btn-block blue-btn'  (click)='followup=true;submit()' href="javascript:void(0);"
-            >
-            <span>智能管理</span>
-          </a>
-  
-        </div>
-        <div style='width:33%'>
-          <a class='btn btn-block blue-btn' (click)='consult=true;submit()' href="javascript:void(0);"
-          >
-            <span>去咨询</span>
-          </a>
-        </div>
-        </div>
-       
       </div>
-   
+      <div class="item">
+        <a class='btn btn-block btn-base' (click)='followup=true;submit()' href="javascript:void(0);">
+          <span>智能管理</span>
+        </a>
+      </div>
+      <div class="item">
+        <a class='btn btn-block btn-base' (click)='consult=true;submit()' href="javascript:void(0);">
+          <span>去咨询</span>
+        </a>
+      </div>
     </div>
+  </div>

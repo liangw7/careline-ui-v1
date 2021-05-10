@@ -1,106 +1,5 @@
 @import 'src/assets/scss/base.scss';
 
-// .photo {
-//     width: 70px;
-//     height: 70px;
-// }
-// .selected {
-//     background-color: white;
-//     color: blue;
-// }
-// // .title {
-// //     font-size: medium;
-// //     font-weight: 600;
-// //     padding: 10px;
-// //     color: black;
-// // }
-// .consult-img {
-//     float: right;
-//     width: 70px;
-//     border-radius: 35px;
-//     margin-bottom: 40px;
-//     margin-right: 0px;
-// }
-// .title-img {
-//     float: right;
-//     width: 70px;
-//     border-radius: 35px;
-//     margin-bottom: 10px;
-// }
-// .selected-btn {
-//     color: #19498d;
-//     background: linear-gradient(to bottom, #d6e3f7 0%, #86b3e0 50%);
-// }
-// .de-selected-btn {
-//     background-color: #19498d;
-//     color: white;
-// }
-// .provider {
-//     // margin-top:80px;
-
-//     // background-color:rgb(64, 100, 219)
-//     background: transparent;
-//     box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(#19498d, 0.4);
-// }
-// .consult {
-//     background: linear-gradient(to bottom, #d6e3f7 0%, #edf2f7 50%);
-//     margin: 0px;
-//     min-height: 120px;
-//     width: 98%;
-//     border-radius: 15px;
-// }
-// .selected {
-//     background: linear-gradient(to bottom, #d6e3f7 0%, #edf2f7 50%);
-// }
-// .provider-2 {
-//     margin-top: 50px;
-//     min-height: 800px;
-//     // background-color:rgb(64, 100, 219)
-//     background: linear-gradient(to bottom, #d6e3f7 0%, #edf2f7 50%);
-//     box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(#19498d, 0.4);
-// }
-// .consult-2 {
-//     color: white;
-//     background: linear-gradient(to bottom, #34598b 0%, #698cb9 50%);
-
-//     margin: 20px;
-//     height: 100px;
-//     width: 90%;
-//     border-radius: 15px;
-// }
-// .mail-cell {
-//     height: 100%;
-//     width: 100%;
-//     left: 0;
-//     margin-left: 0px;
-//     margin-right: 0px;
-//     right: 0;
-//     top: 0;
-//     margin-top: 0px;
-//     margin-bottom: 0px;
-//     bottom: 0;
-//     position: fixed;
-//     z-index: 100;
-//     overflow: auto;
-//     //padding:2px;
-//     background-color: white;
-//     box-shadow: 0 4px 20px 0px #aaabaf, 0 7px 10px -5px rgba(#b5b5b8, 0.4);
-// }
-// .nav {
-//     color: rgb(86, 86, 167);
-
-//     background-color: white;
-//     //height: 50px;
-
-//     font-weight: 900;
-//     font-style: inherit;
-//     font-feature-settings: "blwf";
-//     font-size-adjust: inherit;
-// }
-// .active {
-//     color: red;
-// }
-
 //song-pc style
 .pc-wapper {
     .nav-tabs-wrapper {
@@ -139,9 +38,13 @@
         height: calc(100vh - 172px);
         background: $white;
         border-radius: 0 20px 20px 20px;
-        box-shadow: 0px 0px 4px 0px rgba(121,161,161,0.50); 
         box-sizing: border-box;
         overflow-y: auto;
+    }
+    .tab-pane {
+        .tab-content {
+            height: calc(100vh - 214px);
+        }
     }
     .tabcard {
         width: 100%;
@@ -226,7 +129,7 @@
                 }
             }
             .tablebox {
-                max-height: 405px;
+                max-height: calc(100vh - 345px);
                 overflow-y: scroll;
                 margin-right: -17px;
                 transition: height .3s;
@@ -273,18 +176,20 @@
             }
         }
         .providerlists {
-            height: 100%;
+            max-height: calc(100vh - 255px);
+            overflow-y: auto;
+            overflow-x: hidden;
             .form-group {
                 margin: 0;
             }
             .providerbox {
-                max-height: calc(100vh - 270px);
+                max-height: calc(100vh - 312px);
                 overflow-y: auto;
+                overflow-x: hidden;
                 cursor: pointer;
             }
             .card {
-                width:95%;
-                margin:15px;
+                margin:15px 0;
                 &.selected {
                     background: $darkGray;
                 }
@@ -317,16 +222,25 @@
                             }
                         }
                         .specialty {
-                            font-size: $fontSize14;
-                            font-family: PingFangSC, PingFangSC-Light;
-                            font-weight: 300;
-                            text-align: left;
-                            color: $basefontColor;
-                            line-height: 28px;
-                            overflow: hidden;
-                            text-overflow:ellipsis;
-                            white-space: nowrap;
+                            span {
+                                font-size: $fontSize14;
+                                font-family: PingFangSC, PingFangSC-Light;
+                                font-weight: 300;
+                                color: $basefontColor;
+                                text-align: left;
+                                line-height: 32px;
+                                margin-left: 10px;
+                                overflow: hidden;    
+                                text-overflow:ellipsis;    
+                                white-space: nowrap;
+                            }
                         }
+                    }
+                    .descbox {
+                        display: -webkit-box;    
+                        -webkit-box-orient: vertical;    
+                        -webkit-line-clamp: 3;    
+                        overflow: hidden;
                     }
                     .desc {
                         font-size: $fontSize14;
@@ -598,6 +512,20 @@
             margin: 0;
         }
         .card-body {
+            .doc-btns {
+                margin: 8rem/$base 0;
+                .btn {
+                    line-height: 16rem/$base;
+                    font-size: $fontSize14;
+                    margin: 0 8rem/$base;
+                }
+            }
+            .descbox {
+                display: -webkit-box;    
+                -webkit-box-orient: vertical;    
+                -webkit-line-clamp: 3;    
+                overflow: hidden;
+            }
             .desc {
                 font-size: $fontSize14;
                 color: $basefontColor;
@@ -802,7 +730,6 @@
       margin-right: 0;
     }
   }
-
 :host ::ng-deep .wap-wapper {
     .mat-tab-header {
         position: fixed;
@@ -816,6 +743,13 @@
         border-radius: 0;
         .mat-tab-body-content {
             padding-bottom: 30rem/$base;
+          }
+    } 
+}
+:host ::ng-deep .pc-wapper {
+    .mat-tab-body-wrapper {
+        .mat-tab-body-content {
+            padding: 0;
           }
     } 
 }

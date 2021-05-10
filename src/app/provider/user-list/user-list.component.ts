@@ -334,14 +334,16 @@ export class UserListComponent implements OnInit, AfterViewInit {
     })
   }
   getWebSite(registryUser:any){
+    var loc = location.href;
+    console.log ('location', loc)
 
     if (registryUser.role=='service'){
-      window.open('http://localhost:4200/service/' + registryUser._id,
+      window.open('./service/' + registryUser._id,
       '',
       'scrollbars=1,height=500,width=1000,left=100,top=80');
     }
     else if (registryUser.role=='provider'){
-      window.open('http://localhost:4200/provider/' + registryUser._id,
+      window.open('./provider/' + registryUser._id,
       '',
       'scrollbars=1,height=500,width=1000,left=100,top=80');
     }

@@ -1,303 +1,174 @@
-<!-- <div class='home'>
-  <div class='main-sheet' *ngIf='bigScreen==1'>
-    <mat-toolbar class="nav tool-bar">
-
-      <div class='col-sm-4'>
-        <img src="/assets/img/careline-2.png" style='height:60px; width:60px;' />
-      </div>
-      <div class='col-sm-1'>
-        <li routerLinkActive="link-active">
-          <a class="nav-link" [routerLink]="['profile-intro']">
-
-            <p><span *ngIf="language=='Chinese'">主页</span>
-              <span *ngIf="language=='English'">Home</span>
-            </p>
-          </a>
-        </li>
-      </div>
-
-      <div class='col-sm-1'>
-        <li routerLinkActive="link-active">
-          <a class="nav-link" [routerLink]="['publish-list']">
-            <p><span *ngIf="language=='Chinese'">发表</span>
-              <span *ngIf="language=='English'">publish list</span>
-            </p>
-          </a>
-        </li>
-      </div>
-      <div class='col-sm-1'>
-        <li routerLinkActive="link-active">
-          <a class="nav-link" [routerLink]="['login']">
-
-            <p><span *ngIf="language=='Chinese'">登录</span>
-              <span *ngIf="language=='English'">login</span>
-            </p>
-          </a>
-        </li>
-      </div>
-      <div class='col-sm-1'>
-        <mat-select class="form-control" [(ngModel)]="language" placeholder='language'
-          (selectionChange)="setLanguage($event)">
-          <mat-option value='English'>
-            <span>English</span>
-          </mat-option>
-          <mat-option value='Chinese'>
-            <span>Chinese</span>
-          </mat-option>
-        </mat-select>
-      </div>
-    </mat-toolbar>
-    <router-outlet></router-outlet>
-
-  </div>
-  <div style="margin: 0px;padding:0px; " *ngIf='bigScreen==0'
-    [ngStyle]="{'height':screenSize.height+'px','width':screenSize.width+'px'}">
-    <div class="card nav card-bottom" style='background-color: white; height:45px; padding:0px;'>
-      <ul class='nav card' style='margin:0px;'>
-        <li routerLinkActive="link-cell-active">
-          <a class="nav-link" [routerLink]="['profile-intro']">
-
-            <span *ngIf="language=='Chinese'">项目</span>
-            <span *ngIf="language=='English'">Project</span>
-          </a>
-        </li>
-        <li *ngIf="!user&&!userRole" routerLinkActive="link-cell-active">
-          <a class="nav-link" (click)='goToProviderList()'>
-            <span *ngIf="language=='Chinese'">咨询</span>
-            <span *ngIf="language=='English'">Consult</span>
-          </a>
-        </li>
-        <li *ngIf="userRole=='patient'||(user&&user.role=='patient')" routerLinkActive="link-cell-active">
-          <a class="nav-link" [routerLink]="['patient/followups']">
-            <span *ngIf="language=='Chinese'">智能健康</span>
-            <span *ngIf="language=='English'">Health Plan</span>
-          </a>
-        </li>
-        <li *ngIf="userRole=='patient'||(user&&user.role=='patient')" routerLinkActive="link-cell-active">
-          <a class="nav-link" [routerLink]="['patient/provider-list']">
-            <span *ngIf="language=='Chinese'">咨询</span>
-            <span *ngIf="language=='English'">Consult</span>
-          </a>
-        </li>
-        <li *ngIf="userRole=='provider'||(user&&user.role=='provider')" routerLinkActive="link-cell-active">
-          <a class="nav-link" [routerLink]="['home/patient-consult-list']">
-            <span *ngIf="language=='Chinese'">咨询</span>
-            <span *ngIf="language=='English'">Consult</span>
-          </a>
-        </li>
-        <li *ngIf="userRole=='patient'" routerLinkActive="link-cell-active">
-          <a class="nav-link" [routerLink]="['patient/patient-story']">
-            <span *ngIf="language=='Chinese'">健康卡</span>
-            <span *ngIf="language=='English'">My Health</span>
-          </a>
-        </li>
-        <li *ngIf="userRole=='provider'" routerLinkActive="link-cell-active">
-          <a class="nav-link" [routerLink]="['home/provider-folder']">
-            <span *ngIf="language=='Chinese'">办公室</span>
-            <span *ngIf="language=='English'">Office</span>
-          </a>
-        </li>
-        <li *ngIf="!user&&!userRole" routerLinkActive="link-cell-active">
-          <a class="nav-link" [routerLink]="['login-poster']">
-            <span *ngIf="language=='Chinese'">我</span>
-            <span *ngIf="language=='English'">login</span>
-          </a>
-        </li>
-
-        <li routerLinkActive="link-cell-active">
-          <a class="nav-link" [routerLink]="['publish-list']">
-
-            <span *ngIf="language=='Chinese'">文章</span>
-            <span *ngIf="language=='English'">Articles</span></a>
-        </li>
-      </ul>
-    </div>
-
-    <div class='main-sheet-cell'>
-
-      <router-outlet></router-outlet>
-    </div>
-
-  </div>
-
-</div> -->
 
 <body class="pc-container" *ngIf='bigScreen==1'>
-    <mat-toolbar class="nav tool-bar">
-      <div class='col-sm-2'>
-  
-      </div>
-      <div class='col-sm-1'>
-        <li routerLinkActive="link-active">
-          <a [routerLink]="['main']" class='cell'>
-            <p>首页</p>
-          </a>
-        </li>
-      </div>
-      <div class='col-sm-1'>
-        <li routerLinkActive="link-active">
-          <a [routerLink]="['profile-list']">
-            <p>健康项目</p>
-          </a>
-        </li>
-      </div>
-      <div class='col-sm-1'>
-        <li routerLinkActive="link-active">
-          <a [routerLink]="['publish-list']">
-            <p>科研文章</p>
-          </a>
-        </li>
-      </div>
-      <div class='col-sm-1'>
-        <li routerLinkActive="link-active">
-          <a [routerLink]="['service-list']">
-            <p>医疗工作室</p>
-          </a>
-        </li>
-      </div>
-      <div class='col-sm-1'>
-        <li routerLinkActive="link-active">
-          <a [routerLink]="['provider-list']">
-            <P>执业医师</P>
-          </a>
-        </li>
-      </div>
-      <div class='col-sm-1'>
-        <button class='btn btn-round btn-primary' style='margin-top:-2px;'
-          [routerLink]="['login']" [queryParams]="{userType:0}"><span>用户登录/注册</span></button>
-        &nbsp;&nbsp;&nbsp;&nbsp;
-        <button class='btn btn-round btn-primary' style='margin-top:-2px;'
-          [routerLink]="['login']" [queryParams]="{userType:1}"><span>医生登录/注册</span></button>
-      </div>
-    </mat-toolbar>
-    <!--<header class="header">
-      <img class="public-img" src="assets/images/logo/logo.png" alt="">&nbsp;&nbsp;
-      <span class='language'>CHINEST</span>&nbsp;&nbsp;
-      <img class="public-img" id="public-select-img" src="assets/images/home/pc/svg.png" alt="">&nbsp;&nbsp;
-      <li  routerLinkActive="link-active">
-        <a [routerLink]="['main']"  >首页</a>&nbsp;&nbsp;&nbsp;&nbsp;
+  <mat-toolbar class="nav tool-bar">
+    <div class='col-sm-2'>
+
+    </div>
+    <div class='col-sm-1'>
+      <li routerLinkActive="link-active">
+        <a [routerLink]="['main']" class='cell'>
+          <p>首页</p>
+        </a>
       </li>
-      <a [routerLink]="['healthy-program']" routerLinkActive="link-active" >健康项目</a>&nbsp;&nbsp;&nbsp;&nbsp;
-      <a [routerLink]="['publish-list']" routerLinkActive="link-active" >科研文章</a>&nbsp;&nbsp;&nbsp;&nbsp;
-      <a [routerLink]="['medical-studio']" routerLinkActive="li nk-active" >医疗工作室</a>&nbsp;&nbsp;&nbsp;&nbsp;
-     <a [routerLink]="['occupational-physicians']" routerLinkActive="link-active" >执业医师</a>&nbsp;&nbsp;&nbsp;&nbsp;
-      <button [routerLink]="['login']"><span>登录/注册</span></button>
-    </header>-->
-    <div>
-      <router-outlet></router-outlet>
     </div>
-    <footer>
-      <div id="public-footer-top">
-        <div>
-          <img class="public-img" src="assets/images/home/pc/Group_company_tel.png" alt="">&nbsp;&nbsp;
-          <span>客服电话：400-123-1234</span>
-        </div>
-        <div>
-          <img class="public-img" src="assets/images/home/pc/Group_company_ico.png" alt="">&nbsp;&nbsp;
-          <span>公司地址：四川省成都市锦江区一环路东四段14号7楼705、707号</span>
-        </div>
-        <div>
-          <span>@2021 digitalbaseas.com 蜀ICP备19034283号-1 四川数字基石信息科技有限公司</span>
-        </div>
-      </div>
-      <!-- 不知道为什么在img里面放微信公众号授权登陆,暂时隐藏 -->
-      <!-- <div>
-        <img
-          src="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1456c566ec3e6686&redirect_uri=https://www.digitalbaseas.com/homepage/public-poster&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect"
-          alt="">
-      </div> -->
-    </footer>
-  
-  </body>
-  
-  <body class="phone-container" *ngIf='bigScreen==0'>
-    <div class='phone-top'>
-        <p class="phone-public-p2">数基健康</p>
-       <!--<p class="phone-public-p4">在当今以技术为中心的格局中，卓越的</p>
-        <p class="phone-public-p4">医疗保健并不仅仅取决于临床医生。</p>
-        <p class="phone-public-p4">从移动设备到远程医疗再到患者数据安</p>
-        <p class="phone-public-p4">全的医疗保健IT对于提供最佳护理至关重要。</p>--> 
+    <div class='col-sm-1'>
+      <li routerLinkActive="link-active">
+        <a [routerLink]="['profile-list']">
+          <p>健康项目</p>
+        </a>
+      </li>
     </div>
-    <div class='phone-body'>
+
+    <div class='col-sm-1'>
+      <li routerLinkActive="link-active">
+        <a [routerLink]="['service-list']">
+          <p>医疗工作室</p>
+        </a>
+      </li>
+    </div>
+    <div class='col-sm-1'>
+      <li routerLinkActive="link-active">
+        <a [routerLink]="['publish-list']">
+          <p>科研文章</p>
+        </a>
+      </li>
+    </div>
+    <div class='col-sm-1'>
+      <button class='btn btn-round btn-primary' style='margin-top:-2px;'
+        [routerLink]="['login']" [queryParams]="{userType:0}"><span>用户登录/注册</span></button>
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      <button class='btn btn-round btn-primary' style='margin-top:-2px;'
+        [routerLink]="['login']" [queryParams]="{userType:1}"><span>医生登录/注册</span></button>
+    </div>
+  </mat-toolbar>
+  <!--<header class="header">
+    <img class="public-img" src="assets/images/logo/logo.png" alt="">&nbsp;&nbsp;
+    <span class='language'>CHINEST</span>&nbsp;&nbsp;
+    <img class="public-img" id="public-select-img" src="assets/images/home/pc/svg.png" alt="">&nbsp;&nbsp;
+    <li  routerLinkActive="link-active">
+      <a [routerLink]="['main']"  >首页</a>&nbsp;&nbsp;&nbsp;&nbsp;
+    </li>
+    <a [routerLink]="['healthy-program']" routerLinkActive="link-active" >健康项目</a>&nbsp;&nbsp;&nbsp;&nbsp;
+    <a [routerLink]="['publish-list']" routerLinkActive="link-active" >科研文章</a>&nbsp;&nbsp;&nbsp;&nbsp;
+    <a [routerLink]="['medical-studio']" routerLinkActive="li nk-active" >医疗工作室</a>&nbsp;&nbsp;&nbsp;&nbsp;
+   <a [routerLink]="['occupational-physicians']" routerLinkActive="link-active" >执业医师</a>&nbsp;&nbsp;&nbsp;&nbsp;
+    <button [routerLink]="['login']"><span>登录/注册</span></button>
+  </header>-->
+  <div>
     <router-outlet></router-outlet>
   </div>
+  <footer>
+    <div id="public-footer-top">
+      <div>
+        <img class="public-img" src="assets/images/home/pc/Group_company_tel.png" alt="">&nbsp;&nbsp;
+        <span>客服电话：400-123-1234</span>
+      </div>
+      <div>
+        <img class="public-img" src="assets/images/home/pc/Group_company_ico.png" alt="">&nbsp;&nbsp;
+        <span>公司地址：四川省成都市锦江区一环路东四段14号7楼705、707号</span>
+      </div>
+      <div>
+        <span>@2021 digitalbaseas.com 蜀ICP备19034283号-1 四川数字基石信息科技有限公司</span>
+      </div>
+    </div>
+    <!-- 不知道为什么在img里面放微信公众号授权登陆,暂时隐藏 -->
+    <!-- <div>
+      <img
+        src="https://open.weixin.qq.com/connect/oauth2/authorize?appid=wx1456c566ec3e6686&redirect_uri=https://www.digitalbaseas.com/homepage/public-poster&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect"
+        alt="">
+    </div> -->
+  </footer>
+
+</body>
+
+<body class="phone-container" *ngIf='bigScreen==0'>
+  <div class='phone-top'>
+      <p class="phone-public-p2">数基健康</p>
+     <!--<p class="phone-public-p4">在当今以技术为中心的格局中，卓越的</p>
+      <p class="phone-public-p4">医疗保健并不仅仅取决于临床医生。</p>
+      <p class="phone-public-p4">从移动设备到远程医疗再到患者数据安</p>
+      <p class="phone-public-p4">全的医疗保健IT对于提供最佳护理至关重要。</p>--> 
+  </div>
+  <div class='phone-body'>
+  <router-outlet></router-outlet>
+</div>
+ 
+  <footer class="footerbox">
+    <div class="public-phone-main-footer"  >
+      <a [routerLink]="['main']" routerLinkActive="link-cell-active">
+       <!-- <img src="assets/images/home/phone/shouye.svg" alt="">-->
+        <p *ngIf="language=='Chinese'">首页</p>
+        <p *ngIf="language=='English'">Home</p>
+      </a>
+    </div>
+    <div class="public-phone-main-footer">
+      <a [routerLink]="['profile-list']" routerLinkActive="link-cell-active">
+        <!--<img src="assets/images/home/phone/diaoyan.svg" alt="">-->
+        <p *ngIf="language=='Chinese'">调研</p>
+        <p *ngIf="language=='English'">Project</p>
+      </a>
+    </div>
+    <div class="public-phone-main-footer">
+      <a [routerLink]="['service-list']" routerLinkActive="link-cell-active">
+        <!--<img src="assets/images/home/phone/diaoyan.svg" alt="">-->
+        <p *ngIf="language=='Chinese'">团队</p>
+        <p *ngIf="language=='English'">Project</p>
+      </a>
+    </div>
+    <div class="public-phone-main-footer">
+      <a [routerLink]="['publish-list']" routerLinkActive="link-cell-active">
+       <!--   <img src="assets/images/home/phone/wenzhang.svg" alt="">-->
+        <p *ngIf="language=='Chinese'">文章</p>
+        <p *ngIf="language=='English'">Articles</p>
+      </a>
+    </div>
+   <!-- <div class="public-phone-main-footer">
+      <a [routerLink]="['occupational-physicians']" routerLinkActive="link-cell-active">
+         <img src="assets/images/home/phone/diaoyan.svg" alt="">
+        <p *ngIf="language=='Chinese'">医师</p>
+        <p *ngIf="language=='English'">Project</p>
+      </a>
+    </div>
+    <div class="public-phone-main-footer" *ngIf="!user&&!userRole" routerLinkActive="link-cell-active">
+      <a (click)='goToProviderList()' routerLinkActive="link-cell-active">
+       <img src="assets/images/home/phone/zixun.svg" alt="">
+        <p *ngIf="language=='Chinese'">咨询</p>
+        <p *ngIf="language=='English'">Consult</p>
+      </a>
+    </div>-->
+    <div class="public-phone-main-footer" *ngIf="userRole=='patient'||(user&&user.role=='patient')"
+      routerLinkActive="link-cell-active" routerLinkActive="link-cell-active">
+      <a [routerLink]="['/provider-platform/patient/provider-list']">
+        <!-- <img src="assets/images/home/phone/zixun.svg" alt="">-->
+        <p *ngIf="language=='Chinese'">咨询</p>
+        <p *ngIf="language=='English'">Consult</p>
+      </a>
+    </div>
+    <div class="public-phone-main-footer" *ngIf="userRole=='provider'||(user&&user.role=='provider')"
+      routerLinkActive="link-cell-active" routerLinkActive="link-cell-active">
+      <a [routerLink]="['home/patient-consult-list']">
+       <!--  <img src="assets/images/home/phone/zixun.svg" alt="">-->
+        <p *ngIf="language=='Chinese'">咨询</p>
+        <p *ngIf="language=='English'">Consult</p>
+      </a>
+    </div>
    
-    <footer >
-      <div class="public-phone-main-footer"  >
-        <a [routerLink]="['main']" routerLinkActive="link-cell-active">
-         <!-- <img src="assets/images/home/phone/shouye.svg" alt="">-->
-          <p *ngIf="language=='Chinese'">首页</p>
-          <p *ngIf="language=='English'">Home</p>
-        </a>
-      </div>
-      <div class="public-phone-main-footer">
-        <a [routerLink]="['profile-list']" routerLinkActive="link-cell-active">
-          <!--<img src="assets/images/home/phone/diaoyan.svg" alt="">-->
-          <p *ngIf="language=='Chinese'">调研</p>
-          <p *ngIf="language=='English'">Project</p>
-        </a>
-      </div>
-      <div class="public-phone-main-footer">
-        <a [routerLink]="['service-list']" routerLinkActive="link-cell-active">
-          <!--<img src="assets/images/home/phone/diaoyan.svg" alt="">-->
-          <p *ngIf="language=='Chinese'">团队</p>
-          <p *ngIf="language=='English'">Project</p>
-        </a>
-      </div>
-      <div class="public-phone-main-footer">
-        <a [routerLink]="['publish-list']" routerLinkActive="link-cell-active">
-         <!--   <img src="assets/images/home/phone/wenzhang.svg" alt="">-->
-          <p *ngIf="language=='Chinese'">文章</p>
-          <p *ngIf="language=='English'">Articles</p>
-        </a>
-      </div>
-     <!-- <div class="public-phone-main-footer">
-        <a [routerLink]="['occupational-physicians']" routerLinkActive="link-cell-active">
-           <img src="assets/images/home/phone/diaoyan.svg" alt="">
-          <p *ngIf="language=='Chinese'">医师</p>
-          <p *ngIf="language=='English'">Project</p>
-        </a>
-      </div>
-      <div class="public-phone-main-footer" *ngIf="!user&&!userRole" routerLinkActive="link-cell-active">
-        <a (click)='goToProviderList()' routerLinkActive="link-cell-active">
-         <img src="assets/images/home/phone/zixun.svg" alt="">
-          <p *ngIf="language=='Chinese'">咨询</p>
-          <p *ngIf="language=='English'">Consult</p>
-        </a>
-      </div>-->
-      <div class="public-phone-main-footer" *ngIf="userRole=='patient'||(user&&user.role=='patient')"
-        routerLinkActive="link-cell-active" routerLinkActive="link-cell-active">
-        <a [routerLink]="['/provider-platform/patient/provider-list']">
-          <!-- <img src="assets/images/home/phone/zixun.svg" alt="">-->
-          <p *ngIf="language=='Chinese'">咨询</p>
-          <p *ngIf="language=='English'">Consult</p>
-        </a>
-      </div>
-      <div class="public-phone-main-footer" *ngIf="userRole=='provider'||(user&&user.role=='provider')"
-        routerLinkActive="link-cell-active" routerLinkActive="link-cell-active">
-        <a [routerLink]="['home/patient-consult-list']">
-         <!--  <img src="assets/images/home/phone/zixun.svg" alt="">-->
-          <p *ngIf="language=='Chinese'">咨询</p>
-          <p *ngIf="language=='English'">Consult</p>
-        </a>
-      </div>
-     
-      <div class="public-phone-main-footer">
-        <a *ngIf="isWeixin" [routerLink]="['login-poster']" routerLinkActive="link-cell-active">
+    <div class="public-phone-main-footer">
+      <a *ngIf="isWeixin" [routerLink]="['login-poster']" routerLinkActive="link-cell-active">
+      <!--    <img src="assets/images/home/phone/wode.svg" alt="">-->
+        <p *ngIf="language=='Chinese'">我</p>
+        <p *ngIf="language=='English'">login</p>
+      </a>
+      <a *ngIf="!isWeixin" [routerLink]="['login']" routerLinkActive="link-cell-active">
         <!--    <img src="assets/images/home/phone/wode.svg" alt="">-->
           <p *ngIf="language=='Chinese'">我</p>
           <p *ngIf="language=='English'">login</p>
         </a>
-        <a *ngIf="!isWeixin" [routerLink]="['login']" routerLinkActive="link-cell-active">
-          <!--    <img src="assets/images/home/phone/wode.svg" alt="">-->
-            <p *ngIf="language=='Chinese'">我</p>
-            <p *ngIf="language=='English'">login</p>
-          </a>
-      </div>
-    </footer>
-    
-  </body>
+    </div>
+  </footer>
   
-  <div class="spinner-wrapper" *ngIf='loading'>
-    <app-spinner></app-spinner>
-  </div>
+</body>
+
+<div class="spinner-wrapper" *ngIf='loading'>
+  <app-spinner></app-spinner>
+</div>

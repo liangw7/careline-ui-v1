@@ -165,19 +165,19 @@
 .levelOne {
     color: orange;
     font-weight: 900;
-    font-size: medium;
+    font-size: 14px;
 }
 
 .levelTwo {
     color: red;
     font-weight: 900;
-    font-size: medium;
+    font-size: 14px;
 }
 
 .normal {
     color: blue;
     font-weight: 900;
-    font-size: medium;
+    font-size: 14px;
 }
 
 .selected {
@@ -258,7 +258,8 @@ li a {
 }
 
 .pc-width {
-    width:100%;
+    width:98%;
+    margin: 1%;
 }
 
 .pc-width-education {

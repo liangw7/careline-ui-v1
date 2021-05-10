@@ -1,3 +1,184 @@
+// .login {
+//     margin: 20px 10px;
+// }
+
+// .my-card {
+//     padding: 40px;
+//     border-radius: 10px;
+//     background-color: transparent;
+//     color: white;
+//     font-weight: 900;
+// }
+
+// .active {
+//     color: black;
+//     font-weight: 900;
+// }
+
+// .align-center {
+//     text-align: center;
+//     margin-top: -20px;
+//     margin-left: 40%;
+//     width: 700px;
+//     padding: 50px;
+// }
+
+// .align-left {
+//     text-align: center;
+//     margin-top: 10%;
+//     padding: 20px;
+// }
+
+// .my-form {
+//     min-width: 150px;
+//     max-width: 600px;
+//     width: 100%;
+//     padding: 20px;
+// }
+
+// .my-small-form {
+//     min-width: 150px;
+//     padding: 20px;
+// }
+
+// .full-width {
+//     width: 100%;
+// }
+
+// .nav {
+//     color: rgb(86, 86, 167);
+
+//     background-color: white;
+//     height: 50px;
+
+//     font-weight: 900;
+//     font-style: inherit;
+//     font-feature-settings: "blwf";
+//     font-size-adjust: inherit;
+// }
+
+// .nav a {
+//     color: rgb(86, 86, 167);
+// }
+
+// .login-main {
+//     margin-top: 10%;
+//     width: 550px;
+// }
+
+// mat-card {
+//     min-width: 40%;
+// }
+
+// .image {
+//     background-size: cover;
+//     background-position: 100% 100%;
+//     background-color: white;
+// }
+
+// .photo {
+//     height: 150px;
+//     width: 100%;
+// }
+
+// .logo-image {
+//     height: 25px;
+//     width: 100%;
+// }
+
+// .top {
+//     position: fixed;
+//     right: 0;
+//     left: 0;
+//     top: 0;
+//     clear: both;
+// }
+
+// ::ng-deep .mat-checkbox-checked .mat-checkbox-background {
+//     background-color: blue !important;
+// }
+
+// .tool-bar {
+//     position: fixed;
+//     text-align: center;
+//     left: 0px;
+//     margin-top: -5px;
+//     top: 0px;
+//     z-index: 5;
+//     font-weight: 700;
+//     background: linear-gradient(to bottom, rgb(219, 223, 245) 0%, white 50%);
+// }
+
+// .home {
+//     margin-top: 0px;
+//     bottom: 0;
+//     margin-bottom: 0px;
+//     top: 0;
+// }
+
+// .main-sheet {
+//     // padding: 5%;
+//     margin-right: 0px;
+
+//     background: linear-gradient(to bottom, #cbdaf0 0%, white 50%);
+// }
+
+// .main-sheet-cell {
+//     width: 100%;
+
+//     position: relative;
+//     padding: 0px;
+//     margin: 0px;
+// }
+
+// .link-cell {
+//     font-weight: 700;
+//     padding: 5px;
+//     padding-top: 13px;
+//     padding-bottom: 13px;
+// }
+
+// .link-active {
+//     background-color: #3f51b5;
+//     margin-top: 0px;
+//     max-height: 45px;
+//     position: fixed;
+//     top: 0px;
+
+//     color: white;
+//     box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(#3f51b5, 0.4);
+// }
+
+// .link-active a {
+//     color: white;
+// }
+
+// .link-cell-active a {
+//     color: white;
+//     background-color: #3f51b5;
+//     height: 55px;
+// }
+
+// .link-cell-active {
+//     background-color: #3f51b5;
+
+//     color: white;
+//     height: 55px;
+//     box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(#3f51b5, 0.4);
+// }
+
+// .link-cell-active p {
+//     color: white;
+// }
+
+// .card-bottom {
+//     bottom: 0;
+//     margin-bottom: 0;
+//     position: fixed;
+//     z-index: 5;
+//     width: 100%;
+//     text-align: center;
+// }
 a {
     text-decoration: none;
 }
@@ -139,17 +320,17 @@ a {
         font-family: Verdana, Geneva, Tahoma, sans-serif;
         text-align: center;
     }
-    footer {
+    .footerbox {
         position: fixed;
         z-index: 1;
         bottom: 0;
         width: 100%;
         background: #ffffff;
         text-align: center;
+        display: flex;
+        justify-content: space-between;
         .public-phone-main-footer {
-            float: left;
-         
-            width: 20%;
+            flex: 1;
             a{
                 p {
                     opacity: 1;

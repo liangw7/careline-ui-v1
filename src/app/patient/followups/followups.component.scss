@@ -188,6 +188,36 @@
       // min-height: 120rem/$base;
       border-radius: 15rem/$base;
       background: $white;
+      .card-header {
+        display: flex;
+        justify-content: space-between;
+      }
+      .fromboxs {
+        width:70%;
+        padding-left:10px; 
+        height: 97px;
+        overflow-y: auto;
+        .frombox {
+          padding: 8px;
+          background: $darkGray;
+          .labelbox {
+            display: flex;
+            justify-content: space-between;
+            font-size: $fontSize14;
+            color: $basefontColor;
+            line-height: 28rem/$base;
+            span:nth-child(2) {
+              color: $darkfontColor;
+              font-weight: 600;
+            }
+          }
+          .commentbox {
+            font-size: $fontSize14;
+            color: $darkfontColor;
+            line-height: 28rem/$base;
+          }
+        }
+      }
     }
   }
   .followup-pop {

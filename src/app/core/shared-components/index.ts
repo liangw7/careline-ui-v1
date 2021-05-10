@@ -1,0 +1,1 @@
+export { AppSpinnerComponent } from './spinner/spinner.component';

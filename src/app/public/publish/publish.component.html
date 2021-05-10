@@ -1,113 +1,74 @@
-
-  
-
-  <div *ngIf='bigScreen==1'>
-    <div style='padding-bottom:100px;padding-left:350px;padding-right:350px;padding-top:100px;'>
-      <div *ngFor='let form of forms' class='card' 
-      style='padding:0px;margin:0px;height:750px; overflow-y: auto; '>
-      <div >
-        <div class='card-header' style=" padding-left:200px;">
-  
-          <div  style='padding-top:20px;'>
-            <div class='row'>
-            <div style='margin-top:25px; padding-bottom:30px;'>
-              <span style="font-size:x-large; font-weight:600;" [ngClass]="{
-                      'card-rose-color':color=='purple',
-                      'card-success-color':color=='green',
-                      'card-primary-color':color!='purple'&&color!='green'}">
-                <span style='font-weight: 700;' *ngIf="language=='Chinese'&&form&&form.label">{{form.label.ch}}</span>
-                <span style='font-weight: 700;' *ngIf="language=='English'&&form&&form.label">{{form.label.en}}</span>
-              </span>
-            
-          </div>
-            </div>
-          <div class='row'>
-            <div style=' width:10%; padding-top:30px; ' *ngIf="profile">
-  
-              <a (click)=" submitProvider();submit();" href="javascript:void(0);">
-                <img src="/assets/img/join.png" class='register-button' />
-                <p style='font-weight: 700;' *ngIf="language=='Chinese'">医师加盟</p>
-                <p style='font-weight: 700;' *ngIf="language=='English'">Physician Registry</p>
-              </a>
-            </div>
-            <div style=' width:10%;  ' *ngIf="profile">
-              <a href="javascript:void(0);" (click)='submitPatient();submit;'>
-  
-                <img src="/assets/img/register.png" class='register-button' />
-                <p style='font-weight: 700;' *ngIf="language=='Chinese'">去咨询</p>
-                <p style='font-weight: 700;' *ngIf="language=='English'">online consult</p>
-  
-              </a>
-            </div>
-            <div style=' width:10%;' *ngIf='forms.indexOf(form)==0'>
-  
-              <a [routerLink]="['../../publish-list']">
-                <img src="/assets/img/reading.jpg" class='register-button' />
-                <p style='font-weight: 700;' *ngIf="language=='Chinese'">更多阅读</p>
-                <p style='font-weight: 700;' *ngIf="language=='English'">More to read</p>
-              </a>
-  
-            </div>
-            <div style=' width:10%;' *ngIf='forms.indexOf(form)==0'>
-              <a (click)='follow()'>
-                <img src="/assets/img/wechat-logo.png" class='register-button' />
-                <p style='font-weight: 700;' *ngIf="language=='Chinese'">关注</p>
-                <p style='font-weight: 700;' *ngIf="language=='English'">follow</p>
-              </a>
-            </div>
-            <div class='pull-right' *ngIf='createdBy' style='font-size:small; padding-right:20px;'>
-              <img [src]='getUrl(createdBy.photo)' style='width:40px; height:40px;border-radius:20px;'>
-              <span>&nbsp;&nbsp;作者:&nbsp;&nbsp;</span>
-              <span>{{createdBy.name}}, &nbsp;</span>
-              <span>{{createdBy.title}}&nbsp;&nbsp;&nbsp;&nbsp;</span>
-              <span>{{createdAt|date: 'MM/dd/yyyy'}}</span>
-            </div>
-  
-          </div>
-          </div>
-  
-  
-        </div>
-  
-        <div   *ngIf='education' style='padding-left:100px;padding-right:100px;'>
-         
-          <app-form [forms]='forms' [color]='color' [language]='language' 
-          [showInstruction]=true [emBedSet]=false
-            [popOut]='popOut' (messageEvent)="receiveMessage($event)"></app-form>
-      
+<div class="pc-wapper" *ngIf='bigScreen==1'>
+  <div *ngFor='let form of forms' class='card'>
+    <div class='card-header'>
+      <div class='article-title'>
+        <span *ngIf="language=='Chinese'&&form&&form.label">{{form.label.ch}}</span>
+        <span *ngIf="language=='English'&&form&&form.label">{{form.label.en}}</span>
       </div>
-  
-        <div [ngStyle]="{'height':scrollSize+'px'}" style='overflow: auto;width:95%; padding-left:100px;' 
-        *ngIf='registry'>
-          <app-form [forms]='[registryForm]' [language]='language' [showInstruction]=true></app-form>
+      <div class='article-info'>
+        <div class='createdInfo' *ngIf='createdBy'>
+          <img [src]='getUrl(createdBy.photo)' 
+          style="width: 40px;height: 40px; border-radius: 20px;">
+          <span>&nbsp;&nbsp;作者:&nbsp;&nbsp;</span>
+          <span>{{createdBy.name}}, &nbsp;</span>
+          <span>{{createdBy.title}}&nbsp;&nbsp;&nbsp;&nbsp;</span>
+          <span>{{createdAt|date: 'MM/dd/yyyy'}}</span>
         </div>
-        <div style='text-align:right;padding-right:50px;'>浏览次数:{{form.counter}}</div>
+        <div class="links">
+          <div *ngIf="profile">
+            <a (click)=" submitProvider();submit();" href="javascript:void(0);">
+              <img src="/assets/img/join.png" class='register-button' />
+              <p style='font-weight: 700;' *ngIf="language=='Chinese'">医师加盟</p>
+              <p style='font-weight: 700;' *ngIf="language=='English'">Physician Registry</p>
+            </a>
+          </div>
+          <div *ngIf="profile">
+            <a href="javascript:void(0);" (click)='submitPatient();submit;'>
+              <img src="/assets/img/register.png" class='register-button' />
+              <p style='font-weight: 700;' *ngIf="language=='Chinese'">去咨询</p>
+              <p style='font-weight: 700;' *ngIf="language=='English'">online consult</p>
+            </a>
+          </div>
+          <div *ngIf='forms.indexOf(form)==0'>
+            <a [routerLink]="['/public-platform/homepage/publish-list/']">
+              <img src="/assets/img/reading.jpg" class='register-button' />
+              <p style='font-weight: 700;' *ngIf="language=='Chinese'">更多阅读</p>
+              <p style='font-weight: 700;' *ngIf="language=='English'">More to read</p>
+            </a>
+
+          </div>
+          <div *ngIf='forms.indexOf(form)==0'>
+            <a (click)='follow()'>
+              <img src="/assets/img/wechat-logo.png" class='register-button' />
+              <p style='font-weight: 700;' *ngIf="language=='Chinese'">关注</p>
+              <p style='font-weight: 700;' *ngIf="language=='English'">follow</p>
+            </a>
+          </div>
+        </div>
       </div>
     </div>
+    <div *ngIf='education' style='padding: 0 20px;'>
+      <app-form [forms]='forms' [color]='color' [language]='language' [showInstruction]=true [emBedSet]=false
+        [popOut]='popOut' (messageEvent)="receiveMessage($event)"></app-form>
     </div>
+    <!-- [ngStyle]="{'height':scrollSize+'px'}" -->
+    <div *ngIf='registry' style='padding: 0 20px;'>
+      <app-form [forms]='[registryForm]' [language]='language' [showInstruction]=true></app-form>
+    </div>
+    <div style='text-align:right;padding-right:50px;'>浏览次数:{{form.counter}}</div>
   </div>
-  <div *ngIf='bigScreen==0'>
-    
-    <div class='card cell-container' >
-      <div *ngFor='let form of forms' >
-      <div >
-        <div class='card-header' style=" padding:20px;">
-  
-          <div class='row' *ngIf='!profile'>
-            <div style=' width:100%; margin-top:20px;padding-left:25px;padding-right:25px;'>
-  
-              <span style="font-size:x-large;" [ngClass]="{
-                      'card-rose-color':color=='purple',
-                      'card-success-color':color=='green',
-                      'card-primary-color':color!='purple'&&color!='green'}">
-                <span style='font-weight: 600;' *ngIf="language=='Chinese'">{{form.label.ch}}</span>
-                <span style='font-weight: 600;' *ngIf="language=='English'">{{form.label.en}}</span>
-              </span>
-            </div>
-  
+</div>
+<div *ngIf='bigScreen==0'>
+  <div class='card wap-wapper'>
+    <div class="backbox"><span class="material-icons">chevron_left</span></div>
+    <div *ngFor='let form of forms'>
+      <div>
+        <div class='card-header'>
+          <div class='article-title' *ngIf='!profile'>
+            <span *ngIf="language=='Chinese'">{{form.label.ch}}</span>
+            <span *ngIf="language=='English'">{{form.label.en}}</span>
           </div>
-          <div class='pull-right' *ngIf='createdBy' 
-          style='font-size:small; padding-right:20px;'>
+          <div class='createdInfo' *ngIf='createdBy'>
             <img [src]='getUrl(createdBy.photo)' style='width:40px; height:40px;border-radius:20px;'>
             <span>&nbsp;&nbsp;作者:&nbsp;&nbsp;</span>
             <span>{{createdBy.name}}, &nbsp;</span>
@@ -115,13 +76,11 @@
             <span>{{createdAt|date: 'MM/dd/yyyy'}}</span>
           </div>
         </div>
-  
         <div *ngIf="profile&&forms">
           <img [src]="getUrl(forms[0].image)" class='profile-cell' (click)='popOut=true;'>
-  
           <div class='title-cell'>
             <div style=' width:90%; margin-top:0px;padding-left:25px;'>
-  
+
               <span style="font-size:xx-large;font-weight: 900;" [ngClass]="{
               'card-rose-color':color=='purple',
               'card-success-color':color=='green',
@@ -136,10 +95,11 @@
         'card-rose-color':color=='purple',
         'card-success-color':color=='green',
         'card-primary-color':color!='purple'&&color!='green'}">
-  
+
               <div class='pull-right' style='padding-right:60px;margin-top:0px;'>
-  
-                <a href="javascript:void(0);" class='btn btn-round' (click)='popOut=true;' style=' color:white' [ngClass]="{
+
+                <a href="javascript:void(0);" class='btn btn-round' (click)='popOut=true;' style=' color:white'
+                  [ngClass]="{
               'card-rose':color=='purple',
               'card-success':color=='green',
               'card-primary':color!='purple'&&color!='green'}">
@@ -154,16 +114,18 @@
                 </a>
               </div>
               <div class='pull-left' style='width:25%; margin-top:20px;padding-left:25px;'>
-  
+
                 <a (click)=" this.role='provider';submit();" href="javascript:void(0);">
                   <img src="/assets/img/join.png" class='register-button' />
-                  <p style='font-size:small;font-weight: 600;margin:0px;padding:0px' *ngIf="language=='Chinese'">医师加盟</p>
-                  <p style='font-size:small;font-weight: 600;margin:0px;padding:0px' *ngIf="language=='English'">Physician
+                  <p style='font-size:small;font-weight: 600;margin:0px;padding:0px' *ngIf="language=='Chinese'">医师加盟
+                  </p>
+                  <p style='font-size:small;font-weight: 600;margin:0px;padding:0px' *ngIf="language=='English'">
+                    Physician
                     Registry</p>
                 </a>
               </div>
               <div class='pull-left' style=' width:25%; margin-top:20px;padding-left:25px;'>
-                <a [routerLink]="['../../publish-list']">
+                <a [routerLink]="['/public-platform/homepage/publish-list/']">
                   <img src="/assets/img/reading.jpg" class='register-button' />
                   <p style='font-weight: 700;' *ngIf="language=='Chinese'">更多阅读</p>
                   <p style='font-weight: 700;' *ngIf="language=='English'">More to read</p>
@@ -172,86 +134,74 @@
             </div>
           </div>
         </div>
-        <div   *ngIf='education' style='padding:15px;'>
-         
-          <app-form [forms]='forms' [color]='color' [language]='language' 
-          [showInstruction]=true [emBedSet]=false
+        <div *ngIf='education' style='padding: 0 20px;'>
+          <app-form [forms]='forms' [color]='color' [language]='language' [showInstruction]=true [emBedSet]=false
             [popOut]='popOut' (messageEvent)="receiveMessage($event)"></app-form>
-      
-      </div>
-  
-        <div  style='overflow: auto;padding:10px;' 
-        *ngIf='registry'>
+        </div>
+        <div *ngIf='registry' style='padding: 0 20px;'>
           <app-form [forms]='[registryForm]' [language]='language' [showInstruction]=true></app-form>
         </div>
         <div style='text-align:right;padding-right:50px;'>浏览次数:{{form.counter}}</div>
       </div>
     </div>
-    </div>
-  
-    <div class='row' *ngIf="bigScreen==0" style='padding-left:10px; 
-    bottom:0px;
-    margin-bottom:0px;
-    position:fixed;
-    z-index:5;
-    width:100%;
-    text-align: center;'>
-      <div style=' width:50%;' *ngIf="profile&&forms[0].label.en!='CDSS'">
-  
-        <a class='btn btn-block' style='color:white;margin-left:10px;' (click)='followup=true;submit()' [ngClass]="{
+  </div>
+
+  <div class="fixedbtn">
+    <div style=' width:50%;' *ngIf="profile&&forms[0].label.en!='CDSS'">
+      <a class='btn btn-block' style='color:white;' (click)='followup=true;submit()' [ngClass]="{
           'card-primary':color!='green'&&color!='purple',
           'card-success':color=='green',
           'card-rose':color=='purple'}">
-          <img src="/assets/img/reading.jpg" class='register-button pull-left' />
-          <span style='font-weight: 700;' *ngIf="language=='Chinese'">智能管理</span>
-          <span style='font-weight: 700;' *ngIf="language=='English'">Smart Self Manangement Tool</span>
-        </a>
-      </div>
-  
-      <div style='width:50%' *ngIf="profile&&forms[0].label.en!='CDSS'">
-        <a class='btn btn-block' style='color:white' (click)='consult=true;submit()' href="javascript:void(0);" [ngClass]="{
+        <img src="/assets/img/reading.jpg" class='register-button pull-left' />
+        <span style='font-weight: 700;' *ngIf="language=='Chinese'">智能管理</span>
+        <span style='font-weight: 700;' *ngIf="language=='English'">Smart Self Manangement Tool</span>
+      </a>
+    </div>
+
+    <div style='width:50%' *ngIf="profile&&forms[0].label.en!='CDSS'">
+      <a class='btn btn-block' style='color:white' (click)='consult=true;submit()' href="javascript:void(0);" [ngClass]="{
           'card-primary':color!='green'&&color!='purple',
           'card-success':color=='green',
           'card-rose':color=='purple'}">
-          <span>去咨询</span>
-        </a>
-      </div>
-  
-      <div style=' width:50%;' *ngIf="!profile&&forms[0].label.en!='CDSS'">
-  
-        <a class='btn btn-block' style='color:white;margin-left:10px;'
-          [routerLink]="['../../publish-list']" [ngClass]="{
-        'card-primary':color!='green'&&color!='purple',
-        'card-success':color=='green',
-        'card-rose':color=='purple'}">
-          <img src="/assets/img/reading.jpg" class='register-button pull-left' />
-          <span style='font-weight: 700;' *ngIf="language=='Chinese'">更多阅读</span>
-          <span style='font-weight: 700;' *ngIf="language=='English'">More to read</span>
-        </a>
-      </div>
-      <div style=' width:50%;' *ngIf="!profile&&forms[0].label.en!='CDSS'">
-        <a (click)='follow()' class='btn btn-block' [ngClass]="{
-        'card-primary':color!='green'&&color!='purple',
-        'card-success':color=='green',
-        'card-rose':color=='purple'}">
-          <img src="/assets/img/wechat-logo.png" class='register-button pull-left' />
-          <span style='font-weight: 700;' *ngIf="language=='Chinese'">关注</span>
-          <span style='font-weight: 700;' *ngIf="language=='English'">follow</span>
-        </a>
-      </div>
-  
-      <div style=' width:100%;' *ngIf="forms[0].label.en=='CDSS'">
-        <a (click)='follow()' class='btn btn-block' style='margin-left:10px;' [ngClass]="{
-        'card-primary':color!='green'&&color!='purple',
-        'card-success':color=='green',
-        'card-rose':color=='purple'}">
-          <img src="/assets/img/wechat-logo.png" class='register-button pull-left' />
-          <span style='font-weight: 700;' *ngIf="language=='Chinese'">关注领取免费门票</span>
-          <span style='font-weight: 700;' *ngIf="language=='English'">follow</span>
-        </a>
-      </div>
+        <span>去咨询</span>
+      </a>
     </div>
- </div>
+
+    <div style=' width:50%;' *ngIf="!profile&&forms[0].label.en!='CDSS'">
+
+      <a class='btn btn-block' style='color:white;' [routerLink]="['/public-platform/homepage/publish-list/']"
+        [ngClass]="{
+        'card-primary':color!='green'&&color!='purple',
+        'card-success':color=='green',
+        'card-rose':color=='purple'}">
+        <img src="/assets/img/reading.jpg" class='register-button pull-left' />
+        <span style='font-weight: 700;' *ngIf="language=='Chinese'">更多阅读</span>
+        <span style='font-weight: 700;' *ngIf="language=='English'">More to read</span>
+      </a>
+    </div>
+    <div style=' width:50%;' *ngIf="!profile&&forms[0].label.en!='CDSS'">
+      <a (click)='follow()' class='btn btn-block' [ngClass]="{
+        'card-primary':color!='green'&&color!='purple',
+        'card-success':color=='green',
+        'card-rose':color=='purple'}">
+        <img src="/assets/img/wechat-logo.png" class='register-button pull-left' />
+        <span style='font-weight: 700;' *ngIf="language=='Chinese'">关注</span>
+        <span style='font-weight: 700;' *ngIf="language=='English'">follow</span>
+      </a>
+    </div>
+
+    <div style=' width:100%;' *ngIf="forms[0].label.en=='CDSS'">
+      <a (click)='follow()' class='btn btn-block' [ngClass]="{
+        'card-primary':color!='green'&&color!='purple',
+        'card-success':color=='green',
+        'card-rose':color=='purple'}">
+        <img src="/assets/img/wechat-logo.png" class='register-button pull-left' />
+        <span style='font-weight: 700;' *ngIf="language=='Chinese'">关注领取免费门票</span>
+        <span style='font-weight: 700;' *ngIf="language=='English'">follow</span>
+      </a>
+    </div>
+  </div>
+</div>
 <div class="wrapper">
   <div class="overlay" *ngIf="loading">
     <div class="spinner-wrapper">

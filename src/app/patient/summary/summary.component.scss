@@ -124,6 +124,7 @@
 .chat-report {
   margin: 0;
   min-width: 600px;
+  background: $white;
   .card-header {
       font-size: $fontSize16;
       line-height: 32px;
@@ -161,6 +162,7 @@
 .wap-chat-report {
   margin: 0;
   max-width: 100%;
+  background: $white;
   .card-header {
       font-size: $fontSize16;
       line-height: 32rem/$base;
@@ -236,16 +238,7 @@
     overflow-y: auto;
     box-sizing: border-box;
     .backbox {
-      display: flex;
       background: $white;
-      span:nth-child(2) {
-        line-height: 32rem/$base;
-        text-align: center;
-        vertical-align: top;
-        margin-left: -16rem/$base;
-        flex: 1;
-        
-      }
     }
     .chartlist {
       width: 92%;

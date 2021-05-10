@@ -177,8 +177,10 @@
   .row-cell {
     margin-top: -30rem/$base;
     padding-top: 30rem/$base;
+    min-height: calc(100vh - 215px);
     background: $grey-background;
     border-radius: 30rem/$base 30rem/$base;
+    box-sizing: border-box;
     position: relative;
     z-index: 2;
     .rowitem {

@@ -1,0 +1,74 @@
+<div class="wrapper">
+  <div class="overlay" *ngIf="loading">
+    <div class="spinner-wrapper">
+      <spinner></spinner>
+    </div>
+  </div>
+
+  <div class="category">
+    <mat-tab-group>
+      <mat-tab label='data'>
+        <div class='row'>
+          <div class='col-md-6 card'>
+            <div class='row'>
+              <div class='col-md-12'> <select class="form-control" [(ngModel)]="option">
+                  <option *ngFor="let type of typeOptionList" value={{type}}>
+                    {{type}}
+                  </option>
+                </select></div>
+              <div class='col-md-6'><input class="form-control" [(ngModel)]="filter" placeholder='search'></div>
+              <div class='col-md-6'>
+                <button class="btn btn-primary btn-block " (click)='search()'>
+                  search
+                </button>
+              </div>
+
+
+            </div>
+            <div class="table table-responsive">
+
+              <table class='table' style='background-color: white'>
+                <tr [ngClass]="{'selected':find(category, selectedItems)}" (click)="select(category)"
+                  *ngFor="let category of categories|filter: filter">
+                  <td *ngIf='!category.label'>{{category.name}}</td>
+                  <td *ngIf='category.label'>{{category.label.ch}}</td>
+                  <td>{{category.internalName}}</td>
+                  <td>{{category.field}}</td>
+                </tr>
+              </table>
+
+            </div>
+          </div>
+          <div class='col-md-6 card'>
+            <button class="btn btn-primary btn-block " (click)='loadData()'>
+              Load
+            </button>
+            <div class='card-header card-primary'>selected</div>
+
+            <div class="table table-responsive">
+
+              <table class='table table-striped' style='background-color: white'>
+                <tr [ngClass]="{'selected':category.selected}" (click)="deselect(category)"
+                  *ngFor="let category of selectedItems">
+                  <td *ngIf='!category.label'>{{category.name}}</td>
+                  <td *ngIf='category.label'>{{category.label.ch}}</td>
+                  <td>{{category.internalName}}</td>
+                  <td>{{category.field}}</td>
+                </tr>
+              </table>
+
+            </div>
+          </div>
+        </div>
+      </mat-tab>
+      <mat-tab label='patient'>
+        <button class='btn btn-round' (click)='loadPateint()'>load patient</button>
+        <button class='btn btn-round' (click)='getVisit()'>load visit</button>
+        <button class='btn btn-round' (click)='getVisitData()'>load visit data</button>
+
+        <button class='btn btn-round' (click)='updatePateint()'>update patient</button>
+      </mat-tab>
+
+    </mat-tab-group>
+
+  </div>

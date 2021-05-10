@@ -1,0 +1,32 @@
+<div class="overlay" *ngIf="loading">
+  <div class="spinner-wrapper">
+    <spinner></spinner>
+  </div>
+</div>
+
+<div class="card">
+  <mat-tab-group (selectedTabChange)="tabSelectionChanged($event)">
+    <mat-tab *ngFor='let type of typeList' label='{{getTypeName(type)}}'>
+
+      <button class="btn btn-primary pull-right " (click)="addUser(type)">
+        <span *ngIf="language=='English'">Add</span>
+        <span *ngIf="language=='Chinese'">添加</span>
+      </button>
+
+      <div class='table table-responsive'>
+        <table class="table table-striped table-hover" style='background-color: white'>
+          <tbody *ngFor="let registryUser of registryUsers">
+            <tr (click)="getUser(type,registryUser)" *ngIf="registryUser.status!='inactive'">
+              <td> {{registryUser.email}}</td>
+              <td> {{registryUser.name}}</td>
+              <td><i class="fa fa-edit" aria-hidden="true" style="font-size:24px; color: blue">
+                </i> </td>
+              <td (click)="delete(registryUser)"><i class="fa fa-remove" aria-hidden="true"
+                  style="font-size:24px; color: red"></i></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </mat-tab>
+  </mat-tab-group>
+</div>

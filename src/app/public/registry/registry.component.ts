@@ -47,6 +47,8 @@ export class RegistryComponent implements OnInit, AfterViewInit, OnDestroy {
   adminRole:any;
  registry:any;
   registryUser:any;// = new User();
+  serviceList:any;
+  profiles:any;
   constructor(
     private allService: AllServices,
     private dialog: MatDialog,
@@ -92,10 +94,13 @@ export class RegistryComponent implements OnInit, AfterViewInit, OnDestroy {
     else {
       if (this.adminRole){
         this.getForm(this.adminRole);
+        this.getProfiles();
+        this.getServiceList();
       }
       else{
         this.getUserTypes();
       }
+      
       
     }
  
@@ -105,12 +110,25 @@ onOptionChange($event:any){
   this.adminRole=$event.value
     this.getForm(this.adminRole);
   }
+  onServiceChange($event:any){
+    var service=$event.value;
+    this.registryUser.profiles=[];
+    this.registryUser.profiles=service.profiles;
+    this.registryUser.serviceList=[{_id:service._id, name:service.name}]
 
+
+  }
+  onProfileChange($event:any){
+    console.log ('value selected',$event.value);
+    this.registryUser.profiles=[];
+    this.registryUser.profiles=$event.value;
+  }
 getUserTypes(){
   this.typeList=[];
   this.allService.categoryService.getCategoriesByFilter({ 'formType': 'user' }).then((data: any) => {
     this.temp = data;
     this.typeList = this.temp;
+    this.getServiceList();
     for (let item of this.typeList){
       if (item.label.en=='service'){
         var index=this.typeList.indexOf(item);
@@ -121,6 +139,32 @@ getUserTypes(){
 
   })
 }
+
+getProfiles(){
+  if (this.adminRole=='service'){
+    this.profiles=[];
+    this.allService.categoryService.getCategoriesByFilter({ 'field': 'profile', 'status':'active' }).then((data: any) => {
+      this.temp = data;
+      this.profiles = this.temp;
+  
+    })
+  }
+
+}
+getServiceList(){
+  if (this.adminRole=='provider'){
+    this.serviceList=[];
+    this.allService.usersService.getWithDetailByFilter({'role':'service'}).then((data: any) => {
+
+      this.temp = data;
+      this.serviceList = this.temp;
+  
+    })
+  }
+
+}
+
+
   createUser() {
     debugger;
     let obs = this.registryForms[0].obSets[0].obs;

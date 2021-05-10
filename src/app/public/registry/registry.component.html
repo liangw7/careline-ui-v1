@@ -32,8 +32,30 @@
       </div>
        </div>
     <div class='inner'>
-      <app-form [forms]='forms' [emBedSet]=true [registry]=true>
-      </app-form>
-    </div>
+     
+        <app-form [forms]='forms' [emBedSet]=true [registry]=true></app-form>
+      <h4>请选择</h4>
+     <mat-form-field  *ngIf="adminRole=='service'">
+        <mat-select (selectionChange)="onProfileChange($event)"
+        placeholder='请选择您的profile：' 
+        multiple>
+          <mat-option 
+          *ngFor="let profile of profiles" 
+          [value]="{_id:profile._id, label:profile.label, desc:profile.desc}">
+            {{profile.label.ch}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field  *ngIf="adminRole=='provider'">
+        <mat-select (selectionChange)="onServiceChange($event)"
+        placeholder='请选择您的service：' >
+          <mat-option 
+          *ngFor="let service of serviceList" 
+          [value]="service">
+            {{service.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+</div>
   </div>
   </div>

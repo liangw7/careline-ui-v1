@@ -114,6 +114,9 @@ export class FormComponent implements OnInit, OnChanges {
     if (!this.forms)
       this.forms = data.forms;
     console.log('emBed===============', this.emBed)
+    if (!this.language){
+      this.language='Chinese'
+    }
 
   }
 

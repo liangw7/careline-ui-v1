@@ -193,10 +193,10 @@ export class MedicationComponent implements OnInit, OnChanges {
     }
     const dialogConfig = new MatDialogConfig();
     if (this.bigScreen == 0) {
-      dialogConfig.maxWidth = '100vw',
-        dialogConfig.maxHeight = '100vh',
-        dialogConfig.height = '100%',
-        dialogConfig.width = '100%'
+      dialogConfig.maxWidth = '92vw',
+        dialogConfig.maxHeight = '95vh',
+        dialogConfig.height = '95%',
+        dialogConfig.width = '92%'
     }
     if (this.bigScreen == 1) {
       dialogConfig.maxWidth = '80vw',

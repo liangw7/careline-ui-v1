@@ -9,7 +9,6 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ApiUrl } from '../../core/models/api-url';
 import { SESSION_STORAGE, StorageService } from 'ngx-webstorage-service';
 import { FileUploader } from 'ng2-file-upload';
-import wx from 'weixin-jsapi';
 import { AllServices } from '../../core/common-services';
 import * as Peer from 'peerjs';
 import { NgxQrcodeElementTypes, NgxQrcodeErrorCorrectionLevels } from 'ngx-qrcode2';
@@ -31,14 +30,12 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewInit {
   interval: any;
   // 是否关闭咨询
   isClosed: any;
-  // 是否支付成功
-  isPaySuccess: any;
   //文档弹框里tab
-  summaryShow:boolean = true;
-  labShow:boolean = false;
-  imageShow:boolean = false;
-  reportShow:boolean = false;
-  articleShow:boolean = false;
+  summaryShow: boolean = true;
+  labShow: boolean = false;
+  imageShow: boolean = false;
+  reportShow: boolean = false;
+  articleShow: boolean = false;
   isPc: any;
   isWeixin: any;
   optionSelected: boolean = false;
@@ -121,21 +118,9 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewInit {
     public router: Router,
     public route: ActivatedRoute,
     private dialog: MatDialog,
-    private titleService: Title,
-    @Inject(MAT_DIALOG_DATA) public data: any) {
+    private titleService: Title) {
+    // debugger;
     this.user = this.storage.get('user');
-
-    if (!this.selected) {
-      this.selected = data.selected;
-
-    }
-    if (!this.user) {
-      this.user = data.user;
-    }
-    if (data) {
-      this.visit = data.visit;
-      this.profile = data.profile;
-    }
 
     // 是否是pc浏览器访问
     this.isPc = this.storage.get('isPc');
@@ -166,8 +151,9 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewInit {
 
 
   ngOnInit() {
-    this.scrollToBottom();
-    console.log ('selected=========', this.selected)
+    // debugger;
+    // this.scrollToBottom();
+    console.log('selected=========', this.selected)
     if (this.user.role == 'provider') {
       this.isClosed = true;
     } else {
@@ -178,36 +164,36 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewInit {
   /**
    * 文档弹框tab切换
    */
-  documentTabFn(val:any) {
-    console.log('val',val)
-    if(val == 'summary') {
+  documentTabFn(val: any) {
+    console.log('val', val)
+    if (val == 'summary') {
       this.summaryShow = true;
       this.labShow = false;
       this.imageShow = false;
       this.reportShow = false;
       this.articleShow = false;
-    }else if(val == 'image') {
+    } else if (val == 'image') {
       this.summaryShow = false;
       this.labShow = false;
       this.imageShow = true;
       this.reportShow = false;
       this.articleShow = false;
       this.getImageSets();
-    }else if(val == 'lab') {
+    } else if (val == 'lab') {
       this.summaryShow = false;
       this.labShow = true;
       this.imageShow = false;
       this.reportShow = false;
       this.articleShow = false;
       this.getLabSets();
-    }else if(val == 'report') {
+    } else if (val == 'report') {
       this.summaryShow = false;
       this.labShow = false;
       this.imageShow = false;
       this.reportShow = true;
       this.articleShow = false;
       this.getVisits();
-    }else if(val == 'article') {
+    } else if (val == 'article') {
       this.summaryShow = false;
       this.labShow = false;
       this.imageShow = false;
@@ -227,7 +213,6 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewInit {
         status: 'reserved'
       }
       this.allService.visitsService.updateVisit(filter).then((data) => {
-        console.log('visit date updated', this.data);
         this.chatRoom = false;
       })
     }
@@ -235,7 +220,6 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewInit {
 
 
   ngOnDestroy() {
-   
     clearInterval(this.interval);
   }
 
@@ -606,7 +590,7 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewInit {
       console.log('photo', response)
 
       this.allService.alertDialogService.success('文件上传成功');
-      this.scrollToBottom();
+      // this.scrollToBottom();
     }
   }
 
@@ -1449,5 +1433,5 @@ export class ChatComponent implements OnInit, OnChanges, AfterViewInit {
   refund() {
 
   }
-  
+
 }

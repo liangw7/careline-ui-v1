@@ -1,0 +1,53 @@
+<div class="overlay" *ngIf="loading">
+  <div class="spinner-wrapper">
+    <spinner></spinner>
+  </div>
+</div>
+<div class='card' style="margin-top:-5px; background:url('/assets/img/ob-background-2.jpg');">
+  <div class='card-header'>
+    <button *ngIf='bigScreen==1' class="btn btn-round pull-right" (click)='save()' style='float:left' [ngClass]="{'btn-rose':color=='purple',
+              'btn-success':color=='green',
+              'btn-primary':color!='green'
+              &&color!='purple'}">
+      <span *ngIf="language=='English'">Save</span>
+      <span *ngIf="language=='Chinese'">提交</span>
+    </button>
+  </div>
+  <div class='card-body' style='margin:0px;padding:0px; '>
+
+    <div *ngIf='showProfile'>
+      <!-- <app-form #template style=' box-shadow: 0 4px 20px 0px lightgrey,
+  0 7px 10px -5px rgba(lightgrey, 0.4);' [forms]='forms' [registryUser]='user' [language]='language' [emBed]=false
+        style='padding:0;margin:0'></app-form> -->
+      <button *ngIf='bigScreen==0' class="btn btn-round btn-block" (click)='save()' [ngClass]="{'btn-rose':color=='purple',
+              'btn-success':color=='green',
+              'btn-primary':color!='green'
+              &&color!='purple'}">
+        <span *ngIf="language=='English'">Save</span>
+        <span *ngIf="language=='Chinese'">提交</span>
+      </button>
+    </div>
+
+    <div style=padding:0px;margin-top:-20px;>
+      <mat-checkbox [(ngModel)]="follow" *ngIf='!user.follow' style='float:left'>
+        <span style="color:red;font-weight:800">
+          ！！！点击关注基数健康 可收取病人预约 邮件 以及病人警报临床数据</span>
+      </mat-checkbox>
+
+      <div class='nav' *ngIf='showCard'>
+        <ul class='nav'>
+          <li class='nav-item'>
+            <a class='btn' *ngFor='let profile of user.profiles' (click)="share(profile)" [ngClass]="{'btn-rose':color=='purple',
+              'btn-success':color=='green',
+              'btn-primary':color!='green'&&color!='purple'}"> {{profile.label.ch}}
+            </a>
+          </li>
+        </ul>
+        <p>长按分享个人名片:</p>
+        <p>
+          <ngx-qrcode qrc-element-type="url" >
+          </ngx-qrcode>
+        </p>
+      </div>
+    </div>
+  </div>

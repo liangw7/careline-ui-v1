@@ -242,6 +242,11 @@ export class UsersService {
     return this.httpservice.postAuthParam(this.entity.usersupdate, user);
   }
 
+  updateUser1(user: any) {
+    console.log('--usersService--updateUser--start--');
+    return this.httpservice.postParam(this.entity.usersupdate, user);
+  }
+
   deleteUser(id: any) {
     console.log('--usersService--deleteUser--start--');
     return this.httpservice.deleteAuth(this.entity.users + id);

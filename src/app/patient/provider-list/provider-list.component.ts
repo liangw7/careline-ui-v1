@@ -112,6 +112,7 @@ export class ProviderListComponent implements OnInit, OnChanges {
     this.route.queryParams.subscribe(queryParams => {
       this.myOrder = queryParams.myOrder;
       this.myProviders = queryParams.myProviders;
+      console.log('====================', queryParams)
       this.searchProviders = queryParams.searchProviders;
       this.profileProvider = queryParams.profileProvider;
       if (this.searchProviders) {
@@ -122,6 +123,7 @@ export class ProviderListComponent implements OnInit, OnChanges {
         this.getProfileProviders();
       }
     })
+    this.myProviders = true;
   }
 
 
@@ -231,7 +233,7 @@ export class ProviderListComponent implements OnInit, OnChanges {
                       break;
                     } else {
                       flag = true;
-                      break;
+                      // break;
                     }
                   }
                 }
@@ -279,17 +281,62 @@ export class ProviderListComponent implements OnInit, OnChanges {
     }
   }
 
-
-  receiveMessage($event: any) {
+  /**
+   * 接收咨询Chat关闭是返回内容
+   * @param $event 
+   */
+  receiveMessageChat($event: any) {
     if ($event == false) {
       this.chatRoom = false;
     }
   }
 
-
-  receiveVisit($event: any) {
+  /**
+   * 接收咨询Chat关闭是返回内容
+   * @param $event 
+   */
+  receiveVisitChat($event: any) {
     if ($event == 'new visit') {
       this.getActiveConsult();
+      // this.selectProvider(this.selectedProvider);
+    }
+  }
+
+  /**
+   * 接收付费WxPay关闭是返回内容
+   * @param $event 
+   */
+  receiveMessageWxPay($event: any) {
+    if ($event == false) {
+      this.chatRoom = false;
+    }
+  }
+
+  /**
+   * 接收付费WxPay关闭是返回内容
+   * @param $event 
+   */
+  receiveVisitWxPay($event: any) {
+    if ($event) {
+
+      if ($event == 'selectProvider') {
+        // this.getActiveConsult();
+        this.selectProvider(this.selectedProvider);
+      } else {
+        var filter = {
+          type: 'consult',
+          _id: $event,
+          // status: 'active'
+        }
+        this.allServices.visitsService.getOneVisit(filter).then((data) => {
+          this.activeConsultVisit = data;
+          console.log(this.selectedProfile);
+          console.log(this.selectedProvider);
+          this.chatRoom = true;
+          this.openChat = true;
+          this.openWxPay = false;
+        })
+      }
     }
   }
 
@@ -508,42 +555,29 @@ export class ProviderListComponent implements OnInit, OnChanges {
     if (status) {
       this.filter = {
         patientID: this.user._id,
-        type: { '$in': ['consult', 'visit', 'vedio'] },
+        // type: { '$in': ['consult', 'visit', 'vedio'] },
+        type: 'consult',
         status: status
       }
     } else {
       this.filter = {
         patientID: this.user._id,
-        type: { '$in': ['consult', 'visit', 'vedio'] },
+        // type: { '$in': ['consult', 'visit', 'vedio'] },
+        type: 'consult',
         status: { '$in': ['active', 'canceled', 'reserved',] }
       }
     }
     this.allVisits = [];
     this.loading = true;
-    this.allServices.visitsService.getVisitsByFilter(this.filter).then((data) => {
-      this.temp = data;
-      this.allVisits = this.temp;
-      // var providerIDs = [];
-      // for (let item of this.allVisits) {
-      //   if (!item.provider) {
-      //     providerIDs.push(item.providerID);
-      //   }
-      // }
-      // console.log('providerID', providerIDs)
-      // if (providerIDs.length > 0) {
-      //   this.allServices.usersService.getByFilter({ '_id': { '$in': providerIDs } }).then((data) => {
-      //     //  this.temp=[];
-      //     this.temp = data;
-      //     for (let user of this.temp) {
-      //       for (let visitItem of this.allVisits) {
-      //         if (visitItem.providerID == user._id && !visitItem.provider) {
-      //           visitItem.provider = user;
-      //         }
-      //       }
-      //     }
-      //     console.log('my visits==============', this.allVisits)
-      //   })
-      // }
+    this.allServices.visitsService.getVisitsForProviderList(this.filter).then((data: any) => {
+      debugger;
+      if (data.code == 1) {
+        this.allVisits = data.data;
+        console.log('----this.allVisits----');
+        console.log(this.allVisits);
+      } else {
+        alert(data.msg);
+      }
       this.loading = false;
     })
   }
@@ -822,6 +856,7 @@ export class ProviderListComponent implements OnInit, OnChanges {
       var index = this.visits.indexOf(visit);
       this.visits.splice(index, 1);
       this.loading = false;
+      this.selectProvider(this.selectedProvider);
     })
   }
 

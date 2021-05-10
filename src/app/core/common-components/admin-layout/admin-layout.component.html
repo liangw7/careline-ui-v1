@@ -1,0 +1,14 @@
+<div class='main-layout' *ngIf=" bigScreen==1">
+  <div class='row'>
+    <div class="col-sm-2 " data-color="danger" data-background-color="white" data-image="./assets/img/sidebar-4.jpg">
+      <app-sidebar></app-sidebar>
+      <div class="sidebar-background" style="background-image: url(./assets/img/sidebar-4.jpg)"></div>
+    </div>
+    <div class='col-sm-10'>
+      <!-- <router-outlet></router-outlet> -->
+    </div>
+  </div>
+</div>
+<div class='cell-layout' *ngIf=" bigScreen==0">
+  <!-- <router-outlet></router-outlet> -->
+</div>

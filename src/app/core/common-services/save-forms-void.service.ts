@@ -2437,7 +2437,12 @@ updateUser(obSet:any, user:any){
         console.log ('updated user=========', user)
         this.userService.updateUser(user).then((data)=>{
                                         resolve(data);
-                                        console.log ('user updated====', data)
+                                        console.log ('user updated====', data);
+                                        this.user=this.storage.get('user');
+                                        if (this.user._id==user._id){
+                                            this.user=user;
+                                            this.storage.set('user',this.user)
+                                        }
                                         reject(new Error('error'));
                                     })
                                 
@@ -2647,7 +2652,17 @@ saveUserOb(obSet:any, user:any){
             }
               
                 
-                }   
+                }  
+           
+        else if (ob.label.en=='specialty'&&ob.values&&ob.values.length>0){
+                    for (let value of ob.values){
+                        if (value.text){
+                          user.specialty=value.text
+                        }
+                    }
+                  
+                         
+              } 
        else if (ob.label.en=='background image'&&ob.value){
                 if (!user.activity){
                   user.activity={backgroundImage:ob.value};
@@ -2700,16 +2715,7 @@ saveUserOb(obSet:any, user:any){
               }
           }    
        
-            
-          else if (ob.label.en=='specialty'&&ob.value){
-            for (let value of ob.values){
-                if (value.text){
-                  user.specialty=value.text
-                }
-            }
-          
-                 
-      }
+      
        //       }
           }
 

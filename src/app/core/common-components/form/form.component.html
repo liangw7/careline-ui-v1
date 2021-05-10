@@ -689,7 +689,7 @@
                   <div >
                     <div *ngFor="let ob of obSet.obs|orderBy:'index'">
                       <div [ngClass]="{'pc-width':bigScreen==1&& ob.type!='instruction',
-                  'cell-width':bigScreen==0|| bigScreen==1&&ob.type=='instruction'}">
+                                       'cell-width':bigScreen==0|| bigScreen==1&&ob.type=='instruction'}">
                         <div class='card' style='margin:5px; margin-bottom:20px; box-shadow: 0 4px 20px 0px gray,
   0 7px 10px -5px rgba(gray , 0.4);' *ngIf="(showOb(ob, obSet)||!ob.addsIn)&&ob.type=='instruction'&&showInstruction">
                           <div class='card-body'>
@@ -1193,7 +1193,7 @@
     </div>
   </div>
   <div >
-    <div class='card' id='result' style='margin-bottom:100px;padding:10px;margin-left:15px; ' *ngIf='hasResult()'>
+    <div class='card' id='result' *ngIf='hasResult()'>
       <div class='card-header'><span style='font-weight:600;font-size:medium;'>测试结果及建议</span></div>
       <div class='table'>
         <table class='table table-striped' *ngFor="let form of forms">

@@ -178,6 +178,7 @@ export class ApiUrl {
     public transfers: string = this.payment + 'transfers/';
     public refund: string = this.payment + 'refund/';
     public createInvoice: string = this.payment + 'createInvoice/';
+    public updateInvoice: string = this.payment + 'updateInvoice/';
     public unifiedOrderNative: string = this.payment + 'unifiedOrderNative/';
     public unifiedOrder: string = this.payment + 'unifiedOrder/';
     public orderQuery: string = this.payment + 'orderQuery/';
@@ -250,6 +251,7 @@ export class ApiUrl {
     public getfollowupsByDate: string = this.visit + 'getfollowupsByDate/';
     public getMonthlyVisitsByProvider: string = this.visit + 'getMonthlyVisitsByProvider/';
     public visitFilter: string = this.visit + this.FILTER;
+    public getVisitsForProviderList: string = this.visit + 'getVisitsForProviderList/';
     public getVisitListByFilter: string = this.visit + 'getVisitListByFilter/';
     public monthlyVisits: string = this.visit + 'monthlyVisits/';
     public visitRequester: string = this.visit + 'requester/';

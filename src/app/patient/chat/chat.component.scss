@@ -389,10 +389,10 @@ input:focus {
 }
 .nav {
     width: 100%;
-    height: 45px;
+    height: 60px;
     margin: 0px;
     margin-bottom: 0px;
-    padding: 0px;
+    padding: 8px;
     font-weight: 900;
     font-style: inherit;
     font-feature-settings: "blwf";
@@ -400,29 +400,17 @@ input:focus {
     display: flex;
     background-image: $white;
     overflow: hidden;
-    li {
-        flex: 1;
-        text-align: center;
-        .nav-link {
-            padding: 9px 0;
-            font-size: $fontSize16;
-            font-family: PingFangSC, PingFangSC-Regular;
-            font-weight: 400;
-            text-align: center;
-            color: $baseBluefontColor!important;
-            background:$white;
-            line-height: 30px;
-            &.btn-selected {
-                color: $whitefontColor!important;
-                background: $lightBlue;
-            }
-        }
-        &.active {
-            background:$lightBlue;
-            .nav-link {
-                background: $lightBlue;
-                color: $whitefontColor!important;
-            }
+    .title {
+        font-size: $fontSize18;
+        color: $darkfontColor;
+        line-height: 44px;
+        font-weight: 600;
+    }
+    .visitbtn {
+        .btn {
+            line-height: 16px;
+            margin-left: 20px;
+            margin-top: 6px;
         }
     }
 }
@@ -463,6 +451,16 @@ input:focus {
     .card-header {
         margin: 0;
         padding: 0;
+        .nav {
+            height: auto;
+            .active {
+                background: $lightBlue;
+                color: $whitefontColor;
+                a:hover {
+                    color: $whitefontColor;
+                }
+            }
+        }
     }
     .card-body {
         max-height: calc(90vh - 60px);
@@ -510,12 +508,24 @@ input:focus {
 //song wap style
 .wap-wapper {
     padding: 0;
+    // padding-top: 42rem/$base;
+    .navinback {
+        width: 50rem/$base;
+        flex: none;
+        background: #fff;
+        .material-icons {
+            font-size: 32px;
+            line-height: 48rem/$base;
+        }
+    }
     #outer {
         padding: 0.5rem;
-        max-height: calc(100vh - 112px);//222
-        min-height: calc(100vh - 222px);
+        height: calc(100vh - 112px);
+        max-height: initial;
+        // max-height: calc(100vh - 112px);//222
+        // min-height: calc(100vh - 222px);
         &.newheight {
-            max-height: calc(100vh - 222px);
+            max-height: calc(100vh - 193px);
         }
         .row {
             margin: 0;
@@ -555,13 +565,18 @@ input:focus {
         background: linear-gradient(180deg, #F8FBFF, #E2E9F5);
         border-top: 1px solid #eee;
         overflow: hidden;
+        .card-body {
+            padding: 10rem/$base;
+        }
         .btn {
-            width: 23%;
-            height: 70px;
+            max-width: 23%;
+            width: 60px;
+            height: 60px;
+            font-size: $fontSize14;
             background: #fff;
             border-radius: 10px;
             padding: 0;
-            margin: 0 1%;
+            margin: 0 5px;
             box-shadow: none;
             &:nth-child(1) {
                 margin-left: 0;
@@ -571,4 +586,39 @@ input:focus {
             }
         }
     }
+    .nav {
+        display: flex;
+        justify-content: space-between;
+        background: $white;
+        height: 45rem/$base;
+        padding: 0 10rem/$base 0 0;
+    }
+    .documenttabs {
+        position: fixed;
+        z-index: 1000;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        width: 100vw;
+        height: 100vh;
+        padding-top: 42rem/$base;
+        border-radius: 0;
+        box-sizing: border-box;
+        .nav {
+            padding: 0;
+            margin: 10rem/$base 0;
+            .nav-item {
+                flex: 1;
+                text-align: center;
+                .nav-link {
+                    min-width: auto;
+                    padding: 0;
+                }
+            }
+        }
+    }
+}
+.consultform.video-cell {
+    padding-top: 30rem/$base;
 }

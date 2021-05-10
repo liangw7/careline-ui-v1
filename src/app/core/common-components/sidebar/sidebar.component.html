@@ -3,13 +3,13 @@
     <div class="user-container">
       <div class="headerimg" (click)="getPersonInfo()">
         <img *ngIf="user.photo" [src]="getImg(user.photo)" />
-        <img *ngIf="!user.photo" src="../../../../assets/images/header.png" />
+        <img *ngIf="!user.photo" src="../../assets/images/header.png" />
       </div>
       <div class="info" *ngIf="language=='Chinese'">
         <div *ngIf="!hasFamilyMembers">
           <span>{{user.name}}</span>
           <span class="quit">
-            <img (click)='logout()' src="../../../../assets/images/core/quit.png" alt="">
+            <img (click)='logout()' src="../../assets/images/core/quit.png" alt="">
           </span>
         </div>
         <div *ngIf="hasFamilyMembers">
@@ -21,7 +21,7 @@
               (click)="changeFamilyMember(u)">{{u.name}}_{{getRelationshipName(u.relationship)}}</button>
           </mat-menu>
           <span class="quit">
-            <img (click)='logout()' src="../../../../assets/images/core/quit.png" alt="">
+            <img (click)='logout()' src="../../assets/images/core/quit.png" alt="">
           </span>
         </div>
         <!-- <div class="selrolebox" *ngIf="hasFamilyMembers">
@@ -40,7 +40,7 @@
       </div>
       <div class="info" *ngIf="language=='English'">
         <div><span>Logging user: {{user.name}}</span><span class="quit"><img (click)='logout()'
-              src="../../../../assets/images/core/quit.png" alt=""></span></div>
+              src="../../assets/images/core/quit.png" alt=""></span></div>
         <p>{{user.enTitle}}</p>
       </div>
     </div>

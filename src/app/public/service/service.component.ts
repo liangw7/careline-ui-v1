@@ -67,6 +67,12 @@ export class ServiceComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild('textInput', { read: ElementRef })
   textInput!: ElementRef;
   background:any;
+  selectedProfile:any;
+  role:any;
+  educations:any;
+  forms:any;
+  selectedProvider:any;
+  fromService:any;
 
   constructor(
     private entity: ApiUrl,
@@ -178,6 +184,67 @@ export class ServiceComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+
+  getForms(profile: any) {
+    this.storage.set('profile', profile)
+    //  alert('got profile: '+profile.label.ch)
+    this.profile = profile;
+    this.selectedProfile = profile;
+    if (this.selectedProfile.desc && this.selectedProfile.desc.ageGroup == 'child') {
+      this.role = 'child'
+    } else {
+      this.role = 'patient'
+    }
+    this.storage.set('role', this.role);
+    this.loading = true;
+    this.educations = [];
+    this.allService.categoryService.getForm({
+      profileIDs: [profile._id],
+      formTypes: ['introduction', 'profile registry']
+    }).then((data: any) => {
+
+      this.temp = data;
+
+      this.forms = this.temp;
+      var obIDs = [];
+      for (let form of this.forms) {
+
+        for (let obSet of form.obSets) {
+          for (let ob of obSet.obs) {
+            obIDs.push(ob._id)
+          }
+        }
+      }
+      this.loading = false;
+      this.allService.categoryService.getCategoriesByFilter({ '_id': { '$in': obIDs } }).then((data: any) => {
+        this.temp = data;
+       
+        for (let item of this.temp) {
+          for (let form of this.forms) {
+            for (let obSet of form.obSets) {
+              for (let ob of obSet.obs) {
+                if (ob._id == item._id) {
+                  ob.education = item.education;
+                  ob.options = [];
+                  ob.options = item.options;
+                  ob.formula = item.formula;
+                }
+              }
+            }
+          }
+        }
+        this.storage.set('forms', this.forms)
+        // this.formReady=true;
+  
+        var title = this.service.name + '|' + this.selectedProfile.label.ch;
+        if (this.isWeixin) {
+          this.getSignature(this.profile.desc.patient, title, profile);
+        }
+        console.log('get form', this.forms);
+        this.loading = false;
+      })
+    })
+  }
   getPhoto(){
     var image: any;
     if (this.service.photo&&this.service.photo.slice(0, 4) != 'http')
@@ -278,7 +345,7 @@ export class ServiceComponent implements OnInit, AfterViewInit, OnDestroy {
         providerIDs.push(provider._id)
       }
       this.loading = true;
-      this.allService.categoryService.getCategoriesByFilter({ 'createdBy._id': { '$in': providerIDs }, 'status': 'active' }).then((data: any) => {
+      this.allService.categoryService.getInternalByFilter({ 'createdBy._id': { '$in': providerIDs }, 'status': 'active' }).then((data: any) => {
         this.temp = data;
         this.articles = this.temp;
 
@@ -290,8 +357,9 @@ export class ServiceComponent implements OnInit, AfterViewInit, OnDestroy {
 
   selectArticle(article: any) {
     this.articleForms = [];
-    this.allService.categoryService.getFormById({ formIDs: [article._id] }).then((data: any) => {
+    this.allService.categoryService.getCategoriesByFilter({_id:article._id}).then((data: any) => {
       this.articleForms = data;
+      console.log('articleForms', this.articleForms)
     })
   }
 

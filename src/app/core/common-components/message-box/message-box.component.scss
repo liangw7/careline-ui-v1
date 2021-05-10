@@ -188,3 +188,16 @@ textarea {
         line-height: 24px;
     }
 }
+
+//wap-style
+.wap-wapper {
+    .maincard {
+        .card-header {
+            padding: 0;
+            padding-bottom: 15rem/$base;
+        }
+        .header-right {
+            min-width: 68rem/$base;
+        }
+    }
+}

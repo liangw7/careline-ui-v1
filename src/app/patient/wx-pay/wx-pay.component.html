@@ -1,22 +1,36 @@
-<div class="pc-native-pay" *ngIf="code_url && bigScreen == 1 && !isPaySuccess">
-    <div class="closebtn" (click)='close()'>
-        <i class='material-icons pull-right'>close</i>
-      </div>
+<div class="closebtn" (click)='close()'>
+    <i class='material-icons pull-right'>close</i>
+</div>
+<div class="pc-native-pay" *ngIf="bigScreen == 1 && !isPaySuccess">
     <div *ngIf="isAgree">
         <ngx-qrcode [elementType]="elementType" [errorCorrectionLevel]="correctionLevel" [value]="code_url"
             cssClass="bshadow"></ngx-qrcode>
         <img src="assets/images/login/weixin_logo.png" alt="">
         <span>微信支付</span>
+        <mat-divider></mat-divider>
+    </div>
+    <mat-checkbox *ngIf="isGoToPay" (change)="selectedIsAgree($event.checked)">
+        <span style="color:red;">
+            支付免责声明:</span>
+    </mat-checkbox>
+</div>
+<div class="pc-native-pay" *ngIf="bigScreen == 0 && !isPaySuccess">
+    <div *ngIf="!isAgree">
+        <img src="assets/images/login/weixin_logo.png" alt="">
+        <span>微信支付</span>
+    </div>
+    <div *ngIf="isAgree">
+        <span>微信支付中...</span>
     </div>
     <mat-divider></mat-divider>
-    <mat-checkbox (change)="selectedIsAgree($event.checked)">
+    <mat-checkbox *ngIf="isGoToPay" (change)="selectedIsAgree($event.checked)">
         <span style="color:red;">
             支付免责声明:</span>
     </mat-checkbox>
 </div>
 <div class="popping" *ngIf='isPaySuccess'>
     <div class='card' *ngIf='isPaySuccess' [ngClass]="{'mail-cell':bigScreen==0,'mail-pc':bigScreen==1}">
-        <chat [selected]='selected' [visit]='visit' [profile]='profile' [user]='user'
-            [bigScreen]='bigScreen' (messageEvent)="receiveMessage($event)" (visitEvent)="receiveVisit($event)"></chat>
+        <chat [selected]='selected' [visit]='visit' [profile]='profile' (messageEvent)="receiveMessage($event)"
+            (visitEvent)="receiveVisit($event)"></chat>
     </div>
 </div>

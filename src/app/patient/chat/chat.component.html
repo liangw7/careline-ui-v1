@@ -5,47 +5,43 @@
 </div>
 
 <div class="chatwapper" [ngClass]="{'wap-wapper':bigScreen==0}">
-  <div class="closebtn" (click)='close()'>
+  <div class="closebtn" *ngIf="bigScreen==1" (click)='close()'>
     <i class='material-icons pull-right'>close</i>
   </div>
-  <div class="pc-native-pay" *ngIf="code_url && bigScreen == 1 && !isPaySuccess">
-    <ngx-qrcode [elementType]="elementType" [errorCorrectionLevel]="correctionLevel" [value]="code_url"
-      cssClass="bshadow"></ngx-qrcode>
-    <img src="assets/images/login/weixin_logo.png" alt=""><span>微信支付</span>
-  </div>
-  <ul class='nav'>
-    <li *ngIf="visit&&visit.status=='active'">
-      <a class="nav-link btn-selected">
-        <span *ngIf="bigScreen==1 &&selected" >{{selected.name}}的</span>咨询室
-      </a>
-    </li>
-    <li *ngIf="visit">
-      <a class="nav-link" href="javascript:void(0)" (click)='consultForm=true;getForm(profile)'>
+  <div class='nav'>
+    <span class="navinback" *ngIf="bigScreen==0" (click)='close()' style="width: 50px;"><span
+        class="material-icons">chevron_left</span></span>
+    <span class="title" *ngIf="visit&&visit.status=='active'">
+      <span *ngIf="bigScreen==1 &&selected">{{selected.name}}的</span>咨询室
+    </span>
+    <span class="visitbtn" *ngIf="visit">
+      <a class="btn btn-base" href="javascript:void(0)" (click)='consultForm=true;getForm(profile)'>
         咨询表
       </a>
-    </li>
+    </span>
     <!-- <li *ngIf="visit&&visit.status=='active'&&bigScreen == 0">
       <a class="nav-link" href="javascript:void(0)" (click)="showVideo=true;connectVideo();">
         视频
       </a>
     </li> -->
-    <li *ngIf="user.role=='provider'">
+    <!-- <li *ngIf="user.role=='provider'">
       <a class="nav-link" href="javascript:void(0)" (click)='getTransfer()'>咨询完毕
       </a>
-    </li>
-    <!-- <li>
-      <a class="nav-link" (click)='close()'>关闭 </a>
     </li> -->
-  </ul>
+  </div>
   <span>{{connectionMessage}}</span>
   <span *ngIf='gettingNewMessage&&isText==true'> 对方正在输入...</span>
   <div *ngIf='consultForm' class="consultform" [ngClass]="{'video-pc':bigScreen==1, 'video-cell':bigScreen==0}">
-    <div class="closebtn" *ngIf='!visit' (click)='closeConsultForm()'>
+    <div class="closebtn" *ngIf='!visit && bigScreen==1' (click)='closeConsultForm()'>
       <i class='material-icons pull-right'>close</i>
     </div>
-    <div class="closebtn" *ngIf='visit' (click)='consultForm=false'>
+    <div class="closebtn" *ngIf='visit && bigScreen==1' (click)='consultForm=false'>
       <i class='material-icons pull-right'>close</i>
     </div>
+    <div class="backbox" *ngIf='!visit && bigScreen==0' (click)='closeConsultForm()'><span
+        class="material-icons">chevron_left</span></div>
+    <div class="backbox" *ngIf='visit && bigScreen==0' (click)='consultForm=false'><span
+        class="material-icons">chevron_left</span></div>
     <div class="form-content">
       <div class='card-header' *ngIf='!visit'>
         <!-- <a class="btn btn-round btn-base" (click)='payment()'>咨询付费：20元</a> -->
@@ -88,19 +84,21 @@
       </div>
     </div>
     <div class="call__messages" *ngIf="!videoComing&&isText == true &&! isCapture">
-      <div #messageBox id="outer" class="call__messages___list" [ngClass]="{'spe': optionSelected}"  [ngClass]="{'newheight':optionSelected && bigScreen==0 && visit&&visit.status == 'active'}">
+      <div #messageBox id="outer" class="call__messages___list" [ngClass]="{'spe': optionSelected}"
+        [ngClass]="{'newheight':optionSelected && bigScreen==0 && visit&&visit.status == 'active'}">
         <div *ngFor="let m of messages">
           <div class='row'>
             <img class='photo my-photo' [src]='getUrl(user.photo)' *ngIf="m.userID==myPeerId">
             <img class='photo' [src]='getUrl(selected.photo)' *ngIf="m.userID==selected._id">
-            <div class='call__messages___message' [ngClass]="{'my-message':m.userID==myPeerId,
+            <div class='call__messages___message'
+              [ngClass]="{'my-message':m.userID==myPeerId,
                             'card-chat':m.userID==myPeerId,'message-left':m.userID==selected._id,'message-right':m.userID==myPeerId}">
               <div *ngFor='let content of m.contentList'>
                 <div *ngIf='content&&!content.component' class="txt" [ngClass]="{'card-chat':m.userID==myPeerId}">
                   <span>{{content.message}}</span>
                 </div>
                 <div *ngIf='content&&content.component' [ngClass]="{'card-chat':m.userID==myPeerId}">
-                   <lab *ngIf="content&&content.component=='lab'" [patient]='patient' [selectedLabSet]='content.message'>
+                  <lab *ngIf="content&&content.component=='lab'" [patient]='patient' [selectedLabSet]='content.message'>
                   </lab>
                   <summary *ngIf="content&&content.component=='summary'" [patient]='patient'
                     [selectedObSet]='content.message'>
@@ -115,8 +113,9 @@
                   </lab>
 
                   <health-file *ngIf="content&&content.component=='medical file'" [patient]='patient'
-                    [selectedImage]='content.message'></health-file> 
-                  <div *ngIf="content&&content.component=='article'" class='card articlebox' (click)="getArticle(content.article)">
+                    [selectedImage]='content.message'></health-file>
+                  <div *ngIf="content&&content.component=='article'" class='card articlebox'
+                    (click)="getArticle(content.article)">
                     <div style=' display: flex;justify-content: space-between;'>
                       <div>
                         <img [src]='getUrl(content.article.image)' class='photo'>
@@ -192,9 +191,10 @@
           <button class='btn' (click)="uploadImage();optionSelected=false;">影像</button>
           <button class='btn' (click)="uploadMedicalFile();optionSelected=false;">病历</button>
           <button class='btn' (click)="addFiles=true;getSummaryObSets();optionSelected=false;">文档 </button>
-          
+
           <!-- <span class="addmore" (click)="optionSelected=!optionSelected"><span *ngIf="optionSelected">-</span><span *ngIf="!optionSelected">+</span></span> -->
-          <input #messageInput id='messageInput' class="form-control" [ngClass]="{'spe': isClosed}" placeholder="message" [(ngModel)]="message">
+          <input #messageInput id='messageInput' class="form-control" [ngClass]="{'spe': isClosed}"
+            placeholder="message" [(ngModel)]="message">
           <button class="btn" (click)="sendMessage(); scrollToBottom();">发送</button>
         </div>
         <div *ngIf="visit&&visit.status == 'reserved'" class="call__messages___form">
@@ -205,8 +205,10 @@
       <div *ngIf='bigScreen==0'>
         <div *ngIf="visit&&visit.status == 'active'" class="call__messages___form" style="padding-bottom: 0.75rem;">
           <button *ngIf="isClosed" class="btn big" (click)="closeVisit()">关闭咨询</button>
-          <span class="addmore" (click)="optionSelected=!optionSelected"><span *ngIf="optionSelected">-</span><span *ngIf="!optionSelected">+</span></span>
-          <input #messageInput id='messageInput' class="form-control" [ngClass]="{'spe': isClosed}" placeholder="message" [(ngModel)]="message">
+          <span class="addmore" (click)="optionSelected=!optionSelected"><span *ngIf="optionSelected">-</span><span
+              *ngIf="!optionSelected">+</span></span>
+          <input #messageInput id='messageInput' class="form-control" [ngClass]="{'spe': isClosed}"
+            placeholder="message" [(ngModel)]="message">
           <button class="btn" (click)="sendMessage(); scrollToBottom();">发送</button>
         </div>
         <div *ngIf="visit&&visit.status == 'reserved'" class="call__messages___form">
@@ -269,108 +271,107 @@
       </div> -->
     </div>
 
-    <div class='col-sm-12' *ngIf='addFiles'>
-      <div class='card documenttabs cdkDrag'>
-        <div class="closebtn" (click)='addFiles=false;'>
-          <i class='material-icons'>close</i>
-        </div>
-        <div class="card-header">
-          <ul class="nav" >
-            <li class="nav-item" [ngClass]="{'active':summaryShow}" (click)="documentTabFn('summary')">
-              <a mat-button class="nav-link">
-                <span *ngIf="language=='Chinese'">临床总结 </span>
-                <span *ngIf="language=='English'">Summary</span>
-              </a>
-            </li>
-            <li class="nav-item" [ngClass]="{'active':imageShow}" (click)="documentTabFn('image')">
-              <!-- (click)='getImageSets()' -->
-              <a mat-button class="nav-link">
-                <span *ngIf="language=='Chinese'"> 影像</span>
-                <span *ngIf="language=='English'">image</span>
-              </a>
-            </li>
-            <li class="nav-item" [ngClass]="{'active':labShow}" (click)="documentTabFn('lab')">
-              <!-- (click)=' getLabSets();' -->
-              <a mat-button class="nav-link">
-                <span *ngIf="language=='Chinese'"> 实验室</span>
-                <span *ngIf="language=='English'">lab</span>
-              </a>
-            </li>
-            <li class="nav-item" [ngClass]="{'active':reportShow}" (click)="documentTabFn('report')">
-              <!-- (click)='getVisits()' -->
-              <a mat-button class="nav-link">
-                <span *ngIf="language=='Chinese'">门诊</span>
-                <span *ngIf="language=='English'">report</span>
-              </a>
-            </li>
-            <li class="nav-item" [ngClass]="{'active':articleShow}" (click)="documentTabFn('article')">
-              <!-- (click)='getArticles()' -->
-              <a mat-button class="nav-link">
-                <span *ngIf="language=='Chinese'">文章</span>
-                <span *ngIf="language=='English'">article</span>
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div class='card-body'>
-          <div class="tab-content">
-            <div class="tab-pane" [ngClass]="{'active':summaryShow}"  id="summary">
-              <table class='table table-hover'>
-                <tr *ngFor="let obSet of summaryObSets" (click)='addSummary(obSet)'>
-                  <td> {{obSet.label.ch}}</td>
-                </tr>
-              </table>
-            </div>
-            <div class="tab-pane" [ngClass]="{'active':labShow}" id="lab">
-              <table class='table table-hover'>
-                <tr *ngFor="let labSet of labSets" (click)='addLab(labSet)'>
-                  <td> {{labSet.label.ch}}
-                  </td>
-                </tr>
-              </table>
-            </div>
-            <div class="tab-pane" [ngClass]="{'active':imageShow}" id="image">
-              <table class='table table-hover'>
-                <tr *ngFor="let image of images" (click)='addImage(image)'>
-                  <td><img [src]="image.url" class="thumbnail"></td>
-                  <td style="line-height: 75px;">{{image.createdAt| date: "yyyy/MM/dd HH:mm"}}</td>
-                </tr>
-              </table>
-            </div>
-            <div class="tab-pane" [ngClass]="{'active':reportShow}" id="report">
-              <table class='table table-hover'>
-                <tr (click)="addVisit(visit)" *ngFor="let visit of visits">
-                  <td>
-                    <span *ngIf="visit.profile">
-                      <span *ngIf="!visit.profile.label">{{visit.profile.name}}</span>
-                      <span *ngIf="language=='Chinese'&&visit.profile.label">{{visit.profile.label.ch}}</span>
-                      <span *ngIf="language=='English'&&visit.profile.label">{{visit.profile.label.en}}</span>
-                      /{{visit.profile.visitType}}</span>
-                  </td>
-                  <td> <span *ngIf="language=='Chinese'">{{visit.type}}</span>
-                    <span *ngIf="language=='English'">{{visit.entype}}</span>
-                  </td>
-                  <td>{{visit.visitDate| date: "yyyy/MM/dd HH:mm"}}</td>
-                  <td>{{visit.createdAt| date: "yyyy/MM/dd HH:mm"}}</td>
-                  <td><span *ngIf='visit.createdBy'>
-                      {{visit.createdBy.name}},&nbsp;{{visit.createdBy.title}},&nbsp;{{visit.createdBy.service}}
-                    </span></td>
-                  <td><span *ngIf='visit.modifiedBy'>
-                      {{visit.modifiedBy.name}},&nbsp;{{visit.modifiedBy.title}},&nbsp;{{visit.modifiedBy.service}}
-                    </span></td>
-                </tr>
-              </table>
-            </div>
-            <div class="tab-pane" [ngClass]="{'active':articleShow}" id="article">
-              <table class='table table-hover'>
-                <tr *ngFor="let article of articles" (click)='addArticle(article)'>
-                  <td>
-                    <span *ngIf="language=='Chinese'">{{article.label.ch}}</span>
-                    <span *ngIf="language=='English'">{{article.label.en}}</span>
-                  </td>
-                </tr>
-              </table>
-            </div>
+    <div class='card documenttabs cdkDrag' *ngIf='addFiles'>
+      <div *ngIf="bigScreen==1" class="closebtn" (click)='addFiles=false;'>
+        <i class='material-icons'>close</i>
+      </div>
+      <div *ngIf="bigScreen==0" class="backbox" (click)='addFiles=false;'><span class="material-icons">chevron_left</span></div>
+      <div class="card-header">
+        <ul class="nav">
+          <li class="nav-item" [ngClass]="{'active':summaryShow}" (click)="documentTabFn('summary')">
+            <a mat-button class="nav-link">
+              <span *ngIf="language=='Chinese'">临床总结 </span>
+              <span *ngIf="language=='English'">Summary</span>
+            </a>
+          </li>
+          <li class="nav-item" [ngClass]="{'active':imageShow}" (click)="documentTabFn('image')">
+            <!-- (click)='getImageSets()' -->
+            <a mat-button class="nav-link">
+              <span *ngIf="language=='Chinese'"> 影像</span>
+              <span *ngIf="language=='English'">image</span>
+            </a>
+          </li>
+          <li class="nav-item" [ngClass]="{'active':labShow}" (click)="documentTabFn('lab')">
+            <!-- (click)=' getLabSets();' -->
+            <a mat-button class="nav-link">
+              <span *ngIf="language=='Chinese'"> 实验室</span>
+              <span *ngIf="language=='English'">lab</span>
+            </a>
+          </li>
+          <li class="nav-item" [ngClass]="{'active':reportShow}" (click)="documentTabFn('report')">
+            <!-- (click)='getVisits()' -->
+            <a mat-button class="nav-link">
+              <span *ngIf="language=='Chinese'">门诊</span>
+              <span *ngIf="language=='English'">report</span>
+            </a>
+          </li>
+          <li class="nav-item" [ngClass]="{'active':articleShow}" (click)="documentTabFn('article')">
+            <!-- (click)='getArticles()' -->
+            <a mat-button class="nav-link">
+              <span *ngIf="language=='Chinese'">文章</span>
+              <span *ngIf="language=='English'">article</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class='card-body'>
+        <div class="tab-content">
+          <div class="tab-pane" [ngClass]="{'active':summaryShow}" id="summary">
+            <table class='table table-hover'>
+              <tr *ngFor="let obSet of summaryObSets" (click)='addSummary(obSet)'>
+                <td> {{obSet.label.ch}}</td>
+              </tr>
+            </table>
+          </div>
+          <div class="tab-pane" [ngClass]="{'active':labShow}" id="lab">
+            <table class='table table-hover'>
+              <tr *ngFor="let labSet of labSets" (click)='addLab(labSet)'>
+                <td> {{labSet.label.ch}}
+                </td>
+              </tr>
+            </table>
+          </div>
+          <div class="tab-pane" [ngClass]="{'active':imageShow}" id="image">
+            <table class='table table-hover'>
+              <tr *ngFor="let image of images" (click)='addImage(image)'>
+                <td><img [src]="image.url" class="thumbnail"></td>
+                <td style="line-height: 75px;">{{image.createdAt| date: "yyyy/MM/dd HH:mm"}}</td>
+              </tr>
+            </table>
+          </div>
+          <div class="tab-pane" [ngClass]="{'active':reportShow}" id="report">
+            <table class='table table-hover'>
+              <tr (click)="addVisit(visit)" *ngFor="let visit of visits">
+                <td>
+                  <span *ngIf="visit.profile">
+                    <span *ngIf="!visit.profile.label">{{visit.profile.name}}</span>
+                    <span *ngIf="language=='Chinese'&&visit.profile.label">{{visit.profile.label.ch}}</span>
+                    <span *ngIf="language=='English'&&visit.profile.label">{{visit.profile.label.en}}</span>
+                    /{{visit.profile.visitType}}</span>
+                </td>
+                <td> <span *ngIf="language=='Chinese'">{{visit.type}}</span>
+                  <span *ngIf="language=='English'">{{visit.entype}}</span>
+                </td>
+                <td>{{visit.visitDate| date: "yyyy/MM/dd HH:mm"}}</td>
+                <td>{{visit.createdAt| date: "yyyy/MM/dd HH:mm"}}</td>
+                <td><span *ngIf='visit.createdBy'>
+                    {{visit.createdBy.name}},&nbsp;{{visit.createdBy.title}},&nbsp;{{visit.createdBy.service}}
+                  </span></td>
+                <td><span *ngIf='visit.modifiedBy'>
+                    {{visit.modifiedBy.name}},&nbsp;{{visit.modifiedBy.title}},&nbsp;{{visit.modifiedBy.service}}
+                  </span></td>
+              </tr>
+            </table>
+          </div>
+          <div class="tab-pane" [ngClass]="{'active':articleShow}" id="article">
+            <table class='table table-hover'>
+              <tr *ngFor="let article of articles" (click)='addArticle(article)'>
+                <td>
+                  <span *ngIf="language=='Chinese'">{{article.label.ch}}</span>
+                  <span *ngIf="language=='English'">{{article.label.en}}</span>
+                </td>
+              </tr>
+            </table>
           </div>
         </div>
       </div>

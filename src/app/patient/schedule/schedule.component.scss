@@ -1,10 +1,6 @@
 @import 'src/assets/scss/base.scss';
 
-// .schedule {
-//     margin-top: 45px;
-//     height: 450px;
-// }
-card-rose {
+.card-rose {
     background-color: #9c27b0;
     color: white;
     margin: 15px;
@@ -34,11 +30,11 @@ card-rose {
     width: 14.285714285714286%;
     max-width: 14.285714285714286%;
 }
-.header {
-    background-color: #238989;
-    color: white;
-    height: 25px;
-}
+// .header {
+//     background-color: #238989;
+//     color: white;
+//     height: 25px;
+// }
 .header-2 {
     background-color: #33c7c7;
     color: white;
@@ -134,9 +130,6 @@ card-rose {
     color: yellowgreen;
     font-weight: 700;
 }
-.schedule {
-    padding: -5px;
-}
 .card-rose-color {
     color: #9c27b0;
     font-weight: 700;
@@ -152,18 +145,6 @@ card-rose {
     font-weight: 700;
     font-size: medium;
 }
-// .schedule {
-//     height: 100%;
-//     width: 100%;
-//     left: 0;
-//     margin-left: 0px;
-//     top: 0;
-//     margin-top: 0px;
-//     position: fixed;
-//     z-index: 100;
-//     overflow: auto;
-//     padding: 5px;
-// }
 
 
 //song-pc style
@@ -234,6 +215,125 @@ card-rose {
                 display: inline-block;
                 width: 23%;
                 margin: 10rem/$base 1%;
+            }
+        }
+    }
+    .searchbox {
+        padding: 20rem/$base 20rem/$base 10rem/$base;
+    }
+    .docbox {
+        padding-bottom: 30rem/$base;
+        height: calc(100vh - 200px);
+        box-sizing: border-box;
+        overflow-y: auto;
+        &.searchdoc {
+            height: calc(100vh - 270px);
+        }
+        .doclists {
+            padding: 10rem/$base 20rem/$base;
+            .card {
+                margin: 0;
+                box-shadow: 0 1px 4px 0 rgba(0, 0, 0, 0.14)!important;
+            }
+            .card-body {
+                .doc-btns {
+                    margin: 8rem/$base 0;
+                    .btn {
+                        line-height: 16rem/$base;
+                        font-size: $fontSize14;
+                        margin: 0 8rem/$base;
+                    }
+                }
+                .descbox {
+                    display: -webkit-box;    
+                    -webkit-box-orient: vertical;    
+                    -webkit-line-clamp: 3;    
+                    overflow: hidden;
+                }
+                .desc {
+                    font-size: $fontSize14;
+                    color: $basefontColor;
+                    line-height: 28rem/$base;
+                }
+            }
+        }
+    }
+    .docinfo {
+        padding-left: 80rem/$base;
+        min-height: 60rem/$base;
+        position: relative;
+        .photo {
+            width: 60rem/$base;
+            height: 60rem/$base;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            top: 0;
+            left: 0;
+            img {
+                width: 100%;
+                vertical-align: top;
+            }
+        }
+        .docname {
+            span:nth-child(1) {
+                display: block;
+                font-size: $fontSize18;
+                color: $darkfontColor;
+                font-weight: 600;
+                line-height: 36rem/$base;
+            }
+            span:nth-child(2) {
+                display: block;
+                font-size: $fontSize14;
+                color: $lightfontColor;
+                line-height: 24rem/$base;
+            }
+        }
+    }
+    .schedulebox {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1;
+        overflow-y: auto;
+        .goback {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 40rem/$base;
+            height: 62rem/$base;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+        }
+    }
+    .header {
+        padding: 20rem/$base;
+        background: linear-gradient(142deg,$lightBlue,$baseBlue);
+        .topbarbox {
+            width: 100%;
+            height: 40rem/$base;
+            border: 2rem/$base solid $lightBlue;
+            border-radius: 20rem/$base;
+            overflow: hidden;
+            span {
+                display: inline-block;
+                width: 50%;
+                font-size: 16rem/$base;
+                font-family: PingFangSC, PingFangSC-Semibold;
+                text-align: center;
+                color: #ffffff;
+                line-height: 36rem/$base;
+                letter-spacing: 1px;
+                &.active {
+                    background: $lightBlue;
+                    border-radius: 20rem/$base;
+                }
             }
         }
     }
@@ -651,3 +751,92 @@ card-rose {
     }
 }
 }
+
+:host ::ng-deep .calendarbox {
+    .wap-wapper {
+        .header {
+            padding-left: 50px;
+        }
+    }
+}
+//tab样式
+:host ::ng-deep .mat-tab-group {
+    margin-top: -5rem/$base;
+  }
+:host ::ng-deep .mat-tab-header {
+    border-bottom: none;
+    .mat-ink-bar {
+      background-color: transparent!important;
+    }
+    .mat-tab-labels {
+      padding-top: 5px;
+    }
+    .mat-tab-label {
+      height: 42px;
+      padding: 0 30px;
+      font-size: $fontSize16;
+      font-family: PingFangSC, PingFangSC-Regular;
+      text-align: center;
+      color: $basefontColor;
+      font-weight: normal!important;
+      background: $darkGray;
+      border-radius: 0 14px 0 0;
+      box-shadow: 0 0 4px 0 rgba(121, 161, 161, 0.5);
+      margin-left: -10px;
+      position: relative;
+      opacity: 1;
+      &:nth-child(1) {
+        z-index: 49;
+        margin-left: 0;
+      }
+      &:nth-child(2) {
+        z-index: 48;
+      }
+      &:nth-child(3) {
+        z-index: 47;
+      }
+      &:nth-child(4) {
+        z-index: 46;
+      }
+      &:nth-child(5) {
+        z-index: 45;
+      }
+      &:nth-child(6) {
+        z-index: 44;
+      }
+      &:nth-child(7) {
+        z-index: 43;
+      }
+      &:nth-child(8) {
+        z-index: 42;
+      }
+      &:nth-child(9) {
+        z-index: 41;
+      }
+      &:nth-child(10) {
+        z-index: 40;
+      }
+      &.mat-tab-label-active {
+        font-weight: normal!important;
+        padding: 0 30px;
+        background: $white;
+        color: $darkfontColor!important;
+      }
+    }
+  }
+:host  ::ng-deep .mat-tab-body-wrapper {
+    width: 100%;
+    background: $white;
+    border-radius: 0 20px 0 0;
+    box-shadow: none;
+    box-sizing: border-box;
+    overflow: hidden;
+    overflow-y: auto;
+    .mat-tab-body-content {
+      padding: 2px 0;
+    }
+    .row {
+      margin-left: 0;
+      margin-right: 0;
+    }
+  }

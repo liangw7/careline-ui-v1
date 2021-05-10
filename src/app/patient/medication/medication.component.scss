@@ -15,12 +15,11 @@
 }
 .card-primary {
     background-color: rgb(86, 86, 167);
-
     border-radius: 5px;
     box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(rgb(86, 86, 167), 0.4);
 }
 .card-vaccine {
-    background-color: rgb(157, 179, 241);
+    background-color: $lightGray;
 
     //border-radius: 5px;
     //  box-shadow: 0 4px 20px 0px rgba(0, 0, 0, .14),
@@ -63,18 +62,9 @@
     box-shadow: 0 4px 20px 0px rgba(0, 0, 0, 0.14), 0 7px 10px -5px rgba(rgb(86, 86, 167), 0.4);
 }
 .profile {
-    height: 100%;
-    width: 100%;
-    left: 0;
-    margin-left: 0px;
-    top: 0;
-    margin-top: 0px;
-    position: fixed;
-    z-index: 100;
-    overflow: auto;
-    padding-top: 42rem/$base;
-    background-color: #f0f0f0;
-    box-sizing: border-box;
+    .card-header {
+        padding: 10rem/$base 0;
+    }
 }
 .levelOne {
     color: orangered;
@@ -266,7 +256,8 @@
         }
     }
     .main-body {
-        height: calc(100vh - 190px);
+        padding: 0;
+        height: calc(100vh - 200px);
     }
     .tab-content {
         height: calc(100vh - 115px);

@@ -1,3 +1,4 @@
+@import 'src/assets/scss/base.scss';
 .cell-publish {
     text-align: left;
     padding-top: 20px;
@@ -14,10 +15,6 @@ body {
 
 .cell-publish {
     margin-top: -30px;
-}
-.cell-container{
-    margin-top: -310px;
-   
 }
 .my-card {
     padding: 40px;
@@ -389,3 +386,66 @@ mat-card {
         }
     }
 }
+
+.pc-wapper {
+    width: 80%;
+    max-width: 1200px;
+    padding: 100px 0;
+    margin: 0 auto;
+    .card {
+        margin: 0;
+        padding: 20px 30px;
+    }
+    .article-title {
+        font-size: $fontSize20;
+        color: $darkfontColor;
+        line-height: 28rem/$base;
+        font-weight: 600;
+        text-align: center;
+        padding: 0 0 30rem/$base;
+    }
+    .article-info {
+        display: flex;
+        justify-content: space-between;
+        .links {
+            display: flex;
+            justify-content: flex-end;
+            & > div {
+                margin: 0 10px;
+            }
+        }
+    }
+}
+
+.wap-wapper{
+    margin-top: -300px;
+    padding-bottom: 50rem/$base;
+    border-radius: 0;
+    position: relative;
+    padding-top: 32rem/$base;
+    .article-title {
+        font-size: $fontSize18;
+        color: $darkfontColor;
+        line-height: 28rem/$base;
+        font-weight: 600;
+        padding: 10rem/$base 0 20rem/$base;
+    }
+    .createdInfo {
+        font-size: $fontSize14;
+        color: $basefontColor;
+        line-height: 40rem/$base;
+    }
+}
+.fixedbtn {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 5;
+    width: 100vw;
+    display: flex;
+    justify-content: space-between;
+    .btn {
+        margin: 0;
+    }
+} 

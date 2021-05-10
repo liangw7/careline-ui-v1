@@ -108,6 +108,7 @@ export class PatientStoryComponent implements OnInit, OnChanges {
   selectedPatientIndex: any;
   color: any;
   menuItems: any;
+  wapMenuItems: any;
   summaryPatient: any;
   problemPatient: any;
   medicationPatient: any;
@@ -212,19 +213,26 @@ export class PatientStoryComponent implements OnInit, OnChanges {
   // }
   ngOnInit() {
     this.menuItems = [
-      { active: false, focus: 'profile', path: 'patient/profile', para: '', title: '个人信息', enTitle: 'profile', icon: 'fa fa-list', class: '',img:'' },
-     { active: true, focus: 'patient', path: 'patient/provider-list', para: '', title: '在线咨询', enTitle: 'consult', icon: 'fa fa-area-chart', class: '',img:'../../../../../assets/images/core/online.png'},
-      { active: false, focus: 'patient', path: 'patient/followups', para: '', title: '每日日志', enTitle: 'followup', icon: 'fa fa-users', class: '',img:'../../../../../assets/images/core/log.png' },
-      { active: false, focus: 'patient', path: 'patient/summary', para: '', title: '临床总结', enTitle: 'Summary', icon: 'fa fa-users', class: '',img:'../../../../../assets/images/core/clinical.png' },
-      { active: false, focus: 'management', path: 'patient/visit-list', para: '', title: '门诊', enTitle: 'Ouitpatient', icon: 'fa fa-calendar', class: '',img:'../../../../../assets/images/core/Outpatient.png' },
-      { active: false, focus: 'management', path: 'patient/patient-schedule', para: '', title: '预约', enTitle: 'Schedule', icon: 'fa fa-calendar', class: '',img:'../../../../../assets/images/core/appoint.png' },
-      { active: false, focus: 'article', path: 'patient/lab', para: '', title: '实验室报告', enTitle: 'labs', icon: 'fa fa-list', class: '',img:'../../../../../assets/images/core/report.png' },
-      { active: false, focus: 'article', path: 'patient/image', para: '', title: '影像结果', enTitle: 'images', icon: 'fa fa-list', class: '',img:'../../../../../assets/images/core/Imaging.png' },
-      { active: false, focus: 'article', path: 'patient/medication', para: '', title: '用药', enTitle: 'medication', icon: 'fa fa-list', class: '',img:'../../../../../assets/images/core/medicine.png' },
-      { active: false, focus: 'article', path: 'patient/health-file', para: '', title: '历史病史', enTitle: 'health records', icon: 'fa fa-list', class: '',img:'../../../../../assets/images/core/history.png' },
-      { active: false, focus: 'article', path: 'patient/education', para: '', title: '患病教育', enTitle: 'education', icon: 'fa fa-list', class: '',img:'../../../../../assets/images/core/education.png' },
-
-     
+      { active: false, focus: 'profile', path: '/provider-platform/patient/profile', para: '', title: '个人信息', enTitle: 'profile', icon: 'fa fa-list', class: '',img:'' },
+     { active: true, focus: 'patient', path: '/provider-platform/patient/provider-list', para: '', title: '在线咨询', enTitle: 'consult', icon: 'fa fa-area-chart', class: '',img:'../../../assets/images/core/online.png'},
+      { active: false, focus: 'patient', path: '/provider-platform/patient/followups', para: '', title: '每日日志', enTitle: 'followup', icon: 'fa fa-users', class: '',img:'../../../assets/images/core/log.png' },
+      { active: false, focus: 'patient', path: '/provider-platform/patient/summary', para: '', title: '临床总结', enTitle: 'Summary', icon: 'fa fa-users', class: '',img:'../../../assets/images/core/clinical.png' },
+      { active: false, focus: 'management', path: '/provider-platform/patient/visit-list', para: '', title: '门诊', enTitle: 'Ouitpatient', icon: 'fa fa-calendar', class: '',img:'../../../assets/images/core/Outpatient.png' },
+      { active: false, focus: 'management', path: '/provider-platform/patient/patient-schedule', para: '', title: '预约', enTitle: 'Schedule', icon: 'fa fa-calendar', class: '',img:'../../../assets/images/core/appoint.png' },
+      { active: false, focus: 'article', path: '/provider-platform/patient/lab', para: '', title: '实验室报告', enTitle: 'labs', icon: 'fa fa-list', class: '',img:'../../../assets/images/core/report.png' },
+      { active: false, focus: 'article', path: '/provider-platform/patient/image', para: '', title: '影像结果', enTitle: 'images', icon: 'fa fa-list', class: '',img:'../../../assets/images/core/Imaging.png' },
+      { active: false, focus: 'article', path: '/provider-platform/patient/medication', para: '', title: '用药', enTitle: 'medication', icon: 'fa fa-list', class: '',img:'../../../assets/images/core/medicine.png' },
+      { active: false, focus: 'article', path: '/provider-platform/patient/health-file', para: '', title: '历史病史', enTitle: 'health records', icon: 'fa fa-list', class: '',img:'../../../assets/images/core/history.png' },
+      { active: false, focus: 'article', path: '/provider-platform/patient/education', para: '', title: '患病教育', enTitle: 'education', icon: 'fa fa-list', class: '',img:'../../../assets/images/core/education.png' },
+    ];
+    this.wapMenuItems = [
+      { active: false, focus: 'patient', path: '/provider-platform/patient/summary', para: '', title: '临床总结', enTitle: 'Summary', icon: 'fa fa-users', class: '',img:'../../../assets/images/core/clinical.png' },
+      { active: false, focus: 'management', path: '/provider-platform/patient/visit-list', para: '', title: '门诊', enTitle: 'Ouitpatient', icon: 'fa fa-calendar', class: '',img:'../../../assets/images/core/Outpatient.png' },
+      { active: false, focus: 'article', path: '/provider-platform/patient/lab', para: '', title: '实验室报告', enTitle: 'labs', icon: 'fa fa-list', class: '',img:'../../../assets/images/core/report.png' },
+      { active: false, focus: 'article', path: '/provider-platform/patient/image', para: '', title: '影像结果', enTitle: 'images', icon: 'fa fa-list', class: '',img:'../../../assets/images/core/Imaging.png' },
+      { active: false, focus: 'article', path: '/provider-platform/patient/medication', para: '', title: '用药', enTitle: 'medication', icon: 'fa fa-list', class: '',img:'../../assets/images/core/medicine.png' },
+      { active: false, focus: 'article', path: '/provider-platform/patient/health-file', para: '', title: '历史病史', enTitle: 'health records', icon: 'fa fa-list', class: '',img:'../../../assets/images/core/history.png' },
+      { active: false, focus: 'article', path: '/provider-platform/patient/education', para: '', title: '患病教育', enTitle: 'education', icon: 'fa fa-list', class: '',img:'../../../assets/images/core/education.png' },
     ];
     if (!this.user) {
       this.storage.set('patient-folder', true)
@@ -280,20 +288,6 @@ export class PatientStoryComponent implements OnInit, OnChanges {
     this.allServices.communicateService.send(item);
   }
 
-  getPersonInfo() {
-   
-    this.selectedItem= { 
-      active: false, 
-      focus: 'profile', 
-    path: '/provider-platform/patient/profile',
-    para: '', 
-    title: '个人信息', 
-    enTitle: 'profile', 
-    icon: 'fa fa-list', 
-    class: '',
-    img:'' }
-   
-    }
   getLink(item: any) {
     for (let i of this.menuItems) {
       if (i.path == item.path) {

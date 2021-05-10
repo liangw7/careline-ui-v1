@@ -51,6 +51,7 @@ export class MessageBoxComponent implements OnInit, OnChanges {
   provider: any;
   patientList: any;
   selected: any;
+  bigScreen:any;
 
   constructor(
     private allService: AllServices,
@@ -85,6 +86,7 @@ export class MessageBoxComponent implements OnInit, OnChanges {
       this.provider = this.data.provider;
       this.patientList = this.data.patientList;
       this.link = this.data.link;
+      this.bigScreen = this.storage.get('bigScreen')
     }
 
     this.style = 'report'

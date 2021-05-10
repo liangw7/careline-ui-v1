@@ -121,7 +121,18 @@ export class LoginComponent implements OnInit, OnDestroy {
     // 微信二维码地址由model拼接而成
     this.wxQrcodeUrl = this.wechatJssdkConfig.safeSrcUrl1;
 
-    this.route.queryParams.subscribe((params: { [x: string]: any; }) => {
+    this.route.queryParams.subscribe(params => {
+      // 此处注意,如果是poster进来,用户要注册的话,接收数据内容
+      if (params['isLoginPosterIn']) {
+        alert(params['isLoginPosterIn']);
+        this.isRegister = params['isRegister'];
+        this.isShowPhone = params['isShowPhone'];
+        this.isShowEmail = params['isShowEmail'];
+        this.loginRoleSelect = params['loginRoleSelect'];
+        this.IsLoginWays = params['IsLoginWays'];
+        this.isLoginPosterIn = params['isLoginPosterIn'];// 不显示注册内容中的返回按钮
+        this.registryUserInfo = params['registryUserInfo'];
+      }
       this.code = params['code'];
       this.userType = params['userType'];
       if (this.userType) {
@@ -269,7 +280,6 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    debugger;
     this.userBindInfo = this.route.snapshot.queryParams.userBindInfo;
     console.log(this.userBindInfo);
     this.loginType == 'phoneLogin';
@@ -281,10 +291,10 @@ export class LoginComponent implements OnInit, OnDestroy {
     if (this.user) {
       this.allService.authService.checkAuthentication().then((res: any) => {
         if (this.user.role != 'patient') {
-          this.router.navigate(['../provider']);
+          this.router.navigate(['provider']);
         } else {
           this.storage.set('patient', this.user);
-          this.router.navigate(['../patient']);
+          this.router.navigate(['patient']);
         }
       }, (err: any) => {
         console.log("Not already authorized");
@@ -294,10 +304,13 @@ export class LoginComponent implements OnInit, OnDestroy {
        * 此处说明:微信程序可以使客户端也可以是app;
        * 因此此处不需要判断是否是手机端打开;
        * 只要是微信端打开的,就可以微信授权登陆
+       * 如果已经是poster过来注册的,不需要再调用poster
        */
       var isWeixin = this.storage.get('isWeixin');
       if (isWeixin) {
-        window.location.href = this.wechatJssdkConfig.wxAuthUrl0;
+        if (!this.isLoginPosterIn) {
+          window.location.href = this.wechatJssdkConfig.wxAuthUrl0;
+        }
       }
     }
     console.log('---登录页面---初始化加载方法ngOnInit---end');
@@ -312,7 +325,6 @@ export class LoginComponent implements OnInit, OnDestroy {
   }
 
   login() {
-    debugger;
     if (!this.loginType) {
       this.allService.alertDialogService.warn('请选择登录方式');
       return;
@@ -364,6 +376,9 @@ export class LoginComponent implements OnInit, OnDestroy {
           if (this.userBindInfo.profiles) {
             this.user.profiles.push(this.userBindInfo.profiles);
           }
+          if (this.userBindInfo.service) {
+            this.user.service = this.userBindInfo.service;
+          }
         }
         this.allService.usersService.updateUser(this.user);//running behind
       }
@@ -374,15 +389,15 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.allService.sharedRoleService.sendUserRole('provider')
         if (this.bigScreen == 0) {
           if (this.myProjects == true) {
-            this.router.navigate(['my-projects/project-admin']);
+            this.router.navigate(['project-admin']);
           } else {
-            this.router.navigate(['../provider/provider-folder']);
+            this.router.navigate(['provider/provider-folder']);
           }
         } else if (this.bigScreen == 1) {
           if (this.myProjects == true) {
-            this.router.navigate(['my-projects/project-admin']);
+            this.router.navigate(['project-admin']);
           } else {
-            this.router.navigate(['../provider/dashboard']);
+            this.router.navigate(['provider/dashboard']);
           }
           console.log('login user', this.user);
         }
@@ -391,10 +406,10 @@ export class LoginComponent implements OnInit, OnDestroy {
         this.patient = this.user;
         if (this.bigScreen == 1) {
           this.allService.sharedRoleService.sendUserRole('patient')
-          this.router.navigate(['../patient/patient-story']);
+          this.router.navigate(['patient/patient-story']);
         } else if (this.bigScreen == 0) {
           this.allService.sharedRoleService.sendUserRole('patient')
-          this.router.navigate(['../patient/patient-story']);
+          this.router.navigate(['patient/patient-story']);
         }
       }
     }, (err: any) => {
@@ -417,7 +432,7 @@ export class LoginComponent implements OnInit, OnDestroy {
    * @param user 入参
    * @returns 
    */
-   bindItems(user: any, inputUser: User) {
+  bindItems(user: any, inputUser: User) {
     if (inputUser.profiles) {
       user.profiles.push(inputUser.profiles);
     }
@@ -444,7 +459,6 @@ export class LoginComponent implements OnInit, OnDestroy {
    * 发送验证码方法
    */
   sendMessage() {
-    debugger;
     console.log(this.shortMessage);
     if (!this.phone) {
       this.allService.alertDialogService.warn('请输入手机号');
@@ -467,7 +481,6 @@ export class LoginComponent implements OnInit, OnDestroy {
             this.allService.alertDialogService.alert('验证码已发送');
             this.countDown = true;
             this.showButtonText = '验证码已发送(' + 300 + 's)';
-            debugger;
             console.log(data);
             const start = setInterval(() => { //间歇调用计时器，间隔为1000ms
               if (this.countDownTime >= 0) {

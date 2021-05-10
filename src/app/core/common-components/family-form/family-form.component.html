@@ -1,115 +1,114 @@
 <!-- 添加家庭成员 -->
 <!-- *ngIf="bigScreen==1" -->
 <div class="wapper">
-    <div class="closebtn" (click)='close()'>
-      <i class='material-icons'>close</i>
-    </div>
-    <div class="forms">
-      <div class="form-group row">
-        <label *ngIF="bigScreen==1" class="col-sm-2 control-label">姓名</label>
-        <div class="col-sm-10">
-          <mat-form-field>
-            <input [(ngModel)]="familyUser.name" matInput placeholder="请输入家庭成员姓名">
-          </mat-form-field>
-        </div>
-      </div>
-      <div class="form-group row">
-        <label *ngIF="bigScreen==1" class="col-sm-2 control-label">性别</label>
-        <div class="col-sm-10">
-          <mat-radio-group>
-            <mat-radio-button [(ngModel)]="gender" (change)="gender=1" [checked]="gender ===1" value="1">男
-            </mat-radio-button>
-            <mat-radio-button [(ngModel)]="gender" (change)="gender=2" [checked]="gender ===2" value="2">女
-            </mat-radio-button>
-          </mat-radio-group>
-        </div>
-      </div>
-      <div class="form-group row">
-        <label *ngIF="bigScreen==1" class="col-sm-2 control-label">出生日期</label>
-        <div class="col-sm-10">
-          <mat-form-field>
-            <input matInput data-date-format='YYYY-MM-DD' [matDatepicker]="startdate" name="startdate" placeholder="出生日期" readonly
-              (dateChange)="addEvent('change', $event)">
-            <mat-datepicker-toggle matSuffix [for]="startdate"></mat-datepicker-toggle>
-            <mat-datepicker #startdate></mat-datepicker>
-          </mat-form-field>
-        </div>
-      </div>
-      <div class="form-group row">
-        <label *ngIF="bigScreen==1" class="col-sm-2 control-label">年龄</label>
-        <div class="col-sm-10">
-          <mat-form-field>
-            <input [(ngModel)]="familyUser.age" matInput placeholder="请输入家庭成员年龄" readonly>
-          </mat-form-field>
-        </div>
-      </div>
-      <div class="form-group row">
-        <label *ngIF="bigScreen==1" class="col-sm-2 control-label">关系</label>
-        <div class="col-sm-10">
-          <mat-form-field>
-            <mat-select [(ngModel)]="familyUser.relationship" name="food" placeholder="请选择关系">
-              <mat-option *ngFor="let relationship of relationships" [value]="relationship.code">
-                {{relationship.value}}
-              </mat-option>
-            </mat-select>
-          </mat-form-field>
-        </div>
-      </div>
-      <div class="form-group row">
-        <label *ngIF="bigScreen==1" class="col-sm-2 control-label">头像</label>
-        <div class="col-sm-10">
-          <div class="thumbnail" *ngIf="selectedImage"><img [src]="getUrl(selectedImage)" /></div>
-          <div style="display: inline-block; padding-top: 16px;"><button class="btn btn-sm btn-base" (click)="uploadImage();">上传头像</button></div>
-          <input #fileInput type="file" name="file" id="file" (change)="reNameFile()" class="call__messages___send"
-            ng2FileSelect [uploader]="uploader" [hidden]=true>
-          <div *ngIf="uploader && uploader.progress != 100" class="progress-bar progress-bar-success" role="progressbar"
-            [ngStyle]="{ 'width': uploader.progress + '%' }" style="margin-top: 15px;border-radius: 10px;">
-            {{uploader.progress}}%</div>
-        </div>
-      </div>
-      <div class="form-group row">
-          <button class="btn btn-round btn-base" (click)='createFamliyMember()'>确定</button>
-      </div>
-    </div>
-    <!-- <mat-form-field appearance="outline">
-      <mat-label>姓名</mat-label>
-      <input [(ngModel)]="familyUser.name" matInput placeholder="请输入家庭成员姓名">
-    </mat-form-field>
-    <mat-label>性别</mat-label>
-    <mat-radio-group>
-      <mat-radio-button [(ngModel)]="gender" (change)="gender=1" [checked]="gender ===1" value="1">男
-      </mat-radio-button>
-      <mat-radio-button [(ngModel)]="gender" (change)="gender=2" [checked]="gender ===2" value="2">女
-      </mat-radio-button>
-    </mat-radio-group>
-    <mat-form-field appearance="fill">
-      <mat-label>出生日期</mat-label>
-      <input matInput data-date-format='YYYY-MM-DD' [matDatepicker]="startdate" name="startdate" readonly
-        (dateChange)="addEvent('change', $event)">
-      <mat-datepicker-toggle matSuffix [for]="startdate"></mat-datepicker-toggle>
-      <mat-datepicker #startdate></mat-datepicker>
-    </mat-form-field>
-    <mat-form-field appearance="outline">
-      <mat-label>年龄</mat-label>
-      <input [(ngModel)]="familyUser.age" matInput placeholder="请输入家庭成员年龄" readonly>
-    </mat-form-field>
-    <mat-form-field appearance="fill">
-      <mat-label>关系</mat-label>
-      <mat-select [(ngModel)]="familyUser.relationship" name="food">
-        <mat-option *ngFor="let relationship of relationships" [value]="relationship.code">
-          {{relationship.value}}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-    <div class="thumbnail"><img *ngIf="selectedImage" [src]="getUrl(selectedImage)" /></div>
-    <button class="btn btn-sm btn-base" (click)="uploadImage();">上传头像</button>
-    <input #fileInput type="file" name="file" id="file" (change)="reNameFile()" class="call__messages___send"
-      ng2FileSelect [uploader]="uploader" [hidden]=true>
-    <div *ngIf="uploader && uploader.progress != 100" class="progress-bar progress-bar-success" role="progressbar"
-      [ngStyle]="{ 'width': uploader.progress + '%' }" style="margin-top: 15px;border-radius: 10px;">
-      {{uploader.progress}}%</div>
-    <button mat-raised-button color="primary" (click)='createFamliyMember()'>
-      <span>添加</span>
-    </button> -->
+  <div class="closebtn" (click)='close()'>
+    <i class='material-icons'>close</i>
   </div>
-  
+  <div class="forms">
+    <div class="form-group row">
+      <label *ngIF="bigScreen==1" class="col-sm-2 control-label">姓名</label>
+      <div class="col-sm-10">
+        <mat-form-field>
+          <input [(ngModel)]="familyUser.name" matInput placeholder="请输入家庭成员姓名">
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label *ngIF="bigScreen==1" class="col-sm-2 control-label">性别</label>
+      <div class="col-sm-10">
+        <mat-radio-group>
+          <mat-radio-button [(ngModel)]="gender" (change)="gender=1" [checked]="gender ===1" value="1">男
+          </mat-radio-button>
+          <mat-radio-button [(ngModel)]="gender" (change)="gender=2" [checked]="gender ===2" value="2">女
+          </mat-radio-button>
+        </mat-radio-group>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label *ngIF="bigScreen==1" class="col-sm-2 control-label">出生日期</label>
+      <div class="col-sm-10">
+        <mat-form-field>
+          <input matInput data-date-format='YYYY-MM-DD' [matDatepicker]="startdate" name="startdate" placeholder="出生日期" readonly
+            (dateChange)="addEvent('change', $event)">
+          <mat-datepicker-toggle matSuffix [for]="startdate"></mat-datepicker-toggle>
+          <mat-datepicker #startdate></mat-datepicker>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label *ngIF="bigScreen==1" class="col-sm-2 control-label">年龄</label>
+      <div class="col-sm-10">
+        <mat-form-field>
+          <input [(ngModel)]="familyUser.age" matInput placeholder="请输入家庭成员年龄" readonly>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label *ngIF="bigScreen==1" class="col-sm-2 control-label">关系</label>
+      <div class="col-sm-10">
+        <mat-form-field>
+          <mat-select [(ngModel)]="familyUser.relationship" name="food" placeholder="请选择关系">
+            <mat-option *ngFor="let relationship of relationships" [value]="relationship.code">
+              {{relationship.value}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label *ngIF="bigScreen==1" class="col-sm-2 control-label">头像</label>
+      <div class="col-sm-10">
+        <div class="thumbnail" *ngIf="selectedImage"><img [src]="getUrl(selectedImage)" /></div>
+        <div style="display: inline-block; padding-top: 16px;"><button class="btn btn-sm btn-base" (click)="uploadImage();">上传头像</button></div>
+        <input #fileInput type="file" name="file" id="file" (change)="reNameFile()" class="call__messages___send"
+          ng2FileSelect [uploader]="uploader" [hidden]=true>
+        <div *ngIf="uploader && uploader.progress != 100" class="progress-bar progress-bar-success" role="progressbar"
+          [ngStyle]="{ 'width': uploader.progress + '%' }" style="margin-top: 15px;border-radius: 10px;">
+          {{uploader.progress}}%</div>
+      </div>
+    </div>
+    <div class="form-group row">
+        <button class="btn btn-round btn-base" (click)='createFamliyMember()'>确定</button>
+    </div>
+  </div>
+  <!-- <mat-form-field appearance="outline">
+    <mat-label>姓名</mat-label>
+    <input [(ngModel)]="familyUser.name" matInput placeholder="请输入家庭成员姓名">
+  </mat-form-field>
+  <mat-label>性别</mat-label>
+  <mat-radio-group>
+    <mat-radio-button [(ngModel)]="gender" (change)="gender=1" [checked]="gender ===1" value="1">男
+    </mat-radio-button>
+    <mat-radio-button [(ngModel)]="gender" (change)="gender=2" [checked]="gender ===2" value="2">女
+    </mat-radio-button>
+  </mat-radio-group>
+  <mat-form-field appearance="fill">
+    <mat-label>出生日期</mat-label>
+    <input matInput data-date-format='YYYY-MM-DD' [matDatepicker]="startdate" name="startdate" readonly
+      (dateChange)="addEvent('change', $event)">
+    <mat-datepicker-toggle matSuffix [for]="startdate"></mat-datepicker-toggle>
+    <mat-datepicker #startdate></mat-datepicker>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>年龄</mat-label>
+    <input [(ngModel)]="familyUser.age" matInput placeholder="请输入家庭成员年龄" readonly>
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>关系</mat-label>
+    <mat-select [(ngModel)]="familyUser.relationship" name="food">
+      <mat-option *ngFor="let relationship of relationships" [value]="relationship.code">
+        {{relationship.value}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <div class="thumbnail"><img *ngIf="selectedImage" [src]="getUrl(selectedImage)" /></div>
+  <button class="btn btn-sm btn-base" (click)="uploadImage();">上传头像</button>
+  <input #fileInput type="file" name="file" id="file" (change)="reNameFile()" class="call__messages___send"
+    ng2FileSelect [uploader]="uploader" [hidden]=true>
+  <div *ngIf="uploader && uploader.progress != 100" class="progress-bar progress-bar-success" role="progressbar"
+    [ngStyle]="{ 'width': uploader.progress + '%' }" style="margin-top: 15px;border-radius: 10px;">
+    {{uploader.progress}}%</div>
+  <button mat-raised-button color="primary" (click)='createFamliyMember()'>
+    <span>添加</span>
+  </button> -->
+</div>

@@ -142,11 +142,10 @@
                     <input type='date' [(ngModel)]="vaccineDate" class="form-control">
                 </div>
             </div>
-            <div *ngIf='bigScreen==0&&showVaccine' class='card profile'>
-                <div class="backbox" (click)='showVaccine=false;'><span class="material-icons">chevron_left</span></div>
-                <div class='card' *ngFor='let vaccine of vaccines'>
+            <div *ngIf='bigScreen==0&&showVaccine' class='profile'>
+                <div *ngFor='let vaccine of vaccines'>
                     <div class='card-header'><span style='font-weight:600'>{{vaccine.label.ch}}</span></div>
-                    <div class='table table-reponsive'>
+                    <div class='table-reponsive'>
                         <table class='table'>
                             <tbody *ngFor='let timeItem of timeList'>
                                 <tr *ngIf="hasDose(vaccine,timeItem)&&hasDose(vaccine,timeItem)"
@@ -168,7 +167,6 @@
                     </div>
                 </div>
             </div>
-
             <div class='card vaccine' *ngIf='showDate'
                 style='position:absolute;width:500;height:300px;margin-left:50%;margin-top:50px;'>
                 <div class='card-header'>
